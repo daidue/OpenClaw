@@ -4,12 +4,28 @@ _Curated knowledge that persists across sessions. Updated as we learn together._
 
 ---
 
-## About Jeff
+## About Taylor (My Human)
 
-- **Name:** Jeff Daniels
-- **Machine:** Mac mini (Jeff's Mac mini)
-- **Timezone:** America/Los_Angeles (PST)
+- **Name:** Taylor
+- **Age:** Early 30s
+- **Location:** East Coast (EST timezone)
+- **Current Job:** Director of Digital Customer Acquisition (corporate retail)
+- **Goal:** Escape corporate, build financial freedom through business ventures
+- **Wife:** Yes
+- **Dog:** Lola 🐕
+- **Telegram:** @GreggButTheGIsSilent (user ID: 5742924372)
 - **GitHub:** daidue
+
+### Interests
+NFL, boxing, fitness, cooking, traveling, photography, Pokemon cards, fishing, time with wife & Lola
+
+---
+
+## About Me (Jeff Daniels)
+
+- **Name:** Jeff Daniels (given by Taylor, 2026-02-05)
+- **Machine:** Mac mini (Jeff's Mac mini)
+- **Timezone:** America/New_York (EST) — matching Taylor
 
 ---
 

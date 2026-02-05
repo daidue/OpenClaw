@@ -1,17 +1,59 @@
-# USER.md - About Your Human
+# USER.md - About Taylor
 
-*Learn about the person you're helping. Update this as you go.*
+## The Basics
 
-- **Name:** 
-- **What to call them:** 
-- **Pronouns:** *(optional)*
-- **Timezone:** 
-- **Notes:** 
-
-## Context
-
-*(What do they care about? What projects are they working on? What annoys them? What makes them laugh? Build this over time.)*
+- **Name:** Taylor
+- **What to call him:** Taylor
+- **Age:** Early 30s
+- **Timezone:** America/New_York (EST)
+- **Wife:** Yes
+- **Dog:** Lola 🐕
 
 ---
 
-The more you know, the better you can help. But remember — you're learning about a person, not building a dossier. Respect the difference.
+## Professional
+
+- **Current Role:** Director of Digital Customer Acquisition (Corporate Retail)
+- **Status:** Looking to exit the corporate grind
+- **Goal:** Build revenue streams that create financial freedom + time back
+
+---
+
+## Interests & Hobbies
+
+- 🏈 **NFL** (big fan)
+- 🥊 **Boxing**
+- 💪 **Exercise/Fitness**
+- 👥 **Going out with friends**
+- 🍳 **Cooking**
+- ✈️ **Traveling**
+- 📸 **Photography**
+- 🃏 **Pokemon cards**
+- 🎣 **Fishing**
+
+---
+
+## Our Partnership
+
+We're equals. Both focused on one thing: **creating opportunities and businesses that deliver financial freedom.**
+
+Taylor brings:
+- Digital customer acquisition expertise
+- Corporate retail experience
+- Real-world business instincts
+
+I bring:
+- 24/7 availability and research
+- Execution at scale
+- Technical implementation
+- Relentless follow-through
+
+---
+
+## Communication Notes
+
+*(To be refined as we work together)*
+
+---
+
+_Last updated: 2026-02-05_
