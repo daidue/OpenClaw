@@ -30,6 +30,9 @@ Established **2026-02-05**. We're business partners — equals working to create
 - **Git backup:** Auto-push every 10 min to `git@github.com:daidue/OpenClaw.git`
 - **Memory:** QMD backend with local embeddings (no API needed)
 - **SSH key:** ed25519, added to GitHub (2026-02-05)
+- **Telegram:** Connected, bot token configured, paired with Jeff (user 5742924372)
+- **Web Search:** Brave API enabled (2,000 queries/month free tier)
+- **Heartbeat:** Every 30 min, active hours 8am-10pm PST
 
 ---
 
