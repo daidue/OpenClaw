@@ -65,6 +65,8 @@ Established **2026-02-05**. We're business partners — equals working to create
 |-------|------|-------|-----------|
 | main (Jeff) | Squad Lead | claude-opus-4-5 | 30 min |
 | researcher (Fury) | Deep Research | claude-sonnet-4-5 | 15 min |
+| content (Nova) | Content & Social | claude-sonnet-4-5 | 15 min |
+| dev (Bolt) | Coding & Technical | claude-sonnet-4-5 | 15 min |
 
 ---
 
