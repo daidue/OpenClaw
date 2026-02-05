@@ -2,34 +2,32 @@
 
 Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
 
-## What Goes Here
+---
 
-Things like:
+## Browser (Managed Profile)
 
-- Camera names and locations
-- SSH hosts and aliases
-- Preferred voices for TTS
-- Speaker/room names
-- Device nicknames
-- Anything environment-specific
+I have a dedicated orange-tinted Brave browser profile for automation.
 
-## Examples
+### Logged-in Sessions
+- **X.com**: @JeffDanielsB4U
+- **Gmail**: jeffdanielsbymail@gmail.com
 
-```markdown
-### Cameras
-
-- living-room → Main area, 180° wide angle
-- front-door → Entrance, motion-triggered
-
-### SSH
-
-- home-server → 192.168.1.100, user: admin
-
-### TTS
-
-- Preferred voice: "Nova" (warm, slightly British)
-- Default speaker: Kitchen HomePod
+### Browser Commands
+```bash
+openclaw browser --browser-profile openclaw status
+openclaw browser --browser-profile openclaw start
 ```
+
+---
+
+## Scheduled Tasks
+
+| Job | Schedule | Description |
+|-----|----------|-------------|
+| healthcheck:security-audit | Sundays 9am EST | Deep security audit |
+| healthcheck:update-status | Daily 8am EST | Check for OpenClaw updates |
+
+---
 
 ## Why Separate?
 

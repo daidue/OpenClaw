@@ -48,7 +48,15 @@ Established **2026-02-05**. We're business partners — equals working to create
 - **SSH key:** ed25519, added to GitHub (2026-02-05)
 - **Telegram:** Connected, bot token configured, paired with Jeff (user 5742924372)
 - **Web Search:** Brave API enabled (2,000 queries/month free tier)
-- **Heartbeat:** Every 30 min, active hours 8am-10pm PST
+- **Heartbeat:** Every 30 min, active hours 8am-10pm EST
+- **Browser:** Managed Brave profile (orange-tinted), persistent sessions
+- **X.com:** @JeffDanielsB4U (browser automation)
+- **Gmail:** jeffdanielsbymail@gmail.com (browser automation)
+
+## Scheduled Jobs
+
+- **Security audit:** Sundays 9am EST (healthcheck:security-audit)
+- **Update check:** Daily 8am EST (healthcheck:update-status)
 
 ---
 
