@@ -1,0 +1,10 @@
+{
+  "lastHeartbeat": "2026-02-05T22:32:00Z",
+  "lastChecks": {
+    "email": null,
+    "xMentions": null,
+    "workQueue": "2026-02-05T22:32:00Z"
+  },
+  "autonomousMode": false,
+  "notes": "First heartbeat after setup. Work queue empty, autonomous mode OFF."
+}
