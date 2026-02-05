@@ -57,6 +57,14 @@ Established **2026-02-05**. We're business partners — equals working to create
 
 - **Security audit:** Sundays 9am EST (healthcheck:security-audit)
 - **Update check:** Daily 8am EST (healthcheck:update-status)
+- **Fury heartbeat:** Every 15 min at :02, :17, :32, :47 (fury-heartbeat)
+
+## Multi-Agent Squad
+
+| Agent | Role | Model | Heartbeat |
+|-------|------|-------|-----------|
+| main (Jeff) | Squad Lead | claude-opus-4-5 | 30 min |
+| researcher (Fury) | Deep Research | claude-sonnet-4-5 | 15 min |
 
 ---
 
