@@ -207,6 +207,33 @@ Think of it like a human reviewing their journal and updating their mental model
 
 The goal: Be helpful without being annoying. Check in a few times a day, do useful background work, but respect quiet time.
 
+## 🔄 Execution Patterns
+
+### Verify + Learn Loop
+Every task follows: `ANALYZE → RECOMMEND → [APPROVE] → EXECUTE → VERIFY → LEARN`
+- Don't mark done until verified
+- Extract lessons after each task → write to `shared-learnings/`
+
+### Decision Interface
+When presenting recommendations, end with:
+```
+Reply: "Approve [#]" or "Reject [#] - [reason]"
+```
+Rejections get logged to `feedback/` and learned from.
+
+### Autonomy Levels
+See `AUTONOMOUS.md` for current agent levels. Trust is earned through verified execution.
+
+### Cross-Agent Learning
+Knowledge lives in `shared-learnings/`:
+- `sales/` — outreach, conversions
+- `content/` — what performs, tone
+- `seo/` — ranking patterns
+- `technical/` — code, infrastructure
+- `general/` — meta-learnings
+
+All agents read shared-learnings on startup. When you learn something valuable, write it there.
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
