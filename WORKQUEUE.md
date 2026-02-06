@@ -8,37 +8,7 @@ Tasks for Jeff and the squad. Processed during heartbeats and overnight shifts.
 
 Light work for the night shift. Research, drafts, organizing — no heavy generation.
 
-### [ ] Research: Tailscale Setup for Mac Mini
-**Priority:** Medium  
-**Assigned:** Fury (researcher)  
-**Added:** 2026-02-06
-
-Research Tailscale installation and configuration for our Mac mini setup:
-- Installation steps for macOS
-- Best practices for single-node setup
-- How to access the machine remotely via Tailscale
-- Any gotchas or security considerations
-
-**Acceptance Criteria:**
-- [ ] Clear installation guide written to `shared-learnings/technical/tailscale-setup.md`
-- [ ] Recommendation on whether we need Tailscale (we have no public ports currently)
-
----
-
-### [ ] Research: Command Allowlist for Prompt Injection Protection
-**Priority:** Medium  
-**Assigned:** Fury (researcher)  
-**Added:** 2026-02-06
-
-Research how to implement command allowlists in OpenClaw to protect against prompt injection:
-- What exec commands should be allowlisted vs blocked?
-- How does OpenClaw's security model work for this?
-- Best practices from the community/docs
-
-**Acceptance Criteria:**
-- [ ] Summary of OpenClaw's exec security options
-- [ ] Recommended allowlist configuration
-- [ ] Written to `shared-learnings/technical/command-allowlist.md`
+_No overnight tasks queued._
 
 ---
 
@@ -54,7 +24,27 @@ _No daytime tasks queued._
 
 Tasks move here when done, with completion date.
 
-_None yet._
+### [✓] Research: Tailscale Setup for Mac Mini
+**Priority:** Medium  
+**Assigned:** Fury (researcher)  
+**Added:** 2026-02-06  
+**Completed:** 2026-02-06
+
+Research Tailscale installation and configuration for our Mac mini setup.
+
+**Deliverable:** `/Users/jeffdaniels/.openclaw/workspace/research/tailscale-setup.md`
+
+---
+
+### [✓] Research: Command Allowlist for Prompt Injection Protection
+**Priority:** Medium  
+**Assigned:** Fury (researcher)  
+**Added:** 2026-02-06  
+**Completed:** 2026-02-06
+
+Research how to implement command allowlists in OpenClaw to protect against prompt injection.
+
+**Deliverable:** `/Users/jeffdaniels/.openclaw/workspace/research/command-allowlist.md`
 
 ---
 
