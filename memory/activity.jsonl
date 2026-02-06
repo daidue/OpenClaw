@@ -1,0 +1,6 @@
+{"timestamp": "2026-02-06T14:52:00Z", "type": "action", "agent": "main", "summary": "Mission Control dashboard built", "details": {"components": ["activity-feed", "calendar", "search"], "tech": "Next.js + Convex + shadcn"}}
+{"timestamp": "2026-02-06T14:30:00Z", "type": "cron", "agent": "main", "summary": "Created morning-standup cron job", "details": {"schedule": "8:30 AM EST daily", "delivery": "telegram"}}
+{"timestamp": "2026-02-06T14:30:00Z", "type": "cron", "agent": "main", "summary": "Created evening-planning cron job", "details": {"schedule": "9:00 PM EST daily", "delivery": "telegram"}}
+{"timestamp": "2026-02-06T10:05:00Z", "type": "task", "agent": "main", "summary": "Venture brainstorm with Taylor", "details": {"decision": "Templates & Frameworks path selected", "product": "Positioning Sprint template"}}
+{"timestamp": "2026-02-06T09:21:00Z", "type": "action", "agent": "main", "summary": "Daily operating rhythm established", "details": {"morning": "8:30 AM standup", "evening": "9:00 PM planning"}}
+{"timestamp": "2026-02-06T09:05:00Z", "type": "memory", "agent": "main", "summary": "Updated WORKQUEUE.md with overnight tasks", "details": {"tasks": ["Tailscale research", "Command allowlist research"]}}
