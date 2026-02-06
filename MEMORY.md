@@ -55,9 +55,23 @@ Established **2026-02-05**. We're business partners — equals working to create
 
 ## Scheduled Jobs
 
+- **Morning standup:** Daily 8:30am EST — overnight summary to Telegram
+- **Evening planning:** Daily 9:00pm EST — day recap + overnight queue confirmation
 - **Security audit:** Sundays 9am EST (healthcheck:security-audit)
 - **Update check:** Daily 8am EST (healthcheck:update-status)
 - **Fury heartbeat:** Every 15 min at :02, :17, :32, :47 (fury-heartbeat)
+
+## Daily Operating Rhythm
+
+| Time | Event |
+|------|-------|
+| 8:30 AM | Morning standup (Telegram) |
+| Daytime | Interactive work with Taylor |
+| 9:00 PM | Evening planning (Telegram) |
+| 10 PM - 8 AM | Night shift — light async work |
+
+**Overnight work types:** Research, drafting, organizing, analysis (token-light)
+**Not overnight:** Heavy generation, external actions, anything needing approval
 
 ## Multi-Agent Squad
 
