@@ -101,7 +101,17 @@ _(To be updated as we work together)_
 
 ## Active Projects
 
-_(To be updated as ventures begin)_
+### Freelance Invoice Tracker — Notion Template ($37)
+- **Status:** Built, expert-reviewed 93.2/100, near launch-ready
+- **Location:** Taylor's Notion (API-built) + assets at `~/Desktop/Invoice-Tracker-Launch/`
+- **What it is:** Complete freelance business toolkit in Notion — invoices, clients, time tracking, expenses, 8 views, 3 automation buttons, contract template, tax guide, email scripts, follow-up scripts, pricing guide
+- **Differentiator:** $37 once vs $288-1,308/yr for SaaS. Works on Notion Free plan. $115 perceived value.
+- **Expert panel:** 10 simulated experts (Poulin, Frank, Wiebe, Sethi, etc.) scored 3 rounds: 73→88.4→93.2
+- **Sales assets ready:** Gumroad listing v2, 3 Reddit posts, Twitter thread, email sequence, Product Hunt kit, video script
+- **Remaining:** Record video walkthrough, deploy to Gumroad, visual polish, free Lite version for lead gen
+- **Research:** 6 deep research docs in `workspace/research/invoice-tracker-*.md`
+- **Pricing strategy:** $37 main ($27 early-bird for first 100), free Lite version as lead magnet
+- **Revenue target:** 50-100 sales month 1 ($1,850-3,700), $25K-40K year 1
 
 ---
 
