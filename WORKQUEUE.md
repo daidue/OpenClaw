@@ -6,36 +6,40 @@ Tasks for Jeff and the squad. Processed during heartbeats and overnight shifts.
 
 ## 🔥 Active Now
 
-### [ ] Mission Control Enhancements
-**Priority:** high  
-**Assigned:** Jeff + Team  
-**Added:** 2026-02-07
+### [ ] Mission Control Hardening
+**Priority:** critical  
+**Assigned:** Fury (research) + Bolt (implementation)  
+**Added:** 2026-02-07  
+**Review:** `research/mission-control-review.md`
 
-Implement and test Mission Control enhancements:
+Addressing 4 critical blockers + 6 important issues from Fury's design review.
 
-**1. Auto-sync memories on file change**
-- Watch `~/.openclaw/workspace/*.md` and `memory/*.md`
-- Sync to Convex `memories` table on change
-- Options: file watcher daemon, cron job, or API endpoint
+**Critical Fixes (Bolt):**
+- [ ] Convex authentication for daemons (env file + LaunchAgent config)
+- [ ] SQLite for activity logging (replacing JSONL cursor to prevent corruption)
+- [ ] Proper Convex schema + mutations (memories, activities tables)
+- [ ] OpenClaw activity integration (waiting on Fury's research)
 
-**2. Activity logging from OpenClaw actions → Convex**
-- Integrate with OpenClaw to capture agent actions
-- Log to Convex `activities` table in real-time
-- Consider: hooks, middleware, or periodic sync
+**Should Fix (Bolt):**
+- [ ] Log rotation (archive when SQLite exceeds 10MB)
+- [ ] Startup health checks + ThrottleInterval (prevent crash loops)
+- [ ] Error handling (exponential backoff, graceful network failures)
+- [ ] Status dashboard (/status page showing daemon health)
+- [ ] Sanitize sensitive data in activity logs (scrub API keys, tokens)
+- [ ] Rollback documentation
+- [ ] Setup/teardown scripts for daemon installation
 
-**3. Add all memory files to search index**
-- Sync all .md files from workspace
-- Keep index fresh
-
-**4. Test cron jobs firing correctly**
-- Verify morning-standup and evening-planning fire on schedule
-- Confirm Telegram delivery works
+**Research (Fury):**
+- [ ] Verify OpenClaw activity logging feasibility
+- [ ] Deliverable: `research/openclaw-activity-integration.md`
 
 **Acceptance Criteria:**
-- [ ] Memory files auto-sync to Convex
-- [ ] Agent activities appear in dashboard automatically
-- [ ] All workspace .md files searchable
-- [ ] Cron jobs fire and deliver correctly
+- [ ] Daemons authenticate with Convex properly
+- [ ] Activity logging uses atomic SQLite (no cursor corruption)
+- [ ] Convex schema validates correctly
+- [ ] Health checks prevent crash loops
+- [ ] /status page shows daemon health
+- [ ] Rollback procedure documented and tested
 
 ---
 
