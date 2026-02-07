@@ -30,8 +30,8 @@ Addressing 4 critical blockers + 6 important issues from Fury's design review.
 - [ ] Setup/teardown scripts for daemon installation
 
 **Research (Fury):**
-- [ ] Verify OpenClaw activity logging feasibility
-- [ ] Deliverable: `research/openclaw-activity-integration.md`
+- [x] Verify OpenClaw activity logging feasibility ✅
+- [x] Deliverable: `research/openclaw-activity-integration.md` ✅
 
 **Acceptance Criteria:**
 - [ ] Daemons authenticate with Convex properly
