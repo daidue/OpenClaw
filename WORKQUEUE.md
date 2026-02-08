@@ -4,10 +4,10 @@
 **Priority:** CRITICAL
 **Plan:** See `TEMPLATE-OVERHAUL.md`
 
-### Phase 1: Research (IN PROGRESS)
+### Phase 1: Research (COMPLETE)
 - [x] Fury: Design system research spawned (WS1)
 - [x] Jeff: Web research on Thomas Frank aesthetic tips
-- [ ] Fury: Deliver `research/notion-design-system.md`
+- [x] Fury: Deliver `research/notion-design-system.md` ✅
 
 ### Phase 2: Foundation (NEXT)
 - [ ] Jeff: Build cover image system (HTML→PNG for all pages)
