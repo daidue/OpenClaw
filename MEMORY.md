@@ -104,10 +104,15 @@ Established **2026-02-05**. We're business partners — equals working to create
 
 | Agent | Role | Model | Heartbeat |
 |-------|------|-------|-----------|
-| main (Jeff) | Squad Lead | claude-opus-4-5 | 30 min |
+| main (Jeff) | Squad Lead | claude-opus-4-6 | 60 min |
 | researcher (Fury) | Deep Research | claude-sonnet-4-5 | 15 min |
 | content (Nova) | Content & Social | claude-sonnet-4-5 | 15 min |
 | dev (Bolt) | Coding & Technical | claude-sonnet-4-5 | 15 min |
+| growth (Scout) | Sales & Growth | claude-sonnet-4-5 | 30 min |
+| analytics (Edge) | Data & Analytics | claude-sonnet-4-5 | 60 min |
+| ops (Atlas) | Operations & Business | claude-sonnet-4-5 | 30 min |
+
+**Revenue flywheel:** Fury finds opportunity → Bolt builds → Nova creates content → Scout sells → Edge measures → Atlas maintains
 
 ---
 

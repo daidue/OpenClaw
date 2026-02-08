@@ -34,9 +34,13 @@ Say "FULL STOP" to immediately:
 | Fury (researcher) | 3 | Operator — executes research autonomously, reports after |
 | Nova (content) | 3 | Operator — produces content autonomously, flags before external posting |
 | Bolt (dev) | 3 | Operator — builds/ships within guardrails, reports after |
+| Scout (growth) | 2 | Advisor — recommends outreach/sales actions, executes on approval. Ask before any external sends. |
+| Edge (analytics) | 3 | Operator — runs analysis autonomously, flags anomalies |
+| Atlas (ops) | 2 | Advisor — monitors and maintains, asks before customer-facing actions |
 
-**Rule:** New agents start at Level 1. Trust is earned through verified execution.
-**Upgraded 2026-02-08:** All sub-agents promoted from L2→L3 per Taylor's directive to maximize productive work and minimize cold starts. Jeff promoted to L4.
+**Rule:** New agents start at Level 1-2. Trust is earned through verified execution.
+**2026-02-08 (original):** Fury/Nova/Bolt promoted L2→L3. Jeff to L4.
+**2026-02-08 (expansion):** Scout and Atlas start at L2 (external-facing actions need approval). Edge starts at L3 (analytics is low-risk).
 
 ---
 
