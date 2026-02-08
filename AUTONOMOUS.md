@@ -30,12 +30,13 @@ Say "FULL STOP" to immediately:
 ### Current Assignments
 | Agent | Level | Notes |
 |-------|-------|-------|
-| Jeff (main) | 3 | Operator — executes most tasks, asks for high-stakes |
-| Fury (researcher) | 2 | Advisor — researches, recommends, awaits approval |
-| Nova (content) | 2 | Advisor — drafts content, awaits approval to post |
-| Bolt (dev) | 2 | Advisor — codes solutions, awaits approval to deploy |
+| Jeff (main) | 4 | Partner — full autonomy with weekly summary |
+| Fury (researcher) | 3 | Operator — executes research autonomously, reports after |
+| Nova (content) | 3 | Operator — produces content autonomously, flags before external posting |
+| Bolt (dev) | 3 | Operator — builds/ships within guardrails, reports after |
 
 **Rule:** New agents start at Level 1. Trust is earned through verified execution.
+**Upgraded 2026-02-08:** All sub-agents promoted from L2→L3 per Taylor's directive to maximize productive work and minimize cold starts. Jeff promoted to L4.
 
 ---
 
