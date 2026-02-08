@@ -1,80 +1,34 @@
-# Work Queue
+# WORKQUEUE.md
 
-Tasks for Jeff and the squad. Processed during heartbeats and overnight shifts.
+## 🔥 ACTIVE PROJECT: Template Overhaul
+**Priority:** CRITICAL
+**Plan:** See `TEMPLATE-OVERHAUL.md`
 
----
+### Phase 1: Research (IN PROGRESS)
+- [x] Fury: Design system research spawned (WS1)
+- [x] Jeff: Web research on Thomas Frank aesthetic tips
+- [ ] Fury: Deliver `research/notion-design-system.md`
 
-## 🔥 Active Now
+### Phase 2: Foundation (NEXT)
+- [ ] Jeff: Build cover image system (HTML→PNG for all pages)
+- [ ] Jeff: Expand sample data to 15-20 invoices, 8-10 clients
+- [ ] Jeff: Make Dashboard dynamic (linked DB views vs hardcoded)
+- [ ] Bolt: Implement cover images via Notion API
+- [ ] Bolt: Icon system overhaul
 
-### [ ] Mission Control Hardening
-**Priority:** critical  
-**Assigned:** Fury (research) + Bolt (implementation)  
-**Added:** 2026-02-07  
-**Review:** `research/mission-control-review.md`
+### Phase 3: Polish
+- [ ] Jeff: Redesign Start Here unboxing experience
+- [ ] Jeff: Setup progress tracker
+- [ ] Taylor: Board/Calendar/Gallery views (UI only)
+- [ ] Taylor: Template buttons for email scripts
 
-Addressing 4 critical blockers + 6 important issues from Fury's design review.
-
-**Critical Fixes (Bolt):**
-- [ ] Convex authentication for daemons (env file + LaunchAgent config)
-- [ ] SQLite for activity logging (replacing JSONL cursor to prevent corruption)
-- [ ] Proper Convex schema + mutations (memories, activities tables)
-- [ ] OpenClaw activity integration (waiting on Fury's research)
-
-**Should Fix (Bolt):**
-- [ ] Log rotation (archive when SQLite exceeds 10MB)
-- [ ] Startup health checks + ThrottleInterval (prevent crash loops)
-- [ ] Error handling (exponential backoff, graceful network failures)
-- [ ] Status dashboard (/status page showing daemon health)
-- [ ] Sanitize sensitive data in activity logs (scrub API keys, tokens)
-- [ ] Rollback documentation
-- [ ] Setup/teardown scripts for daemon installation
-
-**Research (Fury):**
-- [x] Verify OpenClaw activity logging feasibility ✅
-- [x] Deliverable: `research/openclaw-activity-integration.md` ✅
-
-**Acceptance Criteria:**
-- [ ] Daemons authenticate with Convex properly
-- [ ] Activity logging uses atomic SQLite (no cursor corruption)
-- [ ] Convex schema validates correctly
-- [ ] Health checks prevent crash loops
-- [ ] /status page shows daemon health
-- [ ] Rollback procedure documented and tested
+### Phase 4: QA & Ship
+- [ ] Fury: Expert panel re-review (target 97+)
+- [ ] Jeff: New screenshots for all marketplaces
+- [ ] Jeff: Marketplace submission copy
+- [ ] Submit to Notion, NotionEverything, Prototion
 
 ---
 
-## 🌙 Tonight's Queue (Overnight)
-
-_No overnight tasks queued._
-
----
-
-## ☀️ Daytime Queue
-
-_No daytime tasks queued._
-
----
-
-## ✅ Completed
-
-### [✓] Research: Invoice Tracker Competitive Intel
-**Completed:** 2026-02-07  
-**Deliverable:** `research/invoice-tracker-competitive-intel.md`
-
-### [✓] Research: Tailscale Setup for Mac Mini
-**Completed:** 2026-02-06  
-**Deliverable:** `research/tailscale-setup.md`
-
-### [✓] Research: Command Allowlist for Prompt Injection Protection
-**Completed:** 2026-02-06  
-**Deliverable:** `research/command-allowlist.md`
-
-### [✓] Mission Control + Convex Integration
-**Completed:** 2026-02-07  
-**Details:** All 3 pages wired to Convex, data synced
-
----
-
-## ⏸️ Blocked / On Hold
-
-_None._
+## Completed
+- [x] All previous tasks (see memory files)
