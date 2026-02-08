@@ -101,17 +101,22 @@ _(To be updated as we work together)_
 
 ## Active Projects
 
-### Freelance Invoice Tracker — Notion Template ($37)
-- **Status:** Built, expert-reviewed 93.2/100, near launch-ready
+### Freelance Invoice Tracker — Notion Template ($27)
+- **Status:** Launch-ready. All assets, copy, and marketplace submissions prepared.
+- **Price:** $27 (changed from $37 — expert panel said too high for cold traffic)
 - **Location:** Taylor's Notion (API-built) + assets at `~/Desktop/Invoice-Tracker-Launch/`
+- **Lite version:** Free PWYW on Gumroad for lead gen (page `30104dbe-0785-812f-be10-f8f8d33019c1`)
 - **What it is:** Complete freelance business toolkit in Notion — invoices, clients, time tracking, expenses, 8 views, 3 automation buttons, contract template, tax guide, email scripts, follow-up scripts, pricing guide
 - **Differentiator:** $37 once vs $288-1,308/yr for SaaS. Works on Notion Free plan. $115 perceived value.
 - **Expert panel:** 10 simulated experts (Poulin, Frank, Wiebe, Sethi, etc.) scored 3 rounds: 73→88.4→93.2
 - **Sales assets ready:** Gumroad listing v2, 3 Reddit posts, Twitter thread, email sequence, Product Hunt kit, video script
 - **Remaining:** Record video walkthrough, deploy to Gumroad, visual polish, free Lite version for lead gen
 - **Research:** 6 deep research docs in `workspace/research/invoice-tracker-*.md`
-- **Pricing strategy:** $37 main ($27 early-bird for first 100), free Lite version as lead magnet
-- **Revenue target:** 50-100 sales month 1 ($1,850-3,700), $25K-40K year 1
+- **Pricing strategy:** $27 permanent (was $37), free Lite version as PWYW lead magnet
+- **Revenue target:** 50-100 sales month 1 ($1,350-2,700)
+- **GTM channels (priority order):** Notion Gallery → Pinterest+Tailwind → Gumroad Discover → Etsy → Reddit (Month 2)
+- **Product Hunt: DEAD for templates** (stopped featuring them 2024) — removed from plan
+- **Pinterest case study:** $0→$1,400/mo in 6 months with Tailwind automation
 
 ---
 
