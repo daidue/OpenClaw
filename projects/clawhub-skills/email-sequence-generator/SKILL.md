@@ -138,6 +138,7 @@ Before delivering:
 - [ ] No typos, no placeholder text
 - [ ] Copy sounds human, not AI-generated
 
-## Example Reference
+## Example References
 
-See `examples/saas-product-example.md` for a complete welcome sequence that demonstrates the expected output quality.
+- `examples/saas-product-example.md` — Complete welcome sequence for a SaaS product (ProjectPulse)
+- `examples/cart-abandonment-ecommerce.md` — Complete cart abandonment sequence for an e-commerce brand (Hearthstone Candles)
