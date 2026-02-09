@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-02-09T13:43:08.261912",
+  "overall_status": "degraded",
+  "checks": [
+    {
+      "component": "vector_memory",
+      "status": "healthy",
+      "message": "Index size: 0.0 KB",
+      "last_updated": "2026-02-09T13:41:30.484138"
+    },
+    {
+      "component": "hourly_summaries",
+      "status": "healthy",
+      "message": "Last update 43 minutes ago"
+    },
+    {
+      "component": "feedback_system",
+      "status": "healthy",
+      "message": "78 feedback entries this week"
+    },
+    {
+      "component": "cron_system",
+      "status": "warning",
+      "message": "No cron activity in last 3 hours"
+    },
+    {
+      "component": "disk_space",
+      "status": "healthy",
+      "message": "155.9 GB free",
+      "percent_used": "31.7%"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "health_alert",
+  "severity": "warning",
+  "timestamp": "2026-02-09T13:43:08.262077",
+  "status": "degraded",
+  "message": "Infrastructure health check: DEGRADED",
+  "details": {
+    "failed_checks": [
+      "cron_system"
+    ]
+  }
+}

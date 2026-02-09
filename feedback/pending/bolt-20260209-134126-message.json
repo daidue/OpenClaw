@@ -1,0 +1,29 @@
+{
+  "text": "\n\ud83e\udd16 **Recommendation from bolt**\n\n**Test 0**\n\nDescription 0\n\nCategory: general\n",
+  "reply_markup": {
+    "inline_keyboard": [
+      [
+        {
+          "text": "\u2705 Approve",
+          "callback_data": "approve:bolt-20260209-134126"
+        },
+        {
+          "text": "\u274c Reject",
+          "callback_data": "reject:bolt-20260209-134126"
+        }
+      ],
+      [
+        {
+          "text": "\u270f\ufe0f Edit",
+          "callback_data": "edit:bolt-20260209-134126"
+        },
+        {
+          "text": "\u23ed\ufe0f Skip",
+          "callback_data": "skip:bolt-20260209-134126"
+        }
+      ]
+    ]
+  },
+  "recommendation_id": "bolt-20260209-134126",
+  "recommendation_file": "/Users/jeffdaniels/.openclaw/workspace/feedback/pending/bolt-20260209-134126.json"
+}

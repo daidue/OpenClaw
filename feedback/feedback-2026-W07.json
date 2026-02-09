@@ -353,6 +353,100 @@
         "user_id": "test_user",
         "recommendation_id": "bolt-20260209-133957"
       }
+    },
+    {
+      "description": "Description 0",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:40:01.239887",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-133957"
+      }
+    },
+    {
+      "description": "Test description",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:41:26.841821",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134126"
+      }
+    },
+    {
+      "description": "Test description",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:41:26.872960",
+      "metadata": {
+        "priority": "high",
+        "component": "database",
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134126"
+      }
+    },
+    {
+      "description": "Test description",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:41:26.878885",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134126"
+      }
+    },
+    {
+      "description": "Description 0",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:41:30.412731",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134126"
+      }
+    },
+    {
+      "description": "Test description",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:43:38.684764",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134338"
+      }
+    },
+    {
+      "description": "Test description",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:43:38.713521",
+      "metadata": {
+        "priority": "high",
+        "component": "database",
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134338"
+      }
+    },
+    {
+      "description": "Test description",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:43:38.717055",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134338"
+      }
+    },
+    {
+      "description": "Description 0",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:43:42.178676",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134338"
+      }
     }
   ],
   "rejected": [
@@ -484,6 +578,61 @@
         "recommendation_id": "bolt-20260209-133957"
       },
       "reason": "User rejected via Telegram"
+    },
+    {
+      "description": "Description 1",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:40:01.245881",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-133958"
+      },
+      "reason": "User rejected via Telegram"
+    },
+    {
+      "description": "Test description",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:41:26.845223",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134126"
+      },
+      "reason": "User rejected via Telegram"
+    },
+    {
+      "description": "Description 1",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:41:30.418790",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134128"
+      },
+      "reason": "User rejected via Telegram"
+    },
+    {
+      "description": "Test description",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:43:38.690087",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134338"
+      },
+      "reason": "User rejected via Telegram"
+    },
+    {
+      "description": "Description 1",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:43:42.185603",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134339"
+      },
+      "reason": "User rejected via Telegram"
     }
   ],
   "edited": [
@@ -580,6 +729,28 @@
       "metadata": {
         "user_id": "test_user",
         "recommendation_id": "bolt-20260209-133957"
+      },
+      "reason": "User requested edits via Telegram"
+    },
+    {
+      "description": "Test description",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:41:26.851254",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134126"
+      },
+      "reason": "User requested edits via Telegram"
+    },
+    {
+      "description": "Test description",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:43:38.698073",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134338"
       },
       "reason": "User requested edits via Telegram"
     }
@@ -694,9 +865,59 @@
         "user_id": "test_user",
         "recommendation_id": "bolt-20260209-133957"
       }
+    },
+    {
+      "description": "Description 2",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:40:01.249591",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134000"
+      }
+    },
+    {
+      "description": "Test description",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:41:26.859533",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134126"
+      }
+    },
+    {
+      "description": "Description 2",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:41:30.423668",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134129"
+      }
+    },
+    {
+      "description": "Test description",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:43:38.702174",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134338"
+      }
+    },
+    {
+      "description": "Description 2",
+      "agent": "bolt",
+      "category": "general",
+      "timestamp": "2026-02-09T13:43:42.192186",
+      "metadata": {
+        "user_id": "test_user",
+        "recommendation_id": "bolt-20260209-134341"
+      }
     }
   ],
-  "total": 66,
+  "total": 87,
   "created": "2026-02-09T12:20:29.948986",
-  "last_updated": "2026-02-09T13:39:57.715969"
+  "last_updated": "2026-02-09T13:43:42.192201"
 }
