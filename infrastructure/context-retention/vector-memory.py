@@ -12,9 +12,18 @@ import pickle
 import numpy as np
 import fcntl
 import tempfile
+import sys
 from pathlib import Path
 from typing import List, Dict, Tuple
 from datetime import datetime
+
+# Add parent to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from common.models import ConversationMetadata, VectorSearchResult, VectorMemoryStats
+from common.logging_config import setup_logging
+
+# Setup logging
+logger = setup_logging("vector-memory")
 
 # Lazy imports to avoid startup penalty
 def get_dependencies():
@@ -43,34 +52,39 @@ def get_sentence_transformer():
     global _SENTENCE_TRANSFORMER_MODEL
     if _SENTENCE_TRANSFORMER_MODEL is None:
         _, SentenceTransformer = get_dependencies()
-        print(f"Loading model {MODEL_NAME} (singleton)...")
+        logger.info(f"Loading model {MODEL_NAME} (singleton)...")
         _SENTENCE_TRANSFORMER_MODEL = SentenceTransformer(MODEL_NAME)
-        print("✓ Model loaded and cached")
+        logger.info("✓ Model loaded and cached")
     return _SENTENCE_TRANSFORMER_MODEL
 
 class VectorMemory:
     """Vector memory with FAISS indexing"""
     
     def __init__(self):
-        faiss, _ = get_dependencies()
-        self.faiss = faiss
-        
-        VECTOR_DIR.mkdir(parents=True, exist_ok=True)
-        
-        # FIX: Use singleton model instead of loading each time
-        self.model = get_sentence_transformer()
-        self.dimension = 384  # all-MiniLM-L6-v2 output dimension
-        
-        # Load or create index
-        if INDEX_FILE.exists() and METADATA_FILE.exists():
-            print("Loading existing FAISS index...")
-            self.index = self.faiss.read_index(str(INDEX_FILE))
-            with open(METADATA_FILE, 'rb') as f:
-                self.metadata = pickle.load(f)
-        else:
-            print("Creating new FAISS index...")
-            self.index = self.faiss.IndexFlatIP(self.dimension)  # Inner product for cosine similarity
-            self.metadata = []
+        try:
+            faiss, _ = get_dependencies()
+            self.faiss = faiss
+            
+            VECTOR_DIR.mkdir(parents=True, exist_ok=True)
+            
+            # FIX: Use singleton model instead of loading each time
+            self.model = get_sentence_transformer()
+            self.dimension = 384  # all-MiniLM-L6-v2 output dimension
+            
+            # Load or create index
+            if INDEX_FILE.exists() and METADATA_FILE.exists():
+                logger.info("Loading existing FAISS index...")
+                self.index = self.faiss.read_index(str(INDEX_FILE))
+                with open(METADATA_FILE, 'rb') as f:
+                    self.metadata = pickle.load(f)
+                logger.info(f"Loaded index with {self.index.ntotal} vectors")
+            else:
+                logger.info("Creating new FAISS index...")
+                self.index = self.faiss.IndexFlatIP(self.dimension)  # Inner product for cosine similarity
+                self.metadata = []
+        except Exception as e:
+            logger.error(f"Failed to initialize VectorMemory: {e}", exc_info=True)
+            raise
     
     def chunk_text(self, text: str, chunk_size: int = 500) -> List[str]:
         """Split text into overlapping chunks"""
@@ -85,64 +99,89 @@ class VectorMemory:
         return chunks
     
     def add_conversation(self, text: str, metadata: Dict) -> None:
-        """Add a conversation to the vector index"""
-        chunks = self.chunk_text(text)
-        
-        if not chunks:
-            return
-        
-        # Generate embeddings
-        embeddings = self.model.encode(chunks, normalize_embeddings=True)
-        
-        # Add to index
-        self.index.add(embeddings.astype('float32'))
-        
-        # Store metadata for each chunk
-        for i, chunk in enumerate(chunks):
-            self.metadata.append({
-                'text': chunk,
-                'timestamp': metadata.get('timestamp', datetime.now().isoformat()),
-                'agent': metadata.get('agent', 'unknown'),
-                'session': metadata.get('session', 'unknown'),
-                'chunk_index': i,
-                'total_chunks': len(chunks)
-            })
-        
-        print(f"✓ Added {len(chunks)} chunks to vector memory")
+        """Add a conversation to the vector index with validation"""
+        try:
+            # Validate metadata using Pydantic
+            validated_metadata = ConversationMetadata(**metadata)
+            
+            chunks = self.chunk_text(text)
+            
+            if not chunks:
+                logger.warning("No chunks generated from text")
+                return
+            
+            # Generate embeddings
+            embeddings = self.model.encode(chunks, normalize_embeddings=True)
+            
+            # Add to index
+            self.index.add(embeddings.astype('float32'))
+            
+            # Store metadata for each chunk (convert Pydantic to dict)
+            for i, chunk in enumerate(chunks):
+                chunk_metadata = validated_metadata.model_dump()
+                chunk_metadata.update({
+                    'text': chunk,
+                    'chunk_index': i,
+                    'total_chunks': len(chunks)
+                })
+                self.metadata.append(chunk_metadata)
+            
+            logger.info(f"✓ Added {len(chunks)} chunks to vector memory (agent={validated_metadata.agent})")
+            
+        except Exception as e:
+            logger.error(f"Failed to add conversation: {e}", exc_info=True)
+            raise
     
-    def search(self, query: str, top_k: int = 5) -> List[Dict]:
-        """Search for relevant memories"""
-        start_time = time.time()
-        
-        # FIX: Validate index is not empty and top_k is valid
-        if self.index.ntotal == 0:
-            print("Warning: Vector index is empty, returning no results")
+    def search(self, query: str, top_k: int = 5) -> List[VectorSearchResult]:
+        """Search for relevant memories with validation"""
+        try:
+            start_time = time.time()
+            
+            # Validate input
+            if not query or not query.strip():
+                logger.warning("Empty query provided")
+                return []
+            
+            # FIX: Validate index is not empty and top_k is valid
+            if self.index.ntotal == 0:
+                logger.warning("Vector index is empty, returning no results")
+                return []
+            
+            # FIX: Ensure top_k doesn't exceed index size
+            actual_top_k = min(top_k, self.index.ntotal)
+            if actual_top_k < top_k:
+                logger.warning(f"Requested top_k={top_k} but index only has {self.index.ntotal} vectors, using {actual_top_k}")
+            
+            # Generate query embedding
+            query_embedding = self.model.encode([query], normalize_embeddings=True)
+            
+            # Search index
+            distances, indices = self.index.search(query_embedding.astype('float32'), actual_top_k)
+            
+            # Retrieve and validate metadata
+            results = []
+            for i, (dist, idx) in enumerate(zip(distances[0], indices[0])):
+                if idx < len(self.metadata) and idx >= 0:  # Also check for -1 (not found)
+                    result_data = self.metadata[idx].copy()
+                    result_data['similarity'] = float(dist)
+                    result_data['rank'] = i + 1
+                    
+                    # Validate with Pydantic
+                    try:
+                        validated_result = VectorSearchResult(**result_data)
+                        results.append(validated_result)
+                    except Exception as e:
+                        logger.warning(f"Invalid metadata at index {idx}: {e}")
+                        continue
+            
+            elapsed_ms = (time.time() - start_time) * 1000
+            logger.info(f"✓ Search completed in {elapsed_ms:.1f}ms, found {len(results)} results")
+            
+            return results
+            
+        except Exception as e:
+            logger.error(f"Search failed: {e}", exc_info=True)
             return []
-        
-        # FIX: Ensure top_k doesn't exceed index size
-        actual_top_k = min(top_k, self.index.ntotal)
-        if actual_top_k < top_k:
-            print(f"Warning: Requested top_k={top_k} but index only has {self.index.ntotal} vectors, using {actual_top_k}")
-        
-        # Generate query embedding
-        query_embedding = self.model.encode([query], normalize_embeddings=True)
-        
-        # Search index
-        distances, indices = self.index.search(query_embedding.astype('float32'), actual_top_k)
-        
-        # Retrieve metadata
-        results = []
-        for i, (dist, idx) in enumerate(zip(distances[0], indices[0])):
-            if idx < len(self.metadata) and idx >= 0:  # Also check for -1 (not found)
-                result = self.metadata[idx].copy()
-                result['similarity'] = float(dist)
-                result['rank'] = i + 1
-                results.append(result)
-        
-        elapsed_ms = (time.time() - start_time) * 1000
-        print(f"✓ Search completed in {elapsed_ms:.1f}ms")
-        
-        return results
     
     def save(self) -> None:
         """Save index and metadata to disk atomically with file locking"""
@@ -186,15 +225,20 @@ class VectorMemory:
                 # Release lock
                 fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
     
-    def stats(self) -> Dict:
-        """Get index statistics"""
-        return {
-            'total_vectors': self.index.ntotal,
-            'dimension': self.dimension,
-            'metadata_entries': len(self.metadata),
-            'index_file': str(INDEX_FILE),
-            'size_mb': INDEX_FILE.stat().st_size / (1024*1024) if INDEX_FILE.exists() else 0
-        }
+    def stats(self) -> VectorMemoryStats:
+        """Get index statistics with validation"""
+        try:
+            stats_data = {
+                'total_vectors': self.index.ntotal,
+                'dimension': self.dimension,
+                'metadata_entries': len(self.metadata),
+                'index_file': str(INDEX_FILE),
+                'size_mb': INDEX_FILE.stat().st_size / (1024*1024) if INDEX_FILE.exists() else 0
+            }
+            return VectorMemoryStats(**stats_data)
+        except Exception as e:
+            logger.error(f"Failed to get stats: {e}")
+            raise
 
 def main():
     """Test the vector memory system"""
