@@ -1,0 +1,116 @@
+# Infrastructure Cron Schedule for OpenClaw Agents
+# 
+# Installation:
+#   1. Copy these lines
+#   2. Run: crontab -e
+#   3. Paste and save
+#   4. Verify with: crontab -l
+#
+# Timezone: EST (adjust times for your timezone)
+# All paths are absolute to avoid cron path issues
+
+# Environment variables
+WORKSPACE=/Users/jeffdaniels/.openclaw/workspace
+PYTHON=/usr/bin/python3
+SHELL=/bin/bash
+
+# =============================================================================
+# SYSTEM 1: CONTEXT RETENTION
+# =============================================================================
+
+# Hourly Memory Summarizer
+# Runs every hour from 8am to 10pm EST
+# Captures: topics, decisions, tools used, stats
+0 8-22 * * * cd $WORKSPACE && $PYTHON infrastructure/context-retention/hourly-summarizer.py >> logs/hourly-summarizer.log 2>&1
+
+# =============================================================================
+# SYSTEM 2: CROSS-AGENT SHARED INTELLIGENCE
+# =============================================================================
+
+# Cross-Signal Detection
+# Runs every 6 hours
+# Detects: entities appearing in 2+ agent contexts
+0 */6 * * * cd $WORKSPACE && $PYTHON infrastructure/cross-agent/signal-detector.py >> logs/signal-detector.log 2>&1
+
+# Daily Context Sync
+# Runs at 9pm EST every day
+# Shares: what all agents learned today
+0 21 * * * cd $WORKSPACE && $PYTHON infrastructure/cross-agent/daily-sync.py >> logs/daily-sync.log 2>&1
+
+# =============================================================================
+# SYSTEM 3: MEMORY COMPOUNDING ENGINE
+# =============================================================================
+
+# Weekly Synthesis
+# Runs every Sunday at 11pm EST
+# Reviews: recommendations → outcomes → learnings
+0 23 * * 0 cd $WORKSPACE && $PYTHON infrastructure/memory-compound/weekly-synthesis.py >> logs/weekly-synthesis.log 2>&1
+
+# Mistake Tracker
+# Runs every Sunday at 11:15pm EST (after synthesis)
+# Extracts: patterns from rejections
+15 23 * * 0 cd $WORKSPACE && $PYTHON infrastructure/memory-compound/mistake-tracker.py >> logs/mistake-tracker.log 2>&1
+
+# =============================================================================
+# SYSTEM 4: VOICE PIPELINE
+# =============================================================================
+
+# Voice Note Processing Pipeline
+# Runs every 15 minutes from 8am to 10pm EST
+# Step 1: Transcribe voice notes
+*/15 8-22 * * * cd $WORKSPACE && $PYTHON infrastructure/voice-pipeline/transcribe.py >> logs/voice-transcribe.log 2>&1
+
+# Step 2: Extract priorities (1 minute after transcription)
+1-59/15 8-22 * * * cd $WORKSPACE && $PYTHON infrastructure/voice-pipeline/extract-priorities.py >> logs/voice-extract.log 2>&1
+
+# Step 3: Update priorities (2 minutes after transcription)
+2-59/15 8-22 * * * cd $WORKSPACE && $PYTHON infrastructure/voice-pipeline/update-priorities.py >> logs/voice-update.log 2>&1
+
+# =============================================================================
+# SYSTEM 6: FEEDBACK ROUTER
+# =============================================================================
+
+# Decision Pattern Analysis
+# Runs daily at midnight
+# Analyzes: last 7 days of decisions
+0 0 * * * cd $WORKSPACE && $PYTHON infrastructure/feedback-router/decision-logger.py analyze 7 >> logs/decision-patterns.log 2>&1
+
+# =============================================================================
+# MAINTENANCE
+# =============================================================================
+
+# Daily Backup
+# Runs at 3am EST every day
+# Backs up: priorities, memory, feedback, transcripts
+# 0 3 * * * /Users/jeffdaniels/.openclaw/workspace/infrastructure/backup.sh >> logs/backup.log 2>&1
+
+# Log Rotation
+# Runs at 4am EST on the 1st of each month
+# Keeps logs from getting too large
+# 0 4 1 * * find /Users/jeffdaniels/.openclaw/workspace/logs -name "*.log" -mtime +30 -delete
+
+# =============================================================================
+# NOTES
+# =============================================================================
+#
+# Log Files:
+#   All logs are in: /Users/jeffdaniels/.openclaw/workspace/logs/
+#   View with: tail -f /Users/jeffdaniels/.openclaw/workspace/logs/<name>.log
+#
+# Disable a job:
+#   Comment it out with # at the start of the line
+#
+# Test a job manually:
+#   cd /Users/jeffdaniels/.openclaw/workspace
+#   python3 infrastructure/<path>/<script>.py
+#
+# macOS Note:
+#   You may need to give Terminal or cron Full Disk Access
+#   System Preferences > Security & Privacy > Full Disk Access
+#
+# Troubleshooting:
+#   - Check cron is running: sudo launchctl list | grep cron
+#   - Check cron logs: log show --predicate 'process == "cron"' --last 1h
+#   - Test script manually first
+#   - Ensure WORKSPACE and PYTHON paths are correct
+#
