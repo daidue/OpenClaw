@@ -24,7 +24,7 @@ from common.models import (
     ThreePassRefined,
     ThreePassResult
 )
-from common.logging_config import setup_logging
+from common.logging_config import setup_logger as setup_logging
 
 # Paths
 WORKSPACE = Path("/Users/jeffdaniels/.openclaw/workspace")

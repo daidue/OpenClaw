@@ -1,0 +1,112 @@
+2026-02-09 13:26:43 - vector-memory - ERROR - Failed to initialize VectorMemory: not enough values to unpack (expected 2, got 0)
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/context_retention/vector_memory.py", line 65, in __init__
+    faiss, _ = get_dependencies()
+ValueError: not enough values to unpack (expected 2, got 0)
+2026-02-09 13:26:43 - vector-memory - ERROR - Failed to initialize VectorMemory: not enough values to unpack (expected 2, got 0)
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/context_retention/vector_memory.py", line 65, in __init__
+    faiss, _ = get_dependencies()
+ValueError: not enough values to unpack (expected 2, got 0)
+2026-02-09 13:26:43 - vector-memory - ERROR - Failed to initialize VectorMemory: not enough values to unpack (expected 2, got 0)
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/context_retention/vector_memory.py", line 65, in __init__
+    faiss, _ = get_dependencies()
+ValueError: not enough values to unpack (expected 2, got 0)
+2026-02-09 13:26:43 - vector-memory - INFO - Loading existing FAISS index...
+2026-02-09 13:26:43 - vector-memory - INFO - Loaded index with 0 vectors
+2026-02-09 13:26:43 - vector-memory - WARNING - Vector index is empty, returning no results
+2026-02-09 13:26:43 - vector-memory - INFO - Loading existing FAISS index...
+2026-02-09 13:26:43 - vector-memory - INFO - Loaded index with 0 vectors
+2026-02-09 13:26:43 - vector-memory - ERROR - Failed to add conversation: 1 validation error for ConversationMetadata
+session
+  Field required [type=missing, input_value={'agent': 'test'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/context_retention/vector_memory.py", line 105, in add_conversation
+    validated_metadata = ConversationMetadata(**metadata)
+  File "/Users/jeffdaniels/Library/Python/3.9/lib/python/site-packages/pydantic/main.py", line 250, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+pydantic_core._pydantic_core.ValidationError: 1 validation error for ConversationMetadata
+session
+  Field required [type=missing, input_value={'agent': 'test'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2026-02-09 13:26:43 - vector-memory - ERROR - Failed to initialize VectorMemory: not enough values to unpack (expected 2, got 0)
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/context_retention/vector_memory.py", line 65, in __init__
+    faiss, _ = get_dependencies()
+ValueError: not enough values to unpack (expected 2, got 0)
+2026-02-09 13:26:43 - vector-memory - INFO - Loading existing FAISS index...
+2026-02-09 13:26:43 - vector-memory - INFO - Loaded index with 0 vectors
+2026-02-09 13:26:43 - vector-memory - ERROR - Failed to add conversation: 1 validation error for ConversationMetadata
+session
+  Field required [type=missing, input_value={'agent': 'bolt'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/context_retention/vector_memory.py", line 105, in add_conversation
+    validated_metadata = ConversationMetadata(**metadata)
+  File "/Users/jeffdaniels/Library/Python/3.9/lib/python/site-packages/pydantic/main.py", line 250, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+pydantic_core._pydantic_core.ValidationError: 1 validation error for ConversationMetadata
+session
+  Field required [type=missing, input_value={'agent': 'bolt'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2026-02-09 13:26:43 - vector-memory - INFO - Loading existing FAISS index...
+2026-02-09 13:26:43 - vector-memory - INFO - Loaded index with 0 vectors
+2026-02-09 13:26:43 - vector-memory - INFO - ✓ Added 1 chunks to vector memory (agent=bolt)
+2026-02-09 13:27:46 - vector-memory - ERROR - Failed to initialize VectorMemory: not enough values to unpack (expected 2, got 0)
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/context_retention/vector_memory.py", line 65, in __init__
+    faiss, _ = get_dependencies()
+ValueError: not enough values to unpack (expected 2, got 0)
+2026-02-09 13:27:46 - vector-memory - ERROR - Failed to initialize VectorMemory: not enough values to unpack (expected 2, got 0)
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/context_retention/vector_memory.py", line 65, in __init__
+    faiss, _ = get_dependencies()
+ValueError: not enough values to unpack (expected 2, got 0)
+2026-02-09 13:27:46 - vector-memory - ERROR - Failed to initialize VectorMemory: not enough values to unpack (expected 2, got 0)
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/context_retention/vector_memory.py", line 65, in __init__
+    faiss, _ = get_dependencies()
+ValueError: not enough values to unpack (expected 2, got 0)
+2026-02-09 13:27:46 - vector-memory - INFO - Loading existing FAISS index...
+2026-02-09 13:27:46 - vector-memory - INFO - Loaded index with 0 vectors
+2026-02-09 13:27:46 - vector-memory - WARNING - Vector index is empty, returning no results
+2026-02-09 13:27:46 - vector-memory - INFO - Loading existing FAISS index...
+2026-02-09 13:27:46 - vector-memory - INFO - Loaded index with 0 vectors
+2026-02-09 13:27:46 - vector-memory - ERROR - Failed to add conversation: 1 validation error for ConversationMetadata
+session
+  Field required [type=missing, input_value={'agent': 'test'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/context_retention/vector_memory.py", line 105, in add_conversation
+    validated_metadata = ConversationMetadata(**metadata)
+  File "/Users/jeffdaniels/Library/Python/3.9/lib/python/site-packages/pydantic/main.py", line 250, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+pydantic_core._pydantic_core.ValidationError: 1 validation error for ConversationMetadata
+session
+  Field required [type=missing, input_value={'agent': 'test'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2026-02-09 13:27:46 - vector-memory - ERROR - Failed to initialize VectorMemory: not enough values to unpack (expected 2, got 0)
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/context_retention/vector_memory.py", line 65, in __init__
+    faiss, _ = get_dependencies()
+ValueError: not enough values to unpack (expected 2, got 0)
+2026-02-09 13:27:46 - vector-memory - INFO - Loading existing FAISS index...
+2026-02-09 13:27:46 - vector-memory - INFO - Loaded index with 0 vectors
+2026-02-09 13:27:46 - vector-memory - ERROR - Failed to add conversation: 1 validation error for ConversationMetadata
+session
+  Field required [type=missing, input_value={'agent': 'bolt'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/context_retention/vector_memory.py", line 105, in add_conversation
+    validated_metadata = ConversationMetadata(**metadata)
+  File "/Users/jeffdaniels/Library/Python/3.9/lib/python/site-packages/pydantic/main.py", line 250, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+pydantic_core._pydantic_core.ValidationError: 1 validation error for ConversationMetadata
+session
+  Field required [type=missing, input_value={'agent': 'bolt'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+2026-02-09 13:27:46 - vector-memory - INFO - Loading existing FAISS index...
+2026-02-09 13:27:46 - vector-memory - INFO - Loaded index with 0 vectors
+2026-02-09 13:27:46 - vector-memory - INFO - ✓ Added 1 chunks to vector memory (agent=bolt)

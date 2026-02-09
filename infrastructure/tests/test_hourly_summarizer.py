@@ -6,6 +6,7 @@ import pytest
 import json
 from datetime import datetime, timedelta
 from pathlib import Path
+from unittest.mock import patch
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -38,7 +39,7 @@ def test_parse_session_activity_empty(temp_workspace):
 
 def test_parse_session_activity_with_data(sample_session_log, temp_workspace):
     """Test parsing with actual session data"""
-    with pytest.mock.patch.object(hourly_summarizer, 'SESSION_LOG', sample_session_log):
+    with patch.object(hourly_summarizer, 'SESSION_LOG', sample_session_log):
         start = datetime.now() - timedelta(hours=1)
         end = datetime.now()
         
@@ -51,7 +52,7 @@ def test_parse_session_activity_with_data(sample_session_log, temp_workspace):
 
 def test_parse_session_activity_keyword_extraction(sample_session_log, temp_workspace):
     """Test that keywords are extracted correctly"""
-    with pytest.mock.patch.object(hourly_summarizer, 'SESSION_LOG', sample_session_log):
+    with patch.object(hourly_summarizer, 'SESSION_LOG', sample_session_log):
         start = datetime.now() - timedelta(hours=1)
         end = datetime.now()
         
@@ -63,14 +64,14 @@ def test_parse_session_activity_keyword_extraction(sample_session_log, temp_work
 
 def test_parse_session_activity_tool_counting(sample_session_log):
     """Test that tools are counted correctly"""
-    with pytest.mock.patch.object(hourly_summarizer, 'SESSION_LOG', sample_session_log):
+    with patch.object(hourly_summarizer, 'SESSION_LOG', sample_session_log):
         start = datetime.now() - timedelta(hours=1)
         end = datetime.now()
         
         activity = hourly_summarizer.parse_session_activity(start, end)
         
         tools = activity['tools']
-        # 'exec' appeared 2 times, 'write' 1 time
+        # 'exec' appeared multiple times, 'write' 1 time
         assert tools.get('exec', 0) >= 1
         assert activity['stats']['tool_calls'] >= 2
 
@@ -99,7 +100,7 @@ def test_parse_session_activity_time_filtering(temp_workspace):
         for entry in entries:
             f.write(json.dumps(entry) + '\n')
     
-    with pytest.mock.patch.object(hourly_summarizer, 'SESSION_LOG', log_file):
+    with patch.object(hourly_summarizer, 'SESSION_LOG', log_file):
         start = now - timedelta(hours=1)
         end = now
         
@@ -120,7 +121,7 @@ def test_parse_session_activity_invalid_json(temp_workspace):
         f.write('This is not JSON\n')
         f.write('{"timestamp": "2026-01-01T12:01:00", "message": "Also valid"}\n')
     
-    with pytest.mock.patch.object(hourly_summarizer, 'SESSION_LOG', log_file):
+    with patch.object(hourly_summarizer, 'SESSION_LOG', log_file):
         start = datetime.fromisoformat('2026-01-01T11:00:00')
         end = datetime.fromisoformat('2026-01-01T13:00:00')
         
@@ -130,7 +131,7 @@ def test_parse_session_activity_invalid_json(temp_workspace):
 
 def test_write_hourly_summary(temp_workspace):
     """Test writing summary to file"""
-    with pytest.mock.patch.object(hourly_summarizer, 'MEMORY_DIR', temp_workspace / "memory" / "hourly"):
+    with patch.object(hourly_summarizer, 'MEMORY_DIR', temp_workspace / "memory" / "hourly"):
         activity = {
             'topics': ['build', 'test', 'deploy'],
             'decisions': ['Deploy to staging first'],
@@ -164,7 +165,7 @@ def test_write_hourly_summary_append(temp_workspace):
     summary_file = memory_dir / f"{date_str}.md"
     
     # Write first summary
-    with pytest.mock.patch.object(hourly_summarizer, 'MEMORY_DIR', memory_dir):
+    with patch.object(hourly_summarizer, 'MEMORY_DIR', memory_dir):
         activity = {
             'topics': ['first'],
             'decisions': [],
@@ -189,7 +190,7 @@ def test_write_hourly_summary_append(temp_workspace):
 
 def test_write_hourly_summary_empty_activity(temp_workspace):
     """Test writing summary with no activity"""
-    with pytest.mock.patch.object(hourly_summarizer, 'MEMORY_DIR', temp_workspace / "memory" / "hourly"):
+    with patch.object(hourly_summarizer, 'MEMORY_DIR', temp_workspace / "memory" / "hourly"):
         activity = {
             'topics': [],
             'decisions': [],
@@ -210,8 +211,8 @@ def test_write_hourly_summary_empty_activity(temp_workspace):
 
 def test_main_integration(sample_session_log, temp_workspace):
     """Test full main function"""
-    with pytest.mock.patch.object(hourly_summarizer, 'SESSION_LOG', sample_session_log):
-        with pytest.mock.patch.object(hourly_summarizer, 'MEMORY_DIR', temp_workspace / "memory" / "hourly"):
+    with patch.object(hourly_summarizer, 'SESSION_LOG', sample_session_log):
+        with patch.object(hourly_summarizer, 'MEMORY_DIR', temp_workspace / "memory" / "hourly"):
             # Should not crash
             hourly_summarizer.main()
             

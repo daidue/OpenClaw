@@ -6,6 +6,7 @@ import pytest
 import json
 from datetime import datetime
 from pathlib import Path
+from unittest.mock import patch
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -14,7 +15,7 @@ from feedback_router.telegram_buttons import TelegramFeedbackRouter
 
 def test_create_recommendation_message(temp_workspace):
     """Test creating recommendation message structure"""
-    with pytest.mock.patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
+    with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
         router = TelegramFeedbackRouter()
         
         message = router.create_recommendation_message(
@@ -42,7 +43,7 @@ def test_create_recommendation_message(temp_workspace):
 
 def test_create_recommendation_saves_pending(temp_workspace):
     """Test that recommendation is saved to pending directory"""
-    with pytest.mock.patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
+    with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
         router = TelegramFeedbackRouter()
         
         message = router.create_recommendation_message(
@@ -67,7 +68,7 @@ def test_create_recommendation_saves_pending(temp_workspace):
 
 def test_send_recommendation(temp_workspace):
     """Test sending recommendation"""
-    with pytest.mock.patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
+    with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
         router = TelegramFeedbackRouter()
         
         rec_id = router.send_recommendation(
@@ -87,7 +88,7 @@ def test_send_recommendation(temp_workspace):
 
 def test_handle_callback_approve(temp_workspace):
     """Test handling approve callback"""
-    with pytest.mock.patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
+    with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
         router = TelegramFeedbackRouter()
         
         # Create recommendation
@@ -114,7 +115,7 @@ def test_handle_callback_approve(temp_workspace):
 
 def test_handle_callback_reject(temp_workspace):
     """Test handling reject callback"""
-    with pytest.mock.patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
+    with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
         router = TelegramFeedbackRouter()
         
         rec_id = router.send_recommendation(
@@ -132,7 +133,7 @@ def test_handle_callback_reject(temp_workspace):
 
 def test_handle_callback_edit(temp_workspace):
     """Test handling edit callback"""
-    with pytest.mock.patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
+    with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
         router = TelegramFeedbackRouter()
         
         rec_id = router.send_recommendation(
@@ -150,7 +151,7 @@ def test_handle_callback_edit(temp_workspace):
 
 def test_handle_callback_skip(temp_workspace):
     """Test handling skip callback"""
-    with pytest.mock.patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
+    with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
         router = TelegramFeedbackRouter()
         
         rec_id = router.send_recommendation(
@@ -167,7 +168,7 @@ def test_handle_callback_skip(temp_workspace):
 
 def test_handle_callback_invalid_format(temp_workspace):
     """Test handling invalid callback data format"""
-    with pytest.mock.patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
+    with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
         router = TelegramFeedbackRouter()
         
         result = router.handle_callback("invalid_format", user_id="test_user")
@@ -177,7 +178,7 @@ def test_handle_callback_invalid_format(temp_workspace):
 
 def test_handle_callback_nonexistent_recommendation(temp_workspace):
     """Test handling callback for non-existent recommendation"""
-    with pytest.mock.patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
+    with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
         router = TelegramFeedbackRouter()
         
         result = router.handle_callback("approve:nonexistent-id", user_id="test_user")
@@ -187,7 +188,7 @@ def test_handle_callback_nonexistent_recommendation(temp_workspace):
 
 def test_handle_callback_unknown_action(temp_workspace):
     """Test handling unknown action"""
-    with pytest.mock.patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
+    with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
         router = TelegramFeedbackRouter()
         
         rec_id = router.send_recommendation(
@@ -203,7 +204,7 @@ def test_handle_callback_unknown_action(temp_workspace):
 
 def test_recommendation_metadata_preserved(temp_workspace):
     """Test that metadata is preserved through approval flow"""
-    with pytest.mock.patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
+    with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
         router = TelegramFeedbackRouter()
         
         metadata = {'priority': 'high', 'component': 'database'}
@@ -224,7 +225,7 @@ def test_recommendation_metadata_preserved(temp_workspace):
 
 def test_callback_updates_recommendation_status(temp_workspace):
     """Test that callbacks properly update recommendation status"""
-    with pytest.mock.patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
+    with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
         router = TelegramFeedbackRouter()
         
         rec_id = router.send_recommendation(
@@ -243,7 +244,7 @@ def test_callback_updates_recommendation_status(temp_workspace):
 
 def test_multiple_recommendations(temp_workspace):
     """Test handling multiple recommendations"""
-    with pytest.mock.patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
+    with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
         router = TelegramFeedbackRouter()
         
         # Create multiple recommendations
