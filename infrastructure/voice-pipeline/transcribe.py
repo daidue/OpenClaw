@@ -16,6 +16,27 @@ WORKSPACE = Path("/Users/jeffdaniels/.openclaw/workspace")
 VOICE_DIR = WORKSPACE / "voice" / "incoming"
 TRANSCRIPTS_DIR = WORKSPACE / "voice" / "transcripts"
 
+# FIX: Singleton pattern for Whisper model to avoid loading multiple times
+_WHISPER_MODEL = None
+_WHISPER_METHOD = None
+
+def get_whisper_model():
+    """Get or create singleton Whisper model (lazy loading)"""
+    global _WHISPER_MODEL, _WHISPER_METHOD
+    if _WHISPER_MODEL is None:
+        try:
+            import whisper
+            print("Loading Whisper model (base) - this may take a few seconds...")
+            _WHISPER_MODEL = whisper.load_model("base")
+            _WHISPER_METHOD = 'whisper'
+            print("✓ Whisper model loaded and cached")
+        except ImportError:
+            print("Warning: Whisper not installed")
+            print("Install with: pip3 install openai-whisper")
+            _WHISPER_MODEL = None
+            _WHISPER_METHOD = None
+    return _WHISPER_MODEL, _WHISPER_METHOD
+
 class VoiceTranscriber:
     """Transcribe voice notes to text"""
     
@@ -29,21 +50,8 @@ class VoiceTranscriber:
         self.method = method
         VOICE_DIR.mkdir(parents=True, exist_ok=True)
         TRANSCRIPTS_DIR.mkdir(parents=True, exist_ok=True)
-        
-        if method == 'whisper':
-            self._init_whisper()
-    
-    def _init_whisper(self):
-        """Initialize local Whisper model"""
-        try:
-            import whisper
-            print("Loading Whisper model (base)...")
-            self.model = whisper.load_model("base")
-            print("✓ Whisper model loaded")
-        except ImportError:
-            print("Warning: Whisper not installed")
-            print("Install with: pip3 install openai-whisper")
-            self.model = None
+        # FIX: Don't load model on init - use lazy loading via singleton
+        self.model = None
     
     def transcribe_file(self, audio_path: Path) -> Optional[Dict]:
         """
@@ -59,7 +67,13 @@ class VoiceTranscriber:
         print(f"Transcribing {audio_path.name}...")
         
         try:
-            if self.method == 'whisper' and self.model:
+            if self.method == 'whisper':
+                # FIX: Lazy load model on first use via singleton
+                self.model, method = get_whisper_model()
+                if self.model is None:
+                    print("Error: Whisper model not available")
+                    return None
+                
                 result = self.model.transcribe(str(audio_path))
                 
                 transcript = {

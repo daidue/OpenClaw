@@ -10,6 +10,8 @@ import json
 import time
 import pickle
 import numpy as np
+import fcntl
+import tempfile
 from pathlib import Path
 from typing import List, Dict, Tuple
 from datetime import datetime
@@ -33,18 +35,30 @@ INDEX_FILE = VECTOR_DIR / "faiss.index"
 METADATA_FILE = VECTOR_DIR / "metadata.pkl"
 MODEL_NAME = "all-MiniLM-L6-v2"
 
+# FIX: Singleton pattern for SentenceTransformer to avoid loading multiple times
+_SENTENCE_TRANSFORMER_MODEL = None
+
+def get_sentence_transformer():
+    """Get or create singleton SentenceTransformer model"""
+    global _SENTENCE_TRANSFORMER_MODEL
+    if _SENTENCE_TRANSFORMER_MODEL is None:
+        _, SentenceTransformer = get_dependencies()
+        print(f"Loading model {MODEL_NAME} (singleton)...")
+        _SENTENCE_TRANSFORMER_MODEL = SentenceTransformer(MODEL_NAME)
+        print("✓ Model loaded and cached")
+    return _SENTENCE_TRANSFORMER_MODEL
+
 class VectorMemory:
     """Vector memory with FAISS indexing"""
     
     def __init__(self):
-        faiss, SentenceTransformer = get_dependencies()
+        faiss, _ = get_dependencies()
         self.faiss = faiss
         
         VECTOR_DIR.mkdir(parents=True, exist_ok=True)
         
-        # Load or create model
-        print(f"Loading model {MODEL_NAME}...")
-        self.model = SentenceTransformer(MODEL_NAME)
+        # FIX: Use singleton model instead of loading each time
+        self.model = get_sentence_transformer()
         self.dimension = 384  # all-MiniLM-L6-v2 output dimension
         
         # Load or create index
@@ -100,16 +114,26 @@ class VectorMemory:
         """Search for relevant memories"""
         start_time = time.time()
         
+        # FIX: Validate index is not empty and top_k is valid
+        if self.index.ntotal == 0:
+            print("Warning: Vector index is empty, returning no results")
+            return []
+        
+        # FIX: Ensure top_k doesn't exceed index size
+        actual_top_k = min(top_k, self.index.ntotal)
+        if actual_top_k < top_k:
+            print(f"Warning: Requested top_k={top_k} but index only has {self.index.ntotal} vectors, using {actual_top_k}")
+        
         # Generate query embedding
         query_embedding = self.model.encode([query], normalize_embeddings=True)
         
         # Search index
-        distances, indices = self.index.search(query_embedding.astype('float32'), top_k)
+        distances, indices = self.index.search(query_embedding.astype('float32'), actual_top_k)
         
         # Retrieve metadata
         results = []
         for i, (dist, idx) in enumerate(zip(distances[0], indices[0])):
-            if idx < len(self.metadata):
+            if idx < len(self.metadata) and idx >= 0:  # Also check for -1 (not found)
                 result = self.metadata[idx].copy()
                 result['similarity'] = float(dist)
                 result['rank'] = i + 1
@@ -121,11 +145,46 @@ class VectorMemory:
         return results
     
     def save(self) -> None:
-        """Save index and metadata to disk"""
-        self.faiss.write_index(self.index, str(INDEX_FILE))
-        with open(METADATA_FILE, 'wb') as f:
-            pickle.dump(self.metadata, f)
-        print(f"✓ Saved vector memory ({len(self.metadata)} chunks)")
+        """Save index and metadata to disk atomically with file locking"""
+        # FIX: Implement atomic save with locking to prevent corruption
+        lockfile = VECTOR_DIR / ".vector_memory.lock"
+        
+        with open(lockfile, 'w') as lock:
+            # Acquire exclusive lock
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            
+            try:
+                # Write to temporary files first
+                temp_index = tempfile.NamedTemporaryFile(mode='wb', delete=False, dir=VECTOR_DIR, suffix='.index.tmp')
+                temp_metadata = tempfile.NamedTemporaryFile(mode='wb', delete=False, dir=VECTOR_DIR, suffix='.pkl.tmp')
+                
+                try:
+                    # Write index
+                    self.faiss.write_index(self.index, temp_index.name)
+                    
+                    # Write metadata
+                    with open(temp_metadata.name, 'wb') as f:
+                        pickle.dump(self.metadata, f)
+                    
+                    temp_index.close()
+                    temp_metadata.close()
+                    
+                    # Atomic rename (POSIX guarantees atomicity)
+                    os.rename(temp_index.name, str(INDEX_FILE))
+                    os.rename(temp_metadata.name, str(METADATA_FILE))
+                    
+                    print(f"✓ Saved vector memory ({len(self.metadata)} chunks)")
+                    
+                except Exception as e:
+                    # Clean up temp files on error
+                    for tmpfile in [temp_index.name, temp_metadata.name]:
+                        if os.path.exists(tmpfile):
+                            os.unlink(tmpfile)
+                    raise e
+                    
+            finally:
+                # Release lock
+                fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
     
     def stats(self) -> Dict:
         """Get index statistics"""

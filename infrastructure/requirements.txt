@@ -1,19 +1,26 @@
-# Production AI Agent Infrastructure Dependencies
-# Install with: pip3 install -r requirements.txt
+# Infrastructure Dependencies
+# Python 3.9+
 
-# Vector Memory System
-faiss-cpu>=1.7.4
-sentence-transformers>=2.2.0
+# Vector Memory & Embeddings
+faiss-cpu==1.7.4
+sentence-transformers==2.2.2
+numpy==1.24.3
 
-# Optional: Voice Transcription
-# openai-whisper>=20231117
-# Uncomment above to enable local voice transcription
-# Note: ~1GB download for the model
+# Voice Transcription
+openai-whisper==20231117
 
-# Already available in your environment:
-# numpy>=1.26.0
-# pandas>=2.1.0
-# python-dotenv>=1.2.0
-# requests>=2.32.0
+# Audio Processing
+ffmpeg-python==0.2.0
 
-# Note: All other dependencies are Python standard library
+# Data Validation
+pydantic==2.5.3
+
+# Utilities
+python-dateutil==2.8.2
+
+# Testing (optional)
+pytest==7.4.3
+pytest-cov==4.1.0
+
+# Type Checking (optional)
+mypy==1.7.1

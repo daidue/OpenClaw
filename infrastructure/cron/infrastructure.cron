@@ -1,0 +1,36 @@
+# Infrastructure Cron Jobs
+# Install with: crontab infrastructure.cron
+# Or append to existing crontab: crontab -l | cat - infrastructure.cron | crontab -
+
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+INFRASTRUCTURE_DIR=/Users/jeffdaniels/.openclaw/workspace/infrastructure
+
+# Hourly Memory Summarizer (every hour, 8am-10pm EST)
+0 8-22 * * * cd $INFRASTRUCTURE_DIR && python3 context-retention/hourly-summarizer.py >> /Users/jeffdaniels/.openclaw/workspace/logs/cron/hourly-summarizer.log 2>&1
+
+# Compaction Injector (check every 30 minutes during active hours)
+*/30 8-22 * * * cd $INFRASTRUCTURE_DIR && python3 context-retention/compaction-injector.py >> /Users/jeffdaniels/.openclaw/workspace/logs/cron/compaction-injector.log 2>&1
+
+# Cross-Signal Detection (every 2 hours during active hours)
+0 */2 * * * cd $INFRASTRUCTURE_DIR && python3 cross-agent/signal-detector.py >> /Users/jeffdaniels/.openclaw/workspace/logs/cron/signal-detector.log 2>&1
+
+# Daily Context Sync (9pm EST every day)
+0 21 * * * cd $INFRASTRUCTURE_DIR && python3 cross-agent/daily-sync.py >> /Users/jeffdaniels/.openclaw/workspace/logs/cron/daily-sync.log 2>&1
+
+# Decision Pattern Analysis (daily at 11pm EST)
+0 23 * * * cd $INFRASTRUCTURE_DIR && python3 feedback-router/decision-logger.py analyze 7 >> /Users/jeffdaniels/.openclaw/workspace/logs/cron/decision-logger.log 2>&1
+
+# Mistake Tracking (daily at 11:30pm EST)
+30 23 * * * cd $INFRASTRUCTURE_DIR && python3 memory-compound/mistake-tracker.py >> /Users/jeffdaniels/.openclaw/workspace/logs/cron/mistake-tracker.log 2>&1
+
+# Weekly Synthesis (Sundays at 10pm EST)
+0 22 * * 0 cd $INFRASTRUCTURE_DIR && python3 memory-compound/weekly-synthesis.py >> /Users/jeffdaniels/.openclaw/workspace/logs/cron/weekly-synthesis.log 2>&1
+
+# Voice Processing Pipeline (every 15 minutes during active hours)
+*/15 8-22 * * * cd $INFRASTRUCTURE_DIR && python3 voice-pipeline/transcribe.py >> /Users/jeffdaniels/.openclaw/workspace/logs/cron/transcribe.log 2>&1
+*/15 8-22 * * * cd $INFRASTRUCTURE_DIR && python3 voice-pipeline/extract-priorities.py >> /Users/jeffdaniels/.openclaw/workspace/logs/cron/extract-priorities.log 2>&1
+*/15 8-22 * * * cd $INFRASTRUCTURE_DIR && python3 voice-pipeline/update-priorities.py >> /Users/jeffdaniels/.openclaw/workspace/logs/cron/update-priorities.log 2>&1
+
+# Vector Memory Backup (daily at 2am EST)
+0 2 * * * cd $INFRASTRUCTURE_DIR && python3 -c "from backup import backup_vector_memory; backup_vector_memory()" >> /Users/jeffdaniels/.openclaw/workspace/logs/cron/backup.log 2>&1

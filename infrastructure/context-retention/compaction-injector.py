@@ -48,7 +48,8 @@ def detect_compaction() -> bool:
             last_compaction = datetime.datetime.fromisoformat(data['timestamp'])
             
             # If more than 5 minutes have passed, check for compaction
-            if (datetime.datetime.now() - last_compaction).seconds > 300:
+            # FIX: Use total_seconds() instead of seconds property
+            if (datetime.datetime.now() - last_compaction).total_seconds() > 300:
                 return True
     
     return False

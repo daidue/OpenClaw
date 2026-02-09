@@ -1,0 +1,36 @@
+{
+  "week": "2026-W07",
+  "approved": [
+    {
+      "description": "Implement context retention system",
+      "agent": "bolt",
+      "category": "infrastructure",
+      "timestamp": "2026-02-09T12:20:29.948990",
+      "metadata": {}
+    }
+  ],
+  "rejected": [
+    {
+      "description": "Deploy to production immediately",
+      "agent": "atlas",
+      "category": "deployment",
+      "timestamp": "2026-02-09T12:20:29.949117",
+      "metadata": {},
+      "reason": "Not tested yet"
+    }
+  ],
+  "edited": [
+    {
+      "description": "Write blog post about AI",
+      "agent": "nova",
+      "category": "content",
+      "timestamp": "2026-02-09T12:20:29.949191",
+      "metadata": {},
+      "reason": "Tone was too technical"
+    }
+  ],
+  "skipped": [],
+  "total": 3,
+  "created": "2026-02-09T12:20:29.948986",
+  "last_updated": "2026-02-09T12:20:29.949193"
+}
