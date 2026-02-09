@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 600px; height: 600px; overflow: hidden; }
+  .card {
+    width: 600px; height: 600px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    position: relative;
+    color: white;
+  }
+  .free-badge {
+    position: absolute;
+    top: 30px; right: -45px;
+    background: #00d4aa;
+    color: #1a1a2e;
+    font-size: 22px;
+    font-weight: 900;
+    padding: 8px 55px;
+    transform: rotate(45deg);
+    letter-spacing: 3px;
+    box-shadow: 0 4px 15px rgba(0,212,170,0.4);
+  }
+  .starter-label {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 6px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color: #00d4aa;
+  }
+  .icon {
+    font-size: 64px;
+    margin-bottom: 24px;
+  }
+  .title {
+    font-size: 36px;
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 20px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 30px;
+  }
+  .features {
+    display: flex; gap: 24px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+  }
+  .features span { display: flex; align-items: center; gap: 6px; }
+  .features .dot { width: 6px; height: 6px; background: #00d4aa; border-radius: 50%; }
+  .bottom-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.3);
+    padding: 16px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+  }
+  .notion-badge {
+    display: flex; align-items: center; gap: 8px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 500;
+  }
+  .price {
+    font-size: 28px;
+    font-weight: 800;
+    color: #00d4aa;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="free-badge">FREE</div>
+  <div class="starter-label">Starter Kit</div>
+  <div class="icon">🧾</div>
+  <div class="title">Freelance<br>Invoice Tracker</div>
+  <div class="subtitle">Notion Template</div>
+  <div class="features">
+    <span><span class="dot"></span>Invoice DB</span>
+    <span><span class="dot"></span>Auto-Calc</span>
+    <span><span class="dot"></span>Follow-Up Script</span>
+  </div>
+  <div class="bottom-bar">
+    <div class="notion-badge">📋 Built for Notion</div>
+    <div class="price">$0</div>
+  </div>
+</div>
+</body>
+</html>
