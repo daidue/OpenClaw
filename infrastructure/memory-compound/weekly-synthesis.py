@@ -6,10 +6,15 @@ Write to memory/weekly/YYYY-WXX.md
 """
 
 import os
+import sys
 import json
 from pathlib import Path
 from datetime import datetime, timedelta
 from typing import Dict, List
+
+# Add parent to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from common.distributed_lock import DistributedLock
 
 # Paths
 WORKSPACE = Path("/Users/jeffdaniels/.openclaw/workspace")
@@ -230,13 +235,15 @@ This week we had {len(syncs)} active days with {feedback['total']} decisions log
 
 def main():
     """Main entry point"""
-    synthesis = WeeklySynthesis()
-    report = synthesis.run()
-    
-    # Print preview
-    print("\n" + "="*60)
-    print(report[:500] + "...")
-    print("="*60)
+    # FIX: Use distributed lock to prevent concurrent runs
+    with DistributedLock('weekly-synthesis', timeout_seconds=3600):
+        synthesis = WeeklySynthesis()
+        report = synthesis.run()
+        
+        # Print preview
+        print("\n" + "="*60)
+        print(report[:500] + "...")
+        print("="*60)
 
 if __name__ == "__main__":
     main()

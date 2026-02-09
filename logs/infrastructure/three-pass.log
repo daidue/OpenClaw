@@ -262,3 +262,755 @@ Exception: LLM error
 2026-02-09 13:27:46 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
 2026-02-09 13:27:46 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
 2026-02-09 13:27:46 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'test_agent'
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:08 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:08 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:30:08 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:08 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:30:08 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:30:08 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:08 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:30:08 - three-pass - INFO - Prompt: Create a deployment script...
+2026-02-09 13:30:08 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:30:08 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:30:08 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:30:08 - three-pass - INFO - History saved to /Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive-prompting/history/bolt-20260209-133008.json
+2026-02-09 13:30:08 - three-pass - INFO - Three-pass complete in 0.0s
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:08 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:30:08 - three-pass - INFO - Prompt: Test prompt...
+2026-02-09 13:30:08 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:30:08 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:30:08 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:30:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:08 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:30:08 - three-pass - ERROR - Error in three-pass processing: [Errno 2] No such file or directory: '/private/var/folders/cp/j6x5s1zs11j_ytm8yp41kjw00000gn/T/pytest-of-jeffdaniels/pytest-0/test_three_pass_saves_history0/history/bolt-20260209-133008.json'
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 401, in process
+    self.save_history(result)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 548, in save_history
+    with open(history_file, 'w') as f:
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/cp/j6x5s1zs11j_ytm8yp41kjw00000gn/T/pytest-of-jeffdaniels/pytest-0/test_three_pass_saves_history0/history/bolt-20260209-133008.json'
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:08 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:30:08 - three-pass - INFO - Prompt: Test prompt...
+2026-02-09 13:30:08 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:30:08 - three-pass - ERROR - Error in three-pass processing: LLM error
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 375, in process
+    draft = self.pass_1_generate(prompt, context)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 275, in pass_1_generate
+    output = self.llm.call_llm(generation_prompt, temperature=0.7)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/tests/test_three_pass_real.py", line 231, in mock_error
+    raise Exception("LLM error")
+Exception: LLM error
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - ThreePassProcessor initialized for agent 'test_agent'
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:13 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:13 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:30:13 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:13 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:30:13 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:30:13 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:13 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:30:13 - three-pass - INFO - Prompt: Create a deployment script...
+2026-02-09 13:30:13 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:30:13 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:30:13 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:30:13 - three-pass - INFO - History saved to /Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive-prompting/history/bolt-20260209-133013.json
+2026-02-09 13:30:13 - three-pass - INFO - Three-pass complete in 0.0s
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:13 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:30:13 - three-pass - INFO - Prompt: Test prompt...
+2026-02-09 13:30:13 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:30:13 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:30:13 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:30:13 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:30:13 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:30:13 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:30:13 - three-pass - ERROR - Error in three-pass processing: [Errno 2] No such file or directory: '/private/var/folders/cp/j6x5s1zs11j_ytm8yp41kjw00000gn/T/pytest-of-jeffdaniels/pytest-1/test_three_pass_saves_history0/history/bolt-20260209-133013.json'
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 401, in process
+    self.save_history(result)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 548, in save_history
+    with open(history_file, 'w') as f:
+FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/cp/j6x5s1zs11j_ytm8yp41kjw00000gn/T/pytest-of-jeffdaniels/pytest-1/test_three_pass_saves_history0/history/bolt-20260209-133013.json'
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:13 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:30:13 - three-pass - INFO - Prompt: Test prompt...
+2026-02-09 13:30:13 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:30:13 - three-pass - ERROR - Error in three-pass processing: LLM error
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 375, in process
+    draft = self.pass_1_generate(prompt, context)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 275, in pass_1_generate
+    output = self.llm.call_llm(generation_prompt, temperature=0.7)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/tests/test_three_pass_real.py", line 231, in mock_error
+    raise Exception("LLM error")
+Exception: LLM error
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:30:13 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:30:13 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - ThreePassProcessor initialized for agent 'test_agent'
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:31:52 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:31:52 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:31:52 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:31:52 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:31:52 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:31:52 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:31:52 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:31:52 - three-pass - INFO - Prompt: Create a deployment script...
+2026-02-09 13:31:52 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:31:52 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:31:52 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:31:52 - three-pass - INFO - History saved to /Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive-prompting/history/bolt-20260209-133152.json
+2026-02-09 13:31:52 - three-pass - INFO - Three-pass complete in 0.0s
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:31:52 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:31:52 - three-pass - INFO - Prompt: Test prompt...
+2026-02-09 13:31:52 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:31:52 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:31:52 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:31:52 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:31:52 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:31:52 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:31:52 - three-pass - INFO - History saved to /private/var/folders/cp/j6x5s1zs11j_ytm8yp41kjw00000gn/T/pytest-of-jeffdaniels/pytest-2/test_three_pass_saves_history0/history/bolt-20260209-133152.json
+2026-02-09 13:31:52 - three-pass - INFO - Three-pass complete in 0.0s
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:31:52 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:31:52 - three-pass - INFO - Prompt: Test prompt...
+2026-02-09 13:31:52 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:31:52 - three-pass - ERROR - Error in three-pass processing: LLM error
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 375, in process
+    draft = self.pass_1_generate(prompt, context)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 275, in pass_1_generate
+    output = self.llm.call_llm(generation_prompt, temperature=0.7)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/tests/test_three_pass_real.py", line 235, in mock_error
+    raise Exception("LLM error")
+Exception: LLM error
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:31:52 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:31:52 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - ThreePassProcessor initialized for agent 'test_agent'
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:32:35 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:32:35 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:32:35 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:32:35 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:32:35 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:32:35 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:32:35 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:32:35 - three-pass - INFO - Prompt: Create a deployment script...
+2026-02-09 13:32:35 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:32:35 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:32:35 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:32:35 - three-pass - INFO - History saved to /Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive-prompting/history/bolt-20260209-133235.json
+2026-02-09 13:32:35 - three-pass - INFO - Three-pass complete in 0.0s
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:32:35 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:32:35 - three-pass - INFO - Prompt: Test prompt...
+2026-02-09 13:32:35 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:32:35 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:32:35 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:32:35 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:32:35 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:32:35 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:32:35 - three-pass - INFO - History saved to /private/var/folders/cp/j6x5s1zs11j_ytm8yp41kjw00000gn/T/pytest-of-jeffdaniels/pytest-3/test_three_pass_saves_history0/history/bolt-20260209-133235.json
+2026-02-09 13:32:35 - three-pass - INFO - Three-pass complete in 0.0s
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:32:35 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:32:35 - three-pass - INFO - Prompt: Test prompt...
+2026-02-09 13:32:35 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:32:35 - three-pass - ERROR - Error in three-pass processing: LLM error
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 375, in process
+    draft = self.pass_1_generate(prompt, context)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 275, in pass_1_generate
+    output = self.llm.call_llm(generation_prompt, temperature=0.7)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/tests/test_three_pass_real.py", line 235, in mock_error
+    raise Exception("LLM error")
+Exception: LLM error
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:32:35 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:32:35 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'test_agent'
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:08 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:08 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:33:08 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:08 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:33:08 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:33:08 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:08 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:33:08 - three-pass - INFO - Prompt: Create a deployment script...
+2026-02-09 13:33:08 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:33:08 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:33:08 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:33:08 - three-pass - INFO - History saved to /Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive-prompting/history/bolt-20260209-133308.json
+2026-02-09 13:33:08 - three-pass - INFO - Three-pass complete in 0.0s
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:08 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:33:08 - three-pass - INFO - Prompt: Test prompt...
+2026-02-09 13:33:08 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:33:08 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:33:08 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:33:08 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:08 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:08 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:33:08 - three-pass - INFO - History saved to /private/var/folders/cp/j6x5s1zs11j_ytm8yp41kjw00000gn/T/pytest-of-jeffdaniels/pytest-6/test_three_pass_saves_history0/history/bolt-20260209-133308.json
+2026-02-09 13:33:08 - three-pass - INFO - Three-pass complete in 0.0s
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:08 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:33:08 - three-pass - INFO - Prompt: Test prompt...
+2026-02-09 13:33:08 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:08 - three-pass - ERROR - Error in three-pass processing: LLM error
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 375, in process
+    draft = self.pass_1_generate(prompt, context)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 275, in pass_1_generate
+    output = self.llm.call_llm(generation_prompt, temperature=0.7)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/tests/test_three_pass_real.py", line 235, in mock_error
+    raise Exception("LLM error")
+Exception: LLM error
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:08 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:08 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - ThreePassProcessor initialized for agent 'test_agent'
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:18 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:18 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:33:18 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:18 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:33:18 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:33:18 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:18 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:33:18 - three-pass - INFO - Prompt: Create a deployment script...
+2026-02-09 13:33:18 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:33:18 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:33:18 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:33:18 - three-pass - INFO - History saved to /Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive-prompting/history/bolt-20260209-133318.json
+2026-02-09 13:33:18 - three-pass - INFO - Three-pass complete in 0.0s
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:18 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:33:18 - three-pass - INFO - Prompt: Test prompt...
+2026-02-09 13:33:18 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:33:18 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:33:18 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:33:18 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:18 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:18 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:33:18 - three-pass - INFO - History saved to /private/var/folders/cp/j6x5s1zs11j_ytm8yp41kjw00000gn/T/pytest-of-jeffdaniels/pytest-7/test_three_pass_saves_history0/history/bolt-20260209-133318.json
+2026-02-09 13:33:18 - three-pass - INFO - Three-pass complete in 0.0s
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:18 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:33:18 - three-pass - INFO - Prompt: Test prompt...
+2026-02-09 13:33:18 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:18 - three-pass - ERROR - Error in three-pass processing: LLM error
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 375, in process
+    draft = self.pass_1_generate(prompt, context)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 275, in pass_1_generate
+    output = self.llm.call_llm(generation_prompt, temperature=0.7)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/tests/test_three_pass_real.py", line 235, in mock_error
+    raise Exception("LLM error")
+Exception: LLM error
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:18 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:18 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - ThreePassProcessor initialized for agent 'test_agent'
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:45 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:45 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:33:45 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:45 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:33:45 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:33:45 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:45 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:33:45 - three-pass - INFO - Prompt: Create a deployment script...
+2026-02-09 13:33:45 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:33:45 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:33:45 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:33:45 - three-pass - INFO - History saved to /Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive-prompting/history/bolt-20260209-133345.json
+2026-02-09 13:33:45 - three-pass - INFO - Three-pass complete in 0.0s
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:45 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:33:45 - three-pass - INFO - Prompt: Test prompt...
+2026-02-09 13:33:45 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - Draft generated (859 chars)
+2026-02-09 13:33:45 - three-pass - INFO - Pass 2: Critiquing draft...
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - Critique generated: 4 weaknesses, 4 suggestions
+2026-02-09 13:33:45 - three-pass - INFO - Pass 3: Refining based on critique...
+2026-02-09 13:33:45 - three-pass - INFO - Calling LLM via OpenClaw agent
+2026-02-09 13:33:45 - three-pass - WARNING - Using mock LLM response (LLM integration not available)
+2026-02-09 13:33:45 - three-pass - INFO - Refinement complete (795 chars, 3 improvements)
+2026-02-09 13:33:45 - three-pass - INFO - History saved to /private/var/folders/cp/j6x5s1zs11j_ytm8yp41kjw00000gn/T/pytest-of-jeffdaniels/pytest-8/test_three_pass_saves_history0/history/bolt-20260209-133345.json
+2026-02-09 13:33:45 - three-pass - INFO - Three-pass complete in 0.0s
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:45 - three-pass - INFO - Starting three-pass processing for agent 'bolt'
+2026-02-09 13:33:45 - three-pass - INFO - Prompt: Test prompt...
+2026-02-09 13:33:45 - three-pass - INFO - Pass 1: Generating draft...
+2026-02-09 13:33:45 - three-pass - ERROR - Error in three-pass processing: LLM error
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 375, in process
+    draft = self.pass_1_generate(prompt, context)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/recursive_prompting/three_pass_real.py", line 275, in pass_1_generate
+    output = self.llm.call_llm(generation_prompt, temperature=0.7)
+  File "/Users/jeffdaniels/.openclaw/workspace/infrastructure/tests/test_three_pass_real.py", line 235, in mock_error
+    raise Exception("LLM error")
+Exception: LLM error
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'
+2026-02-09 13:33:45 - three-pass - INFO - LLM Integration initialized (use_openclaw=True)
+2026-02-09 13:33:45 - three-pass - INFO - ThreePassProcessor initialized for agent 'bolt'

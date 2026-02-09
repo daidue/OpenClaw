@@ -201,7 +201,8 @@ OPENCLAW_INFRA_TELEGRAM_DEFAULT_CHANNEL=@your_channel
 
 # Three-Pass LLM
 OPENCLAW_INFRA_THREE_PASS_USE_OPENCLAW=true
-OPENCLAW_INFRA_ANTHROPIC_API_KEY=sk-ant-...
+# FIX: Use placeholder instead of example key format to prevent accidental commits
+OPENCLAW_INFRA_ANTHROPIC_API_KEY=your_anthropic_api_key_here
 
 # Whisper
 OPENCLAW_INFRA_WHISPER_MODEL=base

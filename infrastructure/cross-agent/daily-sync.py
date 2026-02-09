@@ -6,10 +6,15 @@ Summarized and distributed to shared-learnings/daily-sync/
 """
 
 import os
+import sys
 import json
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List
+
+# Add parent to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from common.distributed_lock import DistributedLock
 
 # Paths
 WORKSPACE = Path("/Users/jeffdaniels/.openclaw/workspace")
@@ -182,13 +187,15 @@ class DailySync:
 
 def main():
     """Main entry point"""
-    sync = DailySync()
-    summary = sync.run()
-    
-    # Print preview
-    print("\n" + "="*60)
-    print(summary[:500] + "...")
-    print("="*60)
+    # FIX: Use distributed lock to prevent concurrent runs
+    with DistributedLock('daily-sync', timeout_seconds=3600):
+        sync = DailySync()
+        summary = sync.run()
+        
+        # Print preview
+        print("\n" + "="*60)
+        print(summary[:500] + "...")
+        print("="*60)
 
 if __name__ == "__main__":
     main()

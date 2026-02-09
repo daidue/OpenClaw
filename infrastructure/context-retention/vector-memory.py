@@ -113,6 +113,10 @@ class VectorMemory:
             # Generate embeddings
             embeddings = self.model.encode(chunks, normalize_embeddings=True)
             
+            # FIX: Validate embedding dimensions match index
+            if embeddings.shape[1] != self.dimension:
+                raise ValueError(f"Embedding dimension mismatch: got {embeddings.shape[1]}, expected {self.dimension}")
+            
             # Add to index
             self.index.add(embeddings.astype('float32'))
             
@@ -161,7 +165,8 @@ class VectorMemory:
             # Retrieve and validate metadata
             results = []
             for i, (dist, idx) in enumerate(zip(distances[0], indices[0])):
-                if idx < len(self.metadata) and idx >= 0:  # Also check for -1 (not found)
+                # FIX: Check for valid index (FAISS returns -1 for not found)
+                if idx >= 0 and idx < len(self.metadata):
                     result_data = self.metadata[idx].copy()
                     result_data['similarity'] = float(dist)
                     result_data['rank'] = i + 1
@@ -188,42 +193,57 @@ class VectorMemory:
         # FIX: Implement atomic save with locking to prevent corruption
         lockfile = VECTOR_DIR / ".vector_memory.lock"
         
-        with open(lockfile, 'w') as lock:
+        # FIX: Ensure lock is released even on exception
+        lock_fd = None
+        try:
+            lock_fd = open(lockfile, 'w')
             # Acquire exclusive lock
-            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            fcntl.flock(lock_fd.fileno(), fcntl.LOCK_EX)
+            
+            # FIX: Check available disk space before writing
+            stat = os.statvfs(VECTOR_DIR)
+            available_bytes = stat.f_bavail * stat.f_frsize
+            required_bytes = INDEX_FILE.stat().st_size if INDEX_FILE.exists() else 100 * 1024 * 1024  # 100MB estimate
+            
+            if available_bytes < required_bytes * 2:  # 2x safety margin
+                raise IOError(f"Insufficient disk space: {available_bytes / (1024**3):.2f} GB available, need {required_bytes * 2 / (1024**3):.2f} GB")
+            
+            # Write to temporary files first (in same directory to ensure same filesystem)
+            temp_index = tempfile.NamedTemporaryFile(mode='wb', delete=False, dir=VECTOR_DIR, suffix='.index.tmp')
+            temp_metadata = tempfile.NamedTemporaryFile(mode='wb', delete=False, dir=VECTOR_DIR, suffix='.pkl.tmp')
             
             try:
-                # Write to temporary files first
-                temp_index = tempfile.NamedTemporaryFile(mode='wb', delete=False, dir=VECTOR_DIR, suffix='.index.tmp')
-                temp_metadata = tempfile.NamedTemporaryFile(mode='wb', delete=False, dir=VECTOR_DIR, suffix='.pkl.tmp')
+                # Write index
+                self.faiss.write_index(self.index, temp_index.name)
                 
+                # Write metadata
+                with open(temp_metadata.name, 'wb') as f:
+                    pickle.dump(self.metadata, f)
+                
+                temp_index.close()
+                temp_metadata.close()
+                
+                # Atomic rename (POSIX guarantees atomicity on same filesystem)
+                os.rename(temp_index.name, str(INDEX_FILE))
+                os.rename(temp_metadata.name, str(METADATA_FILE))
+                
+                logger.info(f"Saved vector memory ({len(self.metadata)} chunks)")
+                
+            except Exception as e:
+                # Clean up temp files on error
+                for tmpfile in [temp_index.name, temp_metadata.name]:
+                    if os.path.exists(tmpfile):
+                        os.unlink(tmpfile)
+                raise e
+                
+        finally:
+            # FIX: Ensure lock is always released
+            if lock_fd:
                 try:
-                    # Write index
-                    self.faiss.write_index(self.index, temp_index.name)
-                    
-                    # Write metadata
-                    with open(temp_metadata.name, 'wb') as f:
-                        pickle.dump(self.metadata, f)
-                    
-                    temp_index.close()
-                    temp_metadata.close()
-                    
-                    # Atomic rename (POSIX guarantees atomicity)
-                    os.rename(temp_index.name, str(INDEX_FILE))
-                    os.rename(temp_metadata.name, str(METADATA_FILE))
-                    
-                    print(f"✓ Saved vector memory ({len(self.metadata)} chunks)")
-                    
-                except Exception as e:
-                    # Clean up temp files on error
-                    for tmpfile in [temp_index.name, temp_metadata.name]:
-                        if os.path.exists(tmpfile):
-                            os.unlink(tmpfile)
-                    raise e
-                    
-            finally:
-                # Release lock
-                fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
+                    fcntl.flock(lock_fd.fileno(), fcntl.LOCK_UN)
+                    lock_fd.close()
+                except:
+                    pass
     
     def stats(self) -> VectorMemoryStats:
         """Get index statistics with validation"""

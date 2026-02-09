@@ -1,0 +1,29 @@
+{
+  "text": "\n\ud83e\udd16 **Recommendation from atlas**\n\n**Deploy feature**\n\nReady to deploy\n\nCategory: deployment\n",
+  "reply_markup": {
+    "inline_keyboard": [
+      [
+        {
+          "text": "\u2705 Approve",
+          "callback_data": "approve:atlas-20260209-133013"
+        },
+        {
+          "text": "\u274c Reject",
+          "callback_data": "reject:atlas-20260209-133013"
+        }
+      ],
+      [
+        {
+          "text": "\u270f\ufe0f Edit",
+          "callback_data": "edit:atlas-20260209-133013"
+        },
+        {
+          "text": "\u23ed\ufe0f Skip",
+          "callback_data": "skip:atlas-20260209-133013"
+        }
+      ]
+    ]
+  },
+  "recommendation_id": "atlas-20260209-133013",
+  "recommendation_file": "/Users/jeffdaniels/.openclaw/workspace/feedback/pending/atlas-20260209-133013.json"
+}

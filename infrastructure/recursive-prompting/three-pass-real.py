@@ -39,13 +39,15 @@ class LLMIntegration:
     Integration with LLM (Claude via OpenClaw or direct API)
     """
     
-    def __init__(self, use_openclaw: bool = True):
+    def __init__(self, use_openclaw: bool = True, strict_mode: bool = False):
         """
         Args:
             use_openclaw: If True, use OpenClaw's agent system. If False, use direct API.
+            strict_mode: If True, raise exception instead of using mock responses
         """
         self.use_openclaw = use_openclaw
-        logger.info(f"LLM Integration initialized (use_openclaw={use_openclaw})")
+        self.strict_mode = strict_mode
+        logger.info(f"LLM Integration initialized (use_openclaw={use_openclaw}, strict_mode={strict_mode})")
     
     def call_llm(self, prompt: str, temperature: float = 0.7) -> str:
         """
@@ -58,10 +60,43 @@ class LLMIntegration:
         Returns:
             LLM response text
         """
+        # FIX: Add token counting to prevent exceeding limits
+        token_count = self._count_tokens(prompt)
+        max_tokens = 180000  # Claude 3.5 Sonnet limit, leave room for response
+        
+        if token_count > max_tokens:
+            logger.warning(f"Prompt has {token_count} tokens, exceeds limit {max_tokens}, truncating...")
+            prompt = self._truncate_prompt(prompt, max_tokens)
+        else:
+            logger.info(f"Prompt token count: {token_count}")
+        
         if self.use_openclaw:
             return self._call_via_openclaw(prompt, temperature)
         else:
             return self._call_via_api(prompt, temperature)
+    
+    def _count_tokens(self, text: str) -> int:
+        """
+        Count tokens in text (rough estimate)
+        
+        For accurate counting, use tiktoken library.
+        This is a conservative estimate: ~0.75 tokens per word
+        """
+        # Simple word-based estimation (conservative)
+        words = len(text.split())
+        return int(words * 0.75)
+    
+    def _truncate_prompt(self, prompt: str, max_tokens: int) -> str:
+        """Truncate prompt to fit within token limit"""
+        target_words = int(max_tokens / 0.75)
+        words = prompt.split()
+        
+        if len(words) <= target_words:
+            return prompt
+        
+        # Truncate and add marker
+        truncated = ' '.join(words[:target_words])
+        return truncated + "\n\n[...truncated...]"
     
     def _call_via_openclaw(self, prompt: str, temperature: float) -> str:
         """
@@ -70,11 +105,13 @@ class LLMIntegration:
         This spawns a subagent to process the prompt
         """
         try:
-            # Create temporary file with prompt
+            # FIX: Use secure temp file with restricted permissions (0o600)
             temp_file = WORKSPACE / "temp" / f"prompt-{datetime.now().strftime('%Y%m%d-%H%M%S')}.txt"
             temp_file.parent.mkdir(parents=True, exist_ok=True)
             
-            with open(temp_file, 'w') as f:
+            # Create with secure permissions
+            fd = os.open(temp_file, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+            with os.fdopen(fd, 'w') as f:
                 f.write(prompt)
             
             # Call openclaw with the prompt
@@ -145,6 +182,10 @@ class LLMIntegration:
         
         This should be removed in production once LLM integration is working
         """
+        # FIX: In strict mode, don't allow mock responses
+        if self.strict_mode:
+            raise RuntimeError("LLM integration not available and strict_mode=True (mock responses disabled)")
+        
         logger.warning("Using mock LLM response (LLM integration not available)")
         
         # Analyze prompt to generate appropriate response

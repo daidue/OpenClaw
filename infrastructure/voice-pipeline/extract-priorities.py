@@ -34,25 +34,36 @@ class PriorityExtractor:
         """
         priorities = []
         
-        # Priority indicators
+        # FIX: Use simpler patterns to prevent ReDoS (catastrophic backtracking)
+        # Limit input length to prevent DoS
+        MAX_TEXT_LENGTH = 50000
+        if len(text) > MAX_TEXT_LENGTH:
+            text = text[:MAX_TEXT_LENGTH]
+        
+        # Priority indicators (simplified patterns, atomic groups where possible)
         patterns = [
-            r'(?:priority|priorities)\s+(?:is|are)\s+(.+?)(?:\.|,|\n|$)',
-            r'(?:top|main|key)\s+priority\s+(?:is|are)\s+(.+?)(?:\.|,|\n|$)',
-            r'(?:we|I)\s+(?:need to|must|should)\s+(.+?)(?:\.|,|\n|$)',
-            r'focus on\s+(.+?)(?:\.|,|\n|$)',
-            r'(?:important|critical|urgent)\s+(?:to|that we)\s+(.+?)(?:\.|,|\n|$)'
+            r'(?:priority|priorities) (?:is|are) ([^.,\n]{10,200})',
+            r'(?:top|main|key) priority (?:is|are) ([^.,\n]{10,200})',
+            r'(?:we|I) (?:need to|must|should) ([^.,\n]{10,200})',
+            r'focus on ([^.,\n]{10,200})',
+            r'(?:important|critical|urgent) (?:to|that we) ([^.,\n]{10,200})'
         ]
         
         for pattern in patterns:
-            matches = re.finditer(pattern, text, re.IGNORECASE)
-            for match in matches:
-                priority_text = match.group(1).strip()
-                if len(priority_text) > 10:  # Filter out too-short matches
-                    priorities.append({
-                        'text': priority_text,
-                        'confidence': 'high',
-                        'source': 'pattern_match'
-                    })
+            try:
+                # Use timeout to prevent long-running regex
+                matches = re.finditer(pattern, text, re.IGNORECASE)
+                for match in matches:
+                    priority_text = match.group(1).strip()
+                    if len(priority_text) >= 10:  # Filter out too-short matches
+                        priorities.append({
+                            'text': priority_text,
+                            'confidence': 'high',
+                            'source': 'pattern_match'
+                        })
+            except Exception as e:
+                # Skip pattern if it fails
+                continue
         
         # Deduplicate
         seen = set()
@@ -76,11 +87,12 @@ class PriorityExtractor:
         """
         decisions = []
         
+        # FIX: Simplified patterns to prevent ReDoS
         patterns = [
-            r'(?:we|I)\s+(?:decided|decide|chose|choose)\s+(?:to\s+)?(.+?)(?:\.|,|\n|$)',
-            r'let\'s\s+(.+?)(?:\.|,|\n|$)',
-            r'(?:we\'re|we are|I\'m|I am)\s+going to\s+(.+?)(?:\.|,|\n|$)',
-            r'(?:the\s+)?decision\s+(?:is|was)\s+(?:to\s+)?(.+?)(?:\.|,|\n|$)'
+            r'(?:we|I) (?:decided|decide|chose|choose) (?:to )?([^.,\n]{10,200})',
+            r"let's ([^.,\n]{10,200})",
+            r"(?:we're|we are|I'm|I am) going to ([^.,\n]{10,200})",
+            r'(?:the )?decision (?:is|was) (?:to )?([^.,\n]{10,200})'
         ]
         
         for pattern in patterns:
@@ -116,12 +128,13 @@ class PriorityExtractor:
         """
         actions = []
         
+        # FIX: Simplified patterns to prevent ReDoS
         patterns = [
-            r'(?:need to|needs to)\s+(.+?)(?:\.|,|\n|$)',
-            r'(?:have to|has to)\s+(.+?)(?:\.|,|\n|$)',
-            r'action\s+item[:\s]+(.+?)(?:\.|,|\n|$)',
-            r'(?:should|must)\s+(.+?)(?:\.|,|\n|$)',
-            r'(?:make sure|ensure)\s+(?:to\s+)?(.+?)(?:\.|,|\n|$)'
+            r'(?:need to|needs to) ([^.,\n]{10,200})',
+            r'(?:have to|has to) ([^.,\n]{10,200})',
+            r'action item[:\s]+([^.,\n]{10,200})',
+            r'(?:should|must) ([^.,\n]{10,200})',
+            r'(?:make sure|ensure) (?:to )?([^.,\n]{10,200})'
         ]
         
         for pattern in patterns:

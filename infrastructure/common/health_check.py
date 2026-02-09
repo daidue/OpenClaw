@@ -218,6 +218,40 @@ class HealthChecker:
         
         print("\n" + "="*60 + "\n")
 
+def send_alert(health_data: Dict):
+    """
+    Send alert if system is unhealthy
+    
+    FIX: Added alerting capability for health check failures
+    """
+    status = health_data['overall_status']
+    
+    if status in ['unhealthy', 'degraded']:
+        # Create alert file for notification system
+        alert_dir = WORKSPACE / "notifications"
+        alert_dir.mkdir(parents=True, exist_ok=True)
+        
+        alert_file = alert_dir / f"health-alert-{datetime.now().strftime('%Y%m%d-%H%M%S')}.json"
+        
+        alert = {
+            'type': 'health_alert',
+            'severity': 'critical' if status == 'unhealthy' else 'warning',
+            'timestamp': datetime.now().isoformat(),
+            'status': status,
+            'message': f"Infrastructure health check: {status.upper()}",
+            'details': {
+                'failed_checks': [
+                    c['component'] for c in health_data['checks'] 
+                    if c['status'] in ['error', 'warning']
+                ]
+            }
+        }
+        
+        with open(alert_file, 'w') as f:
+            json.dump(alert, f, indent=2)
+        
+        print(f"\n⚠️  Alert sent: {alert_file}")
+
 def main():
     """Run health checks"""
     checker = HealthChecker()
@@ -232,6 +266,9 @@ def main():
     
     with open(health_file, 'w') as f:
         json.dump(health_data, f, indent=2)
+    
+    # FIX: Send alerts if unhealthy
+    send_alert(health_data)
     
     # Exit with appropriate code
     if health_data['overall_status'] == 'unhealthy':

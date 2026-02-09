@@ -70,9 +70,10 @@ class SemanticRecall:
         
         # Filter out current session if specified
         if session_id:
+            # FIX: Results are VectorSearchResult Pydantic models, use attribute access
             filtered = [
                 r for r in filtered 
-                if r.get('session') != session_id
+                if r.session != session_id
             ]
         
         # Build context string

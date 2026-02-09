@@ -141,13 +141,17 @@ def test_full_three_pass_process():
 
 def test_three_pass_saves_history(temp_workspace):
     """Test that results are saved to history"""
+    # Create history directory
+    history_dir = temp_workspace / "history"
+    history_dir.mkdir(parents=True, exist_ok=True)
+    
     processor = ThreePassProcessor(agent_name='bolt', use_openclaw=True)
     
-    with patch('recursive_prompting.three_pass_real.HISTORY_DIR', temp_workspace / "history"):
+    with patch('recursive_prompting.three_pass_real.HISTORY_DIR', history_dir):
         result = processor.process("Test prompt")
         
         # Check history file was created
-        history_files = list((temp_workspace / "history").glob("bolt-*.json"))
+        history_files = list(history_dir.glob("bolt-*.json"))
         assert len(history_files) > 0
         
         # Check file content
@@ -214,7 +218,7 @@ def test_improvement_extraction():
     Here's the refined solution...
     """
     
-    critique = unittest.mock.Mock()
+    critique = Mock()
     critique.suggestions = ["Suggestion 1", "Suggestion 2"]
     
     improvements = processor._extract_improvements(refined_text, critique)
@@ -253,7 +257,7 @@ def test_build_critique_prompt():
     """Test critique prompt construction"""
     processor = ThreePassProcessor(agent_name='bolt')
     
-    draft = unittest.mock.Mock()
+    draft = Mock()
     draft.prompt = "Original prompt"
     draft.output = "Draft output"
     
@@ -267,11 +271,11 @@ def test_build_refinement_prompt():
     """Test refinement prompt construction"""
     processor = ThreePassProcessor(agent_name='bolt')
     
-    draft = unittest.mock.Mock()
+    draft = Mock()
     draft.prompt = "Original"
     draft.output = "Draft"
     
-    critique = unittest.mock.Mock()
+    critique = Mock()
     critique.weaknesses = ["Weakness 1"]
     critique.suggestions = ["Suggestion 1"]
     critique.strengths = ["Strength 1"]

@@ -6,10 +6,15 @@ Reads current session activity and writes structured summary
 """
 
 import os
+import sys
 import json
 import datetime
 from pathlib import Path
 from collections import defaultdict
+
+# Add parent to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from common.distributed_lock import DistributedLock
 
 # Paths
 WORKSPACE = Path("/Users/jeffdaniels/.openclaw/workspace")
@@ -131,13 +136,15 @@ def write_hourly_summary(activity):
 
 def main():
     """Main entry point"""
-    print(f"Running hourly summarizer at {datetime.datetime.now()}")
-    
-    start_time, end_time = get_hour_range()
-    activity = parse_session_activity(start_time, end_time)
-    write_hourly_summary(activity)
-    
-    print("Hourly summarizer complete")
+    # FIX: Use distributed lock to prevent concurrent runs
+    with DistributedLock('hourly-summarizer', timeout_seconds=3600):
+        print(f"Running hourly summarizer at {datetime.datetime.now()}")
+        
+        start_time, end_time = get_hour_range()
+        activity = parse_session_activity(start_time, end_time)
+        write_hourly_summary(activity)
+        
+        print("Hourly summarizer complete")
 
 if __name__ == "__main__":
     main()

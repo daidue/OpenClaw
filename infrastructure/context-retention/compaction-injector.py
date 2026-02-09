@@ -47,8 +47,7 @@ def detect_compaction() -> bool:
             data = json.load(f)
             last_compaction = datetime.datetime.fromisoformat(data['timestamp'])
             
-            # If more than 5 minutes have passed, check for compaction
-            # FIX: Use total_seconds() instead of seconds property
+            # FIX: Use total_seconds() to get full duration (not just seconds component)
             if (datetime.datetime.now() - last_compaction).total_seconds() > 300:
                 return True
     

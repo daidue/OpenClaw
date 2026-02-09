@@ -44,18 +44,19 @@ def test_create_recommendation_message(temp_workspace):
 def test_create_recommendation_saves_pending(temp_workspace):
     """Test that recommendation is saved to pending directory"""
     with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
-        router = TelegramFeedbackRouter()
-        
-        message = router.create_recommendation_message(
-            title="Test",
-            description="Test description",
-            agent="bolt"
-        )
-        
-        rec_id = message['recommendation_id']
-        pending_file = temp_workspace / "feedback" / "pending" / f"{rec_id}.json"
-        
-        assert pending_file.exists()
+        with patch('feedback_router.telegram_buttons.PENDING_DIR', temp_workspace / "feedback" / "pending"):
+            router = TelegramFeedbackRouter()
+            
+            message = router.create_recommendation_message(
+                title="Test",
+                description="Test description",
+                agent="bolt"
+            )
+            
+            rec_id = message['recommendation_id']
+            pending_file = temp_workspace / "feedback" / "pending" / f"{rec_id}.json"
+            
+            assert pending_file.exists()
         
         # Check content
         with open(pending_file, 'r') as f:
@@ -69,22 +70,23 @@ def test_create_recommendation_saves_pending(temp_workspace):
 def test_send_recommendation(temp_workspace):
     """Test sending recommendation"""
     with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
-        router = TelegramFeedbackRouter()
-        
-        rec_id = router.send_recommendation(
-            title="Deploy feature",
-            description="Ready to deploy",
-            agent="atlas",
-            category="deployment"
-        )
-        
-        assert rec_id is not None
-        assert 'atlas' in rec_id
-        
-        # Check files created
-        pending_dir = temp_workspace / "feedback" / "pending"
-        assert (pending_dir / f"{rec_id}.json").exists()
-        assert (pending_dir / f"{rec_id}-message.json").exists()
+        with patch('feedback_router.telegram_buttons.PENDING_DIR', temp_workspace / "feedback" / "pending"):
+            router = TelegramFeedbackRouter()
+            
+            rec_id = router.send_recommendation(
+                title="Deploy feature",
+                description="Ready to deploy",
+                agent="atlas",
+                category="deployment"
+            )
+            
+            assert rec_id is not None
+            assert 'atlas' in rec_id
+            
+            # Check files created
+            pending_dir = temp_workspace / "feedback" / "pending"
+            assert (pending_dir / f"{rec_id}.json").exists()
+            assert (pending_dir / f"{rec_id}-message.json").exists()
 
 def test_handle_callback_approve(temp_workspace):
     """Test handling approve callback"""
@@ -244,6 +246,8 @@ def test_callback_updates_recommendation_status(temp_workspace):
 
 def test_multiple_recommendations(temp_workspace):
     """Test handling multiple recommendations"""
+    import time
+    
     with patch('feedback_router.telegram_buttons.WORKSPACE', temp_workspace):
         router = TelegramFeedbackRouter()
         
@@ -256,11 +260,12 @@ def test_multiple_recommendations(temp_workspace):
                 agent="bolt"
             )
             rec_ids.append(rec_id)
+            time.sleep(1.1)  # Ensure unique timestamp-based IDs
         
         # Approve first, reject second, skip third
-        result1 = router.handle_callback(f"approve:{rec_ids[0]}")
-        result2 = router.handle_callback(f"reject:{rec_ids[1]}")
-        result3 = router.handle_callback(f"skip:{rec_ids[2]}")
+        result1 = router.handle_callback(f"approve:{rec_ids[0]}", user_id="test_user")
+        result2 = router.handle_callback(f"reject:{rec_ids[1]}", user_id="test_user")
+        result3 = router.handle_callback(f"skip:{rec_ids[2]}", user_id="test_user")
         
         assert result1['action'] == 'approved'
         assert result2['action'] == 'rejected'
