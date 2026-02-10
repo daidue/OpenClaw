@@ -134,21 +134,28 @@ _(To be updated as we work together)_
 ## Active Projects
 
 ### Freelance Invoice Tracker — Notion Template ($27)
-- **Status:** Launch-ready. All assets, copy, and marketplace submissions prepared.
-- **Price:** $27 (changed from $37 — expert panel said too high for cold traffic)
-- **Location:** Taylor's Notion (API-built) + assets at `~/Desktop/Invoice-Tracker-Launch/`
-- **Lite version:** Free PWYW on Gumroad for lead gen (page `30104dbe-0785-812f-be10-f8f8d33019c1`)
-- **What it is:** Complete freelance business toolkit in Notion — invoices, clients, time tracking, expenses, 8 views, 3 automation buttons, contract template, tax guide, email scripts, follow-up scripts, pricing guide
-- **Differentiator:** $37 once vs $288-1,308/yr for SaaS. Works on Notion Free plan. $115 perceived value.
-- **Expert panel:** 10 simulated experts (Poulin, Frank, Wiebe, Sethi, etc.) scored 3 rounds: 73→88.4→93.2
-- **Sales assets ready:** Gumroad listing v2, 3 Reddit posts, Twitter thread, email sequence, Product Hunt kit, video script
-- **Remaining:** Record video walkthrough, deploy to Gumroad, visual polish, free Lite version for lead gen
-- **Research:** 6 deep research docs in `workspace/research/invoice-tracker-*.md`
-- **Pricing strategy:** $27 permanent (was $37), free Lite version as PWYW lead magnet
+- **Status:** LAUNCHED 🚀 (2026-02-09)
+- **Live URL:** `jeffthenotionguy.gumroad.com/l/freelance-toolkit`
+- **Store:** `jeffthenotionguy.gumroad.com` (Jeff on Notion)
+- **Price:** $27
+- **Assets:** `~/Desktop/Invoice-Tracker-Launch/`
+- **Notion API key (full toolkit):** ntn_A13042993971KB6Un1H68pxmicCZnILZy5iT6vrVvmE2Bm
+- **Full toolkit page:** `30004dbe-0785-8027-834a-eec25f5a7ff1`
+- **Lite version (new):** Page `30204dbe-0785-8058-b01f-c49b5665ad0c`, API key `ntn_H1304299397b3eOQcbG4SWMqT97KuDCg02t1j45kyLK1Wg`
+- **Lite status:** Built, NOT yet published on Gumroad. Needs: publish to web, Gumroad listing setup.
+- **Lite Gumroad slug:** `free-invoice-tracker` (SEO advantage)
+- **Lite assets:** `projects/invoice-tracker/lite-launch/`
+- **Sidebar nav:** Built with collapsible toggles, synced block `30204dbe-0785-8121-9468-e8c63f89591d`
+- **⚠️ NEVER delete blocks on the full toolkit page** — cascading deletion incident on 2/9, restored from trash
+- **Remaining:** Publish Lite on Gumroad, drive first 10 downloads, Pinterest+Tailwind, video walkthrough
 - **Revenue target:** 50-100 sales month 1 ($1,350-2,700)
-- **GTM channels (priority order):** Notion Gallery → Pinterest+Tailwind → Gumroad Discover → Etsy → Reddit (Month 2)
-- **Product Hunt: DEAD for templates** (stopped featuring them 2024) — removed from plan
-- **Pinterest case study:** $0→$1,400/mo in 6 months with Tailwind automation
+- **GTM channels (priority order):** Gumroad Discover (via 10 free Lite downloads) → Pinterest+Tailwind → Notion Gallery → Etsy → Reddit (Month 2)
+
+### Production Infrastructure (Eric Osiu 6-System Architecture)
+- **Status:** Deployed (2026-02-09), 93.2/100 expert score
+- **Location:** `infrastructure/` — 18 Python scripts, 52 tests passing
+- **Systems:** Context Retention (FAISS), Cross-Agent Intelligence, Memory Compounding, Voice Pipeline, 3-Pass Prompting, Feedback Router
+- **Cron jobs:** 5 active (hourly summarizer, daily sync, cross-signal detection, weekly synthesis, decision patterns)
 
 ---
 
