@@ -159,19 +159,21 @@ class TestNOAAClient:
         async with NOAAClient() as client:
             with patch.object(client.session, 'get') as mock_get:
                 def mock_response_factory(url, *args, **kwargs):
-                    mock_response = AsyncMock()
-                    mock_response.status = 200
+                    mock_resp = AsyncMock()
+                    mock_resp.status = 200
                     
                     if '/points/' in str(url):
-                        mock_response.json = AsyncMock(return_value=noaa_api_response_grid)
+                        mock_resp.json = AsyncMock(return_value=noaa_api_response_grid)
                     elif '/forecast/hourly' in str(url):
-                        mock_response.json = AsyncMock(return_value=noaa_api_response_forecast)
+                        mock_resp.json = AsyncMock(return_value=noaa_api_response_forecast)
                     else:
-                        mock_response.json = AsyncMock(return_value={})
+                        mock_resp.json = AsyncMock(return_value={})
                     
-                    return mock_response
+                    cm = AsyncMock()
+                    cm.__aenter__.return_value = mock_resp
+                    return cm
                 
-                mock_get.return_value.__aenter__.side_effect = lambda: mock_response_factory
+                mock_get.side_effect = mock_response_factory
                 
                 result = await client.get_forecast_for_location(40.7128, -74.0060)
                 

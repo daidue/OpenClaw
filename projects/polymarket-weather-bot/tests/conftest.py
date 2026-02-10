@@ -316,6 +316,7 @@ def executed_trade(trading_signal_buy):
 def closed_winning_trade(executed_trade):
     """Sample closed winning trade"""
     trade = executed_trade.copy()
+    trade.trade_id = "trade_002"
     trade.exit_price = Decimal("1.00")
     trade.realized_pnl = Decimal("14.20")
     trade.status = TradeStatus.EXECUTED

@@ -143,6 +143,9 @@ class TradingSignal(BaseModel):
     reasoning: str
     risk_factors: List[str] = Field(default_factory=list)
     
+    # Execution tracking
+    was_executed: bool = False
+    
     @validator('edge')
     def validate_edge(cls, v):
         if not -1 <= v <= 1:

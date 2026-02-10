@@ -19,13 +19,34 @@ class Database:
     
     def __init__(self, db_path: str = "weather_bot.db"):
         self.db_path = Path(db_path).expanduser()
-        self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        self._is_memory = (db_path == ":memory:")
+        self._persistent_conn: Optional[sqlite3.Connection] = None
+        
+        if not self._is_memory:
+            self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        
         self._init_schema()
         logger.info(f"Database initialized: {self.db_path}")
     
     @contextmanager
     def get_connection(self):
-        """Get a database connection with WAL mode"""
+        """Get a database connection with WAL mode.
+        
+        For :memory: databases, reuses a single persistent connection
+        so that tables survive across calls.
+        """
+        if self._is_memory:
+            if self._persistent_conn is None:
+                self._persistent_conn = sqlite3.connect(":memory:")
+                self._persistent_conn.row_factory = sqlite3.Row
+            try:
+                yield self._persistent_conn
+                self._persistent_conn.commit()
+            except Exception:
+                self._persistent_conn.rollback()
+                raise
+            return
+        
         conn = sqlite3.connect(str(self.db_path))
         conn.row_factory = sqlite3.Row  # Access columns by name
         
@@ -166,7 +187,7 @@ class Database:
         with self.get_connection() as conn:
             rows = conn.execute("""
                 SELECT * FROM trades 
-                WHERE status IN ('pending', 'executed')
+                WHERE status IN ('pending', 'executed') AND closed_at IS NULL
                 ORDER BY executed_at DESC
             """).fetchall()
         
@@ -223,6 +244,65 @@ class Database:
             raw_response=json.loads(row['raw_response']) if row['raw_response'] else {},
         )
     
+    def get_trade(self, trade_id: str) -> Optional[Trade]:
+        """Get a single trade by ID"""
+        with self.get_connection() as conn:
+            row = conn.execute(
+                "SELECT * FROM trades WHERE trade_id = ?", (trade_id,)
+            ).fetchone()
+        
+        if row is None:
+            return None
+        return self._row_to_trade(row)
+    
+    def get_all_trades(self) -> List[Trade]:
+        """Get all trades"""
+        with self.get_connection() as conn:
+            rows = conn.execute(
+                "SELECT * FROM trades ORDER BY executed_at DESC"
+            ).fetchall()
+        return [self._row_to_trade(row) for row in rows]
+    
+    def get_trades_by_date(self, date) -> List[Trade]:
+        """Get trades for a specific date"""
+        date_str = date.isoformat() if hasattr(date, 'isoformat') else str(date)
+        with self.get_connection() as conn:
+            rows = conn.execute(
+                "SELECT * FROM trades WHERE DATE(executed_at) = ? ORDER BY executed_at DESC",
+                (date_str,)
+            ).fetchall()
+        return [self._row_to_trade(row) for row in rows]
+    
+    def delete_old_trades(self, days: int = 90) -> int:
+        """Delete trades older than N days. Returns count deleted."""
+        cutoff = (datetime.now() - timedelta(days=days)).isoformat()
+        with self.get_connection() as conn:
+            cursor = conn.execute(
+                "DELETE FROM trades WHERE executed_at < ?", (cutoff,)
+            )
+            return cursor.rowcount
+    
+    def get_stats(self) -> Dict:
+        """Get database statistics"""
+        with self.get_connection() as conn:
+            total_trades = conn.execute("SELECT COUNT(*) FROM trades").fetchone()[0]
+            total_signals = conn.execute("SELECT COUNT(*) FROM signals").fetchone()[0]
+            active_trades = conn.execute(
+                "SELECT COUNT(*) FROM trades WHERE status IN ('pending', 'executed')"
+            ).fetchone()[0]
+        return {
+            "total_trades": total_trades,
+            "total_signals": total_signals,
+            "active_trades": active_trades,
+        }
+    
+    def vacuum(self):
+        """Vacuum the database to reclaim space"""
+        if self._is_memory:
+            return
+        with self.get_connection() as conn:
+            conn.execute("VACUUM")
+    
     # ========== SIGNAL OPERATIONS ==========
     
     def save_signal(self, signal: TradingSignal):
@@ -260,6 +340,78 @@ class Database:
             conn.execute("""
                 UPDATE signals SET was_executed = 1 WHERE signal_id = ?
             """, (signal_id,))
+    
+    def get_signal(self, signal_id: str) -> Optional[TradingSignal]:
+        """Get a signal by ID"""
+        with self.get_connection() as conn:
+            row = conn.execute(
+                "SELECT * FROM signals WHERE signal_id = ?", (signal_id,)
+            ).fetchone()
+        
+        if row is None:
+            return None
+        return self._row_to_signal(row)
+    
+    def get_signals_by_date(self, date) -> list:
+        """Get signals for a specific date"""
+        date_str = date.isoformat() if hasattr(date, 'isoformat') else str(date)
+        with self.get_connection() as conn:
+            rows = conn.execute(
+                "SELECT * FROM signals WHERE DATE(generated_at) = ? ORDER BY generated_at DESC",
+                (date_str,)
+            ).fetchall()
+        return [self._row_to_signal(row) for row in rows]
+    
+    def _row_to_signal(self, row: sqlite3.Row) -> TradingSignal:
+        """Convert database row to TradingSignal model"""
+        from .models import (
+            TradingSignal, PolymarketMarket, TradeDirection, ConfidenceLevel, MarketType, NOAAForecast
+        )
+        
+        market = PolymarketMarket(
+            market_id=row['market_id'],
+            condition_id=row['market_id'],
+            question=row['market_question'],
+            market_type=MarketType.HIGH_TEMP,
+            city=row['city'],
+            date=datetime.fromisoformat(row['forecast_date']) if row['forecast_date'] else datetime.now(),
+            yes_price=Decimal("0.50"),
+            no_price=Decimal("0.50"),
+            volume=Decimal("0"),
+            liquidity=Decimal("0"),
+            created_at=datetime.fromisoformat(row['generated_at']),
+        )
+        
+        forecast_date = datetime.fromisoformat(row['forecast_date']) if row['forecast_date'] else datetime.now()
+        noaa_forecast = NOAAForecast(
+            city=row['city'],
+            latitude=0.0,
+            longitude=0.0,
+            grid_office="UNK",
+            grid_x=0,
+            grid_y=0,
+            forecast_date=forecast_date,
+            forecast_generated_at=datetime.fromisoformat(row['generated_at']),
+            forecast_horizon_hours=0,
+        )
+        
+        return TradingSignal(
+            signal_id=row['signal_id'],
+            generated_at=datetime.fromisoformat(row['generated_at']),
+            market=market,
+            noaa_forecast=noaa_forecast,
+            direction=TradeDirection(row['direction']),
+            noaa_probability=row['noaa_probability'],
+            market_probability=row['market_probability'],
+            edge=row['edge'],
+            confidence=ConfidenceLevel(row['confidence']),
+            confidence_score=row['confidence_score'],
+            recommended_position_size=Decimal(str(row['recommended_position_size'])),
+            expected_value=row['expected_value'],
+            reasoning=row['reasoning'],
+            risk_factors=json.loads(row['risk_factors']) if row['risk_factors'] else [],
+            was_executed=bool(row['was_executed']) if 'was_executed' in row.keys() else False,
+        )
     
     # ========== PERFORMANCE TRACKING ==========
     
@@ -320,6 +472,21 @@ class Database:
             roi=roi,
         )
     
+    def get_daily_performance(self, date) -> Optional[DailyPerformance]:
+        """Get daily performance for a specific date"""
+        dt = datetime.combine(date, datetime.min.time()) if not isinstance(date, datetime) else date
+        return self.calculate_daily_performance(dt)
+    
+    def get_performance_last_n_days(self, n: int = 7) -> List[DailyPerformance]:
+        """Get performance for the last N days"""
+        results = []
+        for i in range(n):
+            date = datetime.now() - timedelta(days=i)
+            perf = self.calculate_daily_performance(date)
+            if perf.num_trades > 0:
+                results.append(perf)
+        return results
+    
     def get_risk_metrics(self) -> RiskMetrics:
         """Calculate current risk metrics"""
         from .models import BotConfig
@@ -328,7 +495,7 @@ class Database:
         with self.get_connection() as conn:
             # Active trades
             active_trades = conn.execute("""
-                SELECT * FROM trades WHERE status IN ('pending', 'executed')
+                SELECT * FROM trades WHERE status IN ('pending', 'executed') AND closed_at IS NULL
             """).fetchall()
             
             num_active = len(active_trades)
@@ -422,3 +589,53 @@ class Database:
             except sqlite3.IntegrityError:
                 # Already exists (unique constraint)
                 pass
+    
+    def update_actual_temps(
+        self,
+        forecast_id: int,
+        actual_high: Optional[float] = None,
+        actual_low: Optional[float] = None,
+    ):
+        """Update a forecast record with actual observed temperatures"""
+        with self.get_connection() as conn:
+            updates = []
+            params = []
+            if actual_high is not None:
+                updates.append("actual_high_temp = ?")
+                params.append(actual_high)
+            if actual_low is not None:
+                updates.append("actual_low_temp = ?")
+                params.append(actual_low)
+            if actual_high is not None and 'predicted_high_temp' in [
+                desc[0] for desc in conn.execute("PRAGMA table_info(noaa_forecasts)").fetchall()
+            ]:
+                updates.append(
+                    "forecast_error = ABS(predicted_high_temp - ?)"
+                )
+                params.append(actual_high)
+            if not updates:
+                return
+            params.append(forecast_id)
+            conn.execute(
+                f"UPDATE noaa_forecasts SET {', '.join(updates)} WHERE rowid = ?",
+                params,
+            )
+    
+    def get_forecast_accuracy(self) -> Dict:
+        """Get forecast accuracy statistics"""
+        with self.get_connection() as conn:
+            row = conn.execute("""
+                SELECT 
+                    COUNT(*) as total,
+                    AVG(forecast_error) as avg_error,
+                    MIN(forecast_error) as min_error,
+                    MAX(forecast_error) as max_error
+                FROM noaa_forecasts
+                WHERE forecast_error IS NOT NULL
+            """).fetchone()
+        return {
+            "total_forecasts_with_actuals": row[0] or 0,
+            "avg_error": row[1],
+            "min_error": row[2],
+            "max_error": row[3],
+        }
