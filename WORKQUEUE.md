@@ -12,7 +12,6 @@
 
 ### Community Outreach (Weekly)
 - [ ] **Find 3 Notion Discord servers** — Join, contribute value, share free template
-- [ ] **Find 2 freelance Slack communities** — Join, contribute value, share free template
 - [ ] **Cold DM 5 freelance newsletter owners** — Offer 30% affiliate commission
 
 ### Gumroad Optimization
