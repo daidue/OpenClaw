@@ -1,0 +1,9 @@
+2026-02-10 09:19:19,009 - src.database - INFO - Database initialized: weather_bot.db
+2026-02-10 09:19:19,009 - src.trading.executor - WARNING - ⚠ Simmer SDK not found. Install with: pip install simmer-sdk
+For Phase 1 sandbox testing, trades will be simulated.
+2026-02-10 09:19:19,009 - __main__ - INFO - 🤖 Weather Trading Bot initialized (mode: sandbox)
+2026-02-10 09:19:19,009 - __main__ - INFO - Running single cycle (--once mode)
+2026-02-10 09:19:19,009 - __main__ - INFO - ============================================================
+2026-02-10 09:19:19,009 - __main__ - INFO - 🔄 Starting trading cycle
+2026-02-10 09:19:19,009 - __main__ - INFO - ============================================================
+2026-02-10 09:19:19,009 - __main__ - INFO - 📡 Fetching NOAA forecasts...

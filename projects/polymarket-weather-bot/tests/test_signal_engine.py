@@ -4,7 +4,7 @@ import pytest
 from decimal import Decimal
 from datetime import datetime
 
-from src.signal.engine import SignalEngine
+from src.signals.engine import SignalEngine
 from src.models import TradeDirection, ConfidenceLevel, MarketType
 
 

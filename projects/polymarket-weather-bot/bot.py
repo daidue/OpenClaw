@@ -22,7 +22,7 @@ from src.models import BotConfig, TradingSignal
 from src.database import Database
 from src.noaa import NOAAClient, NOAAParser, get_all_cities
 from src.polymarket import PolymarketClient, PolymarketParser
-from src.signal import SignalEngine
+from src.signals import SignalEngine
 from src.trading import TradeExecutor, RiskManager
 from src.monitoring import Dashboard
 
