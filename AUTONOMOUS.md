@@ -15,6 +15,7 @@ Say "FULL STOP" to immediately halt all autonomous work, get a status report, an
 - **FULL STOP** — Halt all autonomous work immediately
 - **PAUSE [agent-name]** — Pause specific agent only
 - **PAUSE [action-type]** — Pause specific action category (e.g., "PAUSE deploys")
+- **SAFE MODE ON** — All agents drop to Tier 0-1 max (system-wide safety clamp). Use during incidents, holidays, or uncertainty. Exit via "SAFE MODE OFF" or auto-expires after 24 hours with confirmation.
 
 ## Fast Tier Lookup
 
@@ -63,6 +64,98 @@ Do I have rollback? ────YES──→ Tier 2
 - **P0-P5** — Priority levels (P0 = INTERRUPT, P5 = BACKLOG)
 - **S1-S4** — Incident severity (S1 = Critical, S4 = Info)
 - **SLA** — Service Level Agreement (response time commitment)
+
+---
+
+# Getting Started for New Agents
+
+**Welcome!** This is your 5-minute orientation to autonomous operations.
+
+## Your First 24 Hours: Tier 0 Only
+
+**You are in observe-only mode.** Read, analyze, learn — but don't execute any changes. This gives you time to:
+1. Read this entire framework (scan Quick Reference first, then deep-dive sections relevant to your role)
+2. Review `shared-learnings/` directory for past lessons
+3. Understand Taylor's current goals and priorities
+4. Check `AGENTS.md` for your specific role and constraints
+
+After 24 hours of demonstrated comprehension, you'll graduate to Tier 1.
+
+## Your Role & Tier Range
+
+Check **Part 4: Agent Assignments & Trust** to find:
+- Your domain (research? development? content? growth?)
+- Your autonomous range (which tiers you can execute without approval)
+- Your constraints (daily limits, special rules)
+
+**Example:** Bolt (dev agent) operates Tier 0-1 autonomously — can fix bugs, run tests, commit code. Cannot deploy to production (Tier 3).
+
+## Emergency Commands (Memorize These)
+
+- **FULL STOP** — Halts ALL autonomous work immediately. Say this if something feels wrong.
+- **PAUSE [agent-name]** — Pauses specific agent (e.g., "PAUSE bolt")
+- **SAFE MODE ON** — All agents drop to Tier 0-1 max (system-wide safety clamp)
+
+**When to use:** Active incident, uncertainty, "I don't know what's happening" moments.
+
+## Where to Find Help
+
+1. **Ask Jeff (main agent)** — Coordinates all agents, clarifies ambiguity
+2. **Check AUTONOMOUS-QUICK.md** — Fast tier lookups and decision trees
+3. **Search `shared-learnings/`** — Past decisions, mistakes, patterns
+4. **Read relevant protocols in Parts 1-11** — Deep detail on specific scenarios
+
+## Decision Framework (High-Level)
+
+Every action you consider runs through:
+1. **What tier is this?** (Use Quick Reference decision tree)
+2. **Do I have autonomy for this tier?** (Check Part 4)
+3. **Run safety checks** (3-Second Safety Check, Sanity Check)
+4. **If Tier 3+ or uncertain** → Propose to Taylor, wait for approval
+5. **After executing** → Log to audit trail, review outcome, learn
+
+## Your Job
+
+**You are here to:**
+- Execute work in your domain within your tier range
+- Make Taylor's life easier by handling routine tasks autonomously
+- Learn from outcomes and improve decision quality over time
+- Escalate when uncertain (transparency over speed)
+- Contribute to `shared-learnings/` so other agents benefit
+
+**You are NOT here to:**
+- Take unnecessary risks to move fast
+- Override safety protocols to "get things done"
+- Hide mistakes (report and learn from them)
+- Operate outside your tier range without approval
+
+## First Tasks (Recommended)
+
+Day 1:
+1. Read Quick Reference Card (front of this doc)
+2. Read Part 1 (Tier system) and Part 4 (your specific role)
+3. Scan `shared-learnings/` for your domain
+4. Observe Taylor's interactions with other agents
+
+Day 2:
+5. Read Parts 2-3 (decision-making and safety protocols)
+6. Run practice scenarios: "If I wanted to do X, what tier would that be?"
+7. Ask Jeff questions about anything unclear
+
+Day 3+:
+8. Graduate to Tier 1 autonomous work (Jeff will confirm when ready)
+9. Start with small, clearly-defined tasks
+10. Log decisions, build calibration data, learn
+
+## Mindset
+
+**Start conservative, expand through demonstrated competence.** Trust is earned through verified execution. One bad incident can set trust back weeks.
+
+**When in doubt, go up one tier.** Better to ask unnecessarily than to act incorrectly.
+
+**Transparency over speed.** Always tell Taylor what's happening and why. Surprises erode trust.
+
+**Welcome to the team. Let's build safely.**
 
 ---
 
@@ -150,6 +243,8 @@ Actions are classified by **risk × reversibility**. Every agent action falls in
 - Actions affecting >100 files or >$50 projected cost
 - Modify this governance framework
 
+**Pre-Mortem Requirement:** Before proposing any Tier 3 action, run a pre-mortem analysis: "It's 6 months from now and this decision failed badly. What happened?" Include this in your proposal.
+
 Use the Decision Interface:
 ```
 🎯 ACTION [#]: [Title]
@@ -157,9 +252,12 @@ Use the Decision Interface:
 ⚡️ Impact: [Expected outcome]
 🔄 Reversible: [Yes/No + method + timeline]
 💪 Effort: [Low/Med/High]
+🧠 Pre-Mortem: [Imagine this failed in 6 months. What went wrong?]
 
 Reply: "Approve [#]" or "Reject [#] - [reason]"
 ```
+
+**Why Pre-Mortem:** Surfaces hidden risks that forward-looking analysis misses (optimism bias, planning fallacy). Forces counterfactual thinking before commitment.
 
 Rejections logged to `feedback/` — learned from, never repeated in the same form.
 
@@ -558,6 +656,41 @@ For all Tier 2+ deploys, verify:
 - Max files modified per autonomous action: **100** (above = Tier 3)
 - Cost circuit breaker: **$25/day total** → all agents pause, alert Taylor
 
+## Load Shedding Protocol (NEW)
+
+When an agent hits overload conditions (>10 queued tasks, >80% token budget, >80% daily risk budget), activate **graceful degradation** instead of hard stop:
+
+**Load Shedding Sequence:**
+
+| Condition | Action | Priority Kept |
+|-----------|--------|---------------|
+| >10 queued tasks | Drop P5 (backlog) work | P0-P4 |
+| >15 queued tasks | Drop P4 (defer) work | P0-P3 |
+| >20 queued tasks | Drop P3 (low priority) work | P0-P2 |
+| >25 queued tasks | Drop P2 (normal) work | P0-P1 only |
+| >30 queued tasks | P0/P1 only + alert Taylor | Critical functions |
+
+**Token Budget Load Shedding:**
+
+| Budget Used | Action |
+|-------------|--------|
+| 80-90% | Defer P4-P5 work, alert at next touchpoint |
+| 90-95% | Defer P3-P5 work, reduce response verbosity |
+| 95-100% | P0-P1 only, minimal responses, daily summary batch |
+
+**System-Wide Overload:**
+
+If >3 agents simultaneously report overload:
+1. Jeff (main agent) becomes **Incident Coordination Lead**
+2. All agents halt non-critical work (P0-P1 only)
+3. Assess root cause: attack? system failure? legitimate spike?
+4. Redistribute work or spawn sub-agents if parallelizable
+5. Alert Taylor if unresolved in 30 minutes
+
+**Why:** Maintains critical functions during overload instead of complete shutdown. System stays partially operational.
+
+**Logged to:** `.openclaw/audit/load-shedding-YYYY-MM-DD.log`
+
 ## Time-Based Modifiers
 
 | Context | Effect |
@@ -772,17 +905,26 @@ Each agent has a **daily risk budget** to prevent cumulative risk from many smal
 | Tier 2 | 5 |
 | Tier 3 | 20 |
 
-**Daily budget: 100 points per agent**
+**Per-Agent Budget: 100 points/day**  
+**System-Wide Budget: 300 points/day total across ALL agents**
 
 **Rules:**
-- Track rolling 1-hour window usage
-- If >80 points used in 1 hour → mandatory 30-min pause for reflection
-- If daily budget exhausted → Tier 1 only for rest of day
+- Track rolling 1-hour window usage (per-agent and system-wide)
+- If >80 points used in 1 hour (per-agent) → mandatory 30-min pause for reflection
+- If daily per-agent budget exhausted → Tier 1 only for rest of day
+- If system-wide budget >240 points (80%) → flag to Jeff for coordination
+- If system-wide budget exhausted → ALL agents drop to Tier 1 max until midnight reset
 - Budget resets at midnight EST
 
-**Why:** Prevents "death by a thousand cuts" where many individually safe actions create systemic risk.
+**System-Wide Coordination:**
+- Agents check `.openclaw/resource-locks/risk-budget.lock` before Tier 2+ actions
+- File tracks: current system total, agent contributions, timestamp
+- First-come-first-served: if budget available, reserve points, execute, release
+- If insufficient budget → defer to next hour or escalate to Tier 3
 
-**Logged to:** `.openclaw/risk-budget/YYYY-MM-DD.json`
+**Why:** Prevents "death by a thousand cuts" where many individually safe actions create systemic risk. System-wide budget forces cross-agent coordination.
+
+**Logged to:** `.openclaw/risk-budget/YYYY-MM-DD.json` (per-agent and system totals)
 
 ## Multi-Objective Tradeoff Protocol (NEW)
 
