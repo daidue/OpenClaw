@@ -2,7 +2,7 @@
 
 import asyncio
 import logging
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Union
 from decimal import Decimal
 import aiohttp
 
@@ -56,7 +56,7 @@ class PolymarketClient:
             
             self._last_request_time = asyncio.get_event_loop().time()
     
-    async def _get(self, url: str, params: Dict = None, retries: int = 3) -> Optional[Dict | List]:
+    async def _get(self, url: str, params: Dict = None, retries: int = 3) -> Optional[Union[Dict, List]]:
         """Make rate-limited GET request with retries"""
         if not self.session:
             raise RuntimeError("Client not initialized. Use async context manager.")

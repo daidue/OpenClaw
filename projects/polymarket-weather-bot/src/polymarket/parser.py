@@ -2,9 +2,9 @@
 
 import re
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from decimal import Decimal
-from typing import Optional, List
+from typing import Optional, List, Dict
 from ..models import PolymarketMarket, MarketType, TemperatureUnit
 
 logger = logging.getLogger(__name__)
@@ -379,6 +379,3 @@ class PolymarketParser:
         
         logger.info(f"Filtered {len(markets)} → {len(tradeable)} tradeable markets")
         return tradeable
-
-
-from datetime import timedelta

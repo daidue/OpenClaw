@@ -1,5 +1,5 @@
 # Polymarket Weather Trading Bot - Python Dependencies
-# Python 3.11+ required
+# Python 3.9+ required
 
 # Core dependencies
 pydantic==2.5.3

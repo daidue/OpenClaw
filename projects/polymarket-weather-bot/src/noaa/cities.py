@@ -1,6 +1,6 @@
 """Top 20 US cities for weather trading"""
 
-from typing import NamedTuple, List
+from typing import NamedTuple, List, Optional
 
 
 class City(NamedTuple):
@@ -36,7 +36,7 @@ TOP_US_CITIES: List[City] = [
 ]
 
 
-def get_city(name: str) -> City | None:
+def get_city(name: str) -> Optional[City]:
     """Get city by name (case-insensitive)"""
     name_lower = name.lower()
     for city in TOP_US_CITIES:
