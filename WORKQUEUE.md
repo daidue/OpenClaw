@@ -9,12 +9,12 @@
 - [x] Jeff: Web research on Thomas Frank aesthetic tips
 - [x] Fury: Deliver `research/notion-design-system.md` ✅
 
-### Phase 2: Foundation (NEXT)
+### Phase 2: Foundation (IN PROGRESS)
 - [ ] Jeff: Build cover image system (HTML→PNG for all pages)
-- [ ] Jeff: Expand sample data to 15-20 invoices, 8-10 clients
-- [ ] Jeff: Make Dashboard dynamic (linked DB views vs hardcoded)
-- [ ] Bolt: Implement cover images via Notion API
-- [ ] Bolt: Icon system overhaul
+- [x] Jeff: Expand sample data to 15-20 invoices, 8-10 clients ✅ (20 invoices, 23 clients already exist)
+- [ ] Jeff: Make Dashboard dynamic (linked DB views vs hardcoded) — NOTE: linked DBs can't be created via API, needs manual UI work
+- [ ] Bolt: Implement cover images via Notion API (need to host images first)
+- [x] Jeff: Icon system overhaul ✅ (18 pages/databases updated 2026-02-10)
 
 ### Phase 3: Polish
 - [ ] Jeff: Redesign Start Here unboxing experience

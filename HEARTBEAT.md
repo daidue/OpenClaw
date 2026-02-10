@@ -6,7 +6,8 @@ On each heartbeat, run through this checklist. Be efficient — skip items that 
 
 ### 1. Autonomous Mode Check
 - Read `AUTONOMOUS.md` — if status is **ON**, process `WORKQUEUE.md`
-- Execute any queued tasks, mark complete, report progress
+- **DO REAL WORK.** Don't just check — pick a task and execute it in this turn.
+- If cron `autonomous-work-loop` is handling WORKQUEUE, use heartbeat for quick wins: git push, memory cleanup, follow X accounts, check notifications.
 - **BIAS FOR ACTION:** Don't queue things that can be done now. Just do them.
 
 ### 2. Work Queue
