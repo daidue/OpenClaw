@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 600px; height: 600px; overflow: hidden; }
+.thumb {
+  width: 600px;
+  height: 600px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+.thumb::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(83, 178, 254, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.badge {
+  display: inline-block;
+  background: rgba(46, 213, 115, 0.15);
+  border: 1px solid rgba(46, 213, 115, 0.4);
+  color: #2ed573;
+  padding: 6px 20px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  z-index: 1;
+}
+.icon {
+  font-size: 64px;
+  margin-bottom: 24px;
+  z-index: 1;
+}
+h1 {
+  color: #ffffff;
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  margin-bottom: 8px;
+  z-index: 1;
+  letter-spacing: -0.5px;
+}
+h1 span {
+  color: #53b2fe;
+}
+.sub {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  z-index: 1;
+  margin-bottom: 32px;
+}
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1;
+}
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 15px;
+}
+.feature .check {
+  color: #2ed573;
+}
+</style>
+</head>
+<body>
+<div class="thumb">
+  <div class="badge">✨ Free</div>
+  <div class="icon">📋</div>
+  <h1>Invoice<br><span>Tracker</span></h1>
+  <p class="sub">For Notion</p>
+  <div class="features">
+    <div class="feature"><span class="check">✓</span> Auto-calculations</div>
+    <div class="feature"><span class="check">✓</span> Status tracking</div>
+    <div class="feature"><span class="check">✓</span> Sample invoices</div>
+  </div>
+</div>
+</body>
+</html>
