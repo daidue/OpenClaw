@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Using Spreadsheets for Invoicing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            width: 1000px;
+            height: 1500px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #1a1a2e;
+            padding: 60px 50px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 68px;
+            font-weight: 900;
+            color: white;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        
+        .split-container {
+            display: flex;
+            flex: 1;
+        }
+        
+        .before {
+            flex: 1;
+            background: linear-gradient(135deg, #3d1414 0%, #5a1f1f 100%);
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .after {
+            flex: 1;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .label {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .before .label {
+            color: #ff6b6b;
+        }
+        
+        .after .label {
+            color: #f0a500;
+        }
+        
+        .icon-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            width: 100%;
+        }
+        
+        .before .icon-item {
+            background: rgba(255, 107, 107, 0.2);
+            border: 2px solid rgba(255, 107, 107, 0.4);
+            color: #ffb3b3;
+            padding: 22px 30px;
+            border-radius: 12px;
+            font-size: 28px;
+            font-weight: 600;
+            text-align: center;
+            transform: rotate(-2deg);
+        }
+        
+        .before .icon-item:nth-child(2) {
+            transform: rotate(1deg);
+        }
+        
+        .before .icon-item:nth-child(3) {
+            transform: rotate(-1.5deg);
+        }
+        
+        .before .icon-item::before {
+            content: "✗ ";
+            color: #ff6b6b;
+            font-size: 32px;
+            font-weight: 900;
+        }
+        
+        .after .icon-item {
+            background: rgba(240, 165, 0, 0.15);
+            border: 2px solid rgba(240, 165, 0, 0.4);
+            color: white;
+            padding: 22px 30px;
+            border-radius: 12px;
+            font-size: 28px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .after .icon-item::before {
+            content: "✓ ";
+            color: #f0a500;
+            font-size: 32px;
+            font-weight: 900;
+        }
+        
+        .footer {
+            background: #f0a500;
+            padding: 50px 50px;
+            text-align: center;
+        }
+        
+        .footer-text {
+            font-size: 38px;
+            color: #1a1a2e;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Stop Using Spreadsheets<br>for Invoicing</h1>
+    </div>
+    
+    <div class="split-container">
+        <div class="before">
+            <div class="label">Before</div>
+            <div class="icon-stack">
+                <div class="icon-item">Lost invoices</div>
+                <div class="icon-item">Manual updates</div>
+                <div class="icon-item">Missed payments</div>
+                <div class="icon-item">Scattered data</div>
+                <div class="icon-item">No automation</div>
+            </div>
+        </div>
+        
+        <div class="after">
+            <div class="label">After</div>
+            <div class="icon-stack">
+                <div class="icon-item">All organized</div>
+                <div class="icon-item">Auto tracking</div>
+                <div class="icon-item">Payment alerts</div>
+                <div class="icon-item">One dashboard</div>
+                <div class="icon-item">Email scripts</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="footer-text">Try This Free Notion Template</div>
+    </div>
+</body>
+</html>
