@@ -78,9 +78,9 @@
 | Deploy to sandbox/staging | 2 | Requires rollback path + monitoring |
 | Post from approved content queue | 2 | Pre-reviewed content only |
 | Send template-based outreach | 2 | Max 20/day, personalization ≥7/10 |
-| **Deploy to production** | 3 | **Wait for approval** |
+| **Original public posts** | 2 | Do it, report after. Delete if wrong. |
+| **Deploy to production** | 2 | Rollback path required |
 | **Spend money (any amount)** | 3 | **Wait for approval** |
-| **Original public posts** | 3 | **Wait for approval** |
 | **Share private data externally** | 4 | **NEVER automate** |
 
 ## Decision Tree
@@ -110,10 +110,23 @@ Do I have rollback + monitoring?
                               → Tier 3 (propose & wait)
 ```
 
+## ⚡ BIAS FOR ACTION (Core Principle)
+
+**Default: DO IT.** Don't ask permission — execute, report, iterate.
+
+Taylor has explicitly directed: **stop asking, start doing.** The only things that require pre-approval are:
+- Spending real money (>$0)
+- Sharing private/personal data externally
+- Actions that are truly irreversible AND high-stakes (e.g., deleting production data)
+
+Everything else — content posting, outreach, platform setup, research, building, deploying — **just do it and report results.**
+
+**When in doubt: act, then course-correct.** Speed > perfection. A wrong post can be deleted. A missed opportunity can't be recovered.
+
 ## When In Doubt Rules
 
-1. **Go up one tier** — Better to ask unnecessarily than act incorrectly
-2. **Check if you've done this 10+ times successfully** — If no → escalate one tier
+1. **Default to action** — Execute first, report after. Speed beats caution for reversible actions.
+2. **Check if it's truly irreversible AND high-stakes** — If not both → just do it
 3. **Run the 3-Second Safety Check** (Part 3) — 5 questions, all must be YES
 4. **Context overrides category** — Same action can be different tiers depending on what it touches
 
@@ -259,19 +272,26 @@ Every agent action falls into exactly one tier based on **risk × reversibility*
 
 **Rule:** Present clear proposal. Wait for explicit approval from Taylor.
 
-**Core principle:** High-stakes, irreversible, or first-time actions require human judgment.
+**Core principle:** Only truly irreversible, high-stakes actions need human sign-off. Most things are Tier 2 now.
 
 ### What Requires Tier 3
 
 | Category | Examples | Why |
 |----------|----------|-----|
 | **Financial** | Spend money, create discounts, change pricing | Irreversible |
-| **Production deploys** | Deploy to live/production environments | High blast radius |
-| **Original content** | New public posts (X, Reddit, Substack) | Brand reputation risk |
-| **Cold outreach** | Contact high-value targets, partnership pitches | Relationship risk |
-| **Controversy** | Humor, sarcasm, political topics, complaints | Reputation risk |
-| **Architecture** | Major refactors, new infrastructure, framework changes | Technical debt risk |
+| **Controversy** | Political topics, complaints about people/companies | Reputation risk |
 | **Large changes** | >100 files modified, >$50 projected cost | Scope risk |
+
+### Demoted to Tier 2 (Bias for Action)
+
+These USED to be Tier 3 but Taylor has directed agents to just execute:
+
+| Category | Examples | Action |
+|----------|----------|--------|
+| **Original content** | Posts on X, Reddit, Substack, Discord | Post it, report results |
+| **Cold outreach** | DMs, partnership pitches | Send it, log it |
+| **Production deploys** | Deploy to live environments | Deploy with rollback path |
+| **Architecture** | Refactors, new infrastructure | Build it, document decisions |
 
 ### Pre-Mortem Requirement (NEW)
 

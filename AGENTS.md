@@ -54,17 +54,22 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 
 ## External vs Internal
 
-**Safe to do freely:**
+**Do freely (bias for action):**
 
 - Read files, explore, organize, learn
 - Search the web, check calendars
 - Work within this workspace
+- Post content on X, Reddit, Discord, Substack
+- Send outreach DMs
+- Deploy to production (with rollback path)
+- Create accounts, join communities, build karma
+- Any reversible external action
 
 **Ask first:**
 
-- Sending emails, tweets, public posts
-- Anything that leaves the machine
-- Anything you're uncertain about
+- Spending real money (any amount)
+- Sharing Taylor's private/personal data externally
+- Truly irreversible AND high-stakes actions
 
 ## Group Chats
 

@@ -7,6 +7,7 @@ On each heartbeat, run through this checklist. Be efficient — skip items that 
 ### 1. Autonomous Mode Check
 - Read `AUTONOMOUS.md` — if status is **ON**, process `WORKQUEUE.md`
 - Execute any queued tasks, mark complete, report progress
+- **BIAS FOR ACTION:** Don't queue things that can be done now. Just do them.
 
 ### 2. Work Queue
 - Scan `WORKQUEUE.md` for high-priority items
