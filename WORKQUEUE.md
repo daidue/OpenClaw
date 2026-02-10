@@ -10,10 +10,10 @@
 - [x] Fury: Deliver `research/notion-design-system.md` ✅
 
 ### Phase 2: Foundation (IN PROGRESS)
-- [ ] Jeff: Build cover image system (HTML→PNG for all pages)
+- [x] Jeff: Build cover image system (HTML→PNG for all pages) ✅ 17 covers generated + applied (2026-02-10)
 - [x] Jeff: Expand sample data to 15-20 invoices, 8-10 clients ✅ (20 invoices, 23 clients already exist)
 - [ ] Jeff: Make Dashboard dynamic (linked DB views vs hardcoded) — NOTE: linked DBs can't be created via API, needs manual UI work
-- [ ] Bolt: Implement cover images via Notion API (need to host images first)
+- [x] Bolt: Implement cover images via Notion API ✅ Hosted on GitHub, applied to all 17 pages/DBs (2026-02-10)
 - [x] Jeff: Icon system overhaul ✅ (18 pages/databases updated 2026-02-10)
 
 ### Phase 3: Polish
