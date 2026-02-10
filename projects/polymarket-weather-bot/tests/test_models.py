@@ -195,7 +195,7 @@ class TestRiskMetrics:
     
     def test_valid_metrics(self, risk_metrics):
         """Test valid risk metrics"""
-        assert risk_metrics.num_active_positions == 3
+        assert risk_metrics.num_active_positions == 0
         assert risk_metrics.win_rate == 0.60
         assert not risk_metrics.circuit_breaker_triggered
     

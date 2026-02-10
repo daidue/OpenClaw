@@ -132,6 +132,58 @@ class RiskManager:
         
         return False, None
     
+    def adjust_position_size(
+        self,
+        requested: Decimal,
+        remaining_capacity: Decimal
+    ) -> Decimal:
+        """
+        Adjust position size to fit within remaining capacity.
+        
+        Args:
+            requested: Requested position size
+            remaining_capacity: Remaining daily capacity
+        
+        Returns:
+            Adjusted position size (capped at remaining capacity)
+        """
+        if requested <= remaining_capacity:
+            return requested
+        else:
+            logger.info(
+                f"Adjusting position size: requested={requested}, "
+                f"capped at remaining_capacity={remaining_capacity}"
+            )
+            return remaining_capacity
+    
+    def check_circuit_breaker(self) -> tuple[bool, Optional[str]]:
+        """
+        Check if circuit breaker should be triggered based on recent performance.
+        
+        Returns:
+            (triggered, reason)
+        """
+        metrics = self.db.get_risk_metrics()
+        
+        # Need minimum number of trades to evaluate
+        if metrics.total_trades < self.config.circuit_breaker_lookback_trades:
+            logger.debug(
+                f"Circuit breaker: insufficient trades "
+                f"({metrics.total_trades} < {self.config.circuit_breaker_lookback_trades})"
+            )
+            return False, None
+        
+        # Check win rate
+        if metrics.win_rate < self.config.circuit_breaker_min_win_rate:
+            reason = (
+                f"Win rate {metrics.win_rate:.1%} below minimum "
+                f"{self.config.circuit_breaker_min_win_rate:.1%}"
+            )
+            logger.warning(f"Circuit breaker triggered: {reason}")
+            return True, reason
+        
+        return False, None
+    
     def get_risk_summary(self) -> dict:
         """Get human-readable risk summary"""
         metrics = self.db.get_risk_metrics()

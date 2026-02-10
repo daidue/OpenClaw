@@ -16,11 +16,13 @@ class PolymarketParser:
     # Regex patterns for parsing weather questions
     TEMP_PATTERNS = [
         # "Highest temperature in NYC on February 10?"
-        r'(?:highest|high|maximum|max)\s+temp(?:erature)?\s+in\s+([A-Za-z\s]+)\s+on\s+([A-Za-z]+\s+\d+)',
+        r'(?:highest|high|maximum|max)\s+temp(?:erature)?\s+in\s+([A-Za-z\s]+?)\s+on\s+([A-Za-z]+\s+\d+)',
         # "Will NYC high exceed 50°F on Feb 10?"
-        r'will\s+([A-Za-z\s]+)\s+(?:high|maximum)\s+(?:exceed|be above)\s+(\d+)\s*[°]?([CF])\s+on\s+([A-Za-z]+\s+\d+)',
+        r'will\s+([A-Za-z\s]+?)\s+(?:high|maximum)\s+(?:exceed|be above)\s+(\d+)\s*[°]?([CF])\s+on\s+([A-Za-z]+\s+\d+)',
+        # "Will Chicago low drop below 20°F on Feb 10?"
+        r'will\s+([A-Za-z\s]+?)\s+(?:low|minimum)\s+(?:drop below|fall below|be below)\s+(\d+)\s*[°]?([CF])\s+on\s+([A-Za-z]+\s+\d+)',
         # "NYC temperature 50-52°F on Feb 10?"
-        r'([A-Za-z\s]+)\s+temp(?:erature)?\s+(\d+)-(\d+)\s*[°]?([CF])\s+on\s+([A-Za-z]+\s+\d+)',
+        r'([A-Za-z\s]+?)\s+temp(?:erature)?\s+(\d+)-(\d+)\s*[°]?([CF])\s+on\s+([A-Za-z]+\s+\d+)',
     ]
     
     CITY_ALIASES = {
@@ -119,9 +121,11 @@ class PolymarketParser:
             volume = Decimal(str(market_data.get('volume', 0)))
             
             # Timestamps
-            created_at = datetime.fromisoformat(
-                market_data.get('created_at', datetime.now().isoformat())
-            )
+            created_at_str = market_data.get('created_at', datetime.now().isoformat())
+            # Handle 'Z' suffix (UTC) in ISO format
+            if created_at_str.endswith('Z'):
+                created_at_str = created_at_str[:-1] + '+00:00'
+            created_at = datetime.fromisoformat(created_at_str)
             
             # Some markets have 'end_date_iso'
             closes_at = None
@@ -177,10 +181,12 @@ class PolymarketParser:
         question_lower = question.lower()
         
         # Determine market type
-        if 'temperature' in question_lower or 'temp' in question_lower:
-            if 'high' in question_lower or 'maximum' in question_lower:
+        if ('temperature' in question_lower or 'temp' in question_lower or 
+            '°f' in question_lower or '°c' in question_lower or
+            'degrees' in question_lower):
+            if 'high' in question_lower or 'maximum' in question_lower or 'exceed' in question_lower:
                 market_type = MarketType.HIGH_TEMP
-            elif 'low' in question_lower or 'minimum' in question_lower:
+            elif 'low' in question_lower or 'minimum' in question_lower or 'drop below' in question_lower or 'below' in question_lower:
                 market_type = MarketType.LOW_TEMP
             else:
                 market_type = MarketType.HIGH_TEMP  # Default

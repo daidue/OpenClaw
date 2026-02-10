@@ -290,11 +290,11 @@ class SignalEngine:
     
     def _score_to_level(self, score: float) -> ConfidenceLevel:
         """Map confidence score (0-1) to confidence level"""
-        if score >= 0.85:
+        if score >= 0.90:
             return ConfidenceLevel.VERY_HIGH
-        elif score >= 0.75:
+        elif score >= 0.80:
             return ConfidenceLevel.HIGH
-        elif score >= 0.60:
+        elif score >= 0.65:
             return ConfidenceLevel.MEDIUM
         elif score >= 0.45:
             return ConfidenceLevel.LOW

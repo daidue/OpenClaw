@@ -167,7 +167,7 @@ class TestNOAAParser:
         )
         
         # Should average 20% and 40% = 30%
-        assert result.precipitation_probability == 0.30
+        assert result.precipitation_probability == pytest.approx(0.30, abs=1e-9)
     
     def test_extract_forecast_no_data_for_date(self, tomorrow):
         """Test handling when no data exists for target date"""

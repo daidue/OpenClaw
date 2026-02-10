@@ -34,6 +34,7 @@ class TradeStatus(str, Enum):
     EXECUTED = "executed"
     FAILED = "failed"
     CANCELLED = "cancelled"
+    UNKNOWN = "unknown"
 
 
 class ConfidenceLevel(str, Enum):
