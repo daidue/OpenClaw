@@ -1,0 +1,49 @@
+# Polymarket Weather Bot Configuration
+# Phase 1: Sandbox Mode
+
+# Trading Mode
+simmer_mode: sandbox  # sandbox | production
+# Note: Production mode requires Simmer SDK setup and API keys
+
+# NOAA Settings
+noaa:
+  update_interval_seconds: 3600  # 1 hour
+  cache_ttl_seconds: 1800  # 30 minutes
+  request_timeout_seconds: 15
+
+# Polymarket Settings
+polymarket:
+  update_interval_seconds: 300  # 5 minutes
+  rate_limit_per_second: 5.0
+
+# Signal Generation
+signal:
+  minimum_edge_threshold: 0.10  # 10% edge minimum
+  minimum_confidence_score: 0.6  # 60% confidence minimum
+  minimum_liquidity: 1000  # $1,000 minimum market liquidity
+
+# Risk Management
+risk:
+  # Position sizing
+  max_position_size_dollars: 50  # Max $50 per trade
+  max_daily_exposure_dollars: 500  # Max $500 total exposure per day
+  
+  # Stop-loss
+  stop_loss_percent: 0.20  # 20% stop-loss
+  
+  # Diversification
+  max_correlated_positions: 3  # Max 3 weather positions simultaneously
+  
+  # Circuit breaker
+  circuit_breaker_min_win_rate: 0.50  # Pause if win rate < 50%
+  circuit_breaker_lookback_trades: 20  # Over last 20 trades
+  
+  # Kelly criterion
+  kelly_fraction: 0.25  # Use 25% of Kelly (fractional for safety)
+
+# Monitoring
+monitoring:
+  alert_on_high_confidence_signals: true
+  alert_on_trade_execution: true
+  alert_on_large_losses: true
+  dashboard_export_path: dashboard.json
