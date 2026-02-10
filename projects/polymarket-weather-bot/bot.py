@@ -21,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).parent / "src"))
 from src.models import BotConfig, TradingSignal
 from src.database import Database
 from src.noaa import NOAAClient, NOAAParser, get_all_cities
-from src.polymarket import PolymarketClient, PolymarketParser
+from src.polymarket import PolymarketClient, PolymarketParser, MockMarketGenerator
 from src.signals import SignalEngine
 from src.trading import TradeExecutor, RiskManager
 from src.monitoring import Dashboard
@@ -71,9 +71,9 @@ class WeatherTradingBot:
             forecasts = await self._fetch_noaa_forecasts()
             logger.info(f"✓ Retrieved {len(forecasts)} forecasts")
             
-            # Step 2: Fetch Polymarket weather markets
+            # Step 2: Fetch Polymarket weather markets (with mock fallback in sandbox)
             logger.info("📡 Fetching Polymarket markets...")
-            markets = await self._fetch_polymarket_markets()
+            markets = await self._fetch_polymarket_markets_with_mocks(forecasts)
             logger.info(f"✓ Retrieved {len(markets)} weather markets")
             
             # Step 3: Generate trading signals
@@ -124,7 +124,9 @@ class WeatherTradingBot:
         forecasts = []
         
         # Target date: tomorrow (most liquid markets are 1-2 days ahead)
-        target_date = datetime.now() + timedelta(days=1)
+        # Make timezone-aware to match NOAA data
+        from datetime import timezone
+        target_date = datetime.now(timezone.utc) + timedelta(days=1)
         
         async with NOAAClient(
             cache_ttl_seconds=self.config.noaa_cache_ttl_seconds,
@@ -188,6 +190,20 @@ class WeatherTradingBot:
             )
             
             return tradeable
+    
+    async def _fetch_polymarket_markets_with_mocks(self, forecasts: List) -> List:
+        """Fetch Polymarket markets, falling back to mocks in sandbox mode"""
+        # Try to fetch real markets first
+        real_markets = await self._fetch_polymarket_markets()
+        
+        # In sandbox mode, if no real markets found, generate mocks
+        if len(real_markets) == 0 and self.config.simmer_mode == "sandbox":
+            logger.info("🧪 No real weather markets found. Generating mock markets for sandbox testing...")
+            mock_markets = MockMarketGenerator.generate_from_forecasts(forecasts)
+            logger.info(f"✓ Generated {len(mock_markets)} mock markets")
+            return mock_markets
+        
+        return real_markets
     
     async def _execute_signal(self, signal: TradingSignal):
         """Execute a trading signal"""

@@ -1,0 +1,544 @@
+{
+  "generated_at": "2026-02-10T09:26:52.198430",
+  "mode": "sandbox",
+  "status": {
+    "status": "POSITION_LIMIT",
+    "message": "Max positions reached",
+    "circuit_breaker_triggered": false
+  },
+  "performance": {
+    "total_trades": 0,
+    "win_rate": "50.0%",
+    "win_rate_raw": 0.5,
+    "winning_trades": 0,
+    "losing_trades": 0,
+    "today": {
+      "num_trades": 23,
+      "pnl": 0.0,
+      "win_rate": "0.0%"
+    },
+    "last_7_days": {
+      "num_trades": 23,
+      "pnl": 0
+    },
+    "all_time": {
+      "cumulative_pnl": 0.0,
+      "roi": "0.0%"
+    }
+  },
+  "risk": {
+    "daily_exposure": {
+      "current": 1108.27,
+      "limit": 500.0,
+      "remaining": -608.27,
+      "utilization_pct": 221.654
+    },
+    "positions": {
+      "active": 23,
+      "max_allowed": 3,
+      "capital_at_risk": 1108.27
+    },
+    "limits": {
+      "max_position_size": 50.0,
+      "max_daily_exposure": 500.0,
+      "min_edge": "10.0%",
+      "min_confidence": 0.6
+    }
+  },
+  "active_positions": [
+    {
+      "trade_id": "trade_fc20801a",
+      "market": "Will Dallas high temperature exceed 75\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.839,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.193597",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_db1c565d",
+      "market": "Will Austin high temperature exceed 79\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.828,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.188532",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_3faf2438",
+      "market": "Will Houston high temperature exceed 81\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.8,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.183694",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_1cbc38c7",
+      "market": "Will San Antonio high temperature exceed 80\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.778,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.178378",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_3c9b7ea5",
+      "market": "Will Charlotte high temperature exceed 71\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.765,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.173133",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_4f31732f",
+      "market": "Will Fort Worth high temperature exceed 73\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.757,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.168318",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_54011813",
+      "market": "Will Los Angeles high temperature exceed 60\u00b0F on February 11, 2026?",
+      "direction": "buy",
+      "size": 50.0,
+      "entry_price": 0.752,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.163559",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_d8c7a5f8",
+      "market": "Will Denver high temperature exceed 58\u00b0F on February 11, 2026?",
+      "direction": "buy",
+      "size": 50.0,
+      "entry_price": 0.749,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.158904",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_61474b98",
+      "market": "Will San Jose high temperature exceed 54\u00b0F on February 11, 2026?",
+      "direction": "buy",
+      "size": 50.0,
+      "entry_price": 0.718,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.154070",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_86aa73bf",
+      "market": "Will New York high temperature exceed 42\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.711,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.149202",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_dfa3b438",
+      "market": "Will Washington DC high temperature exceed 41\u00b0F on February 11, 2026?",
+      "direction": "buy",
+      "size": 50.0,
+      "entry_price": 0.711,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.144860",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_f3e72a79",
+      "market": "Will San Jose high temperature exceed 61\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.646,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.140211",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_04c16deb",
+      "market": "Will Chicago high temperature exceed 34\u00b0F on February 11, 2026?",
+      "direction": "buy",
+      "size": 50.0,
+      "entry_price": 0.596,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.135473",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_7a9cc0c2",
+      "market": "Will Denver high temperature exceed 64\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.58,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.130927",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_ca70d441",
+      "market": "Will New York high temperature exceed 35\u00b0F on February 11, 2026?",
+      "direction": "buy",
+      "size": 50.0,
+      "entry_price": 0.586,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.126155",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_5fcd94f5",
+      "market": "Will Philadelphia high temperature exceed 36\u00b0F on February 11, 2026?",
+      "direction": "buy",
+      "size": 50.0,
+      "entry_price": 0.595,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.121193",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_4929d26b",
+      "market": "Will San Francisco high temperature exceed 55\u00b0F on February 11, 2026?",
+      "direction": "buy",
+      "size": 50.0,
+      "entry_price": 0.553,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.116701",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_94e90085",
+      "market": "Will Phoenix high temperature exceed 76\u00b0F on February 11, 2026?",
+      "direction": "buy",
+      "size": 46.59,
+      "entry_price": 0.446,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.111929",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_472ae390",
+      "market": "Will Los Angeles high temperature exceed 61\u00b0F on February 11, 2026?",
+      "direction": "buy",
+      "size": 49.46,
+      "entry_price": 0.442,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.107212",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_ec9f5f09",
+      "market": "Will Indianapolis high temperature exceed 41\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 42.24,
+      "entry_price": 0.402,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.102542",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_dde74374",
+      "market": "Will Fort Worth high temperature exceed 71\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 39.33,
+      "entry_price": 0.373,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.097811",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_db41be3e",
+      "market": "Will Jacksonville high temperature exceed 78\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 41.66,
+      "entry_price": 0.372,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.093700",
+      "status": "executed"
+    },
+    {
+      "trade_id": "trade_3f0094cb",
+      "market": "Will Columbus high temperature exceed 37\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 38.99,
+      "entry_price": 0.356,
+      "unrealized_pnl": 0,
+      "executed_at": "2026-02-10T09:26:52.089155",
+      "status": "executed"
+    }
+  ],
+  "recent_signals": [
+    {
+      "signal_id": "signal_67952e64",
+      "generated_at": "2026-02-10T09:26:52.012273",
+      "market": "Will Washington DC high temperature exceed 41\u00b0F on February 11, 2026?",
+      "city": "Washington DC",
+      "direction": "buy",
+      "edge": "28.9%",
+      "confidence": "high",
+      "confidence_score": 0.8825000000000001,
+      "recommended_size": 50.0,
+      "expected_value": 0.2887476607450111,
+      "was_executed": true
+    },
+    {
+      "signal_id": "signal_ffeb0ef8",
+      "generated_at": "2026-02-10T09:26:52.012228",
+      "market": "Will Denver high temperature exceed 64\u00b0F on February 11, 2026?",
+      "city": "Denver",
+      "direction": "sell",
+      "edge": "37.9%",
+      "confidence": "very_high",
+      "confidence_score": 0.9225000000000001,
+      "recommended_size": 50.0,
+      "expected_value": 0.3789940888362524,
+      "was_executed": true
+    },
+    {
+      "signal_id": "signal_3c4aa4fc",
+      "generated_at": "2026-02-10T09:26:52.012176",
+      "market": "Will Denver high temperature exceed 58\u00b0F on February 11, 2026?",
+      "city": "Denver",
+      "direction": "buy",
+      "edge": "25.1%",
+      "confidence": "high",
+      "confidence_score": 0.8825000000000001,
+      "recommended_size": 50.0,
+      "expected_value": 0.2507476607450111,
+      "was_executed": true
+    },
+    {
+      "signal_id": "signal_8b1bced0",
+      "generated_at": "2026-02-10T09:26:52.012120",
+      "market": "Will Indianapolis high temperature exceed 41\u00b0F on February 11, 2026?",
+      "city": "Indianapolis",
+      "direction": "sell",
+      "edge": "55.7%",
+      "confidence": "very_high",
+      "confidence_score": 0.9025000000000001,
+      "recommended_size": 42.24,
+      "expected_value": 0.5569940888362523,
+      "was_executed": true
+    },
+    {
+      "signal_id": "signal_968b099f",
+      "generated_at": "2026-02-10T09:26:52.012056",
+      "market": "Will San Francisco high temperature exceed 55\u00b0F on February 11, 2026?",
+      "city": "San Francisco",
+      "direction": "buy",
+      "edge": "44.2%",
+      "confidence": "very_high",
+      "confidence_score": 0.9225000000000001,
+      "recommended_size": 50.0,
+      "expected_value": 0.44245559810651813,
+      "was_executed": true
+    },
+    {
+      "signal_id": "signal_3d77885f",
+      "generated_at": "2026-02-10T09:26:52.012013",
+      "market": "Will Charlotte high temperature exceed 71\u00b0F on February 11, 2026?",
+      "city": "Charlotte",
+      "direction": "sell",
+      "edge": "23.5%",
+      "confidence": "high",
+      "confidence_score": 0.8625,
+      "recommended_size": 50.0,
+      "expected_value": 0.23499312532205707,
+      "was_executed": true
+    },
+    {
+      "signal_id": "signal_3d357141",
+      "generated_at": "2026-02-10T09:26:52.011959",
+      "market": "Will Columbus high temperature exceed 37\u00b0F on February 11, 2026?",
+      "city": "Columbus",
+      "direction": "sell",
+      "edge": "63.9%",
+      "confidence": "high",
+      "confidence_score": 0.8825000000000001,
+      "recommended_size": 38.99,
+      "expected_value": 0.6394555981065182,
+      "was_executed": true
+    },
+    {
+      "signal_id": "signal_d7aeb1c0",
+      "generated_at": "2026-02-10T09:26:52.011915",
+      "market": "Will Fort Worth high temperature exceed 73\u00b0F on February 11, 2026?",
+      "city": "Fort Worth",
+      "direction": "sell",
+      "edge": "24.3%",
+      "confidence": "very_high",
+      "confidence_score": 0.9025000000000001,
+      "recommended_size": 50.0,
+      "expected_value": 0.24274766074501108,
+      "was_executed": true
+    },
+    {
+      "signal_id": "signal_71e191c3",
+      "generated_at": "2026-02-10T09:26:52.011872",
+      "market": "Will Fort Worth high temperature exceed 71\u00b0F on February 11, 2026?",
+      "city": "Fort Worth",
+      "direction": "sell",
+      "edge": "58.6%",
+      "confidence": "very_high",
+      "confidence_score": 0.9025000000000001,
+      "recommended_size": 39.33,
+      "expected_value": 0.5859940888362524,
+      "was_executed": true
+    },
+    {
+      "signal_id": "signal_87609870",
+      "generated_at": "2026-02-10T09:26:52.011828",
+      "market": "Will Jacksonville high temperature exceed 78\u00b0F on February 11, 2026?",
+      "city": "Jacksonville",
+      "direction": "sell",
+      "edge": "62.3%",
+      "confidence": "very_high",
+      "confidence_score": 0.9025000000000001,
+      "recommended_size": 41.66,
+      "expected_value": 0.6234555981065182,
+      "was_executed": true
+    }
+  ],
+  "recent_trades": [
+    {
+      "trade_id": "trade_fc20801a",
+      "executed_at": "2026-02-10T09:26:52.193597",
+      "market": "Will Dallas high temperature exceed 75\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.839,
+      "exit_price": null,
+      "pnl": null,
+      "pnl_pct": null,
+      "status": "executed",
+      "closed_at": null
+    },
+    {
+      "trade_id": "trade_db1c565d",
+      "executed_at": "2026-02-10T09:26:52.188532",
+      "market": "Will Austin high temperature exceed 79\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.828,
+      "exit_price": null,
+      "pnl": null,
+      "pnl_pct": null,
+      "status": "executed",
+      "closed_at": null
+    },
+    {
+      "trade_id": "trade_3faf2438",
+      "executed_at": "2026-02-10T09:26:52.183694",
+      "market": "Will Houston high temperature exceed 81\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.8,
+      "exit_price": null,
+      "pnl": null,
+      "pnl_pct": null,
+      "status": "executed",
+      "closed_at": null
+    },
+    {
+      "trade_id": "trade_1cbc38c7",
+      "executed_at": "2026-02-10T09:26:52.178378",
+      "market": "Will San Antonio high temperature exceed 80\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.778,
+      "exit_price": null,
+      "pnl": null,
+      "pnl_pct": null,
+      "status": "executed",
+      "closed_at": null
+    },
+    {
+      "trade_id": "trade_3c9b7ea5",
+      "executed_at": "2026-02-10T09:26:52.173133",
+      "market": "Will Charlotte high temperature exceed 71\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.765,
+      "exit_price": null,
+      "pnl": null,
+      "pnl_pct": null,
+      "status": "executed",
+      "closed_at": null
+    },
+    {
+      "trade_id": "trade_4f31732f",
+      "executed_at": "2026-02-10T09:26:52.168318",
+      "market": "Will Fort Worth high temperature exceed 73\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.757,
+      "exit_price": null,
+      "pnl": null,
+      "pnl_pct": null,
+      "status": "executed",
+      "closed_at": null
+    },
+    {
+      "trade_id": "trade_54011813",
+      "executed_at": "2026-02-10T09:26:52.163559",
+      "market": "Will Los Angeles high temperature exceed 60\u00b0F on February 11, 2026?",
+      "direction": "buy",
+      "size": 50.0,
+      "entry_price": 0.752,
+      "exit_price": null,
+      "pnl": null,
+      "pnl_pct": null,
+      "status": "executed",
+      "closed_at": null
+    },
+    {
+      "trade_id": "trade_d8c7a5f8",
+      "executed_at": "2026-02-10T09:26:52.158904",
+      "market": "Will Denver high temperature exceed 58\u00b0F on February 11, 2026?",
+      "direction": "buy",
+      "size": 50.0,
+      "entry_price": 0.749,
+      "exit_price": null,
+      "pnl": null,
+      "pnl_pct": null,
+      "status": "executed",
+      "closed_at": null
+    },
+    {
+      "trade_id": "trade_61474b98",
+      "executed_at": "2026-02-10T09:26:52.154070",
+      "market": "Will San Jose high temperature exceed 54\u00b0F on February 11, 2026?",
+      "direction": "buy",
+      "size": 50.0,
+      "entry_price": 0.718,
+      "exit_price": null,
+      "pnl": null,
+      "pnl_pct": null,
+      "status": "executed",
+      "closed_at": null
+    },
+    {
+      "trade_id": "trade_86aa73bf",
+      "executed_at": "2026-02-10T09:26:52.149202",
+      "market": "Will New York high temperature exceed 42\u00b0F on February 11, 2026?",
+      "direction": "sell",
+      "size": 50.0,
+      "entry_price": 0.711,
+      "exit_price": null,
+      "pnl": null,
+      "pnl_pct": null,
+      "status": "executed",
+      "closed_at": null
+    }
+  ]
+}

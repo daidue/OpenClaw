@@ -7,3 +7,473 @@ For Phase 1 sandbox testing, trades will be simulated.
 2026-02-10 09:19:19,009 - __main__ - INFO - 🔄 Starting trading cycle
 2026-02-10 09:19:19,009 - __main__ - INFO - ============================================================
 2026-02-10 09:19:19,009 - __main__ - INFO - 📡 Fetching NOAA forecasts...
+2026-02-10 09:20:05,461 - src.database - INFO - Database initialized: weather_bot.db
+2026-02-10 09:20:05,462 - src.trading.executor - WARNING - ⚠ Simmer SDK not found. Install with: pip install simmer-sdk
+For Phase 1 sandbox testing, trades will be simulated.
+2026-02-10 09:20:05,462 - __main__ - INFO - 🤖 Weather Trading Bot initialized (mode: sandbox)
+2026-02-10 09:20:05,462 - __main__ - INFO - Running single cycle (--once mode)
+2026-02-10 09:20:05,462 - __main__ - INFO - ============================================================
+2026-02-10 09:20:05,462 - __main__ - INFO - 🔄 Starting trading cycle
+2026-02-10 09:20:05,462 - __main__ - INFO - ============================================================
+2026-02-10 09:20:05,462 - __main__ - INFO - 📡 Fetching NOAA forecasts...
+2026-02-10 09:20:33,773 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:20:35,108 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:20:37,405 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:20:46,063 - __main__ - ERROR - ❌ Error in trading cycle: can't subtract offset-naive and offset-aware datetimes
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/projects/polymarket-weather-bot/bot.py", line 71, in run_cycle
+    forecasts = await self._fetch_noaa_forecasts()
+  File "/Users/jeffdaniels/.openclaw/workspace/projects/polymarket-weather-bot/bot.py", line 153, in _fetch_noaa_forecasts
+    forecast = NOAAParser.extract_forecast_for_date(
+  File "/Users/jeffdaniels/.openclaw/workspace/projects/polymarket-weather-bot/src/noaa/parser.py", line 107, in extract_forecast_for_date
+    forecast_horizon_hours = int((target_date - generated_time).total_seconds() / 3600)
+TypeError: can't subtract offset-naive and offset-aware datetimes
+2026-02-10 09:21:08,551 - src.database - INFO - Database initialized: weather_bot.db
+2026-02-10 09:21:08,551 - src.trading.executor - WARNING - ⚠ Simmer SDK not found. Install with: pip install simmer-sdk
+For Phase 1 sandbox testing, trades will be simulated.
+2026-02-10 09:21:08,551 - __main__ - INFO - 🤖 Weather Trading Bot initialized (mode: sandbox)
+2026-02-10 09:21:08,551 - __main__ - INFO - Running single cycle (--once mode)
+2026-02-10 09:21:08,551 - __main__ - INFO - ============================================================
+2026-02-10 09:21:08,551 - __main__ - INFO - 🔄 Starting trading cycle
+2026-02-10 09:21:08,551 - __main__ - INFO - ============================================================
+2026-02-10 09:21:08,551 - __main__ - INFO - 📡 Fetching NOAA forecasts...
+2026-02-10 09:21:36,730 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:21:38,050 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:21:40,378 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:21:49,273 - __main__ - WARNING - No forecast data for San Diego
+2026-02-10 09:21:49,309 - __main__ - INFO - ✓ Retrieved 19 forecasts
+2026-02-10 09:21:49,309 - __main__ - INFO - 📡 Fetching Polymarket markets...
+2026-02-10 09:21:50,467 - src.polymarket.client - INFO - Found 6 unique weather markets
+2026-02-10 09:21:50,475 - src.polymarket.parser - WARNING - Could not parse date: Formula 1
+2026-02-10 09:21:50,475 - src.polymarket.parser - WARNING - Could not parse date: Eurovision 2023
+2026-02-10 09:21:50,475 - src.polymarket.parser - WARNING - Could not parse date: Formula 1
+2026-02-10 09:21:50,475 - src.polymarket.parser - WARNING - Could not parse date: Formula 1
+2026-02-10 09:21:50,475 - src.polymarket.parser - INFO - Filtered 1 → 0 tradeable markets
+2026-02-10 09:21:50,476 - __main__ - INFO - ✓ Retrieved 0 weather markets
+2026-02-10 09:21:50,476 - __main__ - INFO - 🎯 Generating trading signals...
+2026-02-10 09:21:50,476 - src.signals.engine - INFO - Generated 0 signals from 0 markets
+2026-02-10 09:21:50,476 - __main__ - INFO - ✓ Generated 0 signals
+2026-02-10 09:21:50,476 - __main__ - INFO - ⚠️  Filtering through risk management...
+2026-02-10 09:21:50,476 - src.trading.risk - INFO - Risk filter: 0 approved, 0 rejected (from 0 total)
+2026-02-10 09:21:50,476 - __main__ - INFO - ✓ Risk filter: 0 approved, 0 rejected
+2026-02-10 09:21:50,476 - __main__ - INFO - 💤 No signals to execute this cycle
+2026-02-10 09:21:50,476 - __main__ - INFO - 📊 Updating dashboard...
+2026-02-10 09:21:50,483 - src.monitoring.dashboard - INFO - Dashboard exported to dashboard.json
+2026-02-10 09:21:50,488 - __main__ - INFO - ============================================================
+2026-02-10 09:21:50,488 - __main__ - INFO - ✅ Trading cycle complete
+2026-02-10 09:21:50,488 - __main__ - INFO - ============================================================
+2026-02-10 09:23:13,283 - src.database - INFO - Database initialized: weather_bot.db
+2026-02-10 09:23:13,283 - src.trading.executor - WARNING - ⚠ Simmer SDK not found. Install with: pip install simmer-sdk
+For Phase 1 sandbox testing, trades will be simulated.
+2026-02-10 09:23:13,283 - __main__ - INFO - 🤖 Weather Trading Bot initialized (mode: sandbox)
+2026-02-10 09:23:13,283 - __main__ - INFO - Running single cycle (--once mode)
+2026-02-10 09:23:13,283 - __main__ - INFO - ============================================================
+2026-02-10 09:23:13,283 - __main__ - INFO - 🔄 Starting trading cycle
+2026-02-10 09:23:13,283 - __main__ - INFO - ============================================================
+2026-02-10 09:23:13,283 - __main__ - INFO - 📡 Fetching NOAA forecasts...
+2026-02-10 09:23:41,443 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:23:42,727 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:23:45,103 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:23:53,332 - __main__ - WARNING - No forecast data for San Diego
+2026-02-10 09:23:53,370 - __main__ - INFO - ✓ Retrieved 19 forecasts
+2026-02-10 09:23:53,370 - __main__ - INFO - 📡 Fetching Polymarket markets...
+2026-02-10 09:23:54,741 - src.polymarket.client - INFO - Found 6 unique weather markets
+2026-02-10 09:23:54,747 - src.polymarket.parser - WARNING - Could not parse date: Formula 1
+2026-02-10 09:23:54,747 - src.polymarket.parser - WARNING - Could not parse date: Eurovision 2023
+2026-02-10 09:23:54,748 - src.polymarket.parser - WARNING - Could not parse date: Formula 1
+2026-02-10 09:23:54,748 - src.polymarket.parser - WARNING - Could not parse date: Formula 1
+2026-02-10 09:23:54,748 - src.polymarket.parser - INFO - Filtered 1 → 0 tradeable markets
+2026-02-10 09:23:54,748 - __main__ - INFO - 🧪 No real weather markets found. Generating mock markets for sandbox testing...
+2026-02-10 09:23:54,749 - src.polymarket.mock_markets - INFO - 🧪 Generated 30 mock weather markets for sandbox testing
+2026-02-10 09:23:54,749 - __main__ - INFO - ✓ Generated 30 mock markets
+2026-02-10 09:23:54,749 - __main__ - INFO - ✓ Retrieved 30 weather markets
+2026-02-10 09:23:54,749 - __main__ - INFO - 🎯 Generating trading signals...
+2026-02-10 09:23:54,749 - __main__ - ERROR - ❌ Error in trading cycle: can't subtract offset-naive and offset-aware datetimes
+Traceback (most recent call last):
+  File "/Users/jeffdaniels/.openclaw/workspace/projects/polymarket-weather-bot/bot.py", line 81, in run_cycle
+    signals = self.signal_engine.generate_signals(forecasts, markets)
+  File "/Users/jeffdaniels/.openclaw/workspace/projects/polymarket-weather-bot/src/signals/engine.py", line 54, in generate_signals
+    signal = self._generate_signal_for_pair(forecast, market)
+  File "/Users/jeffdaniels/.openclaw/workspace/projects/polymarket-weather-bot/src/signals/engine.py", line 166, in _generate_signal_for_pair
+    risk_factors = self._identify_risk_factors(forecast, market, edge)
+  File "/Users/jeffdaniels/.openclaw/workspace/projects/polymarket-weather-bot/src/signals/engine.py", line 401, in _identify_risk_factors
+    hours_to_close = (market.closes_at - datetime.now()).total_seconds() / 3600
+TypeError: can't subtract offset-naive and offset-aware datetimes
+2026-02-10 09:24:07,545 - src.database - INFO - Database initialized: weather_bot.db
+2026-02-10 09:24:07,545 - src.trading.executor - WARNING - ⚠ Simmer SDK not found. Install with: pip install simmer-sdk
+For Phase 1 sandbox testing, trades will be simulated.
+2026-02-10 09:24:07,545 - __main__ - INFO - 🤖 Weather Trading Bot initialized (mode: sandbox)
+2026-02-10 09:24:07,545 - __main__ - INFO - Running single cycle (--once mode)
+2026-02-10 09:24:07,545 - __main__ - INFO - ============================================================
+2026-02-10 09:24:07,545 - __main__ - INFO - 🔄 Starting trading cycle
+2026-02-10 09:24:07,545 - __main__ - INFO - ============================================================
+2026-02-10 09:24:07,545 - __main__ - INFO - 📡 Fetching NOAA forecasts...
+2026-02-10 09:24:35,769 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:24:37,060 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:24:39,401 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:24:47,558 - __main__ - WARNING - No forecast data for San Diego
+2026-02-10 09:24:47,597 - __main__ - INFO - ✓ Retrieved 19 forecasts
+2026-02-10 09:24:47,597 - __main__ - INFO - 📡 Fetching Polymarket markets...
+2026-02-10 09:24:48,729 - src.polymarket.client - INFO - Found 6 unique weather markets
+2026-02-10 09:24:48,735 - src.polymarket.parser - WARNING - Could not parse date: Formula 1
+2026-02-10 09:24:48,735 - src.polymarket.parser - WARNING - Could not parse date: Eurovision 2023
+2026-02-10 09:24:48,735 - src.polymarket.parser - WARNING - Could not parse date: Formula 1
+2026-02-10 09:24:48,735 - src.polymarket.parser - WARNING - Could not parse date: Formula 1
+2026-02-10 09:24:48,735 - src.polymarket.parser - INFO - Filtered 1 → 0 tradeable markets
+2026-02-10 09:24:48,736 - __main__ - INFO - 🧪 No real weather markets found. Generating mock markets for sandbox testing...
+2026-02-10 09:24:48,736 - src.polymarket.mock_markets - INFO - 🧪 Generated 28 mock weather markets for sandbox testing
+2026-02-10 09:24:48,736 - __main__ - INFO - ✓ Generated 28 mock markets
+2026-02-10 09:24:48,737 - __main__ - INFO - ✓ Retrieved 28 weather markets
+2026-02-10 09:24:48,737 - __main__ - INFO - 🎯 Generating trading signals...
+2026-02-10 09:24:48,738 - src.signals.engine - INFO - Generated 22 signals from 28 markets
+2026-02-10 09:24:48,738 - __main__ - INFO - ✓ Generated 22 signals
+2026-02-10 09:24:48,799 - __main__ - INFO - ⚠️  Filtering through risk management...
+2026-02-10 09:24:48,800 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_b64c8077
+2026-02-10 09:24:48,801 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_96fa4692
+2026-02-10 09:24:48,801 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_711c31e8
+2026-02-10 09:24:48,802 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_f610424f
+2026-02-10 09:24:48,803 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_95570c57
+2026-02-10 09:24:48,803 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_6621ed6d
+2026-02-10 09:24:48,804 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_61b5f7bc
+2026-02-10 09:24:48,805 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_00725eee
+2026-02-10 09:24:48,806 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_d7eaf7bc
+2026-02-10 09:24:48,806 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_60a396d7
+2026-02-10 09:24:48,807 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_5fc61907
+2026-02-10 09:24:48,808 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_c974d1d8
+2026-02-10 09:24:48,808 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_6bbebf95
+2026-02-10 09:24:48,809 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_f671dddb
+2026-02-10 09:24:48,810 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_03eaac61
+2026-02-10 09:24:48,810 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_5ddfc91e
+2026-02-10 09:24:48,811 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_09c1a814
+2026-02-10 09:24:48,812 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_03e1afbb
+2026-02-10 09:24:48,812 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_e24143c2
+2026-02-10 09:24:48,813 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_21c6899e
+2026-02-10 09:24:48,813 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_1becfd7b
+2026-02-10 09:24:48,814 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_dd17ddad
+2026-02-10 09:24:48,814 - src.trading.risk - INFO - Risk filter: 22 approved, 0 rejected (from 22 total)
+2026-02-10 09:24:48,814 - __main__ - INFO - ✓ Risk filter: 22 approved, 0 rejected
+2026-02-10 09:24:48,814 - __main__ - INFO - 💰 Executing 22 trades...
+2026-02-10 09:24:48,814 - src.trading.executor - INFO - 🔄 Executing trade trade_d24a42eb: BUY Seattle for $41.9
+2026-02-10 09:24:48,814 - src.trading.executor - INFO - ✅ Trade executed: trade_d24a42eb - buy @ 0.366
+2026-02-10 09:24:48,817 - src.database - INFO - Saved trade: trade_d24a42eb (executed)
+2026-02-10 09:24:48,820 - __main__ - INFO - ✅ Trade executed successfully: trade_d24a42eb - buy Will Seattle high temperature exceed 47°F on Febru...
+2026-02-10 09:24:48,820 - src.trading.executor - INFO - 🔄 Executing trade trade_491a64d9: BUY Jacksonville for $43.84
+2026-02-10 09:24:48,820 - src.trading.executor - INFO - ✅ Trade executed: trade_491a64d9 - buy @ 0.383
+2026-02-10 09:24:48,822 - src.database - INFO - Saved trade: trade_491a64d9 (executed)
+2026-02-10 09:24:48,825 - __main__ - INFO - ✅ Trade executed successfully: trade_491a64d9 - buy Will Jacksonville high temperature exceed 72°F on ...
+2026-02-10 09:24:48,825 - src.trading.executor - INFO - 🔄 Executing trade trade_275b8495: BUY Dallas for $44.0
+2026-02-10 09:24:48,825 - src.trading.executor - INFO - ✅ Trade executed: trade_275b8495 - buy @ 0.393
+2026-02-10 09:24:48,827 - src.database - INFO - Saved trade: trade_275b8495 (executed)
+2026-02-10 09:24:48,830 - __main__ - INFO - ✅ Trade executed successfully: trade_275b8495 - buy Will Dallas high temperature exceed 67°F on Februa...
+2026-02-10 09:24:48,830 - src.trading.executor - INFO - 🔄 Executing trade trade_a9c26d29: BUY Philadelphia for $45.21
+2026-02-10 09:24:48,830 - src.trading.executor - INFO - ✅ Trade executed: trade_a9c26d29 - buy @ 0.395
+2026-02-10 09:24:48,832 - src.database - INFO - Saved trade: trade_a9c26d29 (executed)
+2026-02-10 09:24:48,835 - __main__ - INFO - ✅ Trade executed successfully: trade_a9c26d29 - buy Will Philadelphia high temperature exceed 36°F on ...
+2026-02-10 09:24:48,835 - src.trading.executor - INFO - 🔄 Executing trade trade_2399b565: BUY Indianapolis for $45.21
+2026-02-10 09:24:48,835 - src.trading.executor - INFO - ✅ Trade executed: trade_2399b565 - buy @ 0.395
+2026-02-10 09:24:48,837 - src.database - INFO - Saved trade: trade_2399b565 (executed)
+2026-02-10 09:24:48,839 - __main__ - INFO - ✅ Trade executed successfully: trade_2399b565 - buy Will Indianapolis high temperature exceed 36°F on ...
+2026-02-10 09:24:48,839 - src.trading.executor - INFO - 🔄 Executing trade trade_d7a53938: BUY Los Angeles for $47.03
+2026-02-10 09:24:48,840 - src.trading.executor - INFO - ✅ Trade executed: trade_d7a53938 - buy @ 0.411
+2026-02-10 09:24:48,842 - src.database - INFO - Saved trade: trade_d7a53938 (executed)
+2026-02-10 09:24:48,844 - __main__ - INFO - ✅ Trade executed successfully: trade_d7a53938 - buy Will Los Angeles high temperature exceed 61°F on F...
+2026-02-10 09:24:48,844 - src.trading.executor - INFO - 🔄 Executing trade trade_3ad545c8: BUY San Antonio for $40.61
+2026-02-10 09:24:48,844 - src.trading.executor - INFO - ✅ Trade executed: trade_3ad545c8 - buy @ 0.377
+2026-02-10 09:24:48,847 - src.database - INFO - Saved trade: trade_3ad545c8 (executed)
+2026-02-10 09:24:48,849 - __main__ - INFO - ✅ Trade executed successfully: trade_3ad545c8 - buy Will San Antonio high temperature exceed 74°F on F...
+2026-02-10 09:24:48,849 - src.trading.executor - INFO - 🔄 Executing trade trade_48c9704d: BUY Seattle for $41.95
+2026-02-10 09:24:48,849 - src.trading.executor - INFO - ✅ Trade executed: trade_48c9704d - buy @ 0.39
+2026-02-10 09:24:48,852 - src.database - INFO - Saved trade: trade_48c9704d (executed)
+2026-02-10 09:24:48,854 - __main__ - INFO - ✅ Trade executed successfully: trade_48c9704d - buy Will Seattle high temperature exceed 48°F on Febru...
+2026-02-10 09:24:48,854 - src.trading.executor - INFO - 🔄 Executing trade trade_f2d2a382: BUY Austin for $48.14
+2026-02-10 09:24:48,854 - src.trading.executor - INFO - ✅ Trade executed: trade_f2d2a382 - buy @ 0.44
+2026-02-10 09:24:48,857 - src.database - INFO - Saved trade: trade_f2d2a382 (executed)
+2026-02-10 09:24:48,859 - __main__ - INFO - ✅ Trade executed successfully: trade_f2d2a382 - buy Will Austin high temperature exceed 71°F on Februa...
+2026-02-10 09:24:48,859 - src.trading.executor - INFO - 🔄 Executing trade trade_c4f30701: BUY Denver for $45.71
+2026-02-10 09:24:48,859 - src.trading.executor - INFO - ✅ Trade executed: trade_c4f30701 - buy @ 0.427
+2026-02-10 09:24:48,862 - src.database - INFO - Saved trade: trade_c4f30701 (executed)
+2026-02-10 09:24:48,864 - __main__ - INFO - ✅ Trade executed successfully: trade_c4f30701 - buy Will Denver high temperature exceed 60°F on Februa...
+2026-02-10 09:24:48,864 - src.trading.executor - INFO - 🔄 Executing trade trade_e45a77bc: BUY New York for $38.31
+2026-02-10 09:24:48,864 - src.trading.executor - INFO - ✅ Trade executed: trade_e45a77bc - buy @ 0.426
+2026-02-10 09:24:48,867 - src.database - INFO - Saved trade: trade_e45a77bc (executed)
+2026-02-10 09:24:48,869 - __main__ - INFO - ✅ Trade executed successfully: trade_e45a77bc - buy Will New York high temperature exceed 36°F on Febr...
+2026-02-10 09:24:48,869 - src.trading.executor - INFO - 🔄 Executing trade trade_78ee588f: SELL Philadelphia for $50.0
+2026-02-10 09:24:48,869 - src.trading.executor - INFO - ✅ Trade executed: trade_78ee588f - sell @ 0.556
+2026-02-10 09:24:48,871 - src.database - INFO - Saved trade: trade_78ee588f (executed)
+2026-02-10 09:24:48,874 - __main__ - INFO - ✅ Trade executed successfully: trade_78ee588f - sell Will Philadelphia high temperature exceed 42°F on ...
+2026-02-10 09:24:48,874 - src.trading.executor - INFO - 🔄 Executing trade trade_2fd00728: SELL San Jose for $50.0
+2026-02-10 09:24:48,874 - src.trading.executor - INFO - ✅ Trade executed: trade_2fd00728 - sell @ 0.556
+2026-02-10 09:24:48,876 - src.database - INFO - Saved trade: trade_2fd00728 (executed)
+2026-02-10 09:24:48,878 - __main__ - INFO - ✅ Trade executed successfully: trade_2fd00728 - sell Will San Jose high temperature exceed 61°F on Febr...
+2026-02-10 09:24:48,878 - src.trading.executor - INFO - 🔄 Executing trade trade_a83e8c3f: BUY Washington DC for $50.0
+2026-02-10 09:24:48,878 - src.trading.executor - INFO - ✅ Trade executed: trade_a83e8c3f - buy @ 0.607
+2026-02-10 09:24:48,880 - src.database - INFO - Saved trade: trade_a83e8c3f (executed)
+2026-02-10 09:24:48,882 - __main__ - INFO - ✅ Trade executed successfully: trade_a83e8c3f - buy Will Washington DC high temperature exceed 42°F on...
+2026-02-10 09:24:48,883 - src.trading.executor - INFO - 🔄 Executing trade trade_e74ff092: BUY Jacksonville for $50.0
+2026-02-10 09:24:48,883 - src.trading.executor - INFO - ✅ Trade executed: trade_e74ff092 - buy @ 0.608
+2026-02-10 09:24:48,885 - src.database - INFO - Saved trade: trade_e74ff092 (executed)
+2026-02-10 09:24:48,887 - __main__ - INFO - ✅ Trade executed successfully: trade_e74ff092 - buy Will Jacksonville high temperature exceed 72°F on ...
+2026-02-10 09:24:48,887 - src.trading.executor - INFO - 🔄 Executing trade trade_db9c17e1: BUY Houston for $50.0
+2026-02-10 09:24:48,887 - src.trading.executor - INFO - ✅ Trade executed: trade_db9c17e1 - buy @ 0.642
+2026-02-10 09:24:48,890 - src.database - INFO - Saved trade: trade_db9c17e1 (executed)
+2026-02-10 09:24:48,892 - __main__ - INFO - ✅ Trade executed successfully: trade_db9c17e1 - buy Will Houston high temperature exceed 74°F on Febru...
+2026-02-10 09:24:48,893 - src.trading.executor - INFO - 🔄 Executing trade trade_34805aad: BUY San Francisco for $50.0
+2026-02-10 09:24:48,893 - src.trading.executor - INFO - ✅ Trade executed: trade_34805aad - buy @ 0.704
+2026-02-10 09:24:48,895 - src.database - INFO - Saved trade: trade_34805aad (executed)
+2026-02-10 09:24:48,897 - __main__ - INFO - ✅ Trade executed successfully: trade_34805aad - buy Will San Francisco high temperature exceed 54°F on...
+2026-02-10 09:24:48,898 - src.trading.executor - INFO - 🔄 Executing trade trade_e5c0d3bb: BUY Chicago for $50.0
+2026-02-10 09:24:48,898 - src.trading.executor - INFO - ✅ Trade executed: trade_e5c0d3bb - buy @ 0.708
+2026-02-10 09:24:48,900 - src.database - INFO - Saved trade: trade_e5c0d3bb (executed)
+2026-02-10 09:24:48,902 - __main__ - INFO - ✅ Trade executed successfully: trade_e5c0d3bb - buy Will Chicago high temperature exceed 32°F on Febru...
+2026-02-10 09:24:48,902 - src.trading.executor - INFO - 🔄 Executing trade trade_4e5f262a: SELL New York for $49.27
+2026-02-10 09:24:48,903 - src.trading.executor - INFO - ✅ Trade executed: trade_4e5f262a - sell @ 0.641
+2026-02-10 09:24:48,905 - src.database - INFO - Saved trade: trade_4e5f262a (executed)
+2026-02-10 09:24:48,907 - __main__ - INFO - ✅ Trade executed successfully: trade_4e5f262a - sell Will New York high temperature exceed 40°F on Febr...
+2026-02-10 09:24:48,908 - src.trading.executor - INFO - 🔄 Executing trade trade_de88a4a5: SELL Phoenix for $50.0
+2026-02-10 09:24:48,908 - src.trading.executor - INFO - ✅ Trade executed: trade_de88a4a5 - sell @ 0.779
+2026-02-10 09:24:48,910 - src.database - INFO - Saved trade: trade_de88a4a5 (executed)
+2026-02-10 09:24:48,912 - __main__ - INFO - ✅ Trade executed successfully: trade_de88a4a5 - sell Will Phoenix high temperature exceed 82°F on Febru...
+2026-02-10 09:24:48,912 - src.trading.executor - INFO - 🔄 Executing trade trade_5a6e6287: BUY Columbus for $50.0
+2026-02-10 09:24:48,912 - src.trading.executor - INFO - ✅ Trade executed: trade_5a6e6287 - buy @ 0.789
+2026-02-10 09:24:48,915 - src.database - INFO - Saved trade: trade_5a6e6287 (executed)
+2026-02-10 09:24:48,917 - __main__ - INFO - ✅ Trade executed successfully: trade_5a6e6287 - buy Will Columbus high temperature exceed 29°F on Febr...
+2026-02-10 09:24:48,917 - src.trading.executor - INFO - 🔄 Executing trade trade_e381bf53: BUY San Antonio for $50.0
+2026-02-10 09:24:48,917 - src.trading.executor - INFO - ✅ Trade executed: trade_e381bf53 - buy @ 0.824
+2026-02-10 09:24:48,920 - src.database - INFO - Saved trade: trade_e381bf53 (executed)
+2026-02-10 09:24:48,922 - __main__ - INFO - ✅ Trade executed successfully: trade_e381bf53 - buy Will San Antonio high temperature exceed 71°F on F...
+2026-02-10 09:24:48,922 - __main__ - INFO - 📊 Updating dashboard...
+2026-02-10 09:24:48,929 - src.monitoring.dashboard - INFO - Dashboard exported to dashboard.json
+2026-02-10 09:24:48,935 - __main__ - INFO - ============================================================
+2026-02-10 09:24:48,935 - __main__ - INFO - ✅ Trading cycle complete
+2026-02-10 09:24:48,935 - __main__ - INFO - ============================================================
+2026-02-10 09:25:15,954 - src.database - INFO - Database initialized: weather_bot.db
+2026-02-10 09:25:15,954 - src.trading.executor - WARNING - ⚠ Simmer SDK not found. Install with: pip install simmer-sdk
+For Phase 1 sandbox testing, trades will be simulated.
+2026-02-10 09:25:15,954 - __main__ - INFO - 🤖 Weather Trading Bot initialized (mode: sandbox)
+2026-02-10 09:25:15,954 - __main__ - INFO - Running single cycle (--once mode)
+2026-02-10 09:25:15,954 - __main__ - INFO - ============================================================
+2026-02-10 09:25:15,954 - __main__ - INFO - 🔄 Starting trading cycle
+2026-02-10 09:25:15,954 - __main__ - INFO - ============================================================
+2026-02-10 09:25:15,954 - __main__ - INFO - 📡 Fetching NOAA forecasts...
+2026-02-10 09:25:44,121 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:25:45,518 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:25:47,785 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:25:56,000 - __main__ - WARNING - No forecast data for San Diego
+2026-02-10 09:25:56,057 - __main__ - INFO - ✓ Retrieved 19 forecasts
+2026-02-10 09:25:56,058 - __main__ - INFO - 📡 Fetching Polymarket markets...
+2026-02-10 09:25:57,122 - src.polymarket.client - INFO - Found 6 unique weather markets
+2026-02-10 09:25:57,129 - src.polymarket.parser - WARNING - Could not parse date: Formula 1
+2026-02-10 09:25:57,129 - src.polymarket.parser - WARNING - Could not parse date: Eurovision 2023
+2026-02-10 09:25:57,129 - src.polymarket.parser - WARNING - Could not parse date: Formula 1
+2026-02-10 09:25:57,129 - src.polymarket.parser - WARNING - Could not parse date: Formula 1
+2026-02-10 09:25:57,130 - src.polymarket.parser - INFO - Filtered 1 → 0 tradeable markets
+2026-02-10 09:25:57,130 - __main__ - INFO - 🧪 No real weather markets found. Generating mock markets for sandbox testing...
+2026-02-10 09:25:57,131 - src.polymarket.mock_markets - INFO - 🧪 Generated 28 mock weather markets for sandbox testing
+2026-02-10 09:25:57,131 - __main__ - INFO - ✓ Generated 28 mock markets
+2026-02-10 09:25:57,131 - __main__ - INFO - ✓ Retrieved 28 weather markets
+2026-02-10 09:25:57,131 - __main__ - INFO - 🎯 Generating trading signals...
+2026-02-10 09:25:57,132 - src.signals.engine - INFO - Generated 21 signals from 28 markets
+2026-02-10 09:25:57,132 - __main__ - INFO - ✓ Generated 21 signals
+2026-02-10 09:25:57,190 - __main__ - INFO - ⚠️  Filtering through risk management...
+2026-02-10 09:25:57,191 - src.trading.risk - INFO - ✗ Signal rejected: signal_199ae974 - Daily exposure limit: current=1031.18, would add=36.97, limit=500
+2026-02-10 09:25:57,192 - src.trading.risk - INFO - ✗ Signal rejected: signal_d48b5e85 - Daily exposure limit: current=1031.18, would add=40.13, limit=500
+2026-02-10 09:25:57,193 - src.trading.risk - INFO - ✗ Signal rejected: signal_6e398c61 - Daily exposure limit: current=1031.18, would add=46.79, limit=500
+2026-02-10 09:25:57,194 - src.trading.risk - INFO - ✗ Signal rejected: signal_87506463 - Daily exposure limit: current=1031.18, would add=48.62, limit=500
+2026-02-10 09:25:57,195 - src.trading.risk - INFO - ✗ Signal rejected: signal_71c549d3 - Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,195 - src.trading.risk - INFO - ✗ Signal rejected: signal_fd547890 - Daily exposure limit: current=1031.18, would add=45.63, limit=500
+2026-02-10 09:25:57,196 - src.trading.risk - INFO - ✗ Signal rejected: signal_b2deb0ee - Daily exposure limit: current=1031.18, would add=46.02, limit=500
+2026-02-10 09:25:57,197 - src.trading.risk - INFO - ✗ Signal rejected: signal_29719e65 - Daily exposure limit: current=1031.18, would add=37.26, limit=500
+2026-02-10 09:25:57,198 - src.trading.risk - INFO - ✗ Signal rejected: signal_154db3d9 - Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,199 - src.trading.risk - INFO - ✗ Signal rejected: signal_8f5c98d2 - Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,199 - src.trading.risk - INFO - ✗ Signal rejected: signal_8e3000e2 - Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,200 - src.trading.risk - INFO - ✗ Signal rejected: signal_6a046e33 - Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,201 - src.trading.risk - INFO - ✗ Signal rejected: signal_d2533a09 - Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,201 - src.trading.risk - INFO - ✗ Signal rejected: signal_313b9e18 - Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,202 - src.trading.risk - INFO - ✗ Signal rejected: signal_2f43ed58 - Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,203 - src.trading.risk - INFO - ✗ Signal rejected: signal_8dd10aef - Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,203 - src.trading.risk - INFO - ✗ Signal rejected: signal_ad588d65 - Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,204 - src.trading.risk - INFO - ✗ Signal rejected: signal_75df8527 - Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,205 - src.trading.risk - INFO - ✗ Signal rejected: signal_7a697a96 - Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,205 - src.trading.risk - INFO - ✗ Signal rejected: signal_c2d9b1ee - Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,206 - src.trading.risk - INFO - ✗ Signal rejected: signal_d247e123 - Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,206 - src.trading.risk - INFO - Risk filter: 0 approved, 21 rejected (from 21 total)
+2026-02-10 09:25:57,206 - __main__ - INFO - ✓ Risk filter: 0 approved, 21 rejected
+2026-02-10 09:25:57,206 - __main__ - INFO -    ✗ Austin: Daily exposure limit: current=1031.18, would add=36.97, limit=500
+2026-02-10 09:25:57,206 - __main__ - INFO -    ✗ Washington DC: Daily exposure limit: current=1031.18, would add=40.13, limit=500
+2026-02-10 09:25:57,206 - __main__ - INFO -    ✗ San Jose: Daily exposure limit: current=1031.18, would add=46.79, limit=500
+2026-02-10 09:25:57,206 - __main__ - INFO -    ✗ Chicago: Daily exposure limit: current=1031.18, would add=48.62, limit=500
+2026-02-10 09:25:57,206 - __main__ - INFO -    ✗ Fort Worth: Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,206 - __main__ - INFO -    ✗ New York: Daily exposure limit: current=1031.18, would add=45.63, limit=500
+2026-02-10 09:25:57,206 - __main__ - INFO -    ✗ Seattle: Daily exposure limit: current=1031.18, would add=46.02, limit=500
+2026-02-10 09:25:57,206 - __main__ - INFO -    ✗ New York: Daily exposure limit: current=1031.18, would add=37.26, limit=500
+2026-02-10 09:25:57,206 - __main__ - INFO -    ✗ Houston: Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,206 - __main__ - INFO -    ✗ Los Angeles: Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,206 - __main__ - INFO -    ✗ Phoenix: Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,206 - __main__ - INFO -    ✗ Chicago: Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,206 - __main__ - INFO -    ✗ Philadelphia: Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,206 - __main__ - INFO -    ✗ Dallas: Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,206 - __main__ - INFO -    ✗ Indianapolis: Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,207 - __main__ - INFO -    ✗ Fort Worth: Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,207 - __main__ - INFO -    ✗ Los Angeles: Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,207 - __main__ - INFO -    ✗ Denver: Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,207 - __main__ - INFO -    ✗ Washington DC: Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,207 - __main__ - INFO -    ✗ Columbus: Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,207 - __main__ - INFO -    ✗ Phoenix: Daily exposure limit: current=1031.18, would add=50.0, limit=500
+2026-02-10 09:25:57,207 - __main__ - INFO - 💤 No signals to execute this cycle
+2026-02-10 09:25:57,207 - __main__ - INFO - 📊 Updating dashboard...
+2026-02-10 09:25:57,213 - src.monitoring.dashboard - INFO - Dashboard exported to dashboard.json
+2026-02-10 09:25:57,218 - __main__ - INFO - ============================================================
+2026-02-10 09:25:57,218 - __main__ - INFO - ✅ Trading cycle complete
+2026-02-10 09:25:57,218 - __main__ - INFO - ============================================================
+2026-02-10 09:26:10,955 - src.database - INFO - Database initialized: weather_bot.db
+2026-02-10 09:26:10,955 - src.trading.executor - WARNING - ⚠ Simmer SDK not found. Install with: pip install simmer-sdk
+For Phase 1 sandbox testing, trades will be simulated.
+2026-02-10 09:26:10,955 - __main__ - INFO - 🤖 Weather Trading Bot initialized (mode: sandbox)
+2026-02-10 09:26:10,956 - __main__ - INFO - Running single cycle (--once mode)
+2026-02-10 09:26:10,956 - __main__ - INFO - ============================================================
+2026-02-10 09:26:10,956 - __main__ - INFO - 🔄 Starting trading cycle
+2026-02-10 09:26:10,956 - __main__ - INFO - ============================================================
+2026-02-10 09:26:10,956 - __main__ - INFO - 📡 Fetching NOAA forecasts...
+2026-02-10 09:26:39,167 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:26:40,484 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:26:42,728 - src.noaa.client - ERROR - NOAA API error 503: https://api.weather.gov/gridpoints/SGX/57,14/forecast/hourly
+2026-02-10 09:26:50,937 - __main__ - WARNING - No forecast data for San Diego
+2026-02-10 09:26:50,994 - __main__ - INFO - ✓ Retrieved 19 forecasts
+2026-02-10 09:26:50,994 - __main__ - INFO - 📡 Fetching Polymarket markets...
+2026-02-10 09:26:52,002 - src.polymarket.client - INFO - Found 6 unique weather markets
+2026-02-10 09:26:52,009 - src.polymarket.parser - WARNING - Could not parse date: Formula 1
+2026-02-10 09:26:52,009 - src.polymarket.parser - WARNING - Could not parse date: Eurovision 2023
+2026-02-10 09:26:52,009 - src.polymarket.parser - WARNING - Could not parse date: Formula 1
+2026-02-10 09:26:52,009 - src.polymarket.parser - WARNING - Could not parse date: Formula 1
+2026-02-10 09:26:52,009 - src.polymarket.parser - INFO - Filtered 1 → 0 tradeable markets
+2026-02-10 09:26:52,009 - __main__ - INFO - 🧪 No real weather markets found. Generating mock markets for sandbox testing...
+2026-02-10 09:26:52,010 - src.polymarket.mock_markets - INFO - 🧪 Generated 31 mock weather markets for sandbox testing
+2026-02-10 09:26:52,010 - __main__ - INFO - ✓ Generated 31 mock markets
+2026-02-10 09:26:52,010 - __main__ - INFO - ✓ Retrieved 31 weather markets
+2026-02-10 09:26:52,011 - __main__ - INFO - 🎯 Generating trading signals...
+2026-02-10 09:26:52,012 - src.signals.engine - INFO - Generated 23 signals from 31 markets
+2026-02-10 09:26:52,012 - __main__ - INFO - ✓ Generated 23 signals
+2026-02-10 09:26:52,074 - __main__ - INFO - ⚠️  Filtering through risk management...
+2026-02-10 09:26:52,075 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_3d357141
+2026-02-10 09:26:52,075 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_87609870
+2026-02-10 09:26:52,076 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_71e191c3
+2026-02-10 09:26:52,077 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_8b1bced0
+2026-02-10 09:26:52,078 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_e1c1bc90
+2026-02-10 09:26:52,078 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_ce110814
+2026-02-10 09:26:52,079 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_968b099f
+2026-02-10 09:26:52,079 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_0423eb3a
+2026-02-10 09:26:52,080 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_7b6ae686
+2026-02-10 09:26:52,081 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_ffeb0ef8
+2026-02-10 09:26:52,081 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_bcc2d907
+2026-02-10 09:26:52,082 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_aa2dff78
+2026-02-10 09:26:52,083 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_67952e64
+2026-02-10 09:26:52,083 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_18c38bbd
+2026-02-10 09:26:52,084 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_26ea73bc
+2026-02-10 09:26:52,084 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_3c4aa4fc
+2026-02-10 09:26:52,085 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_8dc78d6d
+2026-02-10 09:26:52,086 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_d7aeb1c0
+2026-02-10 09:26:52,086 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_3d77885f
+2026-02-10 09:26:52,087 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_6919c635
+2026-02-10 09:26:52,087 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_ab73485f
+2026-02-10 09:26:52,088 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_0927cadd
+2026-02-10 09:26:52,088 - src.trading.risk - INFO - ✓ Signal passed risk checks: signal_b2b80c76
+2026-02-10 09:26:52,089 - src.trading.risk - INFO - Risk filter: 23 approved, 0 rejected (from 23 total)
+2026-02-10 09:26:52,089 - __main__ - INFO - ✓ Risk filter: 23 approved, 0 rejected
+2026-02-10 09:26:52,089 - __main__ - INFO - 💰 Executing 23 trades...
+2026-02-10 09:26:52,089 - src.trading.executor - INFO - 🔄 Executing trade trade_3f0094cb: SELL Columbus for $38.99
+2026-02-10 09:26:52,089 - src.trading.executor - INFO - ✅ Trade executed: trade_3f0094cb - sell @ 0.356
+2026-02-10 09:26:52,091 - src.database - INFO - Saved trade: trade_3f0094cb (executed)
+2026-02-10 09:26:52,093 - __main__ - INFO - ✅ Trade executed successfully: trade_3f0094cb - sell Will Columbus high temperature exceed 37°F on Febr...
+2026-02-10 09:26:52,093 - src.trading.executor - INFO - 🔄 Executing trade trade_db41be3e: SELL Jacksonville for $41.66
+2026-02-10 09:26:52,093 - src.trading.executor - INFO - ✅ Trade executed: trade_db41be3e - sell @ 0.372
+2026-02-10 09:26:52,095 - src.database - INFO - Saved trade: trade_db41be3e (executed)
+2026-02-10 09:26:52,097 - __main__ - INFO - ✅ Trade executed successfully: trade_db41be3e - sell Will Jacksonville high temperature exceed 78°F on ...
+2026-02-10 09:26:52,097 - src.trading.executor - INFO - 🔄 Executing trade trade_dde74374: SELL Fort Worth for $39.33
+2026-02-10 09:26:52,097 - src.trading.executor - INFO - ✅ Trade executed: trade_dde74374 - sell @ 0.373
+2026-02-10 09:26:52,100 - src.database - INFO - Saved trade: trade_dde74374 (executed)
+2026-02-10 09:26:52,102 - __main__ - INFO - ✅ Trade executed successfully: trade_dde74374 - sell Will Fort Worth high temperature exceed 71°F on Fe...
+2026-02-10 09:26:52,102 - src.trading.executor - INFO - 🔄 Executing trade trade_ec9f5f09: SELL Indianapolis for $42.24
+2026-02-10 09:26:52,102 - src.trading.executor - INFO - ✅ Trade executed: trade_ec9f5f09 - sell @ 0.402
+2026-02-10 09:26:52,104 - src.database - INFO - Saved trade: trade_ec9f5f09 (executed)
+2026-02-10 09:26:52,107 - __main__ - INFO - ✅ Trade executed successfully: trade_ec9f5f09 - sell Will Indianapolis high temperature exceed 41°F on ...
+2026-02-10 09:26:52,107 - src.trading.executor - INFO - 🔄 Executing trade trade_472ae390: BUY Los Angeles for $49.46
+2026-02-10 09:26:52,107 - src.trading.executor - INFO - ✅ Trade executed: trade_472ae390 - buy @ 0.442
+2026-02-10 09:26:52,109 - src.database - INFO - Saved trade: trade_472ae390 (executed)
+2026-02-10 09:26:52,111 - __main__ - INFO - ✅ Trade executed successfully: trade_472ae390 - buy Will Los Angeles high temperature exceed 61°F on F...
+2026-02-10 09:26:52,111 - src.trading.executor - INFO - 🔄 Executing trade trade_94e90085: BUY Phoenix for $46.59
+2026-02-10 09:26:52,111 - src.trading.executor - INFO - ✅ Trade executed: trade_94e90085 - buy @ 0.446
+2026-02-10 09:26:52,114 - src.database - INFO - Saved trade: trade_94e90085 (executed)
+2026-02-10 09:26:52,116 - __main__ - INFO - ✅ Trade executed successfully: trade_94e90085 - buy Will Phoenix high temperature exceed 76°F on Febru...
+2026-02-10 09:26:52,116 - src.trading.executor - INFO - 🔄 Executing trade trade_4929d26b: BUY San Francisco for $50.0
+2026-02-10 09:26:52,116 - src.trading.executor - INFO - ✅ Trade executed: trade_4929d26b - buy @ 0.553
+2026-02-10 09:26:52,119 - src.database - INFO - Saved trade: trade_4929d26b (executed)
+2026-02-10 09:26:52,121 - __main__ - INFO - ✅ Trade executed successfully: trade_4929d26b - buy Will San Francisco high temperature exceed 55°F on...
+2026-02-10 09:26:52,121 - src.trading.executor - INFO - 🔄 Executing trade trade_5fcd94f5: BUY Philadelphia for $50.0
+2026-02-10 09:26:52,121 - src.trading.executor - INFO - ✅ Trade executed: trade_5fcd94f5 - buy @ 0.595
+2026-02-10 09:26:52,123 - src.database - INFO - Saved trade: trade_5fcd94f5 (executed)
+2026-02-10 09:26:52,126 - __main__ - INFO - ✅ Trade executed successfully: trade_5fcd94f5 - buy Will Philadelphia high temperature exceed 36°F on ...
+2026-02-10 09:26:52,126 - src.trading.executor - INFO - 🔄 Executing trade trade_ca70d441: BUY New York for $50.0
+2026-02-10 09:26:52,126 - src.trading.executor - INFO - ✅ Trade executed: trade_ca70d441 - buy @ 0.586
+2026-02-10 09:26:52,128 - src.database - INFO - Saved trade: trade_ca70d441 (executed)
+2026-02-10 09:26:52,130 - __main__ - INFO - ✅ Trade executed successfully: trade_ca70d441 - buy Will New York high temperature exceed 35°F on Febr...
+2026-02-10 09:26:52,130 - src.trading.executor - INFO - 🔄 Executing trade trade_7a9cc0c2: SELL Denver for $50.0
+2026-02-10 09:26:52,130 - src.trading.executor - INFO - ✅ Trade executed: trade_7a9cc0c2 - sell @ 0.58
+2026-02-10 09:26:52,133 - src.database - INFO - Saved trade: trade_7a9cc0c2 (executed)
+2026-02-10 09:26:52,135 - __main__ - INFO - ✅ Trade executed successfully: trade_7a9cc0c2 - sell Will Denver high temperature exceed 64°F on Februa...
+2026-02-10 09:26:52,135 - src.trading.executor - INFO - 🔄 Executing trade trade_04c16deb: BUY Chicago for $50.0
+2026-02-10 09:26:52,135 - src.trading.executor - INFO - ✅ Trade executed: trade_04c16deb - buy @ 0.596
+2026-02-10 09:26:52,137 - src.database - INFO - Saved trade: trade_04c16deb (executed)
+2026-02-10 09:26:52,140 - __main__ - INFO - ✅ Trade executed successfully: trade_04c16deb - buy Will Chicago high temperature exceed 34°F on Febru...
+2026-02-10 09:26:52,140 - src.trading.executor - INFO - 🔄 Executing trade trade_f3e72a79: SELL San Jose for $50.0
+2026-02-10 09:26:52,140 - src.trading.executor - INFO - ✅ Trade executed: trade_f3e72a79 - sell @ 0.646
+2026-02-10 09:26:52,142 - src.database - INFO - Saved trade: trade_f3e72a79 (executed)
+2026-02-10 09:26:52,144 - __main__ - INFO - ✅ Trade executed successfully: trade_f3e72a79 - sell Will San Jose high temperature exceed 61°F on Febr...
+2026-02-10 09:26:52,144 - src.trading.executor - INFO - 🔄 Executing trade trade_dfa3b438: BUY Washington DC for $50.0
+2026-02-10 09:26:52,144 - src.trading.executor - INFO - ✅ Trade executed: trade_dfa3b438 - buy @ 0.711
+2026-02-10 09:26:52,147 - src.database - INFO - Saved trade: trade_dfa3b438 (executed)
+2026-02-10 09:26:52,149 - __main__ - INFO - ✅ Trade executed successfully: trade_dfa3b438 - buy Will Washington DC high temperature exceed 41°F on...
+2026-02-10 09:26:52,149 - src.trading.executor - INFO - 🔄 Executing trade trade_86aa73bf: SELL New York for $50.0
+2026-02-10 09:26:52,149 - src.trading.executor - INFO - ✅ Trade executed: trade_86aa73bf - sell @ 0.711
+2026-02-10 09:26:52,151 - src.database - INFO - Saved trade: trade_86aa73bf (executed)
+2026-02-10 09:26:52,153 - __main__ - INFO - ✅ Trade executed successfully: trade_86aa73bf - sell Will New York high temperature exceed 42°F on Febr...
+2026-02-10 09:26:52,154 - src.trading.executor - INFO - 🔄 Executing trade trade_61474b98: BUY San Jose for $50.0
+2026-02-10 09:26:52,154 - src.trading.executor - INFO - ✅ Trade executed: trade_61474b98 - buy @ 0.718
+2026-02-10 09:26:52,156 - src.database - INFO - Saved trade: trade_61474b98 (executed)
+2026-02-10 09:26:52,158 - __main__ - INFO - ✅ Trade executed successfully: trade_61474b98 - buy Will San Jose high temperature exceed 54°F on Febr...
+2026-02-10 09:26:52,158 - src.trading.executor - INFO - 🔄 Executing trade trade_d8c7a5f8: BUY Denver for $50.0
+2026-02-10 09:26:52,158 - src.trading.executor - INFO - ✅ Trade executed: trade_d8c7a5f8 - buy @ 0.749
+2026-02-10 09:26:52,161 - src.database - INFO - Saved trade: trade_d8c7a5f8 (executed)
+2026-02-10 09:26:52,163 - __main__ - INFO - ✅ Trade executed successfully: trade_d8c7a5f8 - buy Will Denver high temperature exceed 58°F on Februa...
+2026-02-10 09:26:52,163 - src.trading.executor - INFO - 🔄 Executing trade trade_54011813: BUY Los Angeles for $50.0
+2026-02-10 09:26:52,163 - src.trading.executor - INFO - ✅ Trade executed: trade_54011813 - buy @ 0.752
+2026-02-10 09:26:52,165 - src.database - INFO - Saved trade: trade_54011813 (executed)
+2026-02-10 09:26:52,168 - __main__ - INFO - ✅ Trade executed successfully: trade_54011813 - buy Will Los Angeles high temperature exceed 60°F on F...
+2026-02-10 09:26:52,168 - src.trading.executor - INFO - 🔄 Executing trade trade_4f31732f: SELL Fort Worth for $50.0
+2026-02-10 09:26:52,168 - src.trading.executor - INFO - ✅ Trade executed: trade_4f31732f - sell @ 0.757
+2026-02-10 09:26:52,170 - src.database - INFO - Saved trade: trade_4f31732f (executed)
+2026-02-10 09:26:52,173 - __main__ - INFO - ✅ Trade executed successfully: trade_4f31732f - sell Will Fort Worth high temperature exceed 73°F on Fe...
+2026-02-10 09:26:52,173 - src.trading.executor - INFO - 🔄 Executing trade trade_3c9b7ea5: SELL Charlotte for $50.0
+2026-02-10 09:26:52,173 - src.trading.executor - INFO - ✅ Trade executed: trade_3c9b7ea5 - sell @ 0.765
+2026-02-10 09:26:52,175 - src.database - INFO - Saved trade: trade_3c9b7ea5 (executed)
+2026-02-10 09:26:52,178 - __main__ - INFO - ✅ Trade executed successfully: trade_3c9b7ea5 - sell Will Charlotte high temperature exceed 71°F on Feb...
+2026-02-10 09:26:52,178 - src.trading.executor - INFO - 🔄 Executing trade trade_1cbc38c7: SELL San Antonio for $50.0
+2026-02-10 09:26:52,178 - src.trading.executor - INFO - ✅ Trade executed: trade_1cbc38c7 - sell @ 0.778
+2026-02-10 09:26:52,181 - src.database - INFO - Saved trade: trade_1cbc38c7 (executed)
+2026-02-10 09:26:52,183 - __main__ - INFO - ✅ Trade executed successfully: trade_1cbc38c7 - sell Will San Antonio high temperature exceed 80°F on F...
+2026-02-10 09:26:52,183 - src.trading.executor - INFO - 🔄 Executing trade trade_3faf2438: SELL Houston for $50.0
+2026-02-10 09:26:52,183 - src.trading.executor - INFO - ✅ Trade executed: trade_3faf2438 - sell @ 0.8
+2026-02-10 09:26:52,186 - src.database - INFO - Saved trade: trade_3faf2438 (executed)
+2026-02-10 09:26:52,188 - __main__ - INFO - ✅ Trade executed successfully: trade_3faf2438 - sell Will Houston high temperature exceed 81°F on Febru...
+2026-02-10 09:26:52,188 - src.trading.executor - INFO - 🔄 Executing trade trade_db1c565d: SELL Austin for $50.0
+2026-02-10 09:26:52,188 - src.trading.executor - INFO - ✅ Trade executed: trade_db1c565d - sell @ 0.828
+2026-02-10 09:26:52,191 - src.database - INFO - Saved trade: trade_db1c565d (executed)
+2026-02-10 09:26:52,193 - __main__ - INFO - ✅ Trade executed successfully: trade_db1c565d - sell Will Austin high temperature exceed 79°F on Februa...
+2026-02-10 09:26:52,193 - src.trading.executor - INFO - 🔄 Executing trade trade_fc20801a: SELL Dallas for $50.0
+2026-02-10 09:26:52,193 - src.trading.executor - INFO - ✅ Trade executed: trade_fc20801a - sell @ 0.839
+2026-02-10 09:26:52,196 - src.database - INFO - Saved trade: trade_fc20801a (executed)
+2026-02-10 09:26:52,198 - __main__ - INFO - ✅ Trade executed successfully: trade_fc20801a - sell Will Dallas high temperature exceed 75°F on Februa...
+2026-02-10 09:26:52,198 - __main__ - INFO - 📊 Updating dashboard...
+2026-02-10 09:26:52,205 - src.monitoring.dashboard - INFO - Dashboard exported to dashboard.json
+2026-02-10 09:26:52,210 - __main__ - INFO - ============================================================
+2026-02-10 09:26:52,210 - __main__ - INFO - ✅ Trading cycle complete
+2026-02-10 09:26:52,210 - __main__ - INFO - ============================================================

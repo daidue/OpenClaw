@@ -398,7 +398,13 @@ class SignalEngine:
         
         # Close to market close
         if market.closes_at:
-            hours_to_close = (market.closes_at - datetime.now()).total_seconds() / 3600
+            from datetime import timezone
+            # Handle both timezone-aware and naive datetimes
+            if market.closes_at.tzinfo is None:
+                now = datetime.now()
+            else:
+                now = datetime.now(timezone.utc)
+            hours_to_close = (market.closes_at - now).total_seconds() / 3600
             if hours_to_close < 24:
                 risks.append("Market closing soon - limited time to exit")
         
