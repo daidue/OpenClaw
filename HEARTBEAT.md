@@ -22,27 +22,36 @@ Rotate which business unit gets the deep-dive each beat:
 **Deep-dive:** Read standup, check KPIs, review recent memory notes, resolve blockers
 **Quick-scan:** Check inbox status, verify agent wrote a daily note today, note any alerts
 
-### 3. Cross-Pollination Check (every beat — 1 min)
+### 3. Agent Liveness Check (every beat — 30 sec)
+- Did each active Owner/Operator write to `memory/YYYY-MM-DD.md` today?
+  - Grind: `workspace-commerce/memory/` — expect daily note by noon
+  - Rush: `workspace-titlerun/memory/` — expect daily note by noon (Phase 1: may be sparse)
+  - Edge: `workspace-polymarket/memory/` — expect note on activation days
+- If no activity from an Owner/Operator for 24h during active phase → check their session status
+- If no activity for 48h → alert Taylor: "[Agent] non-responsive for 48h"
+- Quick check: `sessions_list` — are heartbeats firing?
+
+### 4. Cross-Pollination Check (every beat — 1 min)
 - Any `[CROSS-POLLINATION FLAG]` in Owner/Operator standups?
 - Any `[CROSS-BIZ]` peer messages to review retroactively?
 - Route insights to relevant Owner/Operators via their inboxes
 - Update `intelligence/portfolio-feed.md` if significant
 
-### 4. Token Budget Check (1x daily, morning)
+### 5. Token Budget Check (1x daily, morning)
 - Check intelligence pipeline output: `memory/daily/*-costs.md` (when available)
 - Any agent over 150% of daily budget? → investigate, throttle if needed
 - Update PORTFOLIO.md budget actuals
 
-### 5. Morning Brief (8:30am via cron — see cron config)
+### 6. Morning Brief (8:30am via cron — see cron config)
 - Compile 8-line portfolio brief from Owner/Operator standups
 - Send to Taylor via Telegram
 
-### 6. Evening Brief (8:00pm via cron)
+### 7. Evening Brief (8:00pm via cron)
 - Day recap, overnight priorities
 - Conditional: skip if nothing actionable, but send at least 1 brief/day
 - Include token usage summary
 
-### 7. Weekly Portfolio Review (Sunday via cron)
+### 8. Weekly Portfolio Review (Sunday via cron)
 - Collect all Owner/Operator weekly scorecards
 - Score each business unit (🟢🟡🔴)
 - Top 3 wins, top 3 concerns, decisions needed

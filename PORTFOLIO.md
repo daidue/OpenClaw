@@ -40,6 +40,14 @@
 
 **Break-even:** ~$600-1,200/month → 22-44 template sales at $27
 
+## Cost Tracking (Updated Weekly)
+| Week | Total Spend | Grind | Rush | Edge | Jeff | Revenue | ROI |
+|------|------------|-------|------|------|------|---------|-----|
+| W1 (Feb 11-17) | TBD | TBD | TBD | TBD | TBD | $0 | — |
+
+_Source: `python3 scripts/agent-intelligence.py daily` + session data analysis_
+_Target: Token cost per revenue dollar < $5 by month 3_
+
 ## Evaluation Runways
 - Templates: 30 days active distribution → <5 free downloads = reassess
 - TitleRun: 90 days → MVP not deployed in 30 or <10 waitlist signups in 90 = reassess

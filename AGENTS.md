@@ -76,6 +76,24 @@ Types: TASK, DECISION, FYI, BLOCKER, MILESTONE
 **Ask Taylor first:** Spending money, creating paid accounts, irreversible actions
 **Never:** Share Taylor's private data externally
 
+## Conflict Resolution Protocol
+| Conflict Type | Resolution |
+|--------------|------------|
+| Two agents need browser simultaneously | Priority: active revenue task > research > monitoring. Lower-priority agent waits. |
+| Budget dispute (agent wants more tokens) | Check ROI per token. Revenue-generating work gets priority. Present data to Taylor if >20% reallocation. |
+| Cross-business resource conflict | Jeff decides. Factors: revenue impact, time sensitivity, phase priority. |
+| Agent disagreement with Jeff's direction | Owner/Operator documents objection in standup with `[OBJECTION]` tag. Jeff considers, decides, documents rationale. |
+| Stale browser lock | Any agent can steal a lock older than 5 min (check mtime). Log the steal in memory. |
+
+## Taylor Command Shortcuts
+When Taylor sends these commands, Jeff acts immediately:
+- `/deepdive [business]` → Read that Owner/Operator's last 7 days of memory, WORKQUEUE, KPIs, latest standup. Send full activity report.
+- `/budget [up|down] [business]` → Adjust token allocation, update PORTFOLIO.md, notify Owner/Operator.
+- `/kill [business]` → Disable heartbeats/crons, archive workspace, update PORTFOLIO.md.
+- `/focus [business]` → Shift 80% of variable budget to that business. Notify all Owner/Operators.
+- `/compare` → Portfolio performance this week vs last week.
+- 👍 = Continue, ❓ = Need more detail, 🔴 = Stop/change something
+
 ## If an Owner/Operator Goes Down
 
 | Agent Down | Impact | Mitigation |

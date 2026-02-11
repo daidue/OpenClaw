@@ -45,6 +45,30 @@
 | 2026-02-10 | Revenue pivot — SELL, don't build | 70% of activity was non-revenue. Focus on distribution. |
 | 2026-02-10 | Reddit + directories + communities | Primary distribution channels for templates |
 
+## Knowledge Compounding Assessment (2026-02-11)
+The 5 disabled infrastructure crons are FULLY REPLACED by the new intelligence pipeline:
+- `infra:hourly-summarizer` → `intelligence:hourly` (reads real session JSONL, not empty logs)
+- `infra:cross-signal-detection` → `intelligence:signals` (same function, better implementation)
+- `infra:daily-context-sync` → `intelligence:daily` (consolidated daily summary)
+- `infra:weekly-synthesis` → `intelligence:weekly` (weekly trend analysis)
+- `infra:decision-patterns` → included in `intelligence:daily` output
+Old crons were zombies (reading nonexistent `sessions.log`). New crons read actual 93MB session data. Knowledge compounding is ACTIVE, not disabled.
+
+## Deferred Items (Require Taylor Approval or Config Restart)
+1. **Edge activation crons:** Design calls for 2x daily crons (8am, 8pm) to activate Edge for market scanning during Phase 0. Not yet created. Edge currently has no activation mechanism. **CREATE THESE.**
+2. **Grind heartbeat tightening:** When revenue > $100/month, tighten from 60m to 30m.
+3. **Cost tracking in intelligence pipeline:** Gap #15 — `agent-intelligence.py` doesn't track token costs. Enhancement needed.
+4. **Multiple browser profiles:** Long-term fix for browser contention. One profile per business unit.
+5. **Session file rotation:** Session archival cron exists but hasn't run yet. Monitor disk usage.
+
+## Heartbeat Configuration Rationale
+| Agent | Design Target | Deployed | Rationale |
+|-------|--------------|----------|-----------|
+| Jeff | 90m | 90m | Matches design. Low overhead portfolio management. |
+| Grind | 30m | 60m (config) / 30m (HEARTBEAT.md title) | **Intentional cost-saving.** 60m in config saves ~50% vs 30m. HEARTBEAT.md says 30m as aspirational. Can tighten when revenue justifies cost. |
+| Rush | 45m (Phase 3) | 120m | **Intentional.** Phase 1 PREP doesn't need 45m frequency. 120m saves ~63%. Will shorten as phases progress. |
+| Edge | 60m | 0m (disabled) | **Intentional.** Phase 0 RESEARCH activated via cron, not heartbeat. No standing heartbeat until Phase 1 SANDBOX. |
+
 ## Lessons Learned
 - Agents need clear missions and KPIs or they produce nothing
 - Standing heartbeats on idle agents = pure waste
