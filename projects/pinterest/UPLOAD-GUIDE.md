@@ -50,6 +50,29 @@ Go to pinterest.com → Click "Create" → "Create Pin" for each one.
 
 ---
 
+## PIN 11 — Free Hook (Free)
+- **File:** `pin-11-free-hook.png`
+- **Title:** Free Notion Invoice Tracker — Never Miss a Payment Again
+- **Description:** Track all your invoices, manage clients, and monitor payments in this 100% free Notion template. Perfect for freelancers who need to get organized fast. No credit card, no strings attached. Download and duplicate in one click. #FreeNotionTemplate #InvoiceTracker #FreelanceTools #Freelancing #NotionTemplate #FreeTools #SmallBusiness
+- **Link:** https://jeffthenotionguy.gumroad.com/l/free-invoice-tracker
+- **Board:** Invoice & Finance Templates
+
+## PIN 12 — Never Miss a Payment (Free)
+- **File:** `pin-12-never-miss.png`
+- **Title:** Never Miss a Payment Again — Free Freelance Invoice Tracker
+- **Description:** This free Notion template helps you track every invoice, organize clients, and monitor payment status so nothing slips through the cracks. Simple setup, professional results. Perfect for freelancers tired of chasing late payments. #FreelanceInvoice #NotionTemplate #FreeTemplate #PaymentTracking #Freelancing #GetPaid #BusinessOrganization
+- **Link:** https://jeffthenotionguy.gumroad.com/l/free-invoice-tracker
+- **Board:** Freelance Business Tips
+
+## PIN 13 — Like a Pro (Free)
+- **File:** `pin-13-like-a-pro.png`
+- **Title:** Track Invoices Like a Pro — Free Notion Template for Freelancers
+- **Description:** Professional invoice tracking doesn't have to be complicated. This free Notion template lets you track every invoice, organize clients, and monitor payments in one simple workspace. Ready in 5 minutes. Zero setup hassle. #NotionTemplate #FreelanceTools #InvoiceTracking #Freelancing #ProductivityTools #FreeTemplate #NotionSetup
+- **Link:** https://jeffthenotionguy.gumroad.com/l/free-invoice-tracker
+- **Board:** Notion Templates for Freelancers
+
+---
+
 ## Quick Upload Steps (per pin):
 1. Go to pinterest.com/pin-creation-tool/
 2. Upload the image file
@@ -59,4 +82,4 @@ Go to pinterest.com → Click "Create" → "Create Pin" for each one.
 6. Select the Board
 7. Publish
 
-~2 min per pin, ~12 min total for all 6.
+~2 min per pin, ~18 min total for all 9 pending pins.
