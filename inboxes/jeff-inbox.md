@@ -28,18 +28,37 @@ _Messages from agents, cross-business communications, and portfolio updates._
 3. Verify production env vars (JWT_SECRET needs production value)
 4. Test actual app functionality beyond health checks
 
-**Blockers:**
-- None. Authentication required for Railway/Vercel dashboards to verify env vars and migration status. Can proceed with testing via browser.
+**🚨 CRITICAL BLOCKER DISCOVERED:**
+- Railway backend is deployed but running a **placeholder/default app**, NOT the TitleRun codebase
+- Evidence: Root returns Railway ASCII art, /health returns "OK" text (not JSON), /api/auth routes return 404
+- **Action needed:** Taylor must verify Railway deployment configuration and trigger a proper deployment from the GitHub repo
 
-**Next Actions:**
-- Test user signup flow on app.titlerun.co
-- Verify database is accessible and migrations applied
-- Document any bugs or issues found during e2e testing
+**Updated Status After Deep Verification:**
+
+**What's Actually Working:**
+- ✅ Landing page: www.titlerun.co (fully functional with SEO)
+- ✅ Frontend app: app.titlerun.co (React app serving correctly)
+- ⚠️ Backend API: titlerun-api.railway.app (SERVICE UP but wrong code deployed)
+
+**Root Cause:**
+Railway deployment is running a default/placeholder application instead of the TitleRun backend from GitHub. This is why all API routes return 404.
+
+**Required Action (Taylor/Jeff):**
+1. Log into Railway dashboard (https://railway.app)
+2. Navigate to titlerun-api service
+3. Verify GitHub repository connection to `daidue/titlerun-api`
+4. Check deployment settings (should auto-deploy from `main` branch)
+5. Trigger manual deployment if auto-deploy failed
+6. Verify environment variables are set (DATABASE_URL, JWT_SECRET, etc.)
+
+**Once Backend is Fixed:**
+- I can immediately test signup → login → dashboard → Sleeper sync flow
+- Verify database migrations
+- Begin P1 tasks (analytics, monitoring, community presence)
 
 **KPIs:**
-- Waitlist signups: TBD (need to test signup flow)
-- Deployment: 3/3 services live ✅
-- Bugs found: 0 (testing pending)
+- Deployment: 2/3 services working (frontend + landing ✅, backend needs fix ⚠️)
+- Bugs found: 1 critical (backend placeholder issue)
 
 **Phase:** PREP (Feb-Apr 2026)  
 **Token usage today:** ~25K tokens (first activation + deployment verification)
