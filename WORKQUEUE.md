@@ -10,8 +10,17 @@
 - [ ] **Post to r/Notiontemplates** — Once karma sufficient, create template showcase post
 - [ ] **Post to r/notioncreations** — Once karma sufficient, create template showcase post
 
-### Community Outreach (Weekly)
-- [ ] **Find 3 Notion Discord servers** — Join, contribute value, share free template
+### Community Outreach (Weekly) — see `research/community-outreach-targets.md`
+- [ ] **Join Notion Made Simple (Facebook, 69K members)** — Observe rules, then share Lite template
+- [ ] **Join Notion for Students (Facebook, 30K members)** — Frame as free tool for student freelancers
+- [ ] **Join Tools For Thought (Discord, 18K members)** — Find template channel, share Lite
+- [ ] **Join Notion Community (Discord, 11K members)** — Share in template channel
+- [ ] **Post to r/NotionCreations** — Template sharing sub, direct link required (no karma gate)
+- [ ] **Post to r/Notion self-promo thread** — Free template post (check thread schedule)
+- [ ] **Join Notion Tips & Templates (Facebook, 7K)** — Share with walkthrough screenshots
+- [ ] **Join No Cost Templates & Tools (Facebook, 4K)** — Free template = perfect fit
+- [ ] **Join Notion Club (Discord, 4K)** — Creator-focused, share + network
+- [ ] **Join Peak Freelance (Slack)** — Contribute first, then share as tool recommendation
 - [ ] **Cold DM 5 freelance newsletter owners** — Offer 30% affiliate commission
 
 ### Gumroad Optimization
