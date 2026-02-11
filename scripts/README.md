@@ -50,3 +50,11 @@ Edit constants at the top of `agent-intelligence.py`:
 - `AGENTS` — list of agent IDs
 - `KNOWN_PROJECTS` — topics to detect
 - Paths are auto-derived from `~/.openclaw/`
+
+## Future Enhancement: Cost Tracking (Gap 15)
+The intelligence pipeline needs a `cost` subcommand to calculate token costs from session JSONL data.
+- Anthropic pricing: Sonnet input $3/MTok, output $15/MTok; Opus input $15/MTok, output $75/MTok
+- Parse token counts from session JSONL `usage` fields
+- Calculate per-agent daily/weekly/monthly costs
+- Compare to budget targets in PORTFOLIO.md
+- Priority: Add when budget tracking becomes critical (post-revenue)
