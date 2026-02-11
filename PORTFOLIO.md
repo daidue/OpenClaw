@@ -45,13 +45,47 @@
 |------|------------|-------|------|------|------|---------|-----|
 | W1 (Feb 11-17) | TBD | TBD | TBD | TBD | TBD | $0 | — |
 
-_Source: `python3 scripts/agent-intelligence.py daily` + session data analysis_
+_Source: `bash scripts/cost-tracker.sh daily` (run by Jeff each morning heartbeat)_
+_Daily cost reports: `memory/daily/YYYY-MM-DD-costs.md`_
 _Target: Token cost per revenue dollar < $5 by month 3_
 
-## Evaluation Runways
-- Templates: 30 days active distribution → <5 free downloads = reassess
-- TitleRun: 90 days → MVP not deployed in 30 or <10 waitlist signups in 90 = reassess
-- Polymarket: 60 days → <55% win rate over 200 sandbox trades = kill
+### Revenue Tracking
+- **Grind reports daily revenue** in standup to Jeff's inbox
+- **Jeff updates this table weekly** (Sunday portfolio review)
+- **Gumroad dashboard** is source of truth for template revenue
+- **First dollar milestone** → immediately message Taylor 🎉
+
+| Date | Source | Amount | Cumulative | Notes |
+|------|--------|--------|-----------|-------|
+| — | — | — | $0 | Awaiting first sale |
+
+## Evaluation Runways & Hard Kill Criteria
+
+### Templates (Grind) — REVENUE CLOCK STARTS 2026-02-11
+| Checkpoint | Date | Gate | Fail Action |
+|-----------|------|------|-------------|
+| Week 1 | Feb 18 | ≥1 free download | Debug distribution |
+| Week 2 | Feb 25 | ≥5 free downloads | Pivot channels |
+| Day 30 | Mar 13 | ≥25 free downloads + ≥1 paid sale | **REASSESS: cut budget to 30% or kill** |
+| Day 60 | Apr 12 | ≥$100 revenue cumulative | **KILL if $0 revenue** |
+| Day 90 | May 12 | ≥$300/month run rate | **KILL if <$100/month** |
+
+### TitleRun (Rush)
+| Checkpoint | Date | Gate | Fail Action |
+|-----------|------|------|-------------|
+| Day 30 | Mar 13 | MVP deployed + landing page live | **Pause budget, reassess** |
+| Day 60 | Apr 12 | ≥50 waitlist signups | Pivot growth strategy |
+| Day 90 | May 12 | ≥10 waitlist signups | **KILL if <10** |
+
+### Polymarket (Edge)
+| Checkpoint | Date | Gate | Fail Action |
+|-----------|------|------|-------------|
+| Day 30 | Mar 13 | Backtesting complete, edge quantified | **KILL if no testable edge** |
+| Day 60 | Apr 12 | ≥200 sandbox trades, ≥55% win rate | **KILL if <55%** |
+
+### Portfolio-Level Kill Switch
+- **If total spend exceeds $1,500 with $0 revenue by Day 45 (Mar 28):** Emergency review. Cut to Jeff + Grind only (Survival Mode).
+- **Break-even target:** Revenue ≥ daily token cost by Day 90.
 
 ## Health Scoring
 | Score | Definition | Action |

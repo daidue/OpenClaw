@@ -38,9 +38,12 @@ Rotate which business unit gets the deep-dive each beat:
 - Update `intelligence/portfolio-feed.md` if significant
 
 ### 5. Token Budget Check (1x daily, morning)
-- Check intelligence pipeline output: `memory/daily/*-costs.md` (when available)
-- Any agent over 150% of daily budget? → investigate, throttle if needed
-- Update PORTFOLIO.md budget actuals
+- Run: `bash scripts/cost-tracker.sh daily` → generates `memory/daily/YYYY-MM-DD-costs.md`
+- Read the output. Any agent over 150% of daily budget? → investigate, throttle if needed
+- If total > $50/day → CRITICAL: throttle sub-agent spawning, notify Taylor
+- If total > $37/day → WARNING: flag in evening brief
+- Update PORTFOLIO.md cost tracking table weekly with actuals
+- Cross-reference with `session_status` for token counts when available
 
 ### 6. Morning Brief (8:30am via cron — see cron config)
 - Compile 8-line portfolio brief from Owner/Operator standups
@@ -84,6 +87,13 @@ Rotate which business unit gets the deep-dive each beat:
 | API errors/rate limits | L2: Pause sub-agent spawning |
 | Budget at 200% or API degraded | L3: Survival mode (Jeff + Grind only) |
 | Total failure | L4: Alert Taylor via backup channel. Await manual recovery. |
+
+## Self-Recovery Check (every beat — 10 sec)
+- Check own last memory note timestamp
+- If gap > 3 hours during active hours: write recovery note, process backlogged inboxes FIRST
+- Check for `[PEER-DIRECT][DEGRADED-MODE]` messages in any inbox → ACK and reconcile
+- If Owner/Operators sent degraded-mode peer messages, log them and confirm normal ops resumed
+- Reference: `EMERGENCY-PROTOCOL.md` for full degraded mode details
 
 ## Rules
 - Delegate, don't do. If an Owner/Operator should handle it, send it to them.
