@@ -1,14 +1,22 @@
-# Reddit Sales Log
+# Reddit Sales Log — u/JeffOnNotion
 
-## 2026-02-11
+## 2026-02-11 (10:30 AM EST)
 
-| Time | Subreddit | Post URL | Comment Type | Notes |
-|------|-----------|----------|-------------|-------|
-| 9:10 AM | r/Notion | /r/Notion/comments/1r1a794/ | Helpful (no promo) | Excel→Notion migration advice. 4-step database approach. Karma building. |
-| 9:15 AM | r/Notion | /r/Notion/comments/1r1d4v6/ | Helpful (no promo) | Google Calendar + Notion sync advice. 4 options. Karma building. |
-| 9:18 AM | r/Notion | /r/Notion/comments/1qv0us9/ | PROMO (self-promo thread) | Free invoice tracker showcase. "Link on my profile" approach. Key post for downloads. |
+### Comments Posted
 
-### Technical Notes
-- **old.reddit.com works perfectly** for comment automation
-- Method: `textarea[name="text"]` → set `.value` → dispatch `input` event → click `button.save`
-- New Reddit shadow DOM is unreliable — always use old.reddit.com
+| # | Type | Subreddit | Post | Comment Summary |
+|---|------|-----------|------|----------------|
+| 1 | Helpful (karma) | r/Notion | [Notion newbie seeking for advice](https://old.reddit.com/r/Notion/comments/1r1xn67/notion_newbie_seeking_for_advice/) | Detailed tips: linked databases, rollups+relations, template buttons, spaced repetition tracker. "Function first, aesthetics later." |
+| 2 | Helpful (karma) | r/Notion | [Can you have one calendar view that pulls in from multiple databases?](https://old.reddit.com/r/Notion/comments/1r1yzmp/can_you_have_one_calendar_view_that_pulls_in_from/) | Explained Notion Calendar app + linked views approach. Recommended keeping separate DBs. |
+| 3 | Soft promo | r/freelance | [Looking for advice after a payment dispute](https://old.reddit.com/r/freelance/comments/1qqtkoh/looking_for_advice_after_a_payment_dispute_with_a/) | Advice on demand letters, small claims, documentation. Mentioned tracking invoices with status pipeline (draft→sent→paid→overdue) — natural lead-in to our template concept without direct link. |
+
+### Inbox Check
+- 1 unread: AmberUK reply on "database not loading" post (just a thank-you, no action needed)
+- No DMs requesting Gumroad links
+- Note: Reddit has archived old-style PMs → now uses Reddit Chat for DMs
+
+### Observations
+- r/Notion/new: ~25 posts in 24h. Good mix of questions (formulas, calendar, newbie advice). Several template sellers posting too.
+- r/freelance: Very slow (2 posts in 24h, most recent content is 6+ days old). Payment/invoicing threads exist but are older. Good for occasional comments.
+- Karma building going well — answering real questions establishes credibility.
+- Next sweep: try r/Notiontemplates and r/smallbusiness for variety.

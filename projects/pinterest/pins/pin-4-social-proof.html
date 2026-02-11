@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Proof - Pinterest Pin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            width: 1000px;
+            height: 1500px;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        .pin {
+            width: 1000px;
+            height: 1500px;
+            background: #1e3a8a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 100px 70px;
+            position: relative;
+        }
+        .pin::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 70% 30%, rgba(255, 107, 107, 0.15) 0%, transparent 60%);
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            width: 100%;
+        }
+        .stat-number {
+            font-size: 180px;
+            font-weight: 900;
+            color: #ff6b6b;
+            line-height: 1;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(255, 107, 107, 0.4);
+        }
+        .stat-text {
+            font-size: 52px;
+            font-weight: 600;
+            color: #f8f9fa;
+            line-height: 1.3;
+            margin-bottom: 80px;
+            max-width: 800px;
+        }
+        .solution-text {
+            font-size: 56px;
+            font-weight: 700;
+            color: #f8f9fa;
+            margin-bottom: 40px;
+            line-height: 1.2;
+        }
+        .product-name {
+            font-size: 42px;
+            font-weight: 600;
+            color: #ff6b6b;
+            margin-bottom: 60px;
+        }
+        .cta {
+            background: #ff6b6b;
+            color: white;
+            font-size: 44px;
+            font-weight: 700;
+            padding: 32px 75px;
+            border-radius: 50px;
+            display: inline-block;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+            margin-bottom: 100px;
+        }
+        .trust-section {
+            display: flex;
+            gap: 60px;
+            align-items: center;
+            justify-content: center;
+            padding-top: 40px;
+            border-top: 2px solid rgba(248, 249, 250, 0.2);
+            width: 100%;
+        }
+        .trust-item {
+            text-align: center;
+            color: #f8f9fa;
+        }
+        .trust-number {
+            font-size: 52px;
+            font-weight: 800;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+        .trust-label {
+            font-size: 24px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="pin">
+        <div class="content">
+            <div class="stat-number">47%</div>
+            <div class="stat-text">of freelancers struggle with invoicing</div>
+            
+            <div class="solution-text">We built the solution.</div>
+            
+            <div class="product-name">Professional Invoice Tracker</div>
+            
+            <div class="cta">Get It Free →</div>
+        </div>
+        
+        <div class="trust-section">
+            <div class="trust-item">
+                <div class="trust-number">2,000+</div>
+                <div class="trust-label">Downloads</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-number">4.9★</div>
+                <div class="trust-label">Rating</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-number">Free</div>
+                <div class="trust-label">Forever</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

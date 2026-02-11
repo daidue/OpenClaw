@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Elegant - Pinterest Pin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            width: 1000px;
+            height: 1500px;
+            overflow: hidden;
+            font-family: Georgia, 'Times New Roman', serif;
+        }
+        .pin {
+            width: 1000px;
+            height: 1500px;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 80px;
+            position: relative;
+        }
+        .accent-line {
+            width: 120px;
+            height: 6px;
+            background: #ff6b6b;
+            margin-bottom: 60px;
+        }
+        .headline {
+            font-size: 88px;
+            font-weight: 400;
+            color: #2d3748;
+            margin-bottom: 80px;
+            text-align: center;
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 45px;
+            margin-bottom: 80px;
+            width: 100%;
+            max-width: 700px;
+        }
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            font-size: 38px;
+            color: #2d3748;
+            font-weight: 400;
+        }
+        .check-icon {
+            width: 48px;
+            height: 48px;
+            background: #1e3a8a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            flex-shrink: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        .price-section {
+            margin-top: 60px;
+            text-align: center;
+        }
+        .price {
+            font-size: 96px;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 40px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        .cta {
+            background: #2d3748;
+            color: #f8f9fa;
+            font-size: 36px;
+            font-weight: 400;
+            padding: 28px 65px;
+            border-radius: 8px;
+            display: inline-block;
+            letter-spacing: 1px;
+        }
+        .brand {
+            position: absolute;
+            bottom: 60px;
+            font-size: 28px;
+            color: #2d3748;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="pin">
+        <div class="accent-line"></div>
+        
+        <h1 class="headline">The Freelancer's<br>Toolkit</h1>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="check-icon">✓</div>
+                <div>Invoice Tracking</div>
+            </div>
+            <div class="feature">
+                <div class="check-icon">✓</div>
+                <div>Client Management</div>
+            </div>
+            <div class="feature">
+                <div class="check-icon">✓</div>
+                <div>Expense Dashboard</div>
+            </div>
+            <div class="feature">
+                <div class="check-icon">✓</div>
+                <div>Payment Reminders</div>
+            </div>
+        </div>
+        
+        <div class="price-section">
+            <div class="price">$27</div>
+            <div class="cta">GET STARTED</div>
+        </div>
+        
+        <div class="brand">Jeff the Notion Guy</div>
+    </div>
+</body>
+</html>
