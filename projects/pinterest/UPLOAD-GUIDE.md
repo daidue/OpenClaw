@@ -71,6 +71,20 @@ Go to pinterest.com → Click "Create" → "Create Pin" for each one.
 - **Link:** https://jeffthenotionguy.gumroad.com/l/ujrthk
 - **Board:** Notion Templates for Freelancers
 
+## PIN 14 — Tax Season Ready (Free)
+- **File:** `pin-14-tax-season.png`
+- **Title:** Tax Season Made Easy — Free Freelance Invoice Tracker for Notion
+- **Description:** Stop dreading tax season. This free Notion template tracks every invoice, organizes expenses, shows total income, and exports everything for your accountant. Set up in 5 minutes and stay organized all year long. Perfect for freelancers who want tax prep to be painless. #TaxSeason #FreelanceFinance #NotionTemplate #FreeTemplate #SmallBusiness #TaxPrep #InvoiceTracker
+- **Link:** https://jeffthenotionguy.gumroad.com/l/ujrthk
+- **Board:** Small Business Organization
+
+## PIN 15 — Freelancer Finance System (Free)
+- **File:** `pin-15-freelancer-finance.png`
+- **Title:** Your Freelance Finance System — Free Notion Template
+- **Description:** Everything you need to manage freelance finances in one place: invoice tracking, client database, payment reminders, all built for Notion. Download this free template and get your money organized today. Works on Notion's free plan. No subscriptions required. #FreelanceFinance #NotionTemplate #InvoiceTracker #FreeTools #Freelancing #MoneyManagement #BusinessOrganization
+- **Link:** https://jeffthenotionguy.gumroad.com/l/ujrthk
+- **Board:** Invoice & Finance Templates
+
 ---
 
 ## Quick Upload Steps (per pin):
@@ -82,4 +96,29 @@ Go to pinterest.com → Click "Create" → "Create Pin" for each one.
 6. Select the Board
 7. Publish
 
-~2 min per pin, ~18 min total for all 9 pending pins.
+## PIN 16 — Stop Using Spreadsheets (Free)
+- **File:** `pin-16-stop-spreadsheets.png`
+- **Title:** Stop Using Spreadsheets for Invoices — Try This Free Notion Template
+- **Description:** Tired of broken Excel formulas? This free Notion invoice tracker has auto-calculations, client database, and no spreadsheet headaches. Perfect for freelancers who want something that just works. Download, duplicate, done. #NotionTemplate #FreeTemplate #InvoiceTracker #Freelancing #NoSpreadsheets #ProductivityTools #FreelanceTools
+- **Link:** https://jeffthenotionguy.gumroad.com/l/ujrthk
+- **Board:** Productivity Hacks for Freelancers
+
+## PIN 17 — Get Paid Faster (Free)
+- **File:** `pin-17-get-paid-faster.png`
+- **Title:** Get Paid Faster with This Free Notion Invoice Tracker
+- **Description:** Stop waiting for late payments. Track payment status, send reminders, see who's overdue, and use proven follow-up scripts — all in Notion. This free template helps freelancers get paid on time, every time. Set up in 5 minutes. #GetPaid #FreelanceInvoice #NotionTemplate #FreeTemplate #PaymentTracking #Freelancing #LatePayments
+- **Link:** https://jeffthenotionguy.gumroad.com/l/ujrthk
+- **Board:** Freelance Business Tips
+
+---
+
+## Quick Upload Steps (per pin):
+1. Go to pinterest.com/pin-creation-tool/
+2. Upload the image file
+3. Paste the Title
+4. Paste the Description (with hashtags)
+5. Paste the Link
+6. Select the Board
+7. Publish
+
+~2 min per pin, ~26 min total for all 13 pending pins.
