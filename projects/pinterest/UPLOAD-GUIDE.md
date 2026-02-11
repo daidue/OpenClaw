@@ -153,4 +153,22 @@ Go to pinterest.com → Click "Create" → "Create Pin" for each one.
 6. Select the Board
 7. Publish
 
-~2 min per pin, ~32 min total for all 16 pending pins.
+## PIN 21 — Profitable Freelancing (Free)
+- **File:** `pin-21-profitable-freelancing.png`
+- **Title:** Run a Profitable Freelance Business — Free Notion Invoice System
+- **Description:** Track total revenue, monitor every invoice, and see your cash flow in real time. This free Notion template helps freelancers run a profitable business with clear financial visibility. No guesswork, just data. Download and start tracking today. #ProfitableFreelancing #NotionTemplate #FreeTemplate #RevenueTracking #FreelanceBusiness #FinancialTracking
+- **Link:** https://jeffthenotionguy.gumroad.com/l/ujrthk
+- **Board:** Freelance Business Tips
+
+---
+
+## Quick Upload Steps (per pin):
+1. Go to pinterest.com/pin-creation-tool/
+2. Upload the image file
+3. Paste the Title
+4. Paste the Description (with hashtags)
+5. Paste the Link
+6. Select the Board
+7. Publish
+
+~2 min per pin, ~34 min total for all 17 pending pins.
