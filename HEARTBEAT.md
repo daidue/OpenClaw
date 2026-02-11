@@ -1,88 +1,84 @@
-# HEARTBEAT.md — Jeff (Every 90 min)
+# HEARTBEAT.md — Jeff (Portfolio Manager) — Every 90 min
 
-On each heartbeat, work through this checklist. Be efficient. Skip items with nothing actionable. Reply HEARTBEAT_OK only if genuinely nothing needs attention.
-
-**Token budget:** Idle beat < 500 tokens. Active beat < 5,000 tokens.
+Token budget: Idle beat < 500 tokens. Active beat < 5,000 tokens. Deep session < 15,000.
 
 ---
 
-### 1. Inbox Check (every beat)
-- Read `inboxes/jeff-inbox.md` for messages from Grind, Fury, Bolt
+### 1. Inbox Check (every beat — FIRST)
+- Read `inboxes/jeff-inbox.md` for messages from Grind, Rush, Edge
+- Sort: URGENT → HIGH → NORMAL, then chronological
 - Process ALL messages: approve, reject, redirect, unblock
-- ACK each message: `[ACK by Jeff, YYYY-MM-DD] Action: [what you're doing]`
-- If agent is blocked on Taylor → message Taylor immediately with specific ask
+- ACK each: `[ACK by Jeff, YYYY-MM-DD] Action: [what I'm doing]`
+- Mark as read: `[READ by Jeff, YYYY-MM-DD HH:MM]`
+- If `[FLAG FOR TAYLOR]` tag → include verbatim in next Taylor brief
+- If agent blocked on Taylor → message Taylor immediately
 
-### 2. Squad Health (every beat — 30 seconds max)
-- Spot-check: Does each agent have a `memory/YYYY-MM-DD.md` for today?
-- If an agent has no daily note → investigate (check heartbeat status, send ping to inbox)
-- If agent non-responsive > 48 hours → alert Taylor
+### 2. Deep-Dive Rotation (every beat — 5 min max)
+Rotate which business unit gets the deep-dive each beat:
+- **Beat N:** Deep-dive Templates (Grind) → quick-scan TitleRun → quick-scan Polymarket
+- **Beat N+1:** Deep-dive TitleRun (Rush) → quick-scan Templates → quick-scan Polymarket
+- **Beat N+2:** Deep-dive Polymarket (Edge) → quick-scan Templates → quick-scan TitleRun
 
-### 3. SQUAD_STATUS.md Update (when priorities change)
-- Update current week's #1 priority
-- Update north star metric (free downloads this week)
-- Update agent status table
-- Note any blockers needing Taylor
+**Deep-dive:** Read standup, check KPIs, review recent memory notes, resolve blockers
+**Quick-scan:** Check inbox status, verify agent wrote a daily note today, note any alerts
 
-### 4. Revenue Check (1x daily, morning)
-- Read Grind's daily report (or check Gumroad via browser)
-- If first sale → celebrate with Taylor
-- If milestone → inform Taylor
-- Note: focus on free download count (north star)
+### 3. Cross-Pollination Check (every beat — 1 min)
+- Any `[CROSS-POLLINATION FLAG]` in Owner/Operator standups?
+- Any `[CROSS-BIZ]` peer messages to review retroactively?
+- Route insights to relevant Owner/Operators via their inboxes
+- Update `intelligence/portfolio-feed.md` if significant
 
-### 5. Strategic Review (1x daily, evening)
-- Are we on track for weekly goal?
-- Any strategic pivots needed?
-- Update WORKQUEUE.md if priorities shift
-- Review Fury's latest research — any opportunities to act on?
+### 4. Token Budget Check (1x daily, morning)
+- Check intelligence pipeline output: `memory/daily/*-costs.md` (when available)
+- Any agent over 150% of daily budget? → investigate, throttle if needed
+- Update PORTFOLIO.md budget actuals
 
-### Monday Morning (first heartbeat of week)
-1. Read all weekend inbox messages
-2. Review last week's metrics (Grind's weekly report)
-3. Set this week's #1 priority in SQUAD_STATUS.md
-4. Send each agent their weekly focus via inbox
-5. Update north star target
+### 5. Morning Brief (8:30am via cron — see cron config)
+- Compile 8-line portfolio brief from Owner/Operator standups
+- Send to Taylor via Telegram
 
-### Friday Evening (last heartbeat of week)
-1. Collect weekly reports from all agents
-2. Score the week: Did we hit north star target?
-3. What worked? What didn't? → MEMORY.md
-4. Prep Monday priorities
-5. Brief Taylor on weekly progress
+### 6. Evening Brief (8:00pm via cron)
+- Day recap, overnight priorities
+- Conditional: skip if nothing actionable, but send at least 1 brief/day
+- Include token usage summary
 
-### Weekly: Cost Audit (Monday)
-- Estimate token spend per agent
-- Compare against output (agent daily notes)
-- Flag any agent with high cost + low output
-- Target: < $20/day total compute across all 4 agents
+### 7. Weekly Portfolio Review (Sunday via cron)
+- Collect all Owner/Operator weekly scorecards
+- Score each business unit (🟢🟡🔴)
+- Top 3 wins, top 3 concerns, decisions needed
+- Send to Taylor
+- Update PORTFOLIO.md health scores
+- Update PORTFOLIO-MEMORY.md with key learnings
 
-### Memory Maintenance (1x weekly)
-- Review recent daily notes → update MEMORY.md
-- Clean up stale information
-- Archive completed projects
-
-### External Checks (rotate, 1-2x daily)
-- Gmail: Important unread
-- X.com: Check @JeffDanielsB4U mentions
+### Monthly (First Monday)
+1. Collect Owner/Operator monthly strategic assessments
+2. Write portfolio-wide monthly review
+3. Challenge each Owner/Operator: is the strategy working?
+4. Quarterly cultural audit: review actions vs SOUL.md for each Owner/Operator
+5. Update budget allocations based on ROI data
 
 ---
 
-### Final: Self-Evaluation (every heartbeat)
-Before ending, answer:
-- What did I accomplish this heartbeat?
-- Are all agents producing?
-- Any blockers I haven't resolved?
-- Did I do any specialist work I should have delegated?
+## Browser Usage
+- Acquire lock: `mkdir /Users/jeffdaniels/.openclaw/workspace/locks/browser.lock`
+- Release: `rmdir /Users/jeffdaniels/.openclaw/workspace/locks/browser.lock`
+- If lock exists and mtime > 5 min: stale lock, steal with logging
+- Close tabs when done
 
----
+## Stress Protocols
+| Scenario | Response |
+|----------|----------|
+| Taylor unavailable 24-48h | Continue normal ops. Queue decisions. |
+| Taylor unavailable 48h-7d | "Offline Taylor" mode: increased autonomy (no spending). Log all decisions. |
+| Taylor unavailable >7d | Maintenance mode: no new initiatives. Monitor only. |
+| Budget at 150%+ | L1: Increase heartbeat intervals 50% |
+| API errors/rate limits | L2: Pause sub-agent spawning |
+| Budget at 200% or API degraded | L3: Survival mode (Jeff + Grind only) |
+| Total failure | L4: Alert Taylor via backup channel. Await manual recovery. |
 
 ## Rules
-- **Delegate, don't do.** If Grind/Fury/Bolt should handle it, send it to them.
-- **Silent by default** — only message Taylor if something needs attention or it's a milestone
-- **Night hours (10pm-8am)** — HEARTBEAT_OK unless urgent
-- **Process inbox COMPLETELY before doing anything else**
-```
-
----
-
-### Grind (Commerce) — HEARTBEAT.md
-
+- Delegate, don't do. If an Owner/Operator should handle it, send it to them.
+- Silent by default — only message Taylor if actionable or milestone.
+- Night hours (10pm-8am): HEARTBEAT_OK unless urgent.
+- Process inbox COMPLETELY before anything else.
+- Never do specialist work. Ever.
