@@ -121,4 +121,36 @@ Go to pinterest.com → Click "Create" → "Create Pin" for each one.
 6. Select the Board
 7. Publish
 
-~2 min per pin, ~26 min total for all 13 pending pins.
+## PIN 18 — Simple Setup (Free)
+- **File:** `pin-18-simple-setup.png`
+- **Title:** Set Up in 5 Minutes — Free Notion Invoice Tracker for Freelancers
+- **Description:** No complicated setup, no learning curve. This free Notion invoice tracker is ready to use in 5 minutes. Works on Notion's free plan with ready-to-use templates. Perfect for freelancers who want to start tracking invoices today. #NotionTemplate #FreeTemplate #SimpleSetup #Freelancing #InvoiceTracker #QuickStart #EasySetup
+- **Link:** https://jeffthenotionguy.gumroad.com/l/ujrthk
+- **Board:** Notion Tips & Tutorials
+
+## PIN 19 — Client Organizer (Free)
+- **File:** `pin-19-client-organizer.png`
+- **Title:** Organize All Your Clients — Free Notion Template for Freelancers
+- **Description:** Keep all your client info, invoice history, contact details, and payment tracking in one place. This free Notion template helps freelancers stay organized and professional. Download, duplicate, and never lose track of a client again. #ClientManagement #NotionTemplate #Freelancing #FreeTemplate #BusinessOrganization #ClientDatabase
+- **Link:** https://jeffthenotionguy.gumroad.com/l/ujrthk
+- **Board:** Client Management Systems
+
+## PIN 20 — No Subscriptions (Free)
+- **File:** `pin-20-no-subscriptions.png`
+- **Title:** No Monthly Fees, Ever — Free Invoice Tracker for Notion
+- **Description:** Tired of paying $30-50/month for invoicing software? This free Notion template gives you a full invoice system with zero subscriptions, no credit card needed. Download once, use forever. Perfect for freelancers watching their budget. #NoSubscription #FreeInvoice #NotionTemplate #FreelanceTools #BudgetFriendly #Freelancing
+- **Link:** https://jeffthenotionguy.gumroad.com/l/ujrthk
+- **Board:** Small Business Organization
+
+---
+
+## Quick Upload Steps (per pin):
+1. Go to pinterest.com/pin-creation-tool/
+2. Upload the image file
+3. Paste the Title
+4. Paste the Description (with hashtags)
+5. Paste the Link
+6. Select the Board
+7. Publish
+
+~2 min per pin, ~32 min total for all 16 pending pins.
