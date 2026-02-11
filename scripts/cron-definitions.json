@@ -1,0 +1,33 @@
+{
+  "description": "Cron jobs for agent-intelligence.py pipeline",
+  "jobs": [
+    {
+      "name": "agent-intelligence-hourly",
+      "schedule": "0 8-22 * * *",
+      "timezone": "America/New_York",
+      "command": "python3 /Users/jeffdaniels/.openclaw/workspace/scripts/agent-intelligence.py hourly",
+      "description": "Hourly summary, 8am-10pm EST"
+    },
+    {
+      "name": "agent-intelligence-daily",
+      "schedule": "0 21 * * *",
+      "timezone": "America/New_York",
+      "command": "python3 /Users/jeffdaniels/.openclaw/workspace/scripts/agent-intelligence.py daily",
+      "description": "Daily summary at 9pm EST"
+    },
+    {
+      "name": "agent-intelligence-weekly",
+      "schedule": "0 23 * * 0",
+      "timezone": "America/New_York",
+      "command": "python3 /Users/jeffdaniels/.openclaw/workspace/scripts/agent-intelligence.py weekly",
+      "description": "Weekly synthesis, Sunday 11pm EST"
+    },
+    {
+      "name": "agent-intelligence-signals",
+      "schedule": "0 */6 * * *",
+      "timezone": "America/New_York",
+      "command": "python3 /Users/jeffdaniels/.openclaw/workspace/scripts/agent-intelligence.py signals",
+      "description": "Cross-agent signal detection every 6 hours"
+    }
+  ]
+}

@@ -1,0 +1,290 @@
+{
+  "timestamp": "2026-02-11T19:19:29.359826+00:00",
+  "period_hours": 24,
+  "shared_topics": [
+    {
+      "topic": "stripe",
+      "agents": [
+        "main",
+        "commerce",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "twitter",
+      "agents": [
+        "main",
+        "commerce",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "invoice tracker",
+      "agents": [
+        "main",
+        "commerce",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "etsy",
+      "agents": [
+        "main",
+        "commerce",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "template",
+      "agents": [
+        "main",
+        "commerce",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "pinterest",
+      "agents": [
+        "main",
+        "commerce",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "notion",
+      "agents": [
+        "main",
+        "commerce",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "reddit",
+      "agents": [
+        "main",
+        "commerce",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "gumroad",
+      "agents": [
+        "main",
+        "commerce",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "youtube",
+      "agents": [
+        "main",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "tiktok",
+      "agents": [
+        "main",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "x account",
+      "agents": [
+        "main",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "nate calloway",
+      "agents": [
+        "main",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "protonmail",
+      "agents": [
+        "main",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "polymarket",
+      "agents": [
+        "main",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "newsletter",
+      "agents": [
+        "main",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "google voice",
+      "agents": [
+        "main",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "netlify",
+      "agents": [
+        "main",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "landing page",
+      "agents": [
+        "main",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "shopify",
+      "agents": [
+        "main",
+        "researcher"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "instagram",
+      "agents": [
+        "main",
+        "researcher"
+      ],
+      "signal": "collaboration"
+    }
+  ],
+  "shared_tools": [
+    {
+      "tool": "read",
+      "agents": [
+        "main",
+        "commerce",
+        "researcher",
+        "growth",
+        "analytics",
+        "ops"
+      ]
+    },
+    {
+      "tool": "exec",
+      "agents": [
+        "main",
+        "commerce",
+        "researcher",
+        "dev"
+      ]
+    },
+    {
+      "tool": "write",
+      "agents": [
+        "main",
+        "commerce",
+        "researcher",
+        "dev"
+      ]
+    },
+    {
+      "tool": "edit",
+      "agents": [
+        "main",
+        "commerce",
+        "researcher",
+        "dev"
+      ]
+    },
+    {
+      "tool": "process",
+      "agents": [
+        "main",
+        "researcher"
+      ]
+    },
+    {
+      "tool": "browser",
+      "agents": [
+        "main",
+        "commerce"
+      ]
+    },
+    {
+      "tool": "web_search",
+      "agents": [
+        "main",
+        "commerce"
+      ]
+    },
+    {
+      "tool": "web_fetch",
+      "agents": [
+        "main",
+        "commerce"
+      ]
+    },
+    {
+      "tool": "session_status",
+      "agents": [
+        "main",
+        "commerce"
+      ]
+    }
+  ],
+  "agent_error_counts": {
+    "main": 1,
+    "researcher": 2
+  },
+  "active_agents": [
+    "main",
+    "commerce",
+    "researcher",
+    "dev",
+    "growth",
+    "analytics",
+    "ops"
+  ]
+}
