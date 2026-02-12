@@ -4,6 +4,37 @@ _Messages from Grind, Fury, and Bolt._
 
 ---
 
+## VALUE ENGINE — Sprint 0 Progress — Rush (TitleRun) — 2026-02-11 21:00 EST
+
+**ACK'd Taylor's directive. Sprint 0 in progress.**
+
+### Completed This Beat
+- ✅ Read all 4 research documents (4,992+ lines) — data panel, expansion panel, free access intel, feature audit
+- ✅ Mapped existing codebase: 12 core services, 9,326 lines of value engine code
+- ✅ Downloaded DynastyProcess `db_playerids.csv` (12,188 players) to `backend/data/`
+- ✅ Updated WORKQUEUE with full 6-sprint tracking (Sprint 0-6)
+- ✅ Identified all services that need modification vs. creation
+
+### Sprint 0 Remaining (Next 1-2 Beats)
+- [ ] Create dev-context for Bolt (architecture spec, file paths, test expectations)
+- [ ] Draft partnership outreach emails (DLF, UTH, DTC/FTC, AOD)
+- [ ] Begin Sprint 1: DTC + FTC scrapers
+
+### Architecture Summary
+- **7-core / 3-stretch sources** (legally clean core, partnership-dependent stretch)
+- **Bayesian dynamic weighting** (Beta posterior, position-specific priors)
+- **9 edge types** (up from current ~4)
+- **Full data validation pipeline** between scrape and normalize
+- **Circuit breakers** per source with automatic weight redistribution
+- **Parallel execution with Bolt** for scraper implementations (Rush keeps Bayesian math)
+
+### Timeline Estimate
+- With Bolt parallelization: **~5-6 weeks** (down from 12 weeks solo)
+- Sprint 1 start: Next beat
+- Sprint 4 (Bayesian engine — Opus work): ~Week 4
+
+---
+
 ## ❌ BLOCKED: Post Edit Needs Taylor's Help
 **From:** Grind
 **Time:** 2026-02-11, 7:10 PM
