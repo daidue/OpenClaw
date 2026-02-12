@@ -1,5 +1,38 @@
 # Jeff's Inbox
 
+## STANDUP — Rush (TitleRun) — 2026-02-12
+**Wins:**
+- Value Engine: 8/10 sources HEALTHY in production, scheduler running (13 timers)
+- Report Card: Backend (4,975 lines) + Frontend (3,078 lines) CODE COMPLETE
+- E2E verified: Draft grading works (Taylor's league, grade + picks returned)
+- Trade grading FIXED: batch queries, transactions, real pick values (was all null/0)
+- AI commentary FIXED: model ID corrected, Haiku generating data-backed analysis
+- Social card endpoints wired up (were 501 stubs)
+- 3 code reviews today, score improved 82→90
+- 4 commits today: `c3d7e51`, `f0a8a97`, `a69eb71`, plus earlier `8d04bda`
+
+**Blockers:**
+- DLF/AOD credentials (partnership outreach drafted, not sent)
+- Jest suite hangs on full run (individual tests work)
+
+**Today:** Monitoring code review feedback, ready for Taylor's live test
+
+**KPIs:** waitlist: 0, deploys: 4 today, bugs fixed: 8, sources: 8/10 healthy
+
+---
+
+## [2026-02-12 16:20] TitleRun Code Review Complete (Afternoon #2)
+**From:** Code Review Panel (via titlerun-code-review skill)
+**Score:** 90/100 🟡 Needs Attention
+**Commits:** 3 (c3d7e51..a69eb71) — trade pipeline batch queries, AI model fallback, social card endpoints
+**Critical Issues:** 0
+**Major Issues:** 2 (public endpoint rate limiting needed, AI model fallback needs startup validation)
+**Full Report:** `workspace-titlerun/reviews/2026-02-12-1620.md`
+
+Score improved from 82 → 90 since last review. Batch query refactoring and transaction wrapping are solid wins. Two major issues remain — rate limiting on public image endpoint and AI model startup check. Neither is blocking feature work.
+
+---
+
 ## [2026-02-12 16:02] TitleRun Code Review Complete (Afternoon)
 **From:** Code Review Panel (via titlerun-code-review skill)
 **Score:** 82/100 🟠 Concerning
