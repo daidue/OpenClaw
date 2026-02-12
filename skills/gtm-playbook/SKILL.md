@@ -20,6 +20,12 @@ Reusable go-to-market framework for launching digital products from zero audienc
 - When you need deep research on a specific channel — spawn researcher sub-agent instead
 - Pricing decisions for enterprise/B2B products — this covers B2C digital products only
 
+## Related Skills
+- `expert-panel` — Use for validating launch copy, listing descriptions, and GTM materials (95/100 bar)
+- `notion-api-builder` — Use when the product being launched is a Notion template
+- `bird` — Use for X/Twitter distribution (read operations only; posting via browser)
+- `x-reply-strategy` — Use for X engagement as a distribution channel
+
 ## Launch Phases
 
 ### Phase 0: Pre-Launch (2-3 days)

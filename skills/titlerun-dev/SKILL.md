@@ -21,6 +21,11 @@ Codebase conventions, patterns, and workflows for TitleRun — the dynasty fanta
 - Non-TitleRun coding tasks (Polymarket bot, infrastructure scripts)
 - Simple config changes that don't touch TitleRun code
 
+## Related Skills
+- `expert-panel` — Use for feature spec validation before build (target 95/100)
+- `notion-api-builder` — If TitleRun ever integrates Notion (unlikely but reference patterns)
+- `autonomous-governance` — Reference for deployment risk classification (Tier 2 for staging, Tier 3 for production)
+
 ## Tech Stack
 
 | Layer | Technology | Version |

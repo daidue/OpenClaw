@@ -26,6 +26,11 @@ Structured review process using 10 simulated domain experts who score content 1-
 - Tasks where speed matters more than perfection (use your judgment instead)
 - When the content is <100 words — too small for meaningful panel review
 
+## Related Skills
+- `titlerun-dev` — Load before paneling TitleRun feature specs (codebase context improves expert feedback)
+- `gtm-playbook` — Load before paneling launch copy or distribution strategy
+- `notion-api-builder` — Load before paneling Notion template designs
+
 ## Process
 
 1. **Define the content** and its goal (convert, inform, build trust, etc.)

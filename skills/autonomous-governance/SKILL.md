@@ -30,6 +30,11 @@ Everything else — content, outreach, deploys, research, building — just do i
 - Simple file reads, memory updates, research — these are obviously Tier 0-1, don't overthink
 - When another skill applies more specifically (e.g., use gtm-playbook for launches, not governance)
 
+## Related Skills
+- `expert-panel` — Use for Tier 3 decisions that need multi-perspective validation
+- `titlerun-dev` — Reference deployment checklist for production deploy risk assessment
+- `polymarket-trading` — Risk management protocols complement governance tiers
+
 ## Quick Tier Lookup
 
 | Action | Tier |

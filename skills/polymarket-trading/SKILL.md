@@ -22,6 +22,10 @@ SCAN markets → SCORE opportunities → FILTER by risk → SIZE positions → E
 - Building trading bots for other platforms (Kalshi strategies are covered but execution is Polymarket-focused)
 - Portfolio-level financial planning — that's Jeff's domain
 
+## Related Skills
+- `autonomous-governance` — Reference for trade risk classification and kill switch protocols
+- `expert-panel` — Use for validating new trading strategies before committing capital
+
 ## Strategy Menu (Pick Your Edge)
 
 | Strategy | Edge Source | Speed Needed | Capital | When It Works |
