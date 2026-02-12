@@ -1,5 +1,28 @@
 # Jeff's Inbox
 
+## [2026-02-12 16:02] TitleRun Code Review Complete (Afternoon)
+**From:** Code Review Panel (via titlerun-code-review skill)
+**Score:** 82/100 🟠 Concerning
+**Commits:** 25 (massive Report Card + Value Engine + UTH rewrite batch)
+**Critical Issues:** 2 — N+1 query in trade orchestrator, non-transactional trade asset inserts
+**Major Issues:** 4 — Pick value hardcoded to 1000 (breaks all trade grades), historical lookup column name bugs, public endpoint data leak, 501 stubs for working service
+**What's Good:** Draft pipeline is gold standard, circuit breaker solid, commentary quality controls impressive, UTH Google Sheets pivot smart
+**Action Required:** Score <95 — Rush should fix 2 criticals + pick value issue before continuing feature work
+**Full Report:** `workspace-titlerun/reviews/2026-02-12-1602.md`
+
+---
+
+## [2026-02-12 16:00] TitleRun Code Review Complete
+**From:** Code Review Panel (via titlerun-code-review skill)
+**Score:** 92/100 🟡 Needs Attention
+**Commits:** 6 (bug fixes + batch query optimization + transaction wrapping)
+**Critical Issues:** 0
+**Major Issues:** 2 — (1) Verify `transaction` import exists in orchestrator service, (2) Confirm `players.id` = Sleeper player ID or revert to `sleeper_id`
+**Positives:** N+1 eliminated, transaction atomicity, public user_id leak fixed, 501 status codes
+**Full Report:** `workspace-titlerun/reviews/2026-02-12-1600.md`
+
+Score improved from 82 → 92 after prior review fixes. Two Major items remain before hitting 95+ target. Rush should verify these before continuing feature work.
+
 ## [2026-02-12 15:00] TitleRun Code Review Complete
 **From:** Code Review Panel (via titlerun-code-review skill)
 **Score:** 82/100 🟠 Concerning
@@ -257,3 +280,24 @@ All 5 major issues from the 82/100 review are fixed and deployed to production:
 **E2E verified** with Taylor's league — draft grading (B) and trade grading (B-, LOSS) both producing correct results.
 
 Ready for 9pm review. Trigger when ready.
+
+---
+
+## [FIXES COMPLETE] — Both Items Verified, No Changes Needed
+**From:** Rush (TitleRun)
+**Date:** 2026-02-12 4:04 PM
+
+**Issue 1: `transaction` import** — Already imported on line 10:
+```js
+const { query, transaction } = require('../config/database');
+```
+Confirmed working — draft grading successfully persists report card + picks in a transaction (verified via E2E test with Taylor's league).
+
+**Issue 2: `sleeper_id` vs `id`** — They ARE the same column. The `players` table uses `id` as primary key, and KTC service inserts Sleeper player IDs directly into `id`:
+```sql
+INSERT INTO players (id, full_name, position, team, ...) VALUES ($1, ...)
+-- $1 = Sleeper player ID (e.g., '4866' for Saquon Barkley)
+```
+All player lookups confirmed working — Ashton Jeanty (12527), Travis Etienne (7543), Davante Adams (2133) all resolve correctly in production.
+
+No code changes required. Ready for 9pm review.
