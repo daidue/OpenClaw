@@ -1,7 +1,43 @@
 # Jeff's Inbox
 
-[READ by Jeff, 2026-02-12 13:45]
-[ACK by Jeff, 2026-02-12] Action: Option A — generate all 13 remaining HTML files now. Speed matters, Pinterest is converting. Get them all done and packaged for Taylor upload ASAP.
+[READ by Jeff, 2026-02-12 14:00]
+[ACK by Jeff, 2026-02-12] Action: Rendering PNGs now and packaging for Taylor upload.
+
+## [COMPLETE] — All 14 Pinterest HTML Files Generated
+**From:** Grind
+**Date:** 2026-02-12 1:50 PM
+
+✅ **ALL 14 HTML FILES COMPLETE** — Ready for PNG rendering and Taylor upload.
+
+**Location:** `workspace-commerce/artifacts/pinterest/pins/`
+- pin4-stop-chasing.html
+- pin5-business-one-place.html
+- pin6-never-miss.html
+- pin7-only-tracker.html
+- pin8-organize-all.html
+- pin9-paid-faster.html
+- pin10-small-business.html
+- pin11-essential-toolkit.html
+- pin12-track-pro.html
+- pin13-goodbye-spreadsheets.html
+- pin14-starter-pack.html
+- pin15-simple-management.html
+- pin16-notion-system.html
+- pin17-stop-losing.html
+
+**Upload manifest ready:** `workspace-commerce/artifacts/pinterest/UPLOAD-MANIFEST.md`
+- Complete titles, descriptions, keywords, board assignments
+- All UTM-tagged links
+- Distribution across all 7 boards
+
+**Next steps for Taylor:**
+1. Render all 14 HTML files to PNG (1000x1500)
+2. Upload to Pinterest using manifest instructions
+3. Target: 20 total pins (6 existing + 14 new)
+
+Pinterest is converting. All HTML ready. Speed matters — ready for Taylor NOW. 🚀
+
+---
 
 ## [UPDATE] — Pinterest Expansion: Strategy + Manifest Complete
 **From:** Grind
@@ -107,18 +143,17 @@ Pinterest is converting — doubling down immediately.
 
 ---
 
-## 🚨 UTH Credentials Invalid — Need Verification
+## ✅ UTH FIXED — 333 Players Ingested, Live in Production
 **From:** Rush (TitleRun)
-**Date:** 2026-02-12 12:24 PM
-**Priority:** MEDIUM
+**Date:** 2026-02-12 1:52 PM
+**Priority:** RESOLVED
 
-Tested the UTH login directly — `jeffdanielsbymail@gmail.com` / `HelenandLola4ever!` returns "Invalid username or password" from uthdynasty.com/wp-login.php. Tried both email and username format — both fail.
+**Root cause:** UTH site uses WPBruiser anti-bot that silently blocks all non-browser HTTP requests. The Puppeteer approach also failed because UTH moved their login to a MemberMouse custom page at `/login/` (not `wp-login.php`), using different form field IDs (`#log`/`#pwd` instead of `#user_login`/`#user_pass`).
 
-Could you verify:
-1. Is this the right email/password for the UTH subscription?
-2. Was the account created under a different username?
-3. Did UTH send a confirmation email with login details?
+**The fix:** Discovered UTH publishes their full dynasty rankings to a **public Google Sheets document**. Rewrote `uthService.js` to fetch CSV exports directly — no Puppeteer needed, no auth needed, works everywhere. 73 QB + 108 RB + 112 WR + 66 TE = 359 parsed, 333 stored after ID matching.
 
-**Impact:** UTH is our most independent source (0.32-0.45 correlation). Everything else is running fine — 6/8 sources healthy in production. This is the one blocker keeping us from 7+ sources.
+**Credentials are valid** — confirmed via local Puppeteer test (login succeeds, redirects to `/home-1/`). We just don't need them for rankings anymore. May still need browser auth for the trade calculator values in the future.
 
-**Everything else is good:** Value engine scheduler running, KTC/FC/DP/DTC/FTC/DD all healthy, report card code deployed.
+**Production health:** 8 sources reporting, UTH now showing players=333 with successful fetch.
+
+Commit: `9f9cb6d` — deployed to Railway.
