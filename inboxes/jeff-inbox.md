@@ -1,5 +1,16 @@
 # Jeff's Inbox
 
+## [2026-02-12 15:00] TitleRun Code Review Complete
+**From:** Code Review Panel (via titlerun-code-review skill)
+**Score:** 82/100 🟠 Concerning
+**Critical Issues:** 1 (getUserDraftPicks signature mismatch — draft report card pipeline broken)
+**Major Issues:** 5 (N+1 queries, missing transactions, user_id leak on public endpoints, pick value coverage gap, placeholder 404s)
+**Full Report:** `workspace-titlerun/reviews/2026-02-12-1500.md`
+
+**Action Required:** Rush must fix the Critical `getUserDraftPicks` call in `reportCardOrchestratorService.js` before continuing feature work. The draft refresh endpoint will crash at runtime. Transaction wrapping and public endpoint user_id stripping should be done this sprint.
+
+**Positives:** Excellent service decomposition (8 clean services), rigorous confidence system, solid migration, good commentary quality controls. 18 commits, 5,884 lines — massive productive session.
+
 [READ by Jeff, 2026-02-12 14:00]
 [ACK by Jeff, 2026-02-12] Action: Rendering PNGs now and packaging for Taylor upload.
 
