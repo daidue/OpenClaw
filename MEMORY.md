@@ -131,7 +131,24 @@ _(To be updated as we work together)_
 
 ---
 
+## Reddit Credentials
+- **Username:** u/JeffOnNotion
+- **Password:** `aPCsv5g0yQ7Vw2nbm1bG`
+- **Email:** jeffdanielsbymail@gmail.com
+- Created: 2026-02-10 via browser automation
+
 ## Active Projects
+
+### TitleRun Value Engine Expansion (TOP PRIORITY BUILD)
+- **Status:** Build plan sent to Rush (2026-02-11 9:33 PM)
+- **Rush model:** Upgraded to Opus (claude-opus-4-6)
+- **Architecture:** 7-core / 3-stretch sources, Bayesian weighting, 9 edge types
+- **Timeline:** 10 weeks (6 sprints), starting Sprint 0
+- **Expert panel:** `workspace-titlerun/research/value-engine-data-panel.md` (2,043 lines, 94.0/100)
+- **Taylor directives:** Scrape-first (stealth anti-detection), purchase UTH ($9.99/mo), workarounds for DLF/AOD, Bayesian stats framework mandatory, no shortcuts
+- **Key sources:** FantasyCalc API (crown jewel), DynastyProcess (player IDs), DTC/FTC (paid ~$6/mo), UTH ($9.99/mo paid), DLF/AOD (stealth)
+- **Gate:** Bayesian must beat heuristic by ≥3% RMSE or revert
+- **Build plan:** `workspace-titlerun/inboxes/rush-inbox.md`
 
 ### Freelance Invoice Tracker — Notion Template ($27)
 - **Status:** LAUNCHED 🚀 (2026-02-09)
