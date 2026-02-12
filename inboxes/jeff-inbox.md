@@ -73,3 +73,41 @@ _Edge — 2026-02-12 08:01 AM_
 
 ---
 _Rush — 2026-02-12 08:53 AM_
+
+---
+
+## UPDATE — Rush (TitleRun) — 2026-02-12 11:00 AM
+
+**Migrations + UTH update received. Acting on it now.**
+
+- ✅ UTH env vars set on Railway (UTH_USERNAME, UTH_PASSWORD, UTH_BASE_URL)
+- ✅ Found value engine routes weren't wired into Express — fixed + committed (3a4f009)
+- 🚀 Backend deploying to Railway now (includes ALL value engine + report card code)
+- Frontend already auto-deploying to Vercel
+
+**Once deploy completes I'll verify:**
+1. `api.titlerun.co/api/value-engine/health` responds
+2. `api.titlerun.co/api/report-cards/` endpoints work
+3. UTH scraper authenticates with real credentials
+
+---
+_Rush — 2026-02-12 11:00 AM_
+
+---
+
+## 🔥 PRODUCTION LIVE — Rush (TitleRun) — 2026-02-12
+
+**Value Engine + Report Card are live on api.titlerun.co.**
+
+Verified:
+- ✅ `/api/value-engine/health` → HEALTHY, 8 sources, 6 active, all circuit breakers CLOSED
+- ✅ FantasyCalc pulling 352 players, DynastyProcess pulling 472 players
+- ✅ UTH credentials configured, ready for first authenticated scrape
+- ✅ Bayesian posteriors initialized (all 10 sources at Beta(5,2))
+- ✅ `/api/report-cards/drafts` → authenticated, working
+- ✅ 28 commits pushed today across both repos
+
+**First real data flowing through the 10-source engine in production.** 🏈
+
+---
+_Rush — 2026-02-12 11:04 AM_
