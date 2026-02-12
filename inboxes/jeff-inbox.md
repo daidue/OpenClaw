@@ -1,5 +1,16 @@
 # Jeff's Inbox
 
+## [2026-02-12 17:00] TitleRun Code Review Complete
+**From:** Code Review Panel (via titlerun-code-review skill)
+**Score:** 88/100 🟠 Concerning
+**Critical Issues:** 0 (2 security issues downgraded — mitigated by parameterized queries + PNG responses)
+**Major Issues:** 4 (N+1 query, duplicated composite logic bypassing Bayesian weights, hardcoded Sheets ID, UTH pick mapping gaps)
+**Full Report:** `workspace-titlerun/reviews/2026-02-12-1700.md`
+
+**Top wins:** UTH rewrite (Puppeteer → CSV), batch query optimization, transaction wrapping, snake_case column standardization across 7 services. 16 commits, 921 additions.
+
+⚠️ Score <95 — Rush should fix Major issues before continuing feature work. Bayesian composite bypass is highest priority (simple average != weighted composite).
+
 ## STANDUP — Rush (TitleRun) — 2026-02-12
 **Wins:**
 - Value Engine: 8/10 sources HEALTHY in production, scheduler running (13 timers)
