@@ -1,14 +1,20 @@
 {
-  "timestamp": "2026-02-12T17:00:17.662591+00:00",
+  "timestamp": "2026-02-12T23:00:15.024547+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
-      "topic": "notion",
+      "topic": "invoice tracker",
       "agents": [
         "main",
-        "commerce",
-        "researcher",
-        "dev"
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "instagram",
+      "agents": [
+        "main",
+        "commerce"
       ],
       "signal": "collaboration"
     },
@@ -16,58 +22,7 @@
       "topic": "newsletter",
       "agents": [
         "main",
-        "commerce",
-        "researcher",
-        "dev"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "invoice tracker",
-      "agents": [
-        "main",
-        "commerce",
-        "researcher",
-        "dev"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "gumroad",
-      "agents": [
-        "main",
-        "commerce",
-        "researcher",
-        "dev"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "template",
-      "agents": [
-        "main",
-        "commerce",
-        "researcher",
-        "dev"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "reddit",
-      "agents": [
-        "main",
-        "commerce",
-        "researcher",
-        "dev"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "etsy",
-      "agents": [
-        "main",
-        "commerce",
-        "researcher"
+        "commerce"
       ],
       "signal": "collaboration"
     },
@@ -75,35 +30,15 @@
       "topic": "pinterest",
       "agents": [
         "main",
-        "commerce",
-        "researcher"
+        "commerce"
       ],
       "signal": "collaboration"
     },
     {
-      "topic": "nate calloway",
+      "topic": "notion",
       "agents": [
         "main",
-        "researcher",
-        "dev"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "twitter",
-      "agents": [
-        "main",
-        "commerce",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "polymarket",
-      "agents": [
-        "main",
-        "researcher",
-        "dev"
+        "commerce"
       ],
       "signal": "collaboration"
     },
@@ -116,7 +51,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "youtube",
+      "topic": "polymarket",
       "agents": [
         "main",
         "commerce"
@@ -124,7 +59,23 @@
       "signal": "collaboration"
     },
     {
-      "topic": "shopify",
+      "topic": "twitter",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "etsy",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "template",
       "agents": [
         "main",
         "commerce"
@@ -140,7 +91,31 @@
       "signal": "collaboration"
     },
     {
-      "topic": "instagram",
+      "topic": "youtube",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "gumroad",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "reddit",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "shopify",
       "agents": [
         "main",
         "commerce"
@@ -150,52 +125,42 @@
   ],
   "shared_tools": [
     {
+      "tool": "exec",
+      "agents": [
+        "main",
+        "commerce"
+      ]
+    },
+    {
       "tool": "read",
       "agents": [
         "main",
-        "commerce",
-        "researcher",
-        "dev",
-        "growth",
-        "analytics",
-        "ops"
+        "commerce"
       ]
     },
     {
       "tool": "write",
       "agents": [
         "main",
-        "commerce",
-        "researcher",
-        "dev"
-      ]
-    },
-    {
-      "tool": "exec",
-      "agents": [
-        "main",
-        "commerce",
-        "dev"
+        "commerce"
       ]
     },
     {
       "tool": "edit",
       "agents": [
         "main",
-        "commerce",
-        "dev"
-      ]
-    },
-    {
-      "tool": "web_fetch",
-      "agents": [
-        "main",
-        "commerce",
-        "researcher"
+        "commerce"
       ]
     },
     {
       "tool": "session_status",
+      "agents": [
+        "main",
+        "commerce"
+      ]
+    },
+    {
+      "tool": "web_fetch",
       "agents": [
         "main",
         "commerce"
@@ -207,40 +172,13 @@
         "main",
         "commerce"
       ]
-    },
-    {
-      "tool": "process",
-      "agents": [
-        "main",
-        "dev"
-      ]
-    },
-    {
-      "tool": "sessions_send",
-      "agents": [
-        "main",
-        "commerce"
-      ]
-    },
-    {
-      "tool": "web_search",
-      "agents": [
-        "commerce",
-        "researcher"
-      ]
     }
   ],
   "agent_error_counts": {
-    "main": 15,
-    "dev": 1
+    "main": 24
   },
   "active_agents": [
     "main",
-    "commerce",
-    "researcher",
-    "dev",
-    "growth",
-    "analytics",
-    "ops"
+    "commerce"
   ]
 }
