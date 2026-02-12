@@ -177,3 +177,83 @@ Pinterest is converting — doubling down immediately.
 **Production health:** 8 sources reporting, UTH now showing players=333 with successful fetch.
 
 Commit: `9f9cb6d` — deployed to Railway.
+
+---
+
+## ✅ E2E TEST COMPLETE — Taylor's League Working + Code Review Fixes Shipped
+**From:** Rush (TitleRun)
+**Date:** 2026-02-12 ~3:45 PM
+
+### Code Review Fixes (82 → 95+ target)
+All 6 majors + 1 critical fixed across 7 commits (ff88446→b2c7eab):
+
+| Issue | Fix | Commit |
+|-------|-----|--------|
+| ❌ Critical: getUserDraftPicks signature mismatch | Filter picksData inline | ff88446 |
+| 🟡 N+1 queries (240+ per draft) | Batch player lookup `WHERE id = ANY($1)` | 8d04bda |
+| 🟡 Missing transaction boundaries | Wrapped in `transaction()` + batch INSERT | 8d04bda |
+| 🟡 Public endpoints leak user_id | Destructured out sensitive fields | 8d04bda |
+| 🟡 Placeholder 404→501 | Changed to 501 Not Implemented | 8d04bda |
+| 🟡 Column name mismatches | `full_name`, `id`, `fantasy_calc_value` | f9dac81, 2721a8e |
+| 🟡 Null composite values | Live computation from source columns | d21597d |
+
+### E2E Results — Taylor's League (`1180090135467552768`)
+**@12DudesDeep** — 12-team SF, 4-round rookie draft, 10 trades
+
+**Draft Report Card (Roster 1):**
+```
+Overall: B (56.9) — 4 picks, 1 steal, 2 fair, 1 reach
+1.01 Ashton Jeanty    RB — B  (8018 val, 8000 slot — fair value)
+2.05 Tre' Harris      WR — B- (1731 val, 2224 slot — slight reach)
+2.07 Kyle Williams    WR — C+ (1275 val, 1895 slot — reach)
+4.06 Ollie Gordon     RB — A+ (1327 val, 301 slot — STEAL!)
+```
+
+**Trade Report Card (TX 1269398506209034240):**
+```
+Grade: B- (48.65) — Verdict: LOSS
+Sent: Travis Etienne (RB) — 3636 value
+Received: Davante Adams (WR) — 2895 value
+Net: -741 (dynasty downgrade)
+```
+
+### What's Working
+✅ Draft sync from Sleeper API
+✅ Trade sync (10 trades found)
+✅ Draft grading with real player values from 3+ sources
+✅ Trade grading with value comparison + verdict
+✅ Batch queries (2 total vs 240+ before)
+✅ Transaction-wrapped persistence
+✅ UTH source live (333 players via Google Sheets)
+✅ Value engine healthy (8 sources)
+
+### Not Yet Working
+- AI commentary (returns null — likely Anthropic API key not set on Railway)
+- Social cards (endpoints return 501 — need to wire up generation)
+- Frontend display at app.titlerun.co (needs manual verification)
+- Historical values (falls back to current values — no player_value_history data yet)
+
+### Tell Taylor
+The Report Card feature is **functional in production** with Taylor's actual league. Draft and trade grading produce sensible, data-backed results. AI commentary and social cards are the remaining pieces.
+
+---
+
+## [FIXES COMPLETE] — All 5 Code Review Majors Fixed + Deployed
+**From:** Rush (TitleRun)
+**Date:** 2026-02-12 3:26 PM
+
+All 5 major issues from the 82/100 review are fixed and deployed to production:
+
+| # | Issue | Fix | Commit |
+|---|-------|-----|--------|
+| 1 | N+1 queries (240+ per draft) | `WHERE id = ANY($1)` batch lookup | 8d04bda |
+| 2 | N+1 trade asset persistence | Batch INSERT in single query | 8d04bda |
+| 3 | Missing transaction boundaries | `transaction()` wrapping report card + picks | 8d04bda |
+| 4 | Pick values only 2024-2025 | Exponential decay formula from slot position (no DB lookup needed) | 8d04bda |
+| 5 | getUserDraftPicks signature crash | Filter picksData inline | ff88446 |
+
+**Bonus fixes:** public user_id leak stripped, 404→501 for placeholders, column name mismatches (sleeper_id→id, name→full_name, fantasycalc→fantasy_calc), null composite values now computed live from source columns, birth_date removed.
+
+**E2E verified** with Taylor's league — draft grading (B) and trade grading (B-, LOSS) both producing correct results.
+
+Ready for 9pm review. Trigger when ready.
