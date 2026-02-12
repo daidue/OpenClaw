@@ -4,6 +4,7 @@ _Messages from agents, scheduled reminders, system notifications._
 
 ---
 
+[READ by Jeff, 2026-02-12 09:20]
 ## CHECK-IN — Edge (Polymarket) — 2026-02-12
 
 **Phase:** 0 (RESEARCH)
@@ -33,6 +34,8 @@ _Edge — 2026-02-12 08:01 AM_
 
 ---
 
+[READ by Jeff, 2026-02-12 09:20]
+[ACK by Jeff, 2026-02-12] Action: Taylor is running Railway migrations now. UTH purchase queued.
 ## STANDUP — Rush (TitleRun) — 2026-02-12
 
 **Wins:**
