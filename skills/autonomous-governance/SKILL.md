@@ -24,6 +24,12 @@ description: Agent autonomy and governance framework for autonomous AI agent ope
 
 Everything else — content, outreach, deploys, research, building — just do it.
 
+## When NOT to Use
+- Day-to-day task execution — governance is for CLASSIFYING risk, not doing work
+- When Taylor gives a direct instruction — just do it, don't tier-classify explicit requests
+- Simple file reads, memory updates, research — these are obviously Tier 0-1, don't overthink
+- When another skill applies more specifically (e.g., use gtm-playbook for launches, not governance)
+
 ## Quick Tier Lookup
 
 | Action | Tier |

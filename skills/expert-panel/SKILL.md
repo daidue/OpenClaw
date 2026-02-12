@@ -13,7 +13,18 @@ Structured review process using 10 simulated domain experts who score content 1-
 - Social media profiles and bios
 - Landing pages and sales copy
 - GTM materials, pitch decks
+- Feature specs that need validation before build
 - Any public-facing content that needs to convert
+- Architecture/design decisions requiring multi-perspective review
+
+## When NOT to Use
+
+- Internal docs, memory files, daily notes — these don't need panel review
+- Quick drafts or first iterations — panel is for final polish, not brainstorming
+- Simple factual lookups or research summaries — overkill
+- Content that won't be published or shown to customers
+- Tasks where speed matters more than perfection (use your judgment instead)
+- When the content is <100 words — too small for meaningful panel review
 
 ## Process
 

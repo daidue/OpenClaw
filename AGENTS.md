@@ -71,6 +71,21 @@ Types: TASK, DECISION, FYI, BLOCKER, MILESTONE
 - **Owner/Operators:** Via their inboxes. Standard format.
 - **Cross-biz:** Route through me. Exception: `[CROSS-BIZ]` tagged urgent peer messages.
 
+## Memory Flush Format (Pre-Compaction)
+When writing pre-compaction memory flushes, use this structure for fast post-compaction recovery:
+```markdown
+## Flush [HH:MM]
+### Active Tasks
+- [task] — [status: in-progress/blocked/waiting]
+### Decisions Made This Session
+- [decision]: [rationale]
+### Blocked On
+- [blocker]: [who needs to act]
+### Next Actions (prioritized)
+1. [highest priority]
+2. [next]
+```
+
 ## External Actions
 **Do freely:** Read files, search web, organize workspace, delegate to agents
 **Ask Taylor first:** Spending money, creating paid accounts, irreversible actions

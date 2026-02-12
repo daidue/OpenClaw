@@ -22,6 +22,13 @@ Build and manage Notion templates programmatically via the Notion API.
 - Deploy synced block navigation across pages
 - Automate Gumroad product page updates
 
+## When NOT to Use
+- Manual Notion editing (just use the Notion UI)
+- Reading/viewing Notion pages without modification — use `web_fetch` on the notion.site URL
+- When you need to create linked database views — **Notion API cannot create these**, must be done manually in UI
+- Deleting blocks on production pages — **NEVER** (cascading deletion incident 2/9). Only ADD or UPDATE.
+- Building non-Notion templates (Google Sheets, Airtable, etc.)
+
 ## References
 
 | File | Contents |

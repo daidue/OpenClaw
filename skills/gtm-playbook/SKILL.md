@@ -13,6 +13,13 @@ Reusable go-to-market framework for launching digital products from zero audienc
 2. **Ship before perfect** — 90% ready beats 100% never-launched
 3. **Commit to 90 days** — most creators quit at day 10 with 2-3 sales
 
+## When NOT to Use
+- Building the product itself — this is for LAUNCHING and SELLING, not building
+- Technical architecture decisions — use expert-panel skill instead
+- SaaS products with established audiences (this is zero-audience focused)
+- When you need deep research on a specific channel — spawn researcher sub-agent instead
+- Pricing decisions for enterprise/B2B products — this covers B2C digital products only
+
 ## Launch Phases
 
 ### Phase 0: Pre-Launch (2-3 days)

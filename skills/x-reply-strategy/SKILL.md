@@ -14,6 +14,13 @@ Build authentic authority through strategic, value-adding replies.
 - **Value-first:** Add insights, share experiences, ask smart questions
 - **Peak windows:** 9-11 AM ET, 1-2 PM ET, 8-10 PM ET
 
+## When NOT to Use
+- When posting original content (not replies) — use content queue workflow instead
+- When the account has been flagged for automated behavior — switch to manual posting
+- During revenue pivot periods where X engagement is deprioritized (check PORTFOLIO.md priorities)
+- For DM outreach or cold messaging — different strategy, higher risk tier
+- When reading/researching tweets — use `bird read` or `web_fetch` instead
+
 ## Daily Reply Allocation
 
 | Tier | Focus | Replies/Day |

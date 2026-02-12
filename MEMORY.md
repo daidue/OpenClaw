@@ -150,6 +150,16 @@ _(To be updated as we work together)_
 - **Gate:** Bayesian must beat heuristic by ≥3% RMSE or revert
 - **Build plan:** `workspace-titlerun/inboxes/rush-inbox.md`
 
+### TitleRun Report Card Feature (IN PROGRESS)
+- **Status:** Re-panel running (targeting 95/100, was 91.1/100)
+- **Spec:** `workspace-titlerun/research/report-card-feature-panel.md` (2,897 lines, 137KB)
+- **Codebase audit:** `workspace-titlerun/research/report-card-codebase-audit.md` (43KB)
+- **Components:** Draft Report Card (pick-by-pick grading) + Trade Report Card (historical trades) + Social Cards (3 formats) + AI Commentary
+- **Key tech:** Value-weighted grading, logarithmic hindsight curve, population-calibrated grade boundaries, Bayesian credible intervals, Satori+Resvg social cards, BullMQ job queue, Anthropic API commentary
+- **Existing codebase assets:** player_value_history (2021+), trade grading in trades.js, Sleeper API wrappers, Trophy Case UI patterns
+- **7 new DB tables, 14 API endpoints, ~20 new React components**
+- **Implementation:** ~4 weeks with Rush (Opus) + Bolt (Sonnet) parallel execution
+
 ### Freelance Invoice Tracker — Notion Template ($27)
 - **Status:** LAUNCHED 🚀 (2026-02-09)
 - **Live URL:** `jeffthenotionguy.gumroad.com/l/freelance-toolkit`

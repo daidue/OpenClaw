@@ -15,6 +15,13 @@ Operational knowledge for prediction market trading — strategies, scanning, ex
 SCAN markets → SCORE opportunities → FILTER by risk → SIZE positions → EXECUTE → MONITOR
 ```
 
+## When NOT to Use
+- General crypto/DeFi/finance research — this is Polymarket-specific only
+- Stock market or traditional betting analysis — different domain entirely
+- When Edge is in Phase 0 (RESEARCH) and you want to place real trades — no live trading until edge is validated
+- Building trading bots for other platforms (Kalshi strategies are covered but execution is Polymarket-focused)
+- Portfolio-level financial planning — that's Jeff's domain
+
 ## Strategy Menu (Pick Your Edge)
 
 | Strategy | Edge Source | Speed Needed | Capital | When It Works |
