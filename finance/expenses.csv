@@ -1,0 +1,7 @@
+Date,Category,Description,Vendor,Amount,Recurring,Frequency,Business Unit,Notes
+2026-01-16,Software,Claude Pro Plan,Anthropic,108.88,Yes,Monthly,All,AI infrastructure - first month (prorated + tax)
+2026-01-23,Infrastructure,Railway Hobby Plan,Railway,10.51,Yes,Monthly,TitleRun,Backend hosting + PostgreSQL (first payment)
+2026-01-23,Infrastructure,Railway Additional,Railway,5.00,No,One-time,TitleRun,Second Railway payment same day
+2026-01-27,Software,Claude Max Plan Upgrade,Anthropic,149.66,Yes,Monthly,All,Upgraded plan (prorated + tax)
+2026-02-09,Platform,Gumroad Account,Gumroad,0.00,No,One-time,Templates,Free account - takes 10% per sale
+2026-02-12,Subscription,Under The Helmet Dynasty (UTH),UTH Dynasty,34.99,Yes,Monthly,TitleRun,Dynasty FF data source for value engine
