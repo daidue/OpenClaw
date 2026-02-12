@@ -1,0 +1,47 @@
+{
+  "jobs": [
+    {
+      "name": "titlerun-review-morning",
+      "description": "Morning code review (10:00 AM EST) — catches overnight commits from Rush",
+      "schedule": "0 10 * * *",
+      "timezone": "America/New_York",
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "agent": "titlerun",
+        "message": "⏰ **Morning Code Review (10:00 AM)**\n\nRun the `titlerun-code-review` skill to analyze commits since the last review.\n\n**Process:**\n1. Load `titlerun-dev` skill for codebase context\n2. Load `titlerun-code-review` skill\n3. Execute the review (fetch commits, analyze files, run 10-expert panel)\n4. Write results to `/Users/jeffdaniels/.openclaw/workspace-titlerun/reviews/YYYY-MM-DD-HHmm.md`\n5. Post summary to Jeff's inbox at `/Users/jeffdaniels/.openclaw/workspace/inboxes/jeff-inbox.md`\n\n**If no commits since last review:** Exit gracefully with \"No new commits to review.\"\n\n**If Critical issues found (score <80):** Tag in the inbox message that Rush should halt feature work and fix immediately.\n\n—Rush"
+      }
+    },
+    {
+      "name": "titlerun-review-afternoon",
+      "description": "Afternoon code review (3:00 PM EST) — catches mid-day work from Rush",
+      "schedule": "0 15 * * *",
+      "timezone": "America/New_York",
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "agent": "titlerun",
+        "message": "⏰ **Afternoon Code Review (3:00 PM)**\n\nRun the `titlerun-code-review` skill to analyze commits since the last review.\n\n**Process:**\n1. Load `titlerun-dev` skill for codebase context\n2. Load `titlerun-code-review` skill\n3. Execute the review (fetch commits, analyze files, run 10-expert panel)\n4. Write results to `/Users/jeffdaniels/.openclaw/workspace-titlerun/reviews/YYYY-MM-DD-HHmm.md`\n5. Post summary to Jeff's inbox at `/Users/jeffdaniels/.openclaw/workspace/inboxes/jeff-inbox.md`\n\n**If no commits since last review:** Exit gracefully with \"No new commits to review.\"\n\n**If Critical issues found (score <80):** Tag in the inbox message that Rush should halt feature work and fix immediately.\n\n—Rush"
+      }
+    },
+    {
+      "name": "titlerun-review-evening",
+      "description": "Evening code review (9:00 PM EST) — catches afternoon/evening commits before EOD",
+      "schedule": "0 21 * * *",
+      "timezone": "America/New_York",
+      "sessionTarget": "isolated",
+      "payload": {
+        "kind": "agentTurn",
+        "agent": "titlerun",
+        "message": "⏰ **Evening Code Review (9:00 PM)**\n\nRun the `titlerun-code-review` skill to analyze commits since the last review.\n\n**Process:**\n1. Load `titlerun-dev` skill for codebase context\n2. Load `titlerun-code-review` skill\n3. Execute the review (fetch commits, analyze files, run 10-expert panel)\n4. Write results to `/Users/jeffdaniels/.openclaw/workspace-titlerun/reviews/YYYY-MM-DD-HHmm.md`\n5. Post summary to Jeff's inbox at `/Users/jeffdaniels/.openclaw/workspace/inboxes/jeff-inbox.md`\n\n**If no commits since last review:** Exit gracefully with \"No new commits to review.\"\n\n**If Critical issues found (score <80):** Tag in the inbox message that Rush should halt feature work and fix immediately.\n\n**Evening note:** This is the final review of the day. If Rush is still working, he should see this before wrapping up.\n\n—Rush"
+      }
+    }
+  ],
+  "deployment_notes": {
+    "how_to_deploy": "Use OpenClaw's cron management commands (exact syntax TBD — Jeff will configure via gateway CLI or admin UI)",
+    "testing": "Test with a one-time trigger first: `openclaw cron trigger titlerun-review-morning` (or similar command)",
+    "monitoring": "Check `/Users/jeffdaniels/.openclaw/workspace-titlerun/reviews/` for output files. If a cron job fails repeatedly, check gh CLI authentication (`gh auth status`) and ensure ~/Desktop/titlerun-api repo is accessible.",
+    "state_file": "The skill tracks last review timestamp in `/Users/jeffdaniels/.openclaw/workspace-titlerun/.last-review-timestamp` to avoid duplicate reviews.",
+    "emergency_disable": "If cron jobs spam or fail repeatedly, disable via: `openclaw cron disable titlerun-review-*` (or similar command)"
+  }
+}
