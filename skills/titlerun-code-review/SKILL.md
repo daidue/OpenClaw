@@ -88,10 +88,10 @@ Each expert scores findings:
 **No deductions for Improvements** — they're recommendations only.
 
 **Health Bands:**
-- **90-100:** Healthy — ship it, minor polish only
-- **80-89:** Needs Attention — fix Major+ issues this sprint
-- **70-79:** Concerning — fix Critical immediately, Major before new features
-- **<70:** Emergency — stop feature work, all hands on fixes
+- **95-100:** Healthy — ship it, minor polish only
+- **90-94:** Needs Attention — fix Major+ issues before continuing
+- **80-89:** Concerning — fix Critical immediately, Major before new features
+- **<80:** Emergency — stop feature work, all hands on fixes
 
 ### 5. Output Generation
 Write to: `/Users/jeffdaniels/.openclaw/workspace-titlerun/reviews/YYYY-MM-DD-HHmm.md`
@@ -247,7 +247,7 @@ Write to Jeff's inbox: `/Users/jeffdaniels/.openclaw/workspace/inboxes/jeff-inbo
 **Critical Issues:** [N]
 **Full Report:** `/Users/jeffdaniels/.openclaw/workspace-titlerun/reviews/YYYY-MM-DD-HHmm.md`
 
-[If score <90: Tag @rush to fix before continuing]
+[If score <95: Tag agent to fix before continuing]
 ```
 
 **On-demand reviews (Rush):**
