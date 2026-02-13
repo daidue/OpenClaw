@@ -1,6 +1,11 @@
 ---
 name: autonomous-governance
-description: Agent autonomy and governance framework for autonomous AI agent operations. Defines 5-tier risk classification (Tier 0-4), decision protocols (RADAR, R.A.D., B.L.A.S.T.), safety checks, content automation pipeline, deployment/rollback procedures, resource governance, adversarial robustness, and learning cycles. Use when agents need to classify action risk, decide autonomy levels, follow deployment protocols, manage content queues, handle incidents, or reference governance policies. Also use when onboarding new agents or reviewing safety procedures.
+description: Agent autonomy and governance framework for autonomous AI agent operations. Defines 5-tier risk classification (Tier 0-4), decision protocols (RADAR, R.A.D., B.L.A.S.T.), safety checks, content automation pipeline, deployment/rollback procedures, resource governance, adversarial robustness, and learning cycles. Use when agents need to classify action risk, decide autonomy levels, follow deployment protocols, manage content queues, handle incidents, or reference governance policies. Also use when onboarding new agents or reviewing safety procedures. Do NOT use for day-to-day task execution, when Taylor gives direct instructions (just do it), or simple file operations (obviously Tier 0-1). Key capabilities: 5-tier risk model, RADAR decision cycle, content automation queue, deploy/rollback protocols, blameless post-mortems.
+metadata:
+  author: Jeff Daniels
+  version: 1.0.0
+  category: governance
+  last_verified: 2026-02-13
 ---
 
 # Autonomous Governance Framework v3.3
@@ -84,3 +89,21 @@ For full details, read the appropriate reference file:
 - **Principles (11 core beliefs)** → `references/principles.md`
 - **20+ worked examples with tier classification** → `references/examples.md`
 - **Blameless post-mortem template** → `references/post-mortem-template.md`
+
+## Trigger Phrases
+
+✅ Should trigger:
+- "classify risk tier"
+- "what tier is this action"
+- "need governance approval"
+- "FULL STOP" / "PAUSE" / "SAFE MODE"
+- "deploy to production" (check tier)
+- "autonomy framework"
+- "onboard new agent"
+
+❌ Should NOT trigger:
+- "read this file"
+- "update memory"
+- "research this topic"
+- "Taylor wants X done" (direct instruction)
+- "fix this bug" (unless it's a production deploy)

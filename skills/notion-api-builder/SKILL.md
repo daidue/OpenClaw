@@ -1,6 +1,12 @@
 ---
 name: notion-api-builder
-description: Build and manage Notion templates via the Notion API
+description: Build and manage Notion templates programmatically via the Notion API. Use when you hear "build Notion template", "create Notion page via API", "add blocks to Notion", "deploy sidebar navigation", "set up Notion database", or "automate Notion template". Do NOT use for manual Notion editing (use UI), reading pages without modification (use web_fetch), or creating linked database views (API limitation — must be done manually). Requires Notion API integration token with page access. Key capabilities: create pages/databases, set up properties (formulas, relations, rollups), build filtered views, deploy synced blocks, automate Gumroad product pages.
+compatibility: Requires Notion API integration token with page access
+metadata:
+  author: Jeff Daniels
+  version: 1.0.0
+  category: development
+  last_verified: 2026-02-13
 ---
 
 # Notion API Builder
@@ -61,3 +67,21 @@ Content-Type: application/json
 
 **NEVER delete blocks on production Notion pages.** Only ADD or UPDATE.
 See `references/safety-rules.md` for the full incident report.
+
+## Trigger Phrases
+
+✅ Should trigger:
+- "build Notion template"
+- "create Notion page via API"
+- "add blocks to Notion"
+- "deploy sidebar navigation"
+- "set up Notion database"
+- "automate Gumroad Notion product"
+- "Notion API call for..."
+
+❌ Should NOT trigger:
+- "edit this Notion page" (use UI)
+- "read this Notion page" (use web_fetch)
+- "create linked database view" (API can't do this)
+- "manually update Notion"
+- "delete Notion blocks" (NEVER on production)

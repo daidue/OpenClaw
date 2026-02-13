@@ -1,6 +1,11 @@
 ---
 name: x-reply-strategy
-description: X/Twitter reply strategy playbook for building authority and audience. Use when engaging on X — replying to accounts, choosing targets, timing posts, crafting replies, tracking metrics, or planning daily engagement sprints. Covers WHO to reply to (tiered target lists), WHEN (timing windows), HOW (6 reply frameworks), WHAT topics, automation architecture, and metrics. Also use when onboarding new accounts, reviewing engagement performance, or planning content strategy on X.
+description: X/Twitter reply strategy playbook for building authority and audience. Use when engaging on X — replying to accounts, choosing targets, timing posts, crafting replies, tracking metrics, or planning daily engagement sprints. Covers WHO to reply to (tiered target lists), WHEN (timing windows), HOW (6 reply frameworks), WHAT topics, automation architecture, and metrics. Also use when onboarding new accounts, reviewing engagement performance, or planning content strategy on X. Do NOT use for posting original content (not replies), when account flagged for automation, during revenue pivot periods where X is deprioritized, DM outreach/cold messaging, or simple tweet reading (use bird/web_fetch). Key capabilities: 5-tier target allocation (40-50 replies/day), 6 reply frameworks, peak timing windows (9-11 AM, 1-2 PM, 8-10 PM ET), anti-pattern avoidance, voice guidelines.
+metadata:
+  author: Jeff Daniels
+  version: 1.0.0
+  category: content
+  last_verified: 2026-02-13
 ---
 
 # X Reply Strategy Playbook
@@ -61,3 +66,23 @@ Technical + accessible + honest. Share failures. Be specific (tools, numbers, ti
 - **Metrics, iteration, A/B testing** → `references/metrics.md`
 - **Director + AI Agent positioning** → `references/positioning.md`
 - **Daily/weekly/monthly checklists** → `references/checklists.md`
+
+## Trigger Phrases
+
+✅ Should trigger:
+- "reply to this tweet"
+- "engage on X"
+- "daily reply sprint"
+- "target account strategy"
+- "X reply frameworks"
+- "timing windows for replies"
+- "build X authority"
+- "engagement metrics review"
+
+❌ Should NOT trigger:
+- "post original tweet"
+- "read this tweet" (use bird/web_fetch)
+- "DM outreach"
+- "cold message on X"
+- "account flagged for automation"
+- "X is deprioritized" (check PORTFOLIO.md)

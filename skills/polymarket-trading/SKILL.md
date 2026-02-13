@@ -1,6 +1,12 @@
 ---
 name: polymarket-trading
 description: Polymarket prediction market trading strategies, scanning, and execution. Use when analyzing prediction markets, building trading bots, evaluating arbitrage opportunities, tracking whale activity, weather market trading, cross-platform arbitrage (Kalshi), or designing market scanners. Covers weather trading with NOAA data, whale/insider detection, multi-strategy scanning, risk management, and position sizing.
+allowed-tools: "Bash(python:*) WebFetch"
+metadata:
+  author: Jeff Daniels
+  version: 1.0.0
+  category: trading
+  last_verified: 2026-02-13
 ---
 
 # Polymarket Trading
@@ -83,3 +89,23 @@ Composite score from 11 factors — see [whale-tracking.md](references/whale-tra
 - **[Weather Trading](references/weather-trading.md)** — NOAA integration, bucket arbitrage, Simmer SDK, city coverage
 - **[Risk Management](references/risk-management.md)** — Kelly criterion, circuit breakers, exposure limits, stop-losses
 - **[Cross-Platform Arbitrage](references/cross-platform.md)** — Kalshi API, market matching, fee analysis, spread detection
+
+## Trigger Phrases
+
+✅ Should trigger:
+- "scan Polymarket markets"
+- "weather trading strategy"
+- "whale tail this position"
+- "arbitrage with Kalshi"
+- "build trading bot"
+- "NOAA forecast edge"
+- "Kelly criterion sizing"
+- "insider score for..."
+
+❌ Should NOT trigger:
+- "stock market research"
+- "DeFi yield farming"
+- "crypto portfolio"
+- "place real trade" (when Edge is in Phase 0 research)
+- "financial planning"
+- "Kalshi execution" (covered but Polymarket-focused)

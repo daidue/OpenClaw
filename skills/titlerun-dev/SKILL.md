@@ -1,6 +1,12 @@
 ---
 name: titlerun-dev
-description: "TitleRun dynasty FF SaaS development conventions, codebase patterns, deployment workflow, and data architecture. Use when building features, fixing bugs, writing scrapers, or deploying to TitleRun. Don't use for business strategy, marketing, or non-TitleRun coding tasks."
+description: TitleRun dynasty FF SaaS development conventions, codebase patterns, deployment workflow, and data architecture. Use when building features, fixing bugs, writing scrapers, database migrations, or deploying to TitleRun (Railway backend, Vercel frontend). Don't use for business strategy, marketing, non-TitleRun coding tasks, or simple config changes. Requires gh CLI, psql, Node.js 18+. Mac/Linux only. Key capabilities: React 18 + TailwindCSS frontend patterns, Node.js/Express backend conventions, PostgreSQL schema management, Bayesian value engine architecture, scraper anti-detection standards, Railway/Vercel deployment automation.
+compatibility: Requires gh CLI, psql, Node.js 18+. Mac/Linux only.
+metadata:
+  author: Jeff Daniels
+  version: 1.0.0
+  category: development
+  last_verified: 2026-02-13
 ---
 
 # TitleRun Development Skill
@@ -237,3 +243,23 @@ Example: `[Sprint 1] Add DTC browser automation scraper with anti-detection`
 | Report Card Spec | `research/report-card-feature-panel.md` | Draft/Trade grading, commentary, social cards |
 | Codebase Audit | `research/report-card-codebase-audit.md` | Full frontend/backend audit, DB schema |
 | Feature Audit | `research/feature-audit-expert-panel.md` | Existing 5-source engine architecture |
+
+## Trigger Phrases
+
+✅ Should trigger:
+- "build TitleRun feature"
+- "write scraper for..."
+- "database migration"
+- "deploy to Railway"
+- "fix TitleRun bug"
+- "Bayesian value engine"
+- "TitleRun codebase pattern"
+- "anti-detection scraper"
+
+❌ Should NOT trigger:
+- "TitleRun growth strategy"
+- "marketing plan"
+- "community engagement"
+- "Polymarket bot code"
+- "simple config change"
+- "non-TitleRun script"

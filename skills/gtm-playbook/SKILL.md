@@ -1,6 +1,11 @@
 ---
 name: gtm-playbook
-description: Go-to-market playbook for launching digital products (templates, tools, courses, SaaS) with zero audience. Use when planning a product launch, writing launch copy, choosing distribution channels, setting pricing strategy, or creating launch checklists. Covers Gumroad/Lemon Squeezy optimization, marketplace submissions, content distribution (Reddit, X, Discord, Pinterest, DM outreach), pricing/funnel strategy, and phased launch execution.
+description: Go-to-market playbook for launching digital products (templates, tools, courses, SaaS) with zero audience. Use when planning a product launch, writing launch copy, choosing distribution channels, setting pricing strategy, or creating launch checklists. Covers Gumroad/Lemon Squeezy optimization, marketplace submissions, content distribution (Reddit, X, Discord, Pinterest, DM outreach), pricing/funnel strategy, and phased launch execution. Do NOT use for building the product itself, technical architecture decisions, SaaS with established audiences, or deep single-channel research (spawn researcher sub-agent instead). Key capabilities: 4-phase launch framework, channel selection guide, marketplace submission playbooks, pricing/funnel strategy, 90-day commitment roadmap.
+metadata:
+  author: Jeff Daniels
+  version: 1.0.0
+  category: content
+  last_verified: 2026-02-13
 ---
 
 # GTM Playbook — Digital Product Launch
@@ -99,3 +104,23 @@ Reusable go-to-market framework for launching digital products from zero audienc
 8. **Reddit requires 30+ days karma** — never launch there in Week 1
 9. **Video walkthroughs convert** — "show me it working" beats any copy
 10. **90-day commitment minimum** — the "trough of despair" hits at Week 2
+
+## Trigger Phrases
+
+✅ Should trigger:
+- "launch this product"
+- "GTM plan for..."
+- "distribution strategy"
+- "where should I launch this"
+- "pricing for cold traffic"
+- "launch checklist"
+- "Gumroad discover strategy"
+- "marketplace submissions"
+
+❌ Should NOT trigger:
+- "build this feature"
+- "system architecture for..."
+- "how do I code this"
+- "deep research on Reddit"
+- "enterprise B2B pricing"
+- "product roadmap" (that's strategy, not launch)

@@ -1,31 +1,68 @@
 ---
 name: bird
-description: X/Twitter CLI for reading, searching, and posting via cookies or Sweetistics.
+description: Read-only X/Twitter CLI for searching and reading tweets, threads, and profiles via browser cookies. Use for "read timeline", "search tweets", "get thread", "check profile". Do NOT use for posting tweets or replies (bird CLI blocked by error 226 automation detection — use browser CDP instead). Requires bird CLI (brew install steipete/tap/bird) and Chrome browser cookies. Key capabilities: search tweets, read threads, fetch user timelines, whoami auth check.
 homepage: https://bird.fast
-metadata: {"clawdbot":{"emoji":"🐦","requires":{"bins":["bird"]},"install":[{"id":"brew","kind":"brew","formula":"steipete/tap/bird","bins":["bird"],"label":"Install bird (brew)"}]}}
+compatibility: Requires bird CLI (brew install steipete/tap/bird) and Chrome browser cookies
+metadata:
+  clawdbot:
+    emoji: "🐦"
+    requires:
+      bins: ["bird"]
+    install:
+      - id: brew
+        kind: brew
+        formula: steipete/tap/bird
+        bins: ["bird"]
+        label: Install bird (brew)
+  author: Jeff Daniels
+  version: 1.0.0
+  category: content
+  last_verified: 2026-02-13
 ---
 
 # bird
 
-Use `bird` to read/search X and post tweets/replies.
+Use `bird` for **read-only** X/Twitter operations: search, read tweets/threads, check profiles.
 
 ## When NOT to Use
 - **Posting tweets/replies** — bird CLI is blocked by error 226 ("looks automated"). Use browser-based CDP posting instead (DataTransfer + ClipboardEvent on `[data-testid="tweetTextarea_0"]`).
 - Reading tweets when you need full thread context — use `web_fetch` on the tweet URL instead.
 - bird uses **Chrome cookies** (not Safari). If Chrome isn't logged in, auth will fail.
-- Use bird ONLY for: `bird read`, `bird search`, `bird whoami`, `bird thread` (read operations).
 
-Quick start
-- `bird whoami`
-- `bird read <url-or-id>`
-- `bird thread <url-or-id>`
-- `bird search "query" -n 5`
+## Read-Only Commands
 
-Posting (confirm with user first)
-- `bird tweet "text"`
-- `bird reply <id-or-url> "text"`
+**Check auth:**
+```bash
+bird whoami
+bird check
+```
 
-Auth sources
-- Browser cookies (default: Firefox/Chrome)
+**Read tweets/threads:**
+```bash
+bird read <url-or-id>
+bird thread <url-or-id>
+```
+
+**Search:**
+```bash
+bird search "query" -n 5
+```
+
+## Auth Sources
+- Browser cookies (default: Chrome — **not Safari**)
 - Sweetistics API: set `SWEETISTICS_API_KEY` or use `--engine sweetistics`
-- Check sources: `bird check`
+
+## Trigger Phrases
+
+✅ Should trigger:
+- "search X for..."
+- "read this tweet"
+- "get thread"
+- "check my timeline"
+- "bird whoami"
+
+❌ Should NOT trigger:
+- "post tweet"
+- "reply to this"
+- "tweet this out"
+- "publish to X"

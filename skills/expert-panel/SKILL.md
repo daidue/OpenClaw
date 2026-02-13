@@ -1,6 +1,11 @@
 ---
 name: expert-panel
-description: "10-expert panel review process for public-facing content — listings, profiles, GTM materials, copy, any output that faces customers or audiences"
+description: 10-expert panel review process for public-facing content — listings, profiles, GTM materials, copy, any output that faces customers or audiences. Use when you hear "run expert panel", "score this at 95", "10 experts review", "validate this copy", or "polish this listing". Do NOT use for internal docs, daily notes, quick drafts, or content under 100 words. Key capabilities: 10-expert simulation, iterative scoring (target 95/100), conversion optimization, multi-perspective validation, synthesis & prioritized feedback.
+metadata:
+  author: Jeff Daniels
+  version: 1.0.0
+  category: operations
+  last_verified: 2026-02-13
 ---
 
 # Expert Panel Review
@@ -87,3 +92,22 @@ Priority fixes: Critical → High Impact → Nice to Have
 - `references/scoring-framework.md` — Rubric, weights, iteration rules
 - `references/output-template.md` — Standard output format
 - `references/examples.md` — Condensed examples from past reviews
+
+## Trigger Phrases
+
+✅ Should trigger:
+- "run expert panel"
+- "score this at 95"
+- "10 experts review"
+- "validate this copy"
+- "polish this listing"
+- "expert review this"
+- "panel this feature spec"
+
+❌ Should NOT trigger:
+- "write internal doc"
+- "quick draft"
+- "update memory notes"
+- "research summary"
+- "100-word snippet"
+- "personal notes"
