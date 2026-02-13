@@ -1,52 +1,13 @@
 {
-  "timestamp": "2026-02-13T17:00:16.866108+00:00",
+  "timestamp": "2026-02-13T23:00:12.508399+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
-      "topic": "twitter",
+      "topic": "reddit",
       "agents": [
         "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "gumroad",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "instagram",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "polymarket",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "stripe",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "youtube",
-      "agents": [
-        "main",
-        "commerce"
+        "commerce",
+        "dev"
       ],
       "signal": "collaboration"
     },
@@ -54,15 +15,26 @@
       "topic": "shopify",
       "agents": [
         "main",
-        "commerce"
+        "commerce",
+        "dev"
       ],
       "signal": "collaboration"
     },
     {
-      "topic": "notion",
+      "topic": "youtube",
       "agents": [
         "main",
-        "commerce"
+        "commerce",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "twitter",
+      "agents": [
+        "main",
+        "commerce",
+        "dev"
       ],
       "signal": "collaboration"
     },
@@ -70,28 +42,13 @@
       "topic": "template",
       "agents": [
         "main",
-        "commerce"
+        "commerce",
+        "dev"
       ],
       "signal": "collaboration"
     },
     {
-      "topic": "invoice tracker",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "newsletter",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "etsy",
+      "topic": "notion",
       "agents": [
         "main",
         "commerce"
@@ -107,7 +64,47 @@
       "signal": "collaboration"
     },
     {
-      "topic": "reddit",
+      "topic": "instagram",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "invoice tracker",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "gumroad",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "newsletter",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "stripe",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "etsy",
       "agents": [
         "main",
         "commerce"
@@ -117,24 +114,43 @@
   ],
   "shared_tools": [
     {
-      "tool": "read",
-      "agents": [
-        "main",
-        "commerce"
-      ]
-    },
-    {
       "tool": "exec",
       "agents": [
         "main",
-        "commerce"
+        "commerce",
+        "dev"
+      ]
+    },
+    {
+      "tool": "read",
+      "agents": [
+        "main",
+        "commerce",
+        "dev"
       ]
     },
     {
       "tool": "write",
       "agents": [
         "main",
-        "commerce"
+        "commerce",
+        "dev"
+      ]
+    },
+    {
+      "tool": "browser",
+      "agents": [
+        "main",
+        "commerce",
+        "dev"
+      ]
+    },
+    {
+      "tool": "web_fetch",
+      "agents": [
+        "main",
+        "commerce",
+        "dev"
       ]
     },
     {
@@ -152,25 +168,19 @@
       ]
     },
     {
-      "tool": "browser",
+      "tool": "web_search",
       "agents": [
-        "main",
-        "commerce"
-      ]
-    },
-    {
-      "tool": "web_fetch",
-      "agents": [
-        "main",
-        "commerce"
+        "commerce",
+        "dev"
       ]
     }
   ],
   "agent_error_counts": {
-    "main": 36
+    "main": 23
   },
   "active_agents": [
     "main",
-    "commerce"
+    "commerce",
+    "dev"
   ]
 }
