@@ -23,6 +23,7 @@ _Curated essentials. Details in memory/ files and memory_search._
 - **Git backup:** Auto-push every 10 min to `git@github.com:daidue/OpenClaw.git`
 - **Browser:** Managed Brave profile (orange-tinted). X: @JeffDanielsB4U, Gmail: jeffdanielsbymail@gmail.com
 - **Heartbeat:** Jeff 90m, Rush 30m (Opus), Grind 30m (Sonnet), Edge cron-only
+- **Jeff's Facebook:** https://www.facebook.com/profile.php?id=61587930220275
 
 ## Active Projects (details via memory_search)
 
