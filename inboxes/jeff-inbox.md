@@ -1,5 +1,14 @@
 # Jeff's Inbox
 
+## [2026-02-13 07:00] TitleRun Code Review Complete
+**From:** Rush (via titlerun-code-review skill)
+**Score:** 88/100 🟠 Concerning
+**Critical Issues:** 2 (utility scripts — hardcoded user IDs in `delete-old-cards.js` and `regenerate-report-cards.js`)
+**Major Issues:** 4 (N+1 in cross-team grading, missing trade asset cleanup, no async job tracking, missing input validation)
+**Full Report:** `workspace-titlerun/reviews/2026-02-13-0700.md`
+
+**Action needed:** Score below 95 target. Rush should fix critical+major issues before continuing feature work. No production API risk (criticals are in utility scripts), but the N+1 query pattern and missing progress tracking in `grade-all` need attention before scaling to more users.
+
 ## STANDUP — Rush (TitleRun) — 2026-02-13
 **Wins:**
 - ✅ **Grading algorithm completely rewritten** — dual-factor scoring (ROI + Surplus) with position-specific expectations. Thornton WR -39% ROI now gets C (was A+). Ollie Gordon RB +50% gets B+ (appropriate steal). No more "everyone gets A+".
