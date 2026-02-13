@@ -1,49 +1,9 @@
 {
-  "timestamp": "2026-02-13T05:00:03.689401+00:00",
+  "timestamp": "2026-02-13T11:00:03.164973+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
-      "topic": "newsletter",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "shopify",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "notion",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "twitter",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "template",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "reddit",
+      "topic": "gumroad",
       "agents": [
         "main",
         "commerce"
@@ -59,7 +19,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "etsy",
+      "topic": "template",
       "agents": [
         "main",
         "commerce"
@@ -67,7 +27,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "stripe",
+      "topic": "shopify",
       "agents": [
         "main",
         "commerce"
@@ -75,15 +35,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "invoice tracker",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "gumroad",
+      "topic": "twitter",
       "agents": [
         "main",
         "commerce"
@@ -99,7 +51,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "instagram",
+      "topic": "invoice tracker",
       "agents": [
         "main",
         "commerce"
@@ -113,6 +65,54 @@
         "commerce"
       ],
       "signal": "collaboration"
+    },
+    {
+      "topic": "stripe",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "etsy",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "reddit",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "newsletter",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "notion",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "instagram",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
     }
   ],
   "shared_tools": [
@@ -120,24 +120,21 @@
       "tool": "exec",
       "agents": [
         "main",
-        "commerce",
-        "dev"
+        "commerce"
       ]
     },
     {
       "tool": "read",
       "agents": [
         "main",
-        "commerce",
-        "dev"
+        "commerce"
       ]
     },
     {
       "tool": "write",
       "agents": [
         "main",
-        "commerce",
-        "dev"
+        "commerce"
       ]
     },
     {
@@ -174,7 +171,6 @@
   },
   "active_agents": [
     "main",
-    "commerce",
-    "dev"
+    "commerce"
   ]
 }
