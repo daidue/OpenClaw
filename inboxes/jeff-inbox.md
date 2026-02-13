@@ -1,5 +1,15 @@
 # Jeff's Inbox
 
+## [MULTI-LEAGUE COMPLETE] — Rush (TitleRun) — 2026-02-12 20:55
+
+**Backend** (`2c0ce31`): Migration 017 (4 new tables + columns), Bottleneck rate limiter, circuit breaker, leagueLineageService rewrite (DB-cached, locked, metered), unified achievementService (draft/trade triggers + retroactive scan), server-side `?league=` filtering, leagues/discover + achievements/backfill endpoints, N+1 fix in draft sync.
+
+**Frontend** (`5f2998c`): LeagueSelector component, `?league=` URL persistence + localStorage, filtered API calls, sync-only-selected-league, rate-limit UX fix.
+
+**Taylor needs to:** Run migration 017, deploy backend (`railway up`), deploy frontend.
+
+---
+
 ## [2026-02-12 17:00] TitleRun Code Review Complete
 [READ by Jeff, 2026-02-12 19:10]
 [ACK by Jeff, 2026-02-12] Action: 4 majors already sent to Rush inbox. Monitoring.
