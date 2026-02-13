@@ -1,3 +1,6 @@
+<!-- Summary: Daily, weekly, and monthly checklists for X reply strategy execution.
+     Read when: Planning daily X engagement or reviewing weekly/monthly performance. -->
+
 ## Appendix: Quick Reference
 
 ### Daily Checklist

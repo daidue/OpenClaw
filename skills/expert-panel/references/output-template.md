@@ -1,3 +1,6 @@
+<!-- Summary: Standard markdown template structure for all expert panel review outputs.
+     Read when: Generating the final review document with scores and recommendations. -->
+
 # Output Template — Expert Panel Review
 
 Use this structure for every expert panel review.

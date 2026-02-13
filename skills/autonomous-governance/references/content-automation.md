@@ -1,3 +1,6 @@
+<!-- Summary: Content creation pipeline flow, review requirements, and distribution workflows.
+     Read when: Automating content creation (posts, threads, articles) or setting up review gates. -->
+
 # Part 5: Content Automation Pipeline
 
 ## The Flow

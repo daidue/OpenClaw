@@ -1,3 +1,6 @@
+<!-- Summary: Code template for anti-detection scrapers with fingerprinting, timing, and circuit breakers.
+     Read when: Starting a new scraper implementation for a dynasty data source. -->
+
 # Scraper Template — Anti-Detection Pattern
 
 Use this template for all new dynasty data source scrapers.

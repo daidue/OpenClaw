@@ -1,3 +1,6 @@
+<!-- Summary: Token budgets (lean/full mode), API rate limits, compute quotas, and resource safety protocols.
+     Read when: Checking token budget limits or implementing resource consumption controls. -->
+
 # Part 7: Resource Governance & Safety
 
 ## Token Budgets

@@ -1,3 +1,6 @@
+<!-- Summary: Pre-deploy checklist (code quality, tests, DB changes) and post-deploy verification steps.
+     Read when: About to deploy to production or verifying a deployment. -->
+
 # TitleRun Deployment Checklist
 
 ## Pre-Deploy (MUST complete all before pushing to main)

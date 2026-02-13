@@ -1,3 +1,6 @@
+<!-- Summary: Multi-strategy scanner design (arbitrage, whale tracking, weather, cross-platform) with priority scoring.
+     Read when: Building or debugging the Polymarket opportunity scanner. -->
+
 # Scanner Architecture
 
 Multi-strategy Polymarket scanner design for detecting trading opportunities.

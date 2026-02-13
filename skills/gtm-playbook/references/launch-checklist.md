@@ -1,3 +1,6 @@
+<!-- Summary: Generalized product launch checklist (pre-launch, launch day, post-launch) for digital products.
+     Read when: Preparing a product launch and need step-by-step execution checklist. -->
+
 # Launch Checklist — Digital Product
 
 Generalized checklist for any digital product launch. Adapt to your specific product and channels.

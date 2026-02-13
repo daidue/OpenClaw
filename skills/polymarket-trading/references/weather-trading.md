@@ -1,3 +1,6 @@
+<!-- Summary: NOAA forecast data integration for weather market edge, with data sources and strategy logic.
+     Read when: Trading weather markets or integrating NOAA API data. -->
+
 # Weather Market Trading
 
 Trade Polymarket weather markets using NOAA forecast data as an information edge.

@@ -1,3 +1,6 @@
+<!-- Summary: North star metrics, success indicators, and A/B testing framework for X engagement.
+     Read when: Measuring performance, setting goals, or analyzing what's working. -->
+
 ## Metrics and Iteration
 
 ### North Star Metrics

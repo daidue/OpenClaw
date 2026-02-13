@@ -1,3 +1,6 @@
+<!-- Summary: Per-expert scoring methodology (1-100 scale), weighted aggregation, and confidence bands.
+     Read when: Calculating scores or understanding how expert ratings combine into final scores. -->
+
 # Scoring Framework
 
 ## Per-Expert Scoring (1-100)

@@ -1,3 +1,6 @@
+<!-- Summary: Large bet tracking ($10K+), insider probability scoring, and wallet following strategies.
+     Read when: Implementing whale detection or evaluating insider signal strength. -->
+
 # Whale Tracking & Insider Detection
 
 Track large Polymarket bets ($10K+), score insider probability, and tail informed wallets.

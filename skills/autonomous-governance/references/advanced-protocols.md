@@ -1,3 +1,6 @@
+<!-- Summary: Inter-agent conflict resolution, emergency escalation chains, and advanced coordination protocols.
+     Read when: Debugging multi-agent conflicts or implementing new inter-agent workflows. -->
+
 # Part 10: Advanced Protocols
 
 ## Inter-Agent Conflict Resolution

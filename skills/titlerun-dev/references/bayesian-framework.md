@@ -1,3 +1,6 @@
+<!-- Summary: Quick reference formulas for Bayesian confidence scoring and aggregation math.
+     Read when: Implementing or debugging Bayesian value calculations. -->
+
 # Bayesian Value Engine Framework — Quick Reference
 
 ## Confidence Score (Smooth Functions)

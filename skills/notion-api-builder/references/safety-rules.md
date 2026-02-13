@@ -1,3 +1,6 @@
+<!-- Summary: Critical safety rules for Notion API operations (never delete production blocks, backups, test first).
+     Read when: About to execute any Notion API operation on production pages. -->
+
 # Safety Rules — Notion API
 
 **Read this before every production operation.**

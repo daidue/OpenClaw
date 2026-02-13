@@ -1,3 +1,6 @@
+<!-- Summary: 3-second safety check questions and decision framework for Tier 2+ actions.
+     Read when: About to execute a Tier 2+ action and need to verify safety. -->
+
 # Part 3: How to Decide What's Safe
 
 ## The 3-Second Safety Check

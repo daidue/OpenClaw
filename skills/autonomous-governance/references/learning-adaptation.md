@@ -1,3 +1,6 @@
+<!-- Summary: Verify + Learn loop, mistake cataloging, and continuous improvement protocols.
+     Read when: Logging a completed task outcome or implementing learning mechanisms. -->
+
 # Part 9: Learning & Adaptation
 
 ## The Verify + Learn Loop

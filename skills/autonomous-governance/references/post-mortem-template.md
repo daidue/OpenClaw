@@ -1,3 +1,6 @@
+<!-- Summary: Blameless post-mortem template for S1/S2 incidents with timeline, root cause, and prevention sections.
+     Read when: Documenting a significant incident or learning from a high-severity mistake. -->
+
 # Blameless Post-Mortem Template
 
 **Use this template for all S1/S2 incidents and significant mistakes.**

@@ -1,3 +1,6 @@
+<!-- Summary: End-to-end template build process (Phase 1: Structure, Phase 2: Data, Phase 3: Polish, Phase 4: Product).
+     Read when: Building a Notion template from scratch and need step-by-step guidance. -->
+
 # Template Build Walkthrough
 
 End-to-end process for building a Notion template product.

@@ -1,3 +1,6 @@
+<!-- Summary: Condensed examples of expert panel reviews showing the process in action.
+     Read when: Need reference examples of completed panel reviews or want to see scoring in practice. -->
+
 # Examples — Expert Panel Reviews
 
 Condensed examples showing the process in action. Full reviews in `projects/` and `content-queue/review/`.

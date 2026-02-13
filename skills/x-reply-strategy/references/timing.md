@@ -1,3 +1,6 @@
+<!-- Summary: Optimal reply window analysis (5-60 min sweet spot) with research findings and timing strategy.
+     Read when: Deciding when to reply or setting up reply timing automation. -->
+
 ## WHEN to Reply: Optimal Timing
 
 ### The Reply Window: Sweet Spot Analysis

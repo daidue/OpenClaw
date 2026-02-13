@@ -1,3 +1,6 @@
+<!-- Summary: Pricing guidelines based on audience size, competitive benchmarks, and tier structures.
+     Read when: Deciding product pricing or validating price point against market. -->
+
 # Pricing Strategy for Digital Products
 
 ## Core Principle: Price for Your Audience Size

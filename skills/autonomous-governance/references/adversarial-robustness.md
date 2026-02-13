@@ -1,3 +1,6 @@
+<!-- Summary: Prompt injection defense, tier bypass detection, and adversarial attack resistance.
+     Read when: Implementing safety checks or investigating suspicious tier escalations. -->
+
 # Part 8: Adversarial Robustness
 
 ## Prompt Injection Defense

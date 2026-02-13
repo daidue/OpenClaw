@@ -1,3 +1,6 @@
+<!-- Summary: Marketplace priority order, submission requirements, and approval timelines for Notion marketplaces.
+     Read when: Submitting a Notion template to marketplaces or comparing marketplace options. -->
+
 # Marketplace Submissions Guide
 
 ## Priority Order

@@ -1,3 +1,6 @@
+<!-- Summary: Machine-readable JSON schema for code review output for CI/CD integration and automation.
+     Read when: Building automated processing of review results or integrating with dashboards. -->
+
 # JSON Output Specification for Code Reviews
 
 ## Purpose

@@ -1,3 +1,6 @@
+<!-- Summary: 5 content pillars (AI agents, automation, indie building, etc) with topic examples and avoid zones.
+     Read when: Evaluating whether a post fits our authority areas or choosing topics to engage on. -->
+
 ## WHAT to Reply About: Topic Authority
 
 ### Content Pillars: What We're Known For

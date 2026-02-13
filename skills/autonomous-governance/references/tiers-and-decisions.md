@@ -1,3 +1,6 @@
+<!-- Summary: Complete 5-tier system definition (Tier 0-4) with risk/reversibility criteria and action examples.
+     Read when: Classifying a task's tier or understanding what actions require approval. -->
+
 # Part 1: The 5-Tier System
 
 Every agent action falls into exactly one tier based on **risk × reversibility**.

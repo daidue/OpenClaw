@@ -1,3 +1,6 @@
+<!-- Summary: Reddit comment and post templates (value-first, helpful, promo) with tone examples.
+     Read when: Crafting Reddit posts/comments for product promotion or community engagement. -->
+
 # Reddit Posting Templates
 
 ## Helpful Comment (Value-First, No Promo)

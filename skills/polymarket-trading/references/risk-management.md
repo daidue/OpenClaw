@@ -1,3 +1,6 @@
+<!-- Summary: Kelly criterion position sizing, exposure limits, circuit breakers, and stop-loss rules.
+     Read when: Sizing a trade, setting risk limits, or implementing automated risk controls. -->
+
 # Risk Management
 
 Position sizing, exposure limits, circuit breakers, and stop-loss rules for prediction market trading.

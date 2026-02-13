@@ -1,3 +1,6 @@
+<!-- Summary: Foundational beliefs guiding the autonomous governance framework (reversibility, trust, speed, etc).
+     Read when: Making framework design decisions or resolving philosophical conflicts. -->
+
 # Part 11: Principles
 
 **The foundational beliefs that guide this framework:**

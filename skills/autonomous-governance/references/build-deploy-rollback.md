@@ -1,3 +1,6 @@
+<!-- Summary: Verification chain for autonomous code changes, deployment protocols, and rollback procedures.
+     Read when: About to deploy code autonomously or investigating deployment failures. -->
+
 # Part 6: Build, Deploy & Rollback
 
 ## The Verification Chain

@@ -1,3 +1,6 @@
+<!-- Summary: System architecture for X reply automation (scanning, filtering, drafting, human review).
+     Read when: Building or debugging the automated X reply system. -->
+
 ## Automation Architecture
 
 ### System Overview

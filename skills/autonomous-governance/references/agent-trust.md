@@ -1,3 +1,6 @@
+<!-- Summary: Agent squad configuration (lean/full mode), role assignments, and trust levels per agent.
+     Read when: Deciding which agent should handle a task or configuring agent permissions. -->
+
 # Part 4: Agent Assignments & Trust
 
 ## Current Squad Configuration

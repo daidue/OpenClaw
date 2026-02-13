@@ -1,3 +1,6 @@
+<!-- Summary: Channel-by-channel distribution strategies (Reddit, X, LinkedIn, YouTube, etc.) with tactics.
+     Read when: Planning content distribution for a product launch or optimizing channel strategy. -->
+
 # Content Distribution Playbook
 
 ## Channel-by-Channel Strategies

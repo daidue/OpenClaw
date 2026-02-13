@@ -1,3 +1,6 @@
+<!-- Summary: Engagement frameworks (add insight, disagree thoughtfully, etc) with examples and anti-patterns.
+     Read when: Crafting a reply and need structure/examples for high-engagement responses. -->
+
 ## HOW to Reply: Engagement Frameworks
 
 ### The Anti-Patterns: What NOT to Do

@@ -1,3 +1,6 @@
+<!-- Summary: Gumroad Discover unlock strategy, platform comparison, and Discover optimization tactics.
+     Read when: Launching on Gumroad or deciding between Gumroad vs other platforms. -->
+
 # Gumroad Strategy & Platform Comparison
 
 ## Gumroad Discover Unlock Strategy

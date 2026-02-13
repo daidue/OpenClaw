@@ -1,3 +1,6 @@
+<!-- Summary: Detailed descriptions of all 10 expert personas with focus areas and evaluation criteria.
+     Read when: Running a panel review and need to understand each expert's perspective. -->
+
 # Expert Roles — 10-Panel Review
 
 ## 1. CRO Specialist (Dr. Elena Voss archetype)

@@ -1,3 +1,6 @@
+<!-- Summary: ProseMirror editor automation for Gumroad product descriptions with DOM manipulation workarounds.
+     Read when: Automating Gumroad product creation or debugging Gumroad editor interactions. -->
+
 # Gumroad Integration & Editor Automation
 
 ## The Problem

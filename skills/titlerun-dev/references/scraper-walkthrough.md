@@ -1,3 +1,6 @@
+<!-- Summary: End-to-end walkthrough building the DTC scraper from research to deployment.
+     Read when: Building a new scraper and need step-by-step guidance with real example. -->
+
 # Worked Example: Building a Dynasty Data Scraper End-to-End
 
 This walkthrough builds the DTC (Dynasty Trade Calculator) scraper from scratch. Follow this pattern for all new scrapers.

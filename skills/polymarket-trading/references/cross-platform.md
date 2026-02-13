@@ -1,3 +1,6 @@
+<!-- Summary: Cross-platform arbitrage strategies for Polymarket ↔ Kalshi price discrepancies.
+     Read when: Building arbitrage scanner or executing cross-platform trades. -->
+
 # Cross-Platform Arbitrage (Polymarket ↔ Kalshi)
 
 Exploit price discrepancies for identical events across prediction market platforms.

@@ -1,3 +1,6 @@
+<!-- Summary: Unique positioning as director + AI agent builder with examples and credibility markers.
+     Read when: Crafting positioning statements or deciding how to introduce the AI agent angle. -->
+
 ## The Director + AI Agent Angle
 
 ### The Unique Positioning

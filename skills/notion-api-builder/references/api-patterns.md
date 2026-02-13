@@ -1,3 +1,6 @@
+<!-- Summary: Authentication, common API patterns (search, create, update, query), and code examples.
+     Read when: Writing Notion API integration code or debugging API calls. -->
+
 # Notion API Patterns
 
 ## Authentication

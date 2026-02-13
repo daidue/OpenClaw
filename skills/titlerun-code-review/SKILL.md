@@ -73,6 +73,10 @@ Delivery: Jeff's inbox (cron) or response (on-demand)
 
 **Full details:** See `references/implementation-guide.md`
 
+## Trigger Phrases
+✅ Should trigger: "review Rush's commits", "run code review", "check code quality", "code review panel", "audit recent changes", "score the codebase"
+❌ Should NOT trigger: "write code", "fix this bug", "deploy to production", "build a feature", "run tests"
+
 ## Reference Files
 - `references/expert-personas.md` — All 10 expert personas with backgrounds and common findings
 - `references/output-template.md` — Full markdown template for review reports

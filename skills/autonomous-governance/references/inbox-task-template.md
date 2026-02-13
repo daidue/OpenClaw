@@ -1,3 +1,6 @@
+<!-- Summary: Standard format for inter-agent inbox messages with metadata and action fields.
+     Read when: Writing a message to another agent's inbox or parsing incoming tasks. -->
+
 # Inbox Task Template
 
 Standard format for all inter-agent inbox messages.

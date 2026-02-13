@@ -1,3 +1,6 @@
+<!-- Summary: 20+ worked examples of tier classification, decision-making, and edge case handling.
+     Read when: Unsure how to classify a task tier or handle an ambiguous scenario. -->
+
 # Part 12: Examples & Scenarios
 
 **Learn through pattern recognition. Here are 20+ worked examples.**

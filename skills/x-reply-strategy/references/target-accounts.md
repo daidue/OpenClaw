@@ -1,3 +1,6 @@
+<!-- Summary: Curated list of target accounts with selection criteria and reply opportunity notes.
+     Read when: Choosing which accounts to engage with or expanding the target list. -->
+
 ## WHO to Reply To: Target Account List
 
 ### Selection Criteria
