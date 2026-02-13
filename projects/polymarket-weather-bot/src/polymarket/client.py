@@ -231,31 +231,122 @@ class PolymarketClient:
         params = {'token_id': token_id}
         return await self._get(url, params=params)
     
+    async def get_weather_events(self, max_events: int = 1000) -> List[Dict]:
+        """
+        Fetch weather events from Gamma API with pagination.
+        
+        Uses the Events API which correctly returns weather-related events.
+        CLOB API search fails to return weather markets, but Gamma Events API works.
+        
+        Args:
+            max_events: Maximum events to fetch across all pages
+            
+        Returns:
+            List of event dicts containing weather markets
+        """
+        all_events = []
+        offset = 0
+        batch_size = 100
+        
+        # Fetch events in batches with pagination
+        while len(all_events) < max_events:
+            url = f"{self.GAMMA_BASE}/events"
+            params = {
+                'closed': 'false',
+                'active': 'true',
+                'limit': batch_size,
+                'offset': offset
+            }
+            
+            data = await self._get(url, params=params)
+            
+            if not data or len(data) == 0:
+                break
+            
+            all_events.extend(data)
+            logger.debug(f"Fetched {len(data)} events (offset={offset}, total={len(all_events)})")
+            
+            # Stop if we got fewer than requested (last page)
+            if len(data) < batch_size:
+                break
+            
+            offset += batch_size
+        
+        # Filter for weather-related events with strict criteria
+        weather_events = []
+        
+        for event in all_events:
+            title = event.get('title', '')
+            slug = event.get('slug', '')
+            description = event.get('description', '')
+            
+            # Combined text for matching
+            text = f"{title} {slug} {description}".lower()
+            
+            # Strict weather keywords (avoid political false positives)
+            is_weather = any([
+                'temperature' in text and ('highest' in text or 'lowest' in text or 'average' in text),
+                'precipitation' in text,
+                ' rain' in text or 'rainfall' in text,
+                ' snow' in text or 'snowfall' in text,
+                'earthquake' in text and 'magnitude' in text,
+                'hurricane' in text,
+                'tornado' in text,
+                'volcano' in text and 'erupt' in text,
+                'weather' in title.lower(),  # Explicit "weather" in title
+                'celsius' in text or 'fahrenheit' in text,
+                'arctic' in text and 'ice' in text,
+                'climate' in text,
+            ])
+            
+            # Exclude political/war keywords to avoid false positives
+            is_political = any([
+                'ukraine' in text and 'weather' not in text,
+                'russia' in text and 'weather' not in text,
+                'nato' in text,
+                'election' in text and 'weather' not in text,
+                'trump' in text,
+                'biden' in text,
+                'ceasefire' in text,
+            ])
+            
+            if is_weather and not is_political:
+                weather_events.append(event)
+        
+        logger.info(f"Found {len(weather_events)} weather events from {len(all_events)} total events")
+        return weather_events
+    
     async def get_all_weather_markets(self) -> List[Dict]:
         """
-        Fetch all weather-related markets.
+        Fetch all weather-related markets using Gamma Events API.
         
-        Searches for markets containing weather keywords
+        Previous implementation used CLOB search which returned 0 markets.
+        New implementation uses Gamma Events API which correctly returns all weather markets.
         """
-        weather_keywords = [
-            'temperature',
-            'weather',
-            'rain',
-            'snow',
-            'precipitation',
-        ]
+        # Get weather events from Gamma API
+        weather_events = await self.get_weather_events(limit=200)
         
-        all_weather_markets = []
+        if not weather_events:
+            logger.warning("No weather events found")
+            return []
+        
+        # Extract markets from events
+        all_markets = []
         seen_ids = set()
         
-        for keyword in weather_keywords:
-            markets = await self.search_markets(keyword, limit=100)
+        for event in weather_events:
+            # Events contain a 'markets' array with market data
+            markets = event.get('markets', [])
             
             for market in markets:
                 market_id = market.get('condition_id') or market.get('id')
+                
                 if market_id and market_id not in seen_ids:
-                    all_weather_markets.append(market)
+                    # Enrich market with event context
+                    market['event_slug'] = event.get('slug')
+                    market['event_title'] = event.get('title')
+                    all_markets.append(market)
                     seen_ids.add(market_id)
         
-        logger.info(f"Found {len(all_weather_markets)} unique weather markets")
-        return all_weather_markets
+        logger.info(f"Found {len(all_markets)} unique weather markets from {len(weather_events)} events")
+        return all_markets
