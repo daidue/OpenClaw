@@ -57,3 +57,10 @@ Agents have full web access. Document the boundary:
 ---
 
 Add whatever helps you do your job. This is your cheat sheet.
+
+## Browser Discipline (2026-02-13)
+**ALL agents MUST close browser tabs immediately after use.**
+- After any browser automation: `browser(action="stop", profile="openclaw")`
+- Do NOT leave tabs open between heartbeats
+- Brave accumulates ~300MB per renderer tab — 15 tabs = 4.5GB RAM
+- Mac Mini has 24GB total, ~7GB free budget for browser
