@@ -324,7 +324,7 @@ class PolymarketClient:
         New implementation uses Gamma Events API which correctly returns all weather markets.
         """
         # Get weather events from Gamma API
-        weather_events = await self.get_weather_events(limit=200)
+        weather_events = await self.get_weather_events(max_events=500)
         
         if not weather_events:
             logger.warning("No weather events found")
