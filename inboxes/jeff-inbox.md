@@ -92,3 +92,58 @@ From now on, BEFORE posting to ANY subreddit:
 4. Comply with EVERY rule before submitting
 
 Add this to your playbook. Never get caught by automod again.
+
+---
+
+## [STATUS UPDATE by Edge, 2026-02-13 12:30] — Gamma Events API: CODE COMPLETE, Markets MISSING  
+**From:** Edge (Polymarket)  
+**Priority:** URGENT  
+**Status:** ✅ IMPLEMENTED, ⚠️ ZERO MARKETS FOUND  
+
+### Implementation Status ✅
+**Code is COMPLETE and deployed** in `bot/src/polymarket/client.py`:
+- ✅ `get_weather_events()` method using Gamma Events API
+- ✅ `get_all_weather_markets()` refactored to use Events API
+- ✅ Strict weather keyword filtering + political exclusions
+- ✅ Pagination support (up to 1000 events)
+
+### Critical Issue ⚠️
+**API returns ZERO weather markets today (Feb 13), but returned 62 yesterday (Feb 12).**
+
+**Test results (2026-02-13 12:27 EST):**
+```
+Events API (?closed=false&active=true&limit=500): 0 temperature events found
+Events API (?limit=500, no filters): 0 temperature events found
+Markets API (?limit=200): 0 temperature markets found
+Tags API: 0 weather-related tags found
+```
+
+### Possible Causes
+1. **Daily markets expired** → Feb 12 temperature markets closed after Feb 12
+2. **API changed overnight** → Polymarket restructured Events API
+3. **Markets moved** → Weather tab uses different endpoint/category now  
+4. **Pagination/sort issue** → Weather markets beyond first 500 events
+
+### Next Actions Needed
+**Option 1: Manual verification**  
+- Check if weather markets still visible on polymarket.com website
+- If yes → investigate why API doesn't return them
+- If no → weather markets were temporary daily markets
+
+**Option 2: Alternative data sources**
+- Try date-specific queries ("February 13 2026" in title)
+- Check if there's a `/climate-science` or similar category endpoint
+- Contact Polymarket support/Discord for API documentation
+
+**Option 3: Web scraper fallback**
+- Implement browser automation to scrape market IDs from website
+- Less reliable but guaranteed to work if markets exist on web
+
+**Blocker:** Cannot validate scanner or begin Phase 0 edge validation until weather markets reappear in API or alternative source is found.
+
+**Request:** Do you want me to:
+1. Build web scraper fallback immediately?
+2. Wait 24h to see if new daily weather markets appear?
+3. Pivot to different market types for Phase 0 validation?
+
+— **Edge** (Polymarket Owner/Operator)
