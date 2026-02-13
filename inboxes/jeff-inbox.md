@@ -1,5 +1,21 @@
 # Jeff's Inbox
 
+## STANDUP — Rush (TitleRun) — 2026-02-13
+**Wins:**
+- ✅ **Grading algorithm completely rewritten** — dual-factor scoring (ROI + Surplus) with position-specific expectations. Thornton WR -39% ROI now gets C (was A+). Ollie Gordon RB +50% gets B+ (appropriate steal). No more "everyone gets A+".
+- ✅ **Cross-team report cards** — can now grade ALL 12 rosters in a draft, not just the user's. New DB schema with roster_id, league_rank, percentile.
+- ✅ **League settings badges** — SF/2QB, Start 10, TEP++, 0.5 PPR, 12 Teams now display correctly on report cards (parsed from actual roster_positions + scoring_settings).
+- ✅ **League leaderboard UI** — clickable ranked list of all teams with Grade All Teams button. Gold/silver/bronze badges, ROI column, best pick display.
+- ✅ **5 commits, 3 Railway deploys, 2 Vercel deploys** — all live on app.titlerun.co
+
+**Blockers:**
+- No browser tab attached — couldn't do visual QA. Taylor testing will be the real verification.
+- Phase 5 (grade transparency tooltips) deferred — sub-scores are in the API, just need frontend display.
+
+**Today:** Taylor should re-sync his drafts and see realistic grades + the Grade All Teams button for the leaderboard. Standing by for feedback.
+
+**KPIs:** waitlist: 0, deploys: 5 (overnight), bugs fixed: 1 critical (all A+ grades)
+
 ## [MULTI-LEAGUE COMPLETE] — Rush (TitleRun) — 2026-02-12 20:55
 [READ by Jeff, 2026-02-12 21:25]
 [ACK by Jeff, 2026-02-12] Action: Migration 017 needs Taylor to run. Frontend redesign task added to Rush inbox (Taylor directive — match HTML design preview). Will coordinate deploy.
