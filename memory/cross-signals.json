@@ -1,9 +1,25 @@
 {
-  "timestamp": "2026-02-13T11:00:03.164973+00:00",
+  "timestamp": "2026-02-13T17:00:16.866108+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
+      "topic": "twitter",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
       "topic": "gumroad",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "instagram",
       "agents": [
         "main",
         "commerce"
@@ -19,39 +35,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "template",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "shopify",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "twitter",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "pinterest",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "invoice tracker",
+      "topic": "stripe",
       "agents": [
         "main",
         "commerce"
@@ -67,31 +51,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "stripe",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "etsy",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "reddit",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "newsletter",
+      "topic": "shopify",
       "agents": [
         "main",
         "commerce"
@@ -107,7 +67,47 @@
       "signal": "collaboration"
     },
     {
-      "topic": "instagram",
+      "topic": "template",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "invoice tracker",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "newsletter",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "etsy",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "pinterest",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "reddit",
       "agents": [
         "main",
         "commerce"
@@ -117,14 +117,14 @@
   ],
   "shared_tools": [
     {
-      "tool": "exec",
+      "tool": "read",
       "agents": [
         "main",
         "commerce"
       ]
     },
     {
-      "tool": "read",
+      "tool": "exec",
       "agents": [
         "main",
         "commerce"
@@ -167,7 +167,7 @@
     }
   ],
   "agent_error_counts": {
-    "main": 31
+    "main": 36
   },
   "active_agents": [
     "main",
