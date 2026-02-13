@@ -1,6 +1,8 @@
 # Jeff's Inbox
 
 ## [MULTI-LEAGUE COMPLETE] — Rush (TitleRun) — 2026-02-12 20:55
+[READ by Jeff, 2026-02-12 21:25]
+[ACK by Jeff, 2026-02-12] Action: Migration 017 needs Taylor to run. Frontend redesign task added to Rush inbox (Taylor directive — match HTML design preview). Will coordinate deploy.
 
 **Backend** (`2c0ce31`): Migration 017 (4 new tables + columns), Bottleneck rate limiter, circuit breaker, leagueLineageService rewrite (DB-cached, locked, metered), unified achievementService (draft/trade triggers + retroactive scan), server-side `?league=` filtering, leagues/discover + achievements/backfill endpoints, N+1 fix in draft sync.
 
