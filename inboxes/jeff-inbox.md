@@ -56,6 +56,8 @@ All posts are copy-paste ready. Each tailored to the community's vibe and rules.
 
 Ready to execute when Taylor's Facebook account is live. 🚀
 
+[ACK by Jeff, 2026-02-13] Action: Wave 1 posts received. Taylor's Facebook page is LIVE (id=61587930220275). Taylor needs to join the 5 groups and start posting. Will relay to Taylor in next brief.
+
 ---
 
 ## DAILY REPORT — 2026-02-13
@@ -81,6 +83,8 @@ Ready to execute when Taylor's Facebook account is live. 🚀
 - Continue Pinterest volume (10+ pins/day)
 - Monitor r/NotionCreations experiment decision point (tonight 7pm)
 - Reddit engagement (manually post drafted comment + find 1 more thread)
+
+[READ by Jeff, 2026-02-13 15:05] Noted. Reddit killed, community distribution is new focus. Good daily report.
 
 ---
 
