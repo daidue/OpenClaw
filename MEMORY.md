@@ -29,7 +29,7 @@ _Curated essentials. Details in memory/ files and memory_search._
 
 - **Notion Templates:** Freelance Invoice Tracker ($27) + Lite (free). Store: jeffthenotionguy.gumroad.com. Revenue: $0. Pinterest live (69 impressions, 55% engagement). Reddit: karma building.
 - **🔴 TitleRun values are NOT dollars** — Proprietary scale 0-10,000+. NEVER use $ signs. Display "8,735" not "$8,735". (Taylor 2026-02-14)
-- **🔴 App still shows old scraped values (KTC/FC/DP) instead of composite_value** — Taylor QA 2026-02-14. 99 KTC references in 19 frontend files. 0 composite_value references in backend routes. URGENT migration task sent to Rush.
+- **✅ Value migration COMPLETE** — All KTC/FC/DP references removed. Backend serves composite_value only (commit `3473d6b`). Frontend cleaned (commits `375e1e4`, `8e0fdde`, `c6f6a9d`). Types renamed `KTCTEPValues` → `TitleRunTEPValues`. Code audit 92/100, 0 criticals. Error boundaries added (commit `d48b1cf`). PPG data fixed (5,201 rows).
 - **TitleRun:** Dynasty FF SaaS at app.titlerun.co. Value Engine (10 sources, Bayesian) + Report Card + Nav Overhaul all deployed. **Product vision rewritten 2026-02-13 evening** — see `workspace-titlerun/memory/2026-02-13-strategic-vision.md`. Core: competition with friends, mutual benefit trade engine, proprietary valuation (NEVER mention 10 sources publicly), simple/clean design, live draft companion. **Original valuation system PHASES 1-4 COMPLETE** — 3-layer Bayesian, 93/100 panel, 10,500+ lines, code reviewed to ~95/100. **Trade Engine COMPLETE** — backend 95/100 + frontend 95.5/100, deployed. **Trade Fairness COMPLETE** — backend 95/100 (8 dimensions) + frontend 96.7/100 (6 components), deployed. **Mobile Home v4 deployed** (96/100). **🔴 MARCH DEADLINE:** Sprint B NOW = onboarding (spec 95.7/100) + redraft (spec v2.0). Then frontend↔backend integration audit. Live Draft Companion = April.
 - **Polymarket:** Weather trading bot built (186 tests passing). Edge researching. Phase 0 — no real money yet.
 
@@ -65,6 +65,7 @@ _Curated essentials. Details in memory/ files and memory_search._
 | 2026-02-14 | Smart Onboarding spec ready | 95.7/100 panel (3 rounds). 5-step flow, Quick Setup screen, A/B test plan. |
 | 2026-02-14 | Redraft Architecture spec ready | v2.0 panel-reviewed. Strategy Pattern, 6 new DB tables, free data sources. 2,379 lines. |
 | 2026-02-14 | Sprint B started | Taylor: "let's start the onboarding and redraft." Both specs routed to Rush. |
+| 2026-02-14 | Value migration complete | All KTC/FC/DP → composite_value. Code audit 92/100. PPG data fixed (5,201 rows). |
 | 2026-02-14 | Frontend↔backend integration audit queued | Taylor: connect all buttons/endpoints after Sprint B at 95/100. Scheduled as Week 5. |
 | 2026-02-14 | Sprint B built in parallel | 4 sub-agents + Rush built onboarding + redraft foundation simultaneously. Code review: 42→88/100 after fix cycle. Key lesson: parallel builds create integration debt. |
 | 2026-02-14 | Massive build sprint | 25+ sub-agents, ~20 commits, ~20,000+ new lines in one day. |
