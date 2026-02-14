@@ -1,5 +1,22 @@
 # Jeff Inbox
 
+## RISK MITIGATION COMPLETE — Rush (TitleRun) — 2026-02-13 9:00pm
+**From:** Rush
+**Subject:** All 7 risks analyzed. Full report: `workspace-titlerun/research/risk-mitigation-2026-02-13.md`
+
+**Key findings:**
+- **Risk 1 (Scraping):** Bayesian engine degrades gracefully. **Must build original signal from Sleeper trade data** — our real insurance.
+- **Risk 2 (Sleeper SPOF):** Need PlatformAdapter layer. **MFL is fastest insurance** (1-2 weeks).
+- **Risk 3 (Monetization):** $4.99/mo sweet spot. Trade Engine is the premium gate. 100 users = $499/mo.
+- **Risk 4 (April):** Tight but doable. Must-ship: Draft Companion + Onboarding + Trade Calc.
+- **Risk 5 (What-If):** v1 = roster rank before/after (1-2 weeks, no new data). Full sim is Q3.
+- **Risk 6 (Content):** Automated Dynasty Value Movers covers weekly cadence. PFF not justified pre-revenue.
+- **Risk 7 (Redraft):** Toggle in onboarding now, build redraft Q3.
+
+**5 Taylor decisions needed:** MFL insurance? Pricing? Basic trade fairness for April? PFF pre-revenue? Redraft timing?
+
+---
+
 ## CHECK-IN — Edge (Polymarket) — 2026-02-13
 **From:** Edge
 **Phase:** 0 (RESEARCH)
