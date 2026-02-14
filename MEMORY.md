@@ -29,7 +29,7 @@ _Curated essentials. Details in memory/ files and memory_search._
 
 - **Notion Templates:** Freelance Invoice Tracker ($27) + Lite (free). Store: jeffthenotionguy.gumroad.com. Revenue: $0. Pinterest live (69 impressions, 55% engagement). Reddit: karma building.
 - **🔴 TitleRun values are NOT dollars** — Proprietary scale 0-10,000+. NEVER use $ signs. Display "8,735" not "$8,735". (Taylor 2026-02-14)
-- **TitleRun:** Dynasty FF SaaS at app.titlerun.co. Value Engine (10 sources, Bayesian) + Report Card + Nav Overhaul all deployed. **Product vision rewritten 2026-02-13 evening** — see `workspace-titlerun/memory/2026-02-13-strategic-vision.md`. Core: competition with friends, mutual benefit trade engine, proprietary valuation (NEVER mention 10 sources publicly), simple/clean design, live draft companion. **Original valuation system PHASES 1-4 COMPLETE** — 3-layer Bayesian (Production Prior + Market Likelihood + Posterior), 93/100 panel. 10,500+ lines, 25+ files, code reviewed to ~95/100. Only Phase 5 (polish) remains. **Mobile Home v4 approved (96/100)** — simple, clean, competition-focused. **🔴 MARCH DEADLINE (Taylor 2026-02-14):** Full trade fairness + redraft by late March. Trade engine spec in progress. "Greatest FF app in the world."
+- **TitleRun:** Dynasty FF SaaS at app.titlerun.co. Value Engine (10 sources, Bayesian) + Report Card + Nav Overhaul all deployed. **Product vision rewritten 2026-02-13 evening** — see `workspace-titlerun/memory/2026-02-13-strategic-vision.md`. Core: competition with friends, mutual benefit trade engine, proprietary valuation (NEVER mention 10 sources publicly), simple/clean design, live draft companion. **Original valuation system PHASES 1-4 COMPLETE** — 3-layer Bayesian, 93/100 panel, 10,500+ lines, code reviewed to ~95/100. **Trade Engine COMPLETE** — backend 95/100 + frontend 95.5/100, deployed. **Trade Fairness COMPLETE** — backend 95/100 (8 dimensions) + frontend 96.7/100 (6 components), deployed. **Mobile Home v4 deployed** (96/100). **🔴 MARCH DEADLINE:** Sprint B NOW = onboarding (spec 95.7/100) + redraft (spec v2.0). Then frontend↔backend integration audit. Live Draft Companion = April.
 - **Polymarket:** Weather trading bot built (186 tests passing). Edge researching. Phase 0 — no real money yet.
 
 ## Key Credentials
@@ -59,8 +59,13 @@ _Curated essentials. Details in memory/ files and memory_search._
 | 2026-02-14 | 3 sub-agents spawned | Mobile Home v4 (96/100 ✅), Trade Engine spec (running), Pinterest redo (✅). |
 | 2026-02-14 | Mobile Home v4 approved (96/100) | Simple, clean, competition-focused. Integrated into Vercel frontend. |
 | 2026-02-14 | Trade Engine built + polished to 95/100 | 3,731 lines (backend+frontend). 68→80→95 across 3 review cycles. |
-| 2026-02-14 | Trade Fairness system built | Backend 89.5/100 (885 lines, 8 dimensions), Frontend 96.7/100 (1,889 lines, 7 components). |
-| 2026-02-14 | Massive build sprint | 14 sub-agents, ~10 commits, ~15,000+ new lines in one morning. |
+| 2026-02-14 | Trade Fairness system built | Backend 89.5→95/100 (commit 383aa38), Frontend 96.7/100 (commit 499def4). Both integrated + deployed. |
+| 2026-02-14 | Sprint A (Trade Fairness) COMPLETE | Backend 95/100, Frontend 96.7/100, both on Vercel + Railway. |
+| 2026-02-14 | Smart Onboarding spec ready | 95.7/100 panel (3 rounds). 5-step flow, Quick Setup screen, A/B test plan. |
+| 2026-02-14 | Redraft Architecture spec ready | v2.0 panel-reviewed. Strategy Pattern, 6 new DB tables, free data sources. 2,379 lines. |
+| 2026-02-14 | Sprint B started | Taylor: "let's start the onboarding and redraft." Both specs routed to Rush. |
+| 2026-02-14 | Frontend↔backend integration audit queued | Taylor: connect all buttons/endpoints after Sprint B at 95/100. Scheduled as Week 5. |
+| 2026-02-14 | Massive build sprint | 19 sub-agents, ~12 commits, ~15,000+ new lines in one day. |
 
 ---
 
