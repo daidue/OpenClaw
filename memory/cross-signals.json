@@ -1,13 +1,12 @@
 {
-  "timestamp": "2026-02-13T23:00:12.508399+00:00",
+  "timestamp": "2026-02-14T05:00:03.624628+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
-      "topic": "reddit",
+      "topic": "etsy",
       "agents": [
         "main",
-        "commerce",
-        "dev"
+        "commerce"
       ],
       "signal": "collaboration"
     },
@@ -15,56 +14,12 @@
       "topic": "shopify",
       "agents": [
         "main",
-        "commerce",
-        "dev"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "youtube",
-      "agents": [
-        "main",
-        "commerce",
-        "dev"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "twitter",
-      "agents": [
-        "main",
-        "commerce",
-        "dev"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "template",
-      "agents": [
-        "main",
-        "commerce",
-        "dev"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "notion",
-      "agents": [
-        "main",
         "commerce"
       ],
       "signal": "collaboration"
     },
     {
-      "topic": "pinterest",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "instagram",
+      "topic": "reddit",
       "agents": [
         "main",
         "commerce"
@@ -88,7 +43,39 @@
       "signal": "collaboration"
     },
     {
-      "topic": "newsletter",
+      "topic": "youtube",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "template",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "twitter",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "notion",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "instagram",
       "agents": [
         "main",
         "commerce"
@@ -104,7 +91,15 @@
       "signal": "collaboration"
     },
     {
-      "topic": "etsy",
+      "topic": "pinterest",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "newsletter",
       "agents": [
         "main",
         "commerce"
@@ -117,40 +112,21 @@
       "tool": "exec",
       "agents": [
         "main",
-        "commerce",
-        "dev"
+        "commerce"
       ]
     },
     {
       "tool": "read",
       "agents": [
         "main",
-        "commerce",
-        "dev"
+        "commerce"
       ]
     },
     {
       "tool": "write",
       "agents": [
         "main",
-        "commerce",
-        "dev"
-      ]
-    },
-    {
-      "tool": "browser",
-      "agents": [
-        "main",
-        "commerce",
-        "dev"
-      ]
-    },
-    {
-      "tool": "web_fetch",
-      "agents": [
-        "main",
-        "commerce",
-        "dev"
+        "commerce"
       ]
     },
     {
@@ -168,19 +144,25 @@
       ]
     },
     {
-      "tool": "web_search",
+      "tool": "browser",
       "agents": [
-        "commerce",
-        "dev"
+        "main",
+        "commerce"
+      ]
+    },
+    {
+      "tool": "web_fetch",
+      "agents": [
+        "main",
+        "commerce"
       ]
     }
   ],
   "agent_error_counts": {
-    "main": 23
+    "main": 8
   },
   "active_agents": [
     "main",
-    "commerce",
-    "dev"
+    "commerce"
   ]
 }
