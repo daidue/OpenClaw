@@ -62,9 +62,13 @@ _Curated essentials. Details in memory/ files and memory_search._
 | 2026-02-14 | Value migration complete | ALL backend files + frontend migrated. players.js (commit `5622574`) was LAST file. Code audit 92/100, 0 criticals. |
 | 2026-02-14 | Home page wired to real API | Standings, activity, trend endpoints. 3 criticals found + fixed (wrong columns, teamId mismatch, stale league IDs). |
 | 2026-02-14 | Taylor QA session | Found KTC values still showing → full migration triggered. News field mapping fixed. Trade Builder selectors fixed. Endpoint alignment audited. |
-| 2026-02-14 | Record build day | 46+ sub-agents, ~44 commits (22+ backend + 22+ frontend), ~28,000+ new lines. Estimated $500-800+ tokens. |
+| 2026-02-14 | Record build day | 60+ sub-agents, ~60 commits (30+ backend + 30+ frontend), ~30,000+ new lines. Estimated $700-1000+ tokens. |
 | 2026-02-14 | Grind + Edge PAUSED | Taylor: "quit all Grind and Edge initiatives until further notice." All focus on TitleRun. Heartbeats already 0m, crons already disabled. |
 | 2026-02-14 | Nested response envelope pattern | #1 recurring bug: backend `{success, data:{...}}` + axios `.data` = need `response.data.data.X`. Caused Trade Builder, home page, and multiple other bugs. |
+| 2026-02-14 | Security hardening | Helmet added (CSP, HSTS, X-Frame-Options). CORS fixed (requires explicit origin in production). Full audit: zero critical vulns. Commits `b12a97f` + `a967baa`. |
+| 2026-02-14 | Console.log cleanup | 2,101 backend → Pino logger (commit `e41cd1b`). Frontend cleaned. Lesson: automated find/replace broke build (missing imports), needed fix agent. |
+| 2026-02-14 | API contract documented | `dpm-app/API-CONTRACT-2026-02-14.md` — 20+ endpoints with exact response shapes. Single source of truth. |
+| 2026-02-14 | Code review cycle | 73/100 → 68/100 (build broken) → fixed → targeting 90+. Three full reviews in one afternoon. |
 
 ---
 
