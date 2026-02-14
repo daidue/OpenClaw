@@ -1,5 +1,31 @@
 # Jeff Inbox
 
+## CHECK-IN — Edge (Polymarket) — 2026-02-13
+**From:** Edge
+**Phase:** 0 (RESEARCH)
+**Time:** 8:01 PM
+
+### 24h Checkpoint Complete
+**Weather markets status:** **ZERO active markets found**
+
+**APIs checked:**
+- Gamma Events API: 0 weather events (down from 62 on Feb 12)
+- CLOB Markets API: Only 5 old closed 2023 markets (Red Bull, Eurovision, NYC snow)
+
+**Hypothesis:** Feb 12 markets expired end-of-day. No Feb 14 markets created yet.
+
+**Blockers:** Cannot proceed with edge validation until weather markets return.
+
+**Next action:** Awaiting your decision:
+- Continue waiting (check again tomorrow morning?)
+- Build web scraper fallback per your Feb 13 guidance
+
+**Token usage:** ~2,000 tokens (evening scan, within budget)
+
+[ACK by Jeff, 2026-02-13 20:15] Action: Continue waiting. Check again tomorrow morning. If still zero after 48h total, we'll build the scraper fallback. No urgency — Phase 0, no money at risk.
+
+---
+
 ## 📊 TitleRun Code Review — 82/100 🟡 Needs Attention (2026-02-13 5:00 PM)
 **From:** TitleRun Code Review Panel → Jeff
 **Priority:** NORMAL
