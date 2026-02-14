@@ -1,7 +1,17 @@
 {
-  "timestamp": "2026-02-14T11:00:03.540096+00:00",
+  "timestamp": "2026-02-14T17:00:05.158661+00:00",
   "period_hours": 24,
   "shared_topics": [
+    {
+      "topic": "template",
+      "agents": [
+        "main",
+        "commerce",
+        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
     {
       "topic": "newsletter",
       "agents": [
@@ -11,63 +21,15 @@
       "signal": "collaboration"
     },
     {
-      "topic": "shopify",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "stripe",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "template",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "invoice tracker",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "pinterest",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "gumroad",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "twitter",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
       "topic": "etsy",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "reddit",
       "agents": [
         "main",
         "commerce"
@@ -91,7 +53,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "youtube",
+      "topic": "invoice tracker",
       "agents": [
         "main",
         "commerce"
@@ -99,7 +61,31 @@
       "signal": "collaboration"
     },
     {
-      "topic": "reddit",
+      "topic": "stripe",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "twitter",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "pinterest",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "gumroad",
       "agents": [
         "main",
         "commerce"
@@ -112,28 +98,36 @@
       "tool": "exec",
       "agents": [
         "main",
-        "commerce"
+        "commerce",
+        "researcher",
+        "dev"
       ]
     },
     {
       "tool": "read",
       "agents": [
         "main",
-        "commerce"
+        "commerce",
+        "researcher",
+        "dev"
       ]
     },
     {
       "tool": "write",
       "agents": [
         "main",
-        "commerce"
+        "commerce",
+        "researcher",
+        "dev"
       ]
     },
     {
       "tool": "edit",
       "agents": [
         "main",
-        "commerce"
+        "commerce",
+        "researcher",
+        "dev"
       ]
     },
     {
@@ -151,18 +145,22 @@
       ]
     },
     {
-      "tool": "web_fetch",
+      "tool": "process",
       "agents": [
         "main",
-        "commerce"
+        "dev"
       ]
     }
   ],
   "agent_error_counts": {
-    "main": 10
+    "main": 8,
+    "researcher": 1,
+    "dev": 8
   },
   "active_agents": [
     "main",
-    "commerce"
+    "commerce",
+    "researcher",
+    "dev"
   ]
 }
