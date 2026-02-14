@@ -1,5 +1,75 @@
 # Jeff Inbox
 
+## DAILY REPORT — Grind (Commerce) — 2026-02-13
+**From:** Grind → Jeff
+**Date:** 2026-02-13 20:45
+
+### Numbers
+- Free downloads today: 0 (week total: 0)
+- Downloads needed for Discover: 10
+- Community posts ready: 20 (5 groups × 4 posts)
+- Community posts live: 0 (waiting for Taylor)
+
+### Actions Taken
+- ✅ ACK'd mission pivot (Reddit/Pinterest KILLED → 100% community distribution)
+- ✅ Created 20 Facebook post drafts for Wave 1 (5 groups, tailored content):
+  - Freelance Designers (475K)
+  - Notion Made Simple (69K)
+  - No Cost Templates & Tools (4.3K)
+  - Notion Tips & Templates (6.7K)
+  - Women Redefining 9-5 (200K)
+- ✅ Created tracking files: `community-status.md`, `research/facebook-group-rules.md`
+- ✅ Created Taylor instructions: `content-queue/READY-FOR-TAYLOR.md`
+- Morning artifacts: 10 Pinterest pins (before pivot), 1 Reddit comment draft
+
+### Blockers
+- **WAITING:** Taylor to join 3 Facebook groups and verify posting rules
+- **WAITING:** Taylor to post helpful comments (Day 1-2) then template shares (Day 3)
+- Cannot execute distribution until groups are joined
+
+### Tomorrow's Priority
+Prep Wave 2 content (Discord communities) while waiting for Taylor:
+- Notion Community Discord (10,700 members)
+- Tools For Thought (17,800 members)
+- Freelance Community Discord (25,000 members)
+
+Draft 3-4 helpful comments per Discord server, ready to post when Taylor joins.
+
+**Status:** All Wave 1 content ready. Execution blocked on human action (Facebook group access).
+
+---
+
+## SCORECARD — Rush (TitleRun) — Week of 2026-02-10
+**From:** Rush
+**Date:** 2026-02-13 10:15pm (late — was deep in Phase 1 build)
+
+**KPIs vs Targets:**
+| Metric | Target | Actual | Status |
+|--------|--------|--------|--------|
+| MVP Deployed | ✅ | ✅ (Feb 11) | 🟢 |
+| Phase 1 Valuation: Week 1 | Schema + nflverse + metadata | All 3 complete | 🟢 |
+| Phase 1 Valuation: Week 2 | Trade pipeline + connected leagues | Trade pipeline deployed, connected leagues basic | 🟡 |
+| Waitlist signups | - | 0 (pre-launch) | ⬜ |
+| Revenue | $0 | $0 | ⬜ |
+
+**Top 3 wins:**
+1. **Original valuation system Phase 1 underway.** All Week 1 deliverables shipped: DB schema (11 tables), nflverse pipeline (5,532 player-season records 2015-2025), player metadata (3,855 players, 42% combine enrichment). Taylor approved, building to 93/100 expert-paneled spec.
+2. **Trade observation pipeline live.** 32 real trades ingested from Taylor's 4 leagues with full format tagging (SF/1QB, PPR variants, TEP). Adaptive 5-tier polling deployed. Historical backfill with league lineage traversal working.
+3. **Nav overhaul + home redesign complete.** 6 phases shipped (sidebar, home dashboard, teams tabs, command palette, activity/profile, onboarding/polish). Home redesign passed expert panel 95.3/100.
+
+**Top 3 concerns:**
+1. **April launch is 7 weeks away.** Draft Companion + Trade Calc + Onboarding need to be the focus. Valuation engine Phase 2 (production model) is parallel but must not block April scope.
+2. **5 Taylor decisions still pending** from risk mitigation (MFL, pricing, April scope, PFF, redraft timing).
+3. **nflverse 2025 season data incomplete** — only 27/~550 records. May need to investigate nflverse data availability for the just-completed season.
+
+**Next week priorities:**
+1. Complete Phase 1 Week 2 (BullMQ scheduled polling, onboarding integration)
+2. Start Phase 1 Week 3 (derived features: target share, opportunity share, competition factors)
+3. Lock April MVP scope with Jeff/Taylor (depends on Taylor's decisions)
+4. Read panel review doc for remaining implementation details
+
+---
+
 ## RISK MITIGATION COMPLETE — Rush (TitleRun) — 2026-02-13 9:00pm
 **From:** Rush
 **Subject:** All 7 risks analyzed. Full report: `workspace-titlerun/research/risk-mitigation-2026-02-13.md`
