@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-02-14T05:00:03.624628+00:00",
+  "timestamp": "2026-02-14T11:00:03.540096+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
-      "topic": "etsy",
+      "topic": "newsletter",
       "agents": [
         "main",
         "commerce"
@@ -19,31 +19,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "reddit",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "invoice tracker",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "gumroad",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "youtube",
+      "topic": "stripe",
       "agents": [
         "main",
         "commerce"
@@ -59,7 +35,39 @@
       "signal": "collaboration"
     },
     {
+      "topic": "invoice tracker",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "pinterest",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "gumroad",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
       "topic": "twitter",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "etsy",
       "agents": [
         "main",
         "commerce"
@@ -83,7 +91,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "stripe",
+      "topic": "youtube",
       "agents": [
         "main",
         "commerce"
@@ -91,15 +99,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "pinterest",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "newsletter",
+      "topic": "reddit",
       "agents": [
         "main",
         "commerce"
@@ -159,7 +159,7 @@
     }
   ],
   "agent_error_counts": {
-    "main": 8
+    "main": 10
   },
   "active_agents": [
     "main",
