@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-02-14T17:00:05.158661+00:00",
+  "timestamp": "2026-02-14T23:00:12.090394+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
@@ -7,7 +7,38 @@
       "agents": [
         "main",
         "commerce",
-        "researcher",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "invoice tracker",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "landing page",
+      "agents": [
+        "main",
+        "dev"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "reddit",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "twitter",
+      "agents": [
+        "main",
         "dev"
       ],
       "signal": "collaboration"
@@ -21,55 +52,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "etsy",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "reddit",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
       "topic": "notion",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "instagram",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "invoice tracker",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "stripe",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "twitter",
       "agents": [
         "main",
         "commerce"
@@ -91,6 +74,22 @@
         "commerce"
       ],
       "signal": "collaboration"
+    },
+    {
+      "topic": "stripe",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "etsy",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
     }
   ],
   "shared_tools": [
@@ -99,7 +98,6 @@
       "agents": [
         "main",
         "commerce",
-        "researcher",
         "dev"
       ]
     },
@@ -108,7 +106,6 @@
       "agents": [
         "main",
         "commerce",
-        "researcher",
         "dev"
       ]
     },
@@ -117,7 +114,6 @@
       "agents": [
         "main",
         "commerce",
-        "researcher",
         "dev"
       ]
     },
@@ -126,7 +122,6 @@
       "agents": [
         "main",
         "commerce",
-        "researcher",
         "dev"
       ]
     },
@@ -153,14 +148,12 @@
     }
   ],
   "agent_error_counts": {
-    "main": 8,
-    "researcher": 1,
-    "dev": 8
+    "main": 11,
+    "dev": 45
   },
   "active_agents": [
     "main",
     "commerce",
-    "researcher",
     "dev"
   ]
 }
