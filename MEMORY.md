@@ -19,7 +19,7 @@ _Curated essentials. Details in memory/ files and memory_search._
 
 ## Infrastructure
 
-- **OpenClaw:** LaunchAgent, gateway 127.0.0.1:18789, version 2026.2.12
+- **OpenClaw:** LaunchAgent, gateway 127.0.0.1:18789, version 2026.2.13
 - **Git backup:** Auto-push every 10 min to `git@github.com:daidue/OpenClaw.git`
 - **Browser:** Managed Brave profile (orange-tinted). X: @JeffDanielsB4U, Gmail: jeffdanielsbymail@gmail.com
 - **Heartbeat:** Jeff 90m, Rush 30m (Opus), Grind 30m (Sonnet), Edge cron-only
@@ -28,7 +28,7 @@ _Curated essentials. Details in memory/ files and memory_search._
 ## Active Projects (details via memory_search)
 
 - **Notion Templates:** Freelance Invoice Tracker ($27) + Lite (free). Store: jeffthenotionguy.gumroad.com. Revenue: $0. Pinterest live (69 impressions, 55% engagement). Reddit: karma building.
-- **TitleRun:** Dynasty FF SaaS at app.titlerun.co. Value Engine (10 sources, Bayesian) + Report Card + Nav Overhaul all deployed. **Product vision rewritten 2026-02-13 evening** — see `workspace-titlerun/memory/2026-02-13-strategic-vision.md`. Core: competition with friends, mutual benefit trade engine, proprietary valuation (NEVER mention 10 sources publicly), simple/clean design, live draft companion. **Original valuation system APPROVED** — 3-layer Bayesian (Production Prior + Market Likelihood + Posterior), 93/100 panel, 24-week build. Rush building Phase 1 NOW. Specs: `workspace-titlerun/research/original-valuation-system.md` + `original-valuation-panel-r2-r3.md`. Target: July 2026 launch.
+- **TitleRun:** Dynasty FF SaaS at app.titlerun.co. Value Engine (10 sources, Bayesian) + Report Card + Nav Overhaul all deployed. **Product vision rewritten 2026-02-13 evening** — see `workspace-titlerun/memory/2026-02-13-strategic-vision.md`. Core: competition with friends, mutual benefit trade engine, proprietary valuation (NEVER mention 10 sources publicly), simple/clean design, live draft companion. **Original valuation system PHASES 1-4 COMPLETE** — 3-layer Bayesian (Production Prior + Market Likelihood + Posterior), 93/100 panel. 10,500+ lines, 25+ files, code reviewed to ~95/100. Only Phase 5 (polish) remains. Specs: `workspace-titlerun/research/original-valuation-system.md` + `original-valuation-panel-r2-r3.md`. **April MVP locked:** Draft Companion + Onboarding + Trade Calc w/ fairness + Mutual Benefit Engine v1. Target: April 2026 launch (7 weeks).
 - **Polymarket:** Weather trading bot built (186 tests passing). Edge researching. Phase 0 — no real money yet.
 
 ## Key Credentials
@@ -48,7 +48,10 @@ _Curated essentials. Details in memory/ files and memory_search._
 | 2026-02-13 | All crons → Sonnet | Token optimization (86→25/day target) |
 | 2026-02-13 | TitleRun vision rewrite | Hook = competing with friends, NOT data/AI. Mutual benefit trade engine priority #1. 10-source data is SECRET (proprietary only). Simple/clean design. Redraft toggle in onboarding. |
 | 2026-02-13 | Mobile v3 scrapped | "Too busy" — Taylor. 3 design iterations killed in one day (v1 finance, v2 desktop paused, v3 mobile scrapped). |
+| 2026-02-14 | Original valuation Phases 1-4 built | 10,500+ lines in one night. Code reviewed 82→95/100. |
+| 2026-02-14 | Taylor's 5 risk decisions | MFL=backlog, pricing=defer, trade fairness=April must-ship, PFF=no (build our own), redraft=May-June not Q3. |
+| 2026-02-14 | OpenClaw 2026.2.13 | Updated from 2026.2.12 per Taylor. |
 
 ---
 
-_Last updated: 2026-02-13_
+_Last updated: 2026-02-14_
