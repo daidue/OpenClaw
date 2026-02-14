@@ -9,9 +9,9 @@
 
 | Business | Owner/Operator | Agent ID | Phase | Revenue | Health |
 |----------|---------------|----------|-------|---------|--------|
-| **Notion Templates** | Grind | `commerce` | Active (Phase 1: 60% budget) | $0/mo | 🟡 |
-| **TitleRun** | Rush | `titlerun` | PREP (Phase 1: 25% budget) | $0/mo | 🟡 |
-| **Polymarket Trading** | Edge | `polymarket` | RESEARCH (Phase 1: 10% budget) | $0/mo | ⚪ |
+| **Notion Templates** | Grind | `commerce` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ |
+| **TitleRun** | Rush | `titlerun` | ACTIVE — ALL FOCUS | $0/mo | 🟢 |
+| **Polymarket Trading** | Edge | `polymarket` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ |
 
 ## Phased Launch Schedule
 

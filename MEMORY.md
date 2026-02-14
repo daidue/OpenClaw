@@ -29,8 +29,8 @@ _Curated essentials. Details in memory/ files and memory_search._
 
 - **Notion Templates:** Freelance Invoice Tracker ($27) + Lite (free). Store: jeffthenotionguy.gumroad.com. Revenue: $0. Pinterest live (69 impressions, 55% engagement). Reddit: karma building.
 - **🔴 TitleRun values are NOT dollars** — Proprietary scale 0-10,000+. NEVER use $ signs. Display "8,735" not "$8,735". (Taylor 2026-02-14)
-- **✅ Value migration COMPLETE** — All KTC/FC/DP references removed. Backend serves composite_value only (commit `3473d6b`). Frontend cleaned (commits `375e1e4`, `8e0fdde`, `c6f6a9d`). Types renamed `KTCTEPValues` → `TitleRunTEPValues`. Code audit 92/100, 0 criticals. Error boundaries added (commit `d48b1cf`). PPG data fixed (5,201 rows).
-- **TitleRun:** Dynasty FF SaaS at app.titlerun.co. Value Engine (10 sources, Bayesian) + Report Card + Nav Overhaul all deployed. **Product vision rewritten 2026-02-13 evening** — see `workspace-titlerun/memory/2026-02-13-strategic-vision.md`. Core: competition with friends, mutual benefit trade engine, proprietary valuation (NEVER mention 10 sources publicly), simple/clean design, live draft companion. **Original valuation system PHASES 1-4 COMPLETE** — 3-layer Bayesian, 93/100 panel, 10,500+ lines, code reviewed to ~95/100. **Trade Engine COMPLETE** — backend 95/100 + frontend 95.5/100, deployed. **Trade Fairness COMPLETE** — backend 95/100 (8 dimensions) + frontend 96.7/100 (6 components), deployed. **Mobile Home v4 deployed** (96/100). **🔴 MARCH DEADLINE:** Sprint B NOW = onboarding (spec 95.7/100) + redraft (spec v2.0). Then frontend↔backend integration audit. Live Draft Companion = April.
+- **✅ Value migration COMPLETE** — ALL backend files migrated (leaguemates.js, teams.js, ktcService.js, players.js). Final commit `5622574` migrated all 9 players.js endpoints. Frontend cleaned (commits `375e1e4`, `8e0fdde`, `c6f6a9d`). Types renamed `KTCTEPValues` → `TitleRunTEPValues`. Full code audit 92/100, 0 criticals. Error boundaries added (commit `d48b1cf`). PPG data fixed (5,201 rows). **Codebase is now fully source-agnostic.**
+- **TitleRun:** Dynasty FF SaaS at app.titlerun.co. Value Engine (10 sources, Bayesian) + Report Card + Nav Overhaul all deployed. **Product vision rewritten 2026-02-13 evening** — see `workspace-titlerun/memory/2026-02-13-strategic-vision.md`. Core: competition with friends, mutual benefit trade engine, proprietary valuation (NEVER mention 10 sources publicly), simple/clean design, live draft companion. **Original valuation system PHASES 1-4 COMPLETE** — 3-layer Bayesian, 93/100 panel, 10,500+ lines, code reviewed to ~95/100. **Trade Engine COMPLETE** — backend 95/100 + frontend 95.5/100, deployed. **Trade Fairness COMPLETE** — backend 95/100 (8 dimensions) + frontend 96.7/100 (6 components), deployed. **Mobile Home v4 deployed** (96/100). **Sprint B COMPLETE** — Onboarding (built+reviewed, 88/100) + Redraft foundation (schema+strategy pattern+ROS pipeline). **Home page wired to real API** — standings, activity, trend endpoints (commits `cda659e`, `3155610`, `662f836`). News + Trade Builder QA fixes deployed. **🔴 MARCH DEADLINE:** Redraft frontend wiring + integration polish remaining. Live Draft Companion = April.
 - **Polymarket:** Weather trading bot built (186 tests passing). Edge researching. Phase 0 — no real money yet.
 
 ## Key Credentials
@@ -54,21 +54,16 @@ _Curated essentials. Details in memory/ files and memory_search._
 | 2026-02-14 | Taylor's 5 risk decisions | MFL=backlog, pricing=defer, trade fairness=April must-ship, PFF=no (build our own), redraft=May-June not Q3. |
 | 2026-02-14 | OpenClaw 2026.2.13 | Updated from 2026.2.12 per Taylor. |
 | 2026-02-14 | Code review fixes committed by Rush | Commits 2744f65 + 8dd332f. All 3 criticals + 4 majors fixed. Score 82→~95. |
-| 2026-02-14 | 3 sub-agents spawned | Mobile Home v4 (96/100 ✅), Trade Engine spec (running), Pinterest redo (✅). |
 | 2026-02-14 | Taylor timeline acceleration | Trade fairness: full for MARCH (was basic April). Redraft: late MARCH (was May-June). "Greatest FF app in the world." |
-| 2026-02-14 | Code review fixes committed by Rush | Commits 2744f65 + 8dd332f. All 3 criticals + 4 majors fixed. Score 82→~95. |
-| 2026-02-14 | 3 sub-agents spawned | Mobile Home v4 (96/100 ✅), Trade Engine spec (running), Pinterest redo (✅). |
 | 2026-02-14 | Mobile Home v4 approved (96/100) | Simple, clean, competition-focused. Integrated into Vercel frontend. |
 | 2026-02-14 | Trade Engine built + polished to 95/100 | 3,731 lines (backend+frontend). 68→80→95 across 3 review cycles. |
 | 2026-02-14 | Trade Fairness system built | Backend 89.5→95/100 (commit 383aa38), Frontend 96.7/100 (commit 499def4). Both integrated + deployed. |
-| 2026-02-14 | Sprint A (Trade Fairness) COMPLETE | Backend 95/100, Frontend 96.7/100, both on Vercel + Railway. |
-| 2026-02-14 | Smart Onboarding spec ready | 95.7/100 panel (3 rounds). 5-step flow, Quick Setup screen, A/B test plan. |
-| 2026-02-14 | Redraft Architecture spec ready | v2.0 panel-reviewed. Strategy Pattern, 6 new DB tables, free data sources. 2,379 lines. |
-| 2026-02-14 | Sprint B started | Taylor: "let's start the onboarding and redraft." Both specs routed to Rush. |
-| 2026-02-14 | Value migration complete | All KTC/FC/DP → composite_value. Code audit 92/100. PPG data fixed (5,201 rows). |
-| 2026-02-14 | Frontend↔backend integration audit queued | Taylor: connect all buttons/endpoints after Sprint B at 95/100. Scheduled as Week 5. |
-| 2026-02-14 | Sprint B built in parallel | 4 sub-agents + Rush built onboarding + redraft foundation simultaneously. Code review: 42→88/100 after fix cycle. Key lesson: parallel builds create integration debt. |
-| 2026-02-14 | Massive build sprint | 25+ sub-agents, ~20 commits, ~20,000+ new lines in one day. |
+| 2026-02-14 | Sprint B built in parallel | 4 sub-agents + Rush built onboarding + redraft foundation simultaneously. Code review: 42→88/100. Lesson: parallel builds create integration debt. |
+| 2026-02-14 | Value migration complete | ALL backend files + frontend migrated. players.js (commit `5622574`) was LAST file. Code audit 92/100, 0 criticals. |
+| 2026-02-14 | Home page wired to real API | Standings, activity, trend endpoints. 3 criticals found + fixed (wrong columns, teamId mismatch, stale league IDs). |
+| 2026-02-14 | Taylor QA session | Found KTC values still showing → full migration triggered. News field mapping fixed. Trade Builder selectors fixed. Endpoint alignment audited. |
+| 2026-02-14 | Record build day | 37+ sub-agents, ~36 commits (19 backend + 17 frontend), ~25,000+ new lines. Estimated $400-600+ tokens. |
+| 2026-02-14 | Grind + Edge PAUSED | Taylor: "quit all Grind and Edge initiatives until further notice." All focus on TitleRun. Heartbeats already 0m, crons already disabled. |
 
 ---
 
