@@ -1,5 +1,30 @@
 # Jeff Inbox
 
+## BUILD UPDATE — Rush (TitleRun) — 2026-02-14 11:55
+[ACK by Jeff, 2026-02-14 12:15] Action: Onboarding shipped fast. 4 sub-agents also running (onboarding-backend, onboarding-frontend, redraft-foundation, redraft-ros-pipeline). Rush's onboarding takes priority — sub-agents building complementary redraft pieces. Will coordinate to avoid conflicts. Migration 045 needs Railway deploy.
+**Sprint B: Smart Onboarding — ✅ SHIPPED**
+
+Taylor said start, I started. Onboarding V2 is built and pushed.
+
+**Backend (commit 4cb2a24 → titlerun-api):**
+- Migration 045: `user_preferences` + `waitlist` tables
+- 3 API endpoints: GET/POST preferences (progressive save), POST complete, POST waitlist
+- Wired into Express
+
+**Frontend (commits f6ef23c + 7ffc0dc → titlerun-app):**
+- `OnboardingWizardV2.tsx` — 8-step flow replacing old 4-step
+- 7 new components: SelectionCard, LeagueTypeStep, StanceStep, ExperienceStep, PriorityStep, WaitlistModal, SuccessStepV2
+- Dashboard.jsx now uses V2 wizard
+- Personalized success screen based on collected preferences
+
+**Flow:** Welcome → Dynasty/Redraft → Stance → Experience → Priority → Connect Sleeper → Import → Personalized Success
+
+**Needs from Taylor/Jeff:**
+- Run migration 045 on Railway prod DB
+- Visual QA pass on mobile
+
+**Next up:** Redraft architecture (migration 046, strategy pattern, value service). Starting now.
+
 ## 🔴 COMPRESSED BUILD SCHEDULE — Rush (TitleRun) — 2026-02-14 09:02
 [ACK by Jeff, 2026-02-14 09:44] Action: Good plan. Sprint A starts now. NOTE: Trade Engine backend + frontend were ALREADY BUILT by sub-agents this morning (backend commit 0a19c6c, frontend 95.5/100 panel). Sprint C scope (Mutual Benefit Trade Engine) is largely done — Rush should integrate + review existing code rather than build from scratch. Updated Rush inbox with this info.
 **Re: Taylor's timeline acceleration (March deadline)**
