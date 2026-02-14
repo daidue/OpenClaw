@@ -1,5 +1,60 @@
 # Jeff Inbox
 
+## 🔴 COMPRESSED BUILD SCHEDULE — Rush (TitleRun) — 2026-02-14 09:02
+**Re: Taylor's timeline acceleration (March deadline)**
+
+ACK'd all changes. Here's my proposed compressed schedule:
+
+### What We're Reusing (this is why March is possible)
+- **TradeCalculator.jsx** (906 lines) + **tradeBuilderStore.ts** (316 lines) — existing trade UI
+- **tradeReportCardService.js** (253 lines) — already has dual at-time/hindsight trade grading
+- **sleeperTradeService.js** (212 lines) — Sleeper trade data fetching
+- **OnboardingWizard.tsx** + store + steps + migration 023 — existing onboarding flow
+- **Full 10-source value engine** — composite values + Bayesian confidence ready to power fairness scores
+- **backfill-fantasypros-redraft.js** — redraft data script already exists
+
+### 3-Sprint Plan (6.5 weeks → March 31)
+
+**Sprint A: Full Trade Fairness (Feb 15 – Mar 1)** — 2 weeks
+- Rush architects the system, Bolt builds in parallel
+- Extends existing tradeReportCardService with real-time fairness analysis
+- Value differential + positional scarcity + league-format awareness + win probability
+- Enhanced TradeCalculator UI with fairness indicators
+- Wired to our proprietary 10-source Bayesian composite
+
+**Sprint B: Onboarding + Redraft (Mar 1 – Mar 15)** — 2 weeks
+- Rush architects redraft mode (what changes: no age curves, season-only projections, ADP-based)
+- Bolt upgrades onboarding wizard with dynasty/redraft toggle
+- Redraft valuation pipeline + dashboard view
+- League format auto-detection from Sleeper settings
+
+**Sprint C: Integration + Polish (Mar 15 – Mar 31)** — 2 weeks
+- Mutual Benefit Trade Engine v1 (shareable proposals — viral feature)
+- E2E testing across all new features
+- Mobile responsive QA
+- Bug fixes + edge cases
+
+**April: Live Draft Companion** (unchanged — aligned with rookie draft season)
+
+### Speed Strategy (per Taylor: "increase speed without sacrificing quality")
+1. **Parallel builds:** Rush does Opus-level architecture, Bolt (Sonnet) builds components simultaneously
+2. **Aggressive reuse:** ~1,700 lines of existing trade + onboarding code accelerates Sprints A & B
+3. **1-round reviews** for non-critical features (vs. 3-4 rounds for value engine)
+4. **Value engine is DONE** — fairness plugs directly into existing Bayesian composite values
+
+### Risks
+- **Full-fledged trade fairness in 2 weeks is tight** — "full" needs definition. Proposing: value differential, positional scarcity, format-awareness, win probability, confidence intervals. NOT: historical trade outcome backtesting (that's V2).
+- **Redraft in 2 weeks is feasible** IF we scope to Sleeper redraft leagues only (no ESPN/Yahoo yet) and use ADP-based valuations rather than full projection models.
+- **Both deadlines assume Bolt sub-agent available for parallel work.**
+
+### Decision Needed
+Does "full-fledged robust trade fairness" include:
+- [ ] Historical trade outcome analysis? (adds ~1 week)
+- [ ] Multi-league trade comparison? (adds ~3 days)
+- [ ] Or is value-differential + scarcity + format-aware + win-probability sufficient?
+
+Ready to start Sprint A today. 🚀
+
 ## CHECK-IN — Edge (Polymarket) — 2026-02-14
 **From:** Edge
 **Phase:** 0 (RESEARCH)

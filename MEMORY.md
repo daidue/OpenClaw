@@ -28,7 +28,8 @@ _Curated essentials. Details in memory/ files and memory_search._
 ## Active Projects (details via memory_search)
 
 - **Notion Templates:** Freelance Invoice Tracker ($27) + Lite (free). Store: jeffthenotionguy.gumroad.com. Revenue: $0. Pinterest live (69 impressions, 55% engagement). Reddit: karma building.
-- **TitleRun:** Dynasty FF SaaS at app.titlerun.co. Value Engine (10 sources, Bayesian) + Report Card + Nav Overhaul all deployed. **Product vision rewritten 2026-02-13 evening** — see `workspace-titlerun/memory/2026-02-13-strategic-vision.md`. Core: competition with friends, mutual benefit trade engine, proprietary valuation (NEVER mention 10 sources publicly), simple/clean design, live draft companion. **Original valuation system PHASES 1-4 COMPLETE** — 3-layer Bayesian (Production Prior + Market Likelihood + Posterior), 93/100 panel. 10,500+ lines, 25+ files, code reviewed to ~95/100. Only Phase 5 (polish) remains. Specs: `workspace-titlerun/research/original-valuation-system.md` + `original-valuation-panel-r2-r3.md`. **April MVP locked:** Draft Companion + Onboarding + Trade Calc w/ fairness + Mutual Benefit Engine v1. Target: April 2026 launch (7 weeks).
+- **🔴 TitleRun values are NOT dollars** — Proprietary scale 0-10,000+. NEVER use $ signs. Display "8,735" not "$8,735". (Taylor 2026-02-14)
+- **TitleRun:** Dynasty FF SaaS at app.titlerun.co. Value Engine (10 sources, Bayesian) + Report Card + Nav Overhaul all deployed. **Product vision rewritten 2026-02-13 evening** — see `workspace-titlerun/memory/2026-02-13-strategic-vision.md`. Core: competition with friends, mutual benefit trade engine, proprietary valuation (NEVER mention 10 sources publicly), simple/clean design, live draft companion. **Original valuation system PHASES 1-4 COMPLETE** — 3-layer Bayesian (Production Prior + Market Likelihood + Posterior), 93/100 panel. 10,500+ lines, 25+ files, code reviewed to ~95/100. Only Phase 5 (polish) remains. **Mobile Home v4 approved (96/100)** — simple, clean, competition-focused. **🔴 MARCH DEADLINE (Taylor 2026-02-14):** Full trade fairness + redraft by late March. Trade engine spec in progress. "Greatest FF app in the world."
 - **Polymarket:** Weather trading bot built (186 tests passing). Edge researching. Phase 0 — no real money yet.
 
 ## Key Credentials
@@ -52,7 +53,8 @@ _Curated essentials. Details in memory/ files and memory_search._
 | 2026-02-14 | Taylor's 5 risk decisions | MFL=backlog, pricing=defer, trade fairness=April must-ship, PFF=no (build our own), redraft=May-June not Q3. |
 | 2026-02-14 | OpenClaw 2026.2.13 | Updated from 2026.2.12 per Taylor. |
 | 2026-02-14 | Code review fixes committed by Rush | Commits 2744f65 + 8dd332f. All 3 criticals + 4 majors fixed. Score 82→~95. |
-| 2026-02-14 | 3 sub-agents spawned | Mobile Home v4, Trade Engine spec, Pinterest redo. Taylor directive. |
+| 2026-02-14 | 3 sub-agents spawned | Mobile Home v4 (96/100 ✅), Trade Engine spec (running), Pinterest redo (✅). |
+| 2026-02-14 | Taylor timeline acceleration | Trade fairness: full for MARCH (was basic April). Redraft: late MARCH (was May-June). "Greatest FF app in the world." |
 
 ---
 
