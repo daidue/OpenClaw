@@ -65,7 +65,8 @@ _Curated essentials. Details in memory/ files and memory_search._
 | 2026-02-14 | Redraft Architecture spec ready | v2.0 panel-reviewed. Strategy Pattern, 6 new DB tables, free data sources. 2,379 lines. |
 | 2026-02-14 | Sprint B started | Taylor: "let's start the onboarding and redraft." Both specs routed to Rush. |
 | 2026-02-14 | Frontend↔backend integration audit queued | Taylor: connect all buttons/endpoints after Sprint B at 95/100. Scheduled as Week 5. |
-| 2026-02-14 | Massive build sprint | 19 sub-agents, ~12 commits, ~15,000+ new lines in one day. |
+| 2026-02-14 | Sprint B built in parallel | 4 sub-agents + Rush built onboarding + redraft foundation simultaneously. Code review: 42→88/100 after fix cycle. Key lesson: parallel builds create integration debt. |
+| 2026-02-14 | Massive build sprint | 25+ sub-agents, ~20 commits, ~20,000+ new lines in one day. |
 
 ---
 
