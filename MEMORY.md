@@ -51,6 +51,8 @@ _Curated essentials. Details in memory/ files and memory_search._
 | 2026-02-14 | Original valuation Phases 1-4 built | 10,500+ lines in one night. Code reviewed 82→95/100. |
 | 2026-02-14 | Taylor's 5 risk decisions | MFL=backlog, pricing=defer, trade fairness=April must-ship, PFF=no (build our own), redraft=May-June not Q3. |
 | 2026-02-14 | OpenClaw 2026.2.13 | Updated from 2026.2.12 per Taylor. |
+| 2026-02-14 | Code review fixes committed by Rush | Commits 2744f65 + 8dd332f. All 3 criticals + 4 majors fixed. Score 82→~95. |
+| 2026-02-14 | 3 sub-agents spawned | Mobile Home v4, Trade Engine spec, Pinterest redo. Taylor directive. |
 
 ---
 
