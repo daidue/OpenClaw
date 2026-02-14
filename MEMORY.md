@@ -28,7 +28,7 @@ _Curated essentials. Details in memory/ files and memory_search._
 ## Active Projects (details via memory_search)
 
 - **Notion Templates:** Freelance Invoice Tracker ($27) + Lite (free). Store: jeffthenotionguy.gumroad.com. Revenue: $0. Pinterest live (69 impressions, 55% engagement). Reddit: karma building.
-- **TitleRun:** Dynasty FF SaaS at app.titlerun.co. Value Engine (10 sources, Bayesian) + Report Card + Nav Overhaul all deployed. **Product vision rewritten 2026-02-13 evening** — see `workspace-titlerun/memory/2026-02-13-strategic-vision.md`. Core: competition with friends, mutual benefit trade engine, proprietary valuation (NEVER mention 10 sources publicly), simple/clean design, live draft companion. Target: July 2026 launch.
+- **TitleRun:** Dynasty FF SaaS at app.titlerun.co. Value Engine (10 sources, Bayesian) + Report Card + Nav Overhaul all deployed. **Product vision rewritten 2026-02-13 evening** — see `workspace-titlerun/memory/2026-02-13-strategic-vision.md`. Core: competition with friends, mutual benefit trade engine, proprietary valuation (NEVER mention 10 sources publicly), simple/clean design, live draft companion. **Original valuation system APPROVED** — 3-layer Bayesian (Production Prior + Market Likelihood + Posterior), 93/100 panel, 24-week build. Rush building Phase 1 NOW. Specs: `workspace-titlerun/research/original-valuation-system.md` + `original-valuation-panel-r2-r3.md`. Target: July 2026 launch.
 - **Polymarket:** Weather trading bot built (186 tests passing). Edge researching. Phase 0 — no real money yet.
 
 ## Key Credentials
