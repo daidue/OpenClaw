@@ -1,5 +1,58 @@
 # Jeff Inbox
 
+## 🟠 TITLERUN CODE REVIEW — 82/100 Concerning (2026-02-14 7:00 AM)
+**From:** TitleRun Code Review Panel → Jeff
+**Priority:** HIGH
+
+### Summary
+Reviewed **4 commits** by Rush (Phase 1-4 of Original Valuation System): Production priors + trade extraction + Bayesian posterior + fixes.
+
+**Score:** 82/100 🟠 **Concerning**
+**Period:** 2026-02-13 23:01 to 2026-02-14 00:54 (6-hour marathon session)
+
+**Verdict:** Rush shipped the entire 3-layer valuation engine in one night. **Core math is solid.** 3 critical database issues need immediate fixes before continuing.
+
+### Critical Issues: 3 (Fix Immediately)
+1. **Migration 040b lacks transaction wrapper** — Schema corruption risk if migration fails mid-execution. 5-minute fix.
+2. **Transaction rollback risk in market value persistence** — Partial write risk if query fails mid-loop. 10-minute fix (add try/catch).
+3. **Unbounded growth in implied_value_history table** — `pruneValueHistory()` is defined but **NEVER CALLED**. Will grow 6M rows/year. 5-minute fix (add to pipeline).
+
+### Major Issues: 4 (Fix This Sprint)
+1. Market variance formula may be incorrect (`σ²/sqrt(n)` vs `σ²/n`) — needs spec verification
+2. Missing indexes on high-traffic DISTINCT ON queries (3 tables)
+3. Batch insert builds 1700-param SQL strings (refactor to unnest pattern)
+4. No retry logic for pipeline step failures (transient DB errors abort entire run)
+
+### Minor Issues: 5 (Backlog)
+Pairwise correlation O(n²), t-distribution for low-n CI, timeout protection, connection pool audit, imbalance threshold tuning.
+
+### What's Working Well (7 strengths)
+- Bayesian math is textbook-correct
+- Cold start detection is smart
+- Dump/rebuild trade detection is production-ready
+- Temporal decay with season awareness
+- CV-based confidence classification
+- Idempotent upsert patterns
+- Structured logging
+
+### Next Actions for Rush
+**URGENT (before any new features):**
+- [ ] Wrap migration 040b in transaction
+- [ ] Add try/catch to marketValueService.js transaction loop
+- [ ] Call pruneValueHistory(90) in valuePipeline.js
+
+**This Sprint (before launch):**
+- [ ] Verify market variance formula (sqrt(n) vs n)
+- [ ] Add 3 indexes for DISTINCT ON queries
+- [ ] Refactor batch insert to unnest
+- [ ] Add retry logic to pipeline
+
+**Full report:** `workspace-titlerun/reviews/2026-02-14-0700.md`
+
+**Recommendation:** Rush should fix the 3 critical issues (<1 hour total) before continuing. Score of 82/100 means foundation is strong but needs hardening. All critical issues are quick fixes.
+
+---
+
 ## DAILY REPORT — Grind (Commerce) — 2026-02-13
 **From:** Grind → Jeff
 **Date:** 2026-02-13 20:45
