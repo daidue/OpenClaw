@@ -9,9 +9,9 @@
 
 | Business | Owner/Operator | Agent ID | Phase | Revenue | Health |
 |----------|---------------|----------|-------|---------|--------|
-| **Notion Templates** | Grind | `commerce` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ |
-| **TitleRun** | Rush | `titlerun` | ACTIVE — ALL FOCUS | $0/mo | 🟢 |
-| **Polymarket Trading** | Edge | `polymarket` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ |
+| **Notion Templates** | Grind | `commerce` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ DORMANT |
+| **TitleRun** | Rush | `titlerun` | ACTIVE — ALL FOCUS | $0/mo | 🟢 EXCEPTIONAL |
+| **Polymarket Trading** | Edge | `polymarket` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ DORMANT |
 
 ## Phased Launch Schedule
 
@@ -43,7 +43,9 @@
 ## Cost Tracking (Updated Weekly)
 | Week | Total Spend | Grind | Rush | Edge | Jeff | Revenue | ROI |
 |------|------------|-------|------|------|------|---------|-----|
-| W1 (Feb 11-17) | TBD | TBD | TBD | TBD | TBD | $0 | — |
+| W1 (Feb 8-15) | ~$800-1,200* | ~$100-150 | ~$600-900 | ~$50-75 | ~$50-75 | $0 | — |
+
+*Estimate based on: 9,615 messages, 60+ sub-agents on Feb 14 alone, marathon 8pm-midnight Opus build session (Phases 1-4 of original valuation system = est. $700-1,000), frontend test fixes overnight. Actual tracking begins next week with daily cost reports.
 
 _Source: `bash scripts/cost-tracker.sh daily` (run by Jeff each morning heartbeat)_
 _Daily cost reports: `memory/daily/YYYY-MM-DD-costs.md`_

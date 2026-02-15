@@ -26,6 +26,7 @@
 - Institutional memory compounds across all businesses
 
 ## What We've Tried That Didn't Work
+- **Parallel business units at $0 revenue (Feb 8-14):** Grind (Templates) and Edge (Polymarket) consumed ~20-30% of token budget while generating $0. Taylor pivoted to 100% TitleRun focus on Feb 14. Lesson: focus beats diversification at this stage.
 - **8-agent squad (Feb 5-11):** Fortune 500 org chart for a $0 business. 5 agents were idle. Cut to 4 core + 2 Owner/Operators.
 - **X reply sprints:** Deprioritized per revenue deep think. Low ROI for 0-follower account.
 - **Nate Calloway pseudonym:** Killed. Focus on "Jeff the Notion Guy" brand instead.
@@ -37,8 +38,12 @@
 ## Key Strategic Decisions
 | Date | Decision | Rationale |
 |------|----------|-----------|
+| 2026-02-14 | **PIVOT: All focus on TitleRun** | Taylor: "quit all Grind and Edge initiatives until further notice." Grind + Edge paused. 100% portfolio resources to TitleRun. |
+| 2026-02-14 | **March deadline acceleration** | Trade fairness FULL for March (was basic April). Redraft late March (was May-June). "Greatest FF app in the world." |
+| 2026-02-14 | TitleRun values ≠ dollars | Proprietary 0-10,000 scale. NEVER use $ signs. Critical brand differentiation. |
+| 2026-02-13 | **Product vision rewrite** | Hook = competing with friends. Mutual benefit trade engine priority #1. 10-source data is SECRET. Simple/clean design. |
 | 2026-02-11 | Portfolio company architecture | Each business gets autonomous Owner/Operator. Jeff as portfolio manager. |
-| 2026-02-11 | Phased parallel launch | Templates 60% focus. TitleRun PREP. Polymarket RESEARCH. |
+| 2026-02-11 | Phased parallel launch | Templates 60% focus. TitleRun PREP. Polymarket RESEARCH. *(SUPERSEDED by 2026-02-14 pivot)* |
 | 2026-02-11 | TitleRun full launch = July 2026 | Align with FF draft season (80% of signups) |
 | 2026-02-11 | Polymarket Phase 0 required | Must prove edge exists before trading real money |
 | 2026-02-11 | Fury & Bolt → ephemeral | No standing heartbeats. Spawned on-demand. Saves ~$10/day. |
@@ -70,6 +75,16 @@ Old crons were zombies (reading nonexistent `sessions.log`). New crons read actu
 | Edge | 60m | 0m (disabled) | **Intentional.** Phase 0 RESEARCH activated via cron, not heartbeat. No standing heartbeat until Phase 1 SANDBOX. |
 
 ## Lessons Learned
+
+### Week of Feb 8-15, 2026
+- **Focus beats diversification at $0 revenue.** Running 3 businesses in parallel consumed $800-1,200 in tokens with $0 return. Taylor's Feb 14 pivot to 100% TitleRun was correct.
+- **Opus marathon sessions deliver.** Feb 13-14 8pm-midnight: 10,500+ lines of original valuation system built (Phases 1-4), ~$700-1,000 in tokens, but code review scored 92/100. High-velocity, high-quality when focused.
+- **Nested response envelope = #1 recurring bug.** `{ success, data: { preferences: {...} } }` + axios `.data` = `response.data.data.X`. Caused 4+ bugs this week. NOW documented in API-CONTRACT-2026-02-14.md with sendSuccess/sendError helpers.
+- **Parallel sub-agent builds create integration debt.** Sprint B (4 sub-agents building onboarding + redraft simultaneously) → merge conflicts, stale IDs, column mismatches. Code review caught it, but slowed velocity.
+- **Frontend test suites pay dividends.** 324 tests written = 4 separate QA sessions caught bugs before Taylor saw them. MSW 2.x infra was painful to set up (custom Babel + 3 polyfills) but now stable.
+- **LEFT JOIN pattern for optional foreign keys.** Trade Builder user_id bug resolved when backend switched to LEFT JOIN for leagues table (some users have no connected leagues yet). Critical for MVP UX.
+
+### Earlier Lessons (Feb 5-11)
 - Agents need clear missions and KPIs or they produce nothing
 - Standing heartbeats on idle agents = pure waste
 - Expert panel process (95+ score) ensures quality but slows velocity — use selectively
