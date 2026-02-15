@@ -1,28 +1,13 @@
 {
-  "timestamp": "2026-02-15T11:00:03.630910+00:00",
+  "timestamp": "2026-02-15T17:00:03.578025+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
-      "topic": "notion",
+      "topic": "template",
       "agents": [
         "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "stripe",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "etsy",
-      "agents": [
-        "main",
-        "commerce"
+        "commerce",
+        "researcher"
       ],
       "signal": "collaboration"
     },
@@ -30,23 +15,8 @@
       "topic": "reddit",
       "agents": [
         "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "pinterest",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "template",
-      "agents": [
-        "main",
-        "commerce"
+        "commerce",
+        "researcher"
       ],
       "signal": "collaboration"
     },
@@ -59,10 +29,34 @@
       "signal": "collaboration"
     },
     {
-      "topic": "newsletter",
+      "topic": "stripe",
+      "agents": [
+        "main",
+        "researcher"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "pinterest",
       "agents": [
         "main",
         "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "notion",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "netlify",
+      "agents": [
+        "main",
+        "researcher"
       ],
       "signal": "collaboration"
     }
@@ -72,28 +66,24 @@
       "tool": "exec",
       "agents": [
         "main",
-        "commerce"
-      ]
-    },
-    {
-      "tool": "browser",
-      "agents": [
-        "main",
-        "commerce"
+        "commerce",
+        "researcher"
       ]
     },
     {
       "tool": "read",
       "agents": [
         "main",
-        "commerce"
+        "commerce",
+        "researcher"
       ]
     },
     {
       "tool": "write",
       "agents": [
         "main",
-        "commerce"
+        "commerce",
+        "researcher"
       ]
     },
     {
@@ -105,10 +95,11 @@
     }
   ],
   "agent_error_counts": {
-    "main": 11
+    "main": 14
   },
   "active_agents": [
     "main",
-    "commerce"
+    "commerce",
+    "researcher"
   ]
 }
