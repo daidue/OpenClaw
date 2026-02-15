@@ -1,62 +1,12 @@
 {
-  "timestamp": "2026-02-15T17:00:03.578025+00:00",
+  "timestamp": "2026-02-15T23:00:11.866638+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
-      "topic": "template",
+      "topic": "landing page",
       "agents": [
         "main",
-        "commerce",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "reddit",
-      "agents": [
-        "main",
-        "commerce",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "gumroad",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "stripe",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "pinterest",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "notion",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "netlify",
-      "agents": [
-        "main",
-        "researcher"
+        "dev"
       ],
       "signal": "collaboration"
     }
@@ -66,40 +16,44 @@
       "tool": "exec",
       "agents": [
         "main",
-        "commerce",
-        "researcher"
+        "dev"
       ]
     },
     {
       "tool": "read",
       "agents": [
         "main",
-        "commerce",
-        "researcher"
-      ]
-    },
-    {
-      "tool": "write",
-      "agents": [
-        "main",
-        "commerce",
-        "researcher"
+        "dev"
       ]
     },
     {
       "tool": "edit",
       "agents": [
         "main",
-        "commerce"
+        "dev"
+      ]
+    },
+    {
+      "tool": "write",
+      "agents": [
+        "main",
+        "dev"
+      ]
+    },
+    {
+      "tool": "process",
+      "agents": [
+        "main",
+        "dev"
       ]
     }
   ],
   "agent_error_counts": {
-    "main": 14
+    "main": 14,
+    "dev": 17
   },
   "active_agents": [
     "main",
-    "commerce",
-    "researcher"
+    "dev"
   ]
 }
