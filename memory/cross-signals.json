@@ -1,18 +1,9 @@
 {
-  "timestamp": "2026-02-14T23:00:12.090394+00:00",
+  "timestamp": "2026-02-15T05:00:03.040988+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
-      "topic": "template",
-      "agents": [
-        "main",
-        "commerce",
-        "dev"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "invoice tracker",
+      "topic": "pinterest",
       "agents": [
         "main",
         "commerce"
@@ -20,31 +11,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "landing page",
-      "agents": [
-        "main",
-        "dev"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "reddit",
-      "agents": [
-        "main",
-        "commerce"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "twitter",
-      "agents": [
-        "main",
-        "dev"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "newsletter",
+      "topic": "gumroad",
       "agents": [
         "main",
         "commerce"
@@ -60,7 +27,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "pinterest",
+      "topic": "template",
       "agents": [
         "main",
         "commerce"
@@ -68,7 +35,15 @@
       "signal": "collaboration"
     },
     {
-      "topic": "gumroad",
+      "topic": "reddit",
+      "agents": [
+        "main",
+        "commerce"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "newsletter",
       "agents": [
         "main",
         "commerce"
@@ -94,39 +69,28 @@
   ],
   "shared_tools": [
     {
-      "tool": "exec",
-      "agents": [
-        "main",
-        "commerce",
-        "dev"
-      ]
-    },
-    {
       "tool": "read",
       "agents": [
         "main",
-        "commerce",
-        "dev"
+        "commerce"
+      ]
+    },
+    {
+      "tool": "exec",
+      "agents": [
+        "main",
+        "commerce"
       ]
     },
     {
       "tool": "write",
       "agents": [
         "main",
-        "commerce",
-        "dev"
+        "commerce"
       ]
     },
     {
       "tool": "edit",
-      "agents": [
-        "main",
-        "commerce",
-        "dev"
-      ]
-    },
-    {
-      "tool": "session_status",
       "agents": [
         "main",
         "commerce"
@@ -138,22 +102,13 @@
         "main",
         "commerce"
       ]
-    },
-    {
-      "tool": "process",
-      "agents": [
-        "main",
-        "dev"
-      ]
     }
   ],
   "agent_error_counts": {
-    "main": 11,
-    "dev": 45
+    "main": 11
   },
   "active_agents": [
     "main",
-    "commerce",
-    "dev"
+    "commerce"
   ]
 }
