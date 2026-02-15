@@ -13,6 +13,18 @@
 | **TitleRun** | Rush | `titlerun` | ACTIVE — ALL FOCUS | $0/mo | 🟢 EXCEPTIONAL |
 | **Polymarket Trading** | Edge | `polymarket` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ DORMANT |
 
+## TitleRun Milestones (Week of Feb 15)
+- ✅ DB migration deployed (44 tables, 96.7/100 expert panel, RLS, FK constraints)
+- ✅ Trade analysis confirmed working end-to-end
+- ✅ Landing page v3 built (95.8/100, 4 pillars, 3x email capture)
+- ✅ Cloudflare Pages migration complete (app.titlerun.co, $0/mo)
+- ✅ Frontend tests: 318/319 passing
+- ✅ Live Draft Companion spec: 95.9/100
+- 🔜 Landing page deploy to titlerun.co (pending Cloudflare project setup)
+- 🔜 MailerLite integration (pending Taylor signup)
+- 🔜 Redraft wiring to real endpoints (March deadline)
+- 🔜 Live Draft Companion build (parallel, April target)
+
 ## Phased Launch Schedule
 
 | Phase | Period | Templates | TitleRun | Polymarket |
@@ -43,9 +55,9 @@
 ## Cost Tracking (Updated Weekly)
 | Week | Total Spend | Grind | Rush | Edge | Jeff | Revenue | ROI |
 |------|------------|-------|------|------|------|---------|-----|
-| W1 (Feb 8-15) | ~$800-1,200* | ~$100-150 | ~$600-900 | ~$50-75 | ~$50-75 | $0 | — |
+| W1 (Feb 8-15) | ~$800-1,500* | ~$100-150 | ~$600-1,000 | ~$50-75 | ~$50-75 | $0 | — |
 
-*Estimate based on: 9,615 messages, 60+ sub-agents on Feb 14 alone, marathon 8pm-midnight Opus build session (Phases 1-4 of original valuation system = est. $700-1,000), frontend test fixes overnight. Actual tracking begins next week with daily cost reports.
+*Estimate based on: 9,615 messages, 60+ sub-agents on Feb 14 alone, marathon 8pm-midnight Opus build session (Phases 1-4 of original valuation system = est. $700-1,000), frontend test fixes overnight, Cloudflare migration, landing page iterations, DB migration expert panel. Taylor approved high burn through March with daily visibility.
 
 _Source: `bash scripts/cost-tracker.sh daily` (run by Jeff each morning heartbeat)_
 _Daily cost reports: `memory/daily/YYYY-MM-DD-costs.md`_
@@ -110,4 +122,4 @@ If budget must be cut 50%+:
 - All three: Shared sub-agents (researcher, dev). Shared skills library.
 
 ---
-_Last updated: 2026-02-11_
+_Last updated: 2026-02-15_
