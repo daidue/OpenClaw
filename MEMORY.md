@@ -40,6 +40,7 @@ _Curated essentials. Details in memory/ files and memory_search._
 - **Landing page rebuilt (95.5/100)** — `daidue/titlerun-landing` repo. Single HTML, dark theme, competition hook. MailerLite placeholder. Pending deploy to `titlerun.co`.
 - **🔴 Startup migration in `src/index.js` = ONLY way tables reach production** — Migration SQL files only run locally. Every new table MUST be added to startup migration block or production crashes.
 - **🔴 New services MUST have graceful fallback** — If table doesn't exist, catch error and return safe default (e.g., multiplier = 1.0). Never let a missing table crash an entire endpoint.
+- **🔴 Valuation calibration bug (2026-02-16)** — Pick values inflated by 5 multiplicative boosts (up to 1.5x), player values get zero adjustments. Late 1st pick (7,500) > Josh Allen (7,389) in SF. Fix: reduce pick clamp to 1.25x, add player-relative cap, investigate why SF QB composite is low (should be 9,000+). Full analysis: `workspace-titlerun/research/valuation-calibration-deep-dive.md`.
 - **🔴 Sleeper ID type mismatch = recurring pattern** — Sleeper IDs are numbers, frontend sends strings. Must use `String()` coercion on ALL comparisons. Hit 4+ times in Trade Builder alone.
 - **Trade Builder: 8 fix rounds** — Relative URLs, PlayerSelector, draftPicks exclusion, rosterId types, leagueRosterId field, fetchRoster type coercion. Last fix: commit `bb7ca03` (2026-02-15).
 - **MailerLite** — Account ID `2116834`, form `37189961`. All 3 landing page forms wired (AJAX submit). Free tier.
