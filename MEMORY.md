@@ -98,6 +98,9 @@ _Curated essentials. Details in memory/ files and memory_search._
 | 2026-02-16 | Pick Valuation Phase 5 shipped | All 5 enhancements live. Expert panel R1: 72→R2: 89. N+1 fix = 30x perf gain. Taylor: "ship it." |
 | 2026-02-16 | Sub-agent code ALWAYS needs expert review | Phase 5 initial score 72/100 with 5 critical bugs proves pattern. Never ship without panel. |
 | 2026-02-16 | Multiplicative compounding is intentional | Pick multipliers compound (league × tier × class × demand). Safety clamp 0.7x-1.5x prevents extremes. |
+| 2026-02-16 | League format auto-detect shipped | Removed manual 1QB/SF toggle. Auto-detect from `roster_positions`. Leaguemates switched to `titlerun_values` table (format-aware). Frontend commit `075cb93`, backend `6985bf4`. Panel 96/100. |
+| 2026-02-16 | Value source hierarchy = titlerun_values FIRST | Primary: `titlerun_values` (format-aware). Fallback: `composite_value`/`composite_value_sf` from `players` table. LeaguemateDetail was using wrong source → barely different SF values (42 pts on 109K). |
+| 2026-02-16 | LeagueSettingsBadges component | Reusable at `src/components/reportCard/LeagueSettingsBadges.jsx`. Shows league size, SF/1QB, starters, PPR, TEP. Use on ALL league-contextual pages. |
 
 ---
 
