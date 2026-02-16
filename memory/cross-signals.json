@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-02-15T23:00:11.866638+00:00",
+  "timestamp": "2026-02-16T05:00:04.368284+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
@@ -39,18 +39,11 @@
         "main",
         "dev"
       ]
-    },
-    {
-      "tool": "process",
-      "agents": [
-        "main",
-        "dev"
-      ]
     }
   ],
   "agent_error_counts": {
     "main": 14,
-    "dev": 17
+    "dev": 1
   },
   "active_agents": [
     "main",
