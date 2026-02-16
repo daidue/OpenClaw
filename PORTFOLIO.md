@@ -18,12 +18,21 @@
 - ✅ Trade analysis confirmed working end-to-end
 - ✅ Landing page v3 built (95.8/100, 4 pillars, 3x email capture)
 - ✅ Cloudflare Pages migration complete (app.titlerun.co, $0/mo)
-- ✅ Frontend tests: 318/319 passing
-- ✅ Live Draft Companion spec: 95.9/100
-- 🔜 Landing page deploy to titlerun.co (pending Cloudflare project setup)
+- ✅ Frontend tests: 318/319 passing + new test coverage
+- ✅ Live Draft Companion spec + foundation + build (95.9/100)
+- ✅ Redraft wiring to real endpoints (commit `8f448ec`)
+- ✅ **Evening sprint (Feb 15): 14 features built in 45 min**
+  - Settings (95.9), News (95.8), Leaguemates (96.5), Player Detail (97.2)
+  - Trophy Case, Punishment, Onboarding, Trade Fairness Polish
+  - Hall of Shame (96.8), Dashboard (98), Report Card, Teams, Draft Companion, Tests
+- ✅ **3 audit cycles + 22-item master fix list → 87/100 overall health**
+- ✅ Error boundaries, AI Chat, Sleeper ID audit, security hardening
+- ✅ Multi-league context, SP History, cross-feature CTAs
+- 🔜 Landing page deploy to titlerun.co (pending Taylor: Cloudflare Pages)
 - 🔜 MailerLite integration (pending Taylor signup)
-- 🔜 Redraft wiring to real endpoints (March deadline)
-- 🔜 Live Draft Companion build (parallel, April target)
+- 🔜 Railway: Redis + COLD_START_THRESHOLD + ANTHROPIC_API_KEY (pending Taylor)
+- 🔜 Beta user recruitment
+- 🔜 Production QA on real devices
 
 ## Phased Launch Schedule
 
