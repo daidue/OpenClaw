@@ -1,15 +1,7 @@
 {
-  "timestamp": "2026-02-16T17:00:03.954936+00:00",
+  "timestamp": "2026-02-16T23:00:14.047486+00:00",
   "period_hours": 24,
   "shared_topics": [
-    {
-      "topic": "landing page",
-      "agents": [
-        "main",
-        "dev"
-      ],
-      "signal": "collaboration"
-    },
     {
       "topic": "template",
       "agents": [
@@ -21,13 +13,6 @@
   ],
   "shared_tools": [
     {
-      "tool": "exec",
-      "agents": [
-        "main",
-        "dev"
-      ]
-    },
-    {
       "tool": "read",
       "agents": [
         "main",
@@ -35,14 +20,14 @@
       ]
     },
     {
-      "tool": "edit",
+      "tool": "exec",
       "agents": [
         "main",
         "dev"
       ]
     },
     {
-      "tool": "browser",
+      "tool": "process",
       "agents": [
         "main",
         "dev"
@@ -56,7 +41,7 @@
       ]
     },
     {
-      "tool": "process",
+      "tool": "edit",
       "agents": [
         "main",
         "dev"
@@ -64,7 +49,7 @@
     }
   ],
   "agent_error_counts": {
-    "main": 12,
+    "main": 13,
     "dev": 2
   },
   "active_agents": [
