@@ -84,6 +84,13 @@ _Curated essentials. Details in memory/ files and memory_search._
 | 2026-02-14 | API contract documented | `dpm-app/API-CONTRACT-2026-02-14.md` — 20+ endpoints with exact response shapes. Single source of truth. |
 | 2026-02-14 | Code review cycle | 73/100 → 68/100 (build broken) → fixed → targeting 90+. Three full reviews in one afternoon. |
 
+| 2026-02-16 | Trade report card roster_ids bug | `Object.keys([6,12])` returns indices `["0","1"]` not values. `tradeInvolvesRoster` always returned false → 0 trade cards ever generated. |
+| 2026-02-16 | Value discrepancy fix | Dashboard=players only (65K), Teams=stale snapshot+picks (104K). Created centralized teamValueCalculator. But sub-agent queried non-existent column → crashed production. |
+| 2026-02-16 | draft_picks has NO composite_value | Uses `ktc_value`/`ktc_value_sf`/`estimated_value`. Sub-agent assumed column existed → production crash. Must verify schema. |
+| 2026-02-16 | Admin security hardening | ADMIN_SECRET validation + rate limiting. Commit `3fe8708`. |
+| 2026-02-16 | Performance optimization | Lazy loading auth pages: 150→108KB gzipped (30%). PWA icons created. |
+| 2026-02-16 | Code review system verified | 3x daily working (7am/12pm/5pm). Midday was disabled, re-enabled. |
+
 ---
 
-_Last updated: 2026-02-14_
+_Last updated: 2026-02-16_
