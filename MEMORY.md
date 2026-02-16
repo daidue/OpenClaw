@@ -38,7 +38,9 @@ _Curated essentials. Details in memory/ files and memory_search._
 - **Landing page rebuilt (95.5/100)** — `daidue/titlerun-landing` repo. Single HTML, dark theme, competition hook. MailerLite placeholder. Pending deploy to `titlerun.co`.
 - **🔴 Sleeper ID type mismatch = recurring pattern** — Sleeper IDs are numbers, frontend sends strings. Must use `String()` coercion on ALL comparisons. Hit 4+ times in Trade Builder alone.
 - **Trade Builder: 8 fix rounds** — Relative URLs, PlayerSelector, draftPicks exclusion, rosterId types, leagueRosterId field, fetchRoster type coercion. Last fix: commit `bb7ca03` (2026-02-15).
-- **MailerLite** — Taylor's email capture tool for landing page. Free tier, auto welcome + drip sequences.
+- **MailerLite** — Account ID `2116834`, form `37189961`. All 3 landing page forms wired (AJAX submit). Free tier.
+- **Cloudflare DNS** — `titlerun.co` zone on Cloudflare (free). NS: `aisha.ns.cloudflare.com` + `martin.ns.cloudflare.com`. Zone ID: `c9fe3271361553b91d5015d53287fe43`. CNAME flattening enables root domain → Pages.
+- **Namecheap DNS decommissioned** — Nameservers pointed to Cloudflare as of 2026-02-15 ~21:37 EST.
 
 ## Key Credentials
 
