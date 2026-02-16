@@ -5,7 +5,8 @@
 set -e  # Exit on error
 
 # Configuration
-REPO_PATH="$HOME/Desktop/titlerun-api"
+BACKEND_REPO="$HOME/Desktop/titlerun-api"
+FRONTEND_REPO="$HOME/Documents/Claude Cowork Business/dpm-app"
 WORKSPACE="/Users/jeffdaniels/.openclaw/workspace-titlerun"
 REVIEW_DIR="$WORKSPACE/reviews"
 STATE_FILE="$WORKSPACE/.last-review-timestamp"
@@ -24,25 +25,49 @@ else
     echo "📅 No previous review found. Using default: $LAST_REVIEW"
 fi
 
-# Change to repo directory
-cd "$REPO_PATH" || {
-    echo "❌ ERROR: Cannot access $REPO_PATH"
-    echo "Ensure ~/Desktop/titlerun-api exists and is a valid git repo."
-    exit 1
+# Function to fetch commits from a repo
+fetch_commits() {
+    local repo_path="$1"
+    local repo_name="$2"
+    
+    if [ ! -d "$repo_path" ]; then
+        echo "⚠️  WARNING: Cannot access $repo_path (skipping $repo_name)"
+        return 1
+    fi
+    
+    cd "$repo_path" || return 1
+    
+    echo "🔍 Fetching $repo_name commits since $LAST_REVIEW..."
+    local commits=$(git log --since="$LAST_REVIEW" --format="%H|%s" 2>/dev/null || echo "")
+    
+    if [ -n "$commits" ]; then
+        echo "$commits" | while IFS='|' read -r hash subject; do
+            echo "$repo_name|$hash|$subject"
+        done
+    fi
 }
 
-# Fetch recent commits
-echo "🔍 Fetching commits since $LAST_REVIEW..."
-COMMITS=$(gh log --since "$LAST_REVIEW" --format="%H|%s" 2>/dev/null || echo "")
+# Fetch commits from both repositories
+ALL_COMMITS=""
+BACKEND_COMMITS=$(fetch_commits "$BACKEND_REPO" "backend")
+FRONTEND_COMMITS=$(fetch_commits "$FRONTEND_REPO" "frontend")
 
-if [ -z "$COMMITS" ]; then
-    echo "✅ No new commits to review. Exiting gracefully."
+ALL_COMMITS="$BACKEND_COMMITS"
+if [ -n "$FRONTEND_COMMITS" ]; then
+    if [ -n "$ALL_COMMITS" ]; then
+        ALL_COMMITS="$ALL_COMMITS\n$FRONTEND_COMMITS"
+    else
+        ALL_COMMITS="$FRONTEND_COMMITS"
+    fi
+fi
+
+if [ -z "$ALL_COMMITS" ]; then
+    echo "✅ No new commits to review in either repository. Exiting gracefully."
     exit 0
 fi
 
-COMMIT_COUNT=$(echo "$COMMITS" | wc -l | xargs)
-FIRST_HASH=$(echo "$COMMITS" | tail -1 | cut -d'|' -f1)
-LAST_HASH=$(echo "$COMMITS" | head -1 | cut -d'|' -f1)
+COMMIT_COUNT=$(echo -e "$ALL_COMMITS" | grep -v '^$' | wc -l | xargs)
+echo "📊 Found $COMMIT_COUNT commits across both repositories"
 
 echo "📊 Found $COMMIT_COUNT commits ($FIRST_HASH..$LAST_HASH)"
 
@@ -50,32 +75,86 @@ echo "📊 Found $COMMIT_COUNT commits ($FIRST_HASH..$LAST_HASH)"
 REVIEW_FILE="$REVIEW_DIR/$(date '+%Y-%m-%d-%H%M').md"
 echo "📝 Review will be written to: $REVIEW_FILE"
 
+# Function to get changed files for a commit in a repo
+get_changed_files() {
+    local repo_path="$1"
+    local repo_name="$2"
+    local hash="$3"
+    
+    cd "$repo_path" || return 1
+    
+    # Get list of changed files using git show
+    git show --name-status "$hash" 2>/dev/null | grep -E '^[AMD]' | while read -r status filename; do
+        # Get addition/deletion counts (simplified)
+        local stats=$(git show --numstat "$hash" -- "$filename" 2>/dev/null | head -1)
+        local additions=$(echo "$stats" | cut -f1)
+        local deletions=$(echo "$stats" | cut -f2)
+        
+        # Default to 0 if stats unavailable
+        [ "$additions" = "-" ] && additions="0"
+        [ "$deletions" = "-" ] && deletions="0"
+        [ -z "$additions" ] && additions="0"
+        [ -z "$deletions" ] && deletions="0"
+        
+        echo "$repo_name|$filename|$status|+$additions|-$deletions"
+    done
+}
+
 # Fetch changed files for all commits
 echo "📂 Analyzing changed files..."
 CHANGED_FILES=""
-while IFS='|' read -r hash subject; do
-    echo "  - $hash: $subject"
-    FILES=$(gh api "repos/daidue/titlerun-api/commits/$hash" --jq '.files[] | "\(.filename)|\(.status)|+\(.additions)|-\(.deletions)"' 2>/dev/null || echo "")
-    if [ -n "$FILES" ]; then
-        CHANGED_FILES="$CHANGED_FILES\n$FILES"
+while IFS='|' read -r repo_name hash subject; do
+    echo "  - [$repo_name] $hash: $subject"
+    
+    if [ "$repo_name" = "backend" ]; then
+        repo_path="$BACKEND_REPO"
+    elif [ "$repo_name" = "frontend" ]; then
+        repo_path="$FRONTEND_REPO"
+    else
+        echo "    ⚠️  Unknown repository: $repo_name"
+        continue
     fi
-done <<< "$COMMITS"
+    
+    FILES=$(get_changed_files "$repo_path" "$repo_name" "$hash")
+    if [ -n "$FILES" ]; then
+        if [ -n "$CHANGED_FILES" ]; then
+            CHANGED_FILES="$CHANGED_FILES\n$FILES"
+        else
+            CHANGED_FILES="$FILES"
+        fi
+    fi
+done <<< "$(echo -e "$ALL_COMMITS" | grep -v '^$')"
 
 # Count stats
 TOTAL_FILES=$(echo -e "$CHANGED_FILES" | grep -v '^$' | wc -l | xargs)
-TOTAL_ADDITIONS=$(echo -e "$CHANGED_FILES" | grep -v '^$' | cut -d'|' -f3 | sed 's/+//' | awk '{sum+=$1} END {print sum}')
-TOTAL_DELETIONS=$(echo -e "$CHANGED_FILES" | grep -v '^$' | cut -d'|' -f4 | sed 's/-//' | awk '{sum+=$1} END {print sum}')
+TOTAL_ADDITIONS=$(echo -e "$CHANGED_FILES" | grep -v '^$' | cut -d'|' -f4 | sed 's/+//' | awk '{sum+=$1} END {print sum}')
+TOTAL_DELETIONS=$(echo -e "$CHANGED_FILES" | grep -v '^$' | cut -d'|' -f5 | sed 's/-//' | awk '{sum+=$1} END {print sum}')
 
 echo "📈 Stats: $TOTAL_FILES files changed, +$TOTAL_ADDITIONS/-$TOTAL_DELETIONS lines"
 
 # Read file contents (up to 500 lines each)
 echo "📖 Reading file contents..."
 FILE_CONTENTS=""
-while IFS='|' read -r filepath status additions deletions; do
-    if [ -n "$filepath" ] && [ -f "$filepath" ]; then
-        echo "  - Reading: $filepath"
-        CONTENT=$(head -500 "$filepath" 2>/dev/null || echo "[Error reading file]")
-        FILE_CONTENTS="$FILE_CONTENTS\n\n### $filepath ($status, $additions/$deletions)\n\`\`\`\n$CONTENT\n\`\`\`"
+while IFS='|' read -r repo_name filepath status additions deletions; do
+    if [ -n "$filepath" ]; then
+        # Determine full file path
+        if [ "$repo_name" = "backend" ]; then
+            full_path="$BACKEND_REPO/$filepath"
+        elif [ "$repo_name" = "frontend" ]; then
+            full_path="$FRONTEND_REPO/$filepath"
+        else
+            echo "    ⚠️  Unknown repository: $repo_name"
+            continue
+        fi
+        
+        if [ -f "$full_path" ]; then
+            echo "  - Reading: [$repo_name] $filepath"
+            CONTENT=$(head -500 "$full_path" 2>/dev/null || echo "[Error reading file]")
+            FILE_CONTENTS="$FILE_CONTENTS\n\n### [$repo_name] $filepath ($status, $additions/$deletions)\n\`\`\`\n$CONTENT\n\`\`\`"
+        else
+            echo "  - Missing: [$repo_name] $filepath (probably deleted)"
+            FILE_CONTENTS="$FILE_CONTENTS\n\n### [$repo_name] $filepath ($status, $additions/$deletions)\n\`\`\`\n[File deleted or not found]\n\`\`\`"
+        fi
     fi
 done <<< "$(echo -e "$CHANGED_FILES" | grep -v '^$')"
 
@@ -91,7 +170,7 @@ cat > "$REVIEW_FILE" << EOF
 # TitleRun Code Review — $(date '+%Y-%m-%d %H:%M EST')
 
 ## Summary
-**Commits Reviewed:** $COMMIT_COUNT ($FIRST_HASH..$LAST_HASH)
+**Commits Reviewed:** $COMMIT_COUNT across backend + frontend
 **Files Changed:** $TOTAL_FILES (+$TOTAL_ADDITIONS/-$TOTAL_DELETIONS lines)
 **Overall Health Score:** [Agent calculates this]/100 [🟢/🟡/🟠/🔴]
 
@@ -168,10 +247,10 @@ cat > "$REVIEW_FILE" << EOF
 ## Raw Data (For Agent Processing)
 
 ### Commits
-$(echo "$COMMITS" | while IFS='|' read -r hash subject; do echo "- $hash: $subject"; done)
+$(echo -e "$ALL_COMMITS" | grep -v '^$' | while IFS='|' read -r repo_name hash subject; do echo "- [$repo_name] $hash: $subject"; done)
 
 ### Changed Files
-$(echo -e "$CHANGED_FILES" | grep -v '^$' | while IFS='|' read -r filepath status additions deletions; do echo "- $filepath ($status, $additions/$deletions)"; done)
+$(echo -e "$CHANGED_FILES" | grep -v '^$' | while IFS='|' read -r repo_name filepath status additions deletions; do echo "- [$repo_name] $filepath ($status, $additions/$deletions)"; done)
 
 EOF
 
