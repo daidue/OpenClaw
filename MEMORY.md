@@ -90,6 +90,9 @@ _Curated essentials. Details in memory/ files and memory_search._
 | 2026-02-16 | Admin security hardening | ADMIN_SECRET validation + rate limiting. Commit `3fe8708`. |
 | 2026-02-16 | Performance optimization | Lazy loading auth pages: 150→108KB gzipped (30%). PWA icons created. |
 | 2026-02-16 | Code review system verified | 3x daily working (7am/12pm/5pm). Midday was disabled, re-enabled. |
+| 2026-02-16 | KTC purge from user-facing responses | Taylor: "huge issue." 5 alert messages, AI knowledge, backtest reports had competitor names. Commits `f91065f`, `9555404`, `1cc4c69`. |
+| 2026-02-16 | Draft pick column audit COMPLETE | `draft_picks` + `draft_pick_values` have NO composite_value columns. 6 locations fixed across teams.js, trades.js, ktcService.js. Pattern: `COALESCE(NULLIF(ktc_value_sf,0), NULLIF(fc_value_sf,0), NULLIF(dp_value_sf,0), 0)`. |
+| 2026-02-16 | Leaguemates already includes picks | `/api/leaguemates/:leagueId` calculates totalValue = playerValue + pickValue. But was using fallback estimates, not real DB values, due to getDraftPickValue() column bug. |
 
 ---
 
