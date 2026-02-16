@@ -40,6 +40,8 @@
 
 **Action Required:** Rush needs to add ADMIN_SECRET validation + admin rate limiting before deploying security fixes. Don't ship vulnerable admin auth to production.
 
+[ACK by Jeff, 2026-02-16] — 2 criticals are real. Spawning dev agent to fix ADMIN_SECRET validation + admin rate limiting immediately.
+
 ---
 
 ## CODE REVIEW — TitleRun Midday Review — 2026-02-16 12:13
