@@ -38,6 +38,8 @@ _Curated essentials. Details in memory/ files and memory_search._
 - **Frontend tests: 318/319 passing (99.7%)** — MSW 2.x infrastructure fixed (custom Babel transform + polyfills for CRA 5.0.1).
 - **Cloudflare Pages migration COMPLETE (2026-02-15)** — `app.titlerun.co` CNAME → `titlerun-app.pages.dev`. Repo: `daidue/titlerun-app`. Env: `REACT_APP_API_URL`, `NODE_VERSION=20`, `CI=TRUE`. Vercel kept as 7-day backup.
 - **Landing page rebuilt (95.5/100)** — `daidue/titlerun-landing` repo. Single HTML, dark theme, competition hook. MailerLite placeholder. Pending deploy to `titlerun.co`.
+- **🔴 Startup migration in `src/index.js` = ONLY way tables reach production** — Migration SQL files only run locally. Every new table MUST be added to startup migration block or production crashes.
+- **🔴 New services MUST have graceful fallback** — If table doesn't exist, catch error and return safe default (e.g., multiplier = 1.0). Never let a missing table crash an entire endpoint.
 - **🔴 Sleeper ID type mismatch = recurring pattern** — Sleeper IDs are numbers, frontend sends strings. Must use `String()` coercion on ALL comparisons. Hit 4+ times in Trade Builder alone.
 - **Trade Builder: 8 fix rounds** — Relative URLs, PlayerSelector, draftPicks exclusion, rosterId types, leagueRosterId field, fetchRoster type coercion. Last fix: commit `bb7ca03` (2026-02-15).
 - **MailerLite** — Account ID `2116834`, form `37189961`. All 3 landing page forms wired (AJAX submit). Free tier.
