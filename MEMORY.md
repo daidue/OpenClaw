@@ -129,6 +129,23 @@ _Curated essentials. Details in memory/ files and memory_search._
 | 2026-02-16 | Value source hierarchy = titlerun_values FIRST | Primary: `titlerun_values` (format-aware). Fallback: `composite_value`/`composite_value_sf` from `players` table. LeaguemateDetail was using wrong source → barely different SF values (42 pts on 109K). |
 | 2026-02-16 | LeagueSettingsBadges component | Reusable at `src/components/reportCard/LeagueSettingsBadges.jsx`. Shows league size, SF/1QB, starters, PPR, TEP. Use on ALL league-contextual pages. |
 
+| 2026-02-16 | TEP flat multiplier is WRONG — additive model required | Flat 1.2x can't capture non-linear TE scarcity. Okonkwo: our 638 vs KTC 2,755 (4.3x gap). Must use additive production premium based on actual receptions. |
+| 2026-02-16 | TEP Production Valuation System specced | `TEP_Value = max(SF + Receptions × Bonus × Rate × AgeFactor, Floor)`. Spec: `workspace-titlerun/specs/tep-production-valuation-v1.md`. Panel: 84.2/100 SHIP WITH MODS. |
+| 2026-02-16 | TEP model uses real stats from `player_season_stats` | Receptions + games_played from PFR. Rookie fallback: `players.draft_round` → projected receptions. Rank fallback: dynasty rank → tier estimate. |
+| 2026-02-16 | TEP scarcity floor: TEP2 12-team = 2,200 minimum | Any rostered TE in TEP2 has minimum 2,200 dynasty value due to positional scarcity economics. |
+| 2026-02-16 | TEP age factor must use continuous interpolation | Expert panel: discrete brackets cause cliff effects (23→24 drops 1.30→1.15). Use linear interpolation between anchor points. |
+| 2026-02-16 | draft_class_ratings production was WRONG (1.05 not 0.90) | Startup migration `ON CONFLICT DO NOTHING` preserved old value. Fixed via admin API. Must change migration to `ON CONFLICT DO UPDATE`. |
+| 2026-02-16 | Pick values after fix: 2026 R1 Early SF = 6,210, Mid = 5,175 | With PICK_VALUE_CURVES + 0.90 class multiplier + 1.15 SF premium. Verified via production API. |
+| 2026-02-16 | Browser API debugging pattern | Can use managed browser's stored authToken to query production API, trigger syncs, verify values directly. Powerful for debugging without production DB access. |
+| 2026-02-16 | Taylor wants production-grounded valuation systems | "Reputable, logical, something people understand." Real stats, draft capital, not arbitrary multipliers. Benchmarked against market. |
+
+- **🔴 TEP model replaces flat multiplier** — `tepProductionService.js` uses additive premium (receptions × bonus × rate × age), NOT multiplicative. Scarcity floor for all rostered TEs.
+- **🔴 TEP bonus amounts** — TEP: 0.25 per reception, TEP2: 1.0, TEP3: 1.3 (includes 2TE scarcity).
+- **🔴 Value_Per_Point default = 40** — Configurable. Test 35/40/45 during calibration.
+- **🔴 TEP pick adjustments** — Small premium on picks in TEP leagues (1.02-1.07x R1, scaling down).
+- **🔴 Sophomore TE progression = +15%** — TEs historically improve significantly in year 2.
+- **🔴 Rookie TE reception projections** — R1: 50, R2: 38, R3: 25, R4+: 15, UDFA: 10.
+
 ---
 
-_Last updated: 2026-02-16_
+_Last updated: 2026-02-16 21:13_
