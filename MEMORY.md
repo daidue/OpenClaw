@@ -59,6 +59,11 @@ _Curated essentials. Details in memory/ files and memory_search._
 - **🔴 Draft class clamp widened to 0.80-1.12** — weak classes can now meaningfully deflate picks.
 - **🔴 `pickLabel` field in pick output** — "Pick 1.05" when `pick_number` known, "Round 1 Mid" fallback.
 - **🔴 Sleeper ID type mismatch = recurring pattern** — Sleeper IDs are numbers, frontend sends strings. Must use `String()` coercion on ALL comparisons. Hit 4+ times in Trade Builder alone.
+- **🔴 `importDraftPicks` was using WRONG code path (fixed commit `31b565d`)** — Called `ktcService.getDraftPickValue()` → `draft_pick_values` table (raw scraped data). Now uses `PICK_VALUE_CURVES` + `draftClassService.getDraftClassMultiplier()`. 11 previous commits were dead code for the sync path.
+- **🔴 5 separate pick value code paths existed** — `ktcService`, `PICK_VALUE_CURVES`, `leaguePicksCalculator`, `calculateDraftPickValueFallback`, direct DB queries. Must consolidate to ONE.
+- **🔴 ALWAYS trace actual code path before fixing** — Don't assume which path is used. Trace endpoint → service → DB query → display end-to-end.
+- **🔴 Admin verification endpoints added** — `/api/admin/verify-values` (check any value) + `/api/admin/force-recalc/:teamId` (force recalculate picks).
+- **🔴 Sleeper ID type mismatch = recurring pattern** — Sleeper IDs are numbers, frontend sends strings. Must use `String()` coercion on ALL comparisons. Hit 4+ times in Trade Builder alone.
 - **Trade Builder: 8 fix rounds** — Relative URLs, PlayerSelector, draftPicks exclusion, rosterId types, leagueRosterId field, fetchRoster type coercion. Last fix: commit `bb7ca03` (2026-02-15).
 - **MailerLite** — Account ID `2116834`, form `37189961`. All 3 landing page forms wired (AJAX submit). Free tier.
 - **Cloudflare DNS** — `titlerun.co` zone on Cloudflare (free). NS: `aisha.ns.cloudflare.com` + `martin.ns.cloudflare.com`. Zone ID: `c9fe3271361553b91d5015d53287fe43`. CNAME flattening enables root domain → Pages.
