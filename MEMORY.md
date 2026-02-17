@@ -52,6 +52,13 @@ _Curated essentials. Details in memory/ files and memory_search._
 - **🔴 N+1 in teams.js importDraftPicks** — 576 sequential DB calls per league sync. Needs batching.
 - **🔴 trades.js pick evaluation was wrong since launch** — `rawTotal += avgValue` used last player's value for picks. Fixed commit `47162c0`. Integration testing gap — no test caught it.
 - **🔴 Sleeper ID type mismatch = recurring pattern** — Sleeper IDs are numbers, frontend sends strings. Must use `String()` coercion on ALL comparisons. Hit 4+ times in Trade Builder alone.
+- **✅ Valuation Fix v2 (2026-02-16, commit `ce88cc5`)** — TEP inflation fixed (bypass TEP composite, query SF + boost TEs only at endpoint), picks further deflated (2026 class 1.05→0.90, safety clamp 1.25x→1.15x, league context 0.85-1.15→0.90-1.10, fallbacks -20-25%), exact pick positions ("Pick 1.05" from Sleeper `pick_number`).
+- **🔴 TEP values now use SF base + endpoint-level TE boost** — NOT pre-calculated TEP composite from `titlerun_values`. Simpler, eliminates KTC TEP QB inflation artifact. Boost: TEP=1.10x, TEP2=1.20x, TEP3=1.30x (TEs only).
+- **🔴 Safety clamp is now 1.15x** (was 1.5x → 1.25x → 1.15x). Three rounds of tightening.
+- **🔴 2026 draft class rating = 0.90** ("below average"). Was 1.05. UPDATE migration in startup.
+- **🔴 Draft class clamp widened to 0.80-1.12** — weak classes can now meaningfully deflate picks.
+- **🔴 `pickLabel` field in pick output** — "Pick 1.05" when `pick_number` known, "Round 1 Mid" fallback.
+- **🔴 Sleeper ID type mismatch = recurring pattern** — Sleeper IDs are numbers, frontend sends strings. Must use `String()` coercion on ALL comparisons. Hit 4+ times in Trade Builder alone.
 - **Trade Builder: 8 fix rounds** — Relative URLs, PlayerSelector, draftPicks exclusion, rosterId types, leagueRosterId field, fetchRoster type coercion. Last fix: commit `bb7ca03` (2026-02-15).
 - **MailerLite** — Account ID `2116834`, form `37189961`. All 3 landing page forms wired (AJAX submit). Free tier.
 - **Cloudflare DNS** — `titlerun.co` zone on Cloudflare (free). NS: `aisha.ns.cloudflare.com` + `martin.ns.cloudflare.com`. Zone ID: `c9fe3271361553b91d5015d53287fe43`. CNAME flattening enables root domain → Pages.
