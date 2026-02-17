@@ -1,59 +1,12 @@
 {
-  "timestamp": "2026-02-16T23:00:14.047486+00:00",
+  "timestamp": "2026-02-17T05:00:03.320211+00:00",
   "period_hours": 24,
-  "shared_topics": [
-    {
-      "topic": "template",
-      "agents": [
-        "main",
-        "dev"
-      ],
-      "signal": "collaboration"
-    }
-  ],
-  "shared_tools": [
-    {
-      "tool": "read",
-      "agents": [
-        "main",
-        "dev"
-      ]
-    },
-    {
-      "tool": "exec",
-      "agents": [
-        "main",
-        "dev"
-      ]
-    },
-    {
-      "tool": "process",
-      "agents": [
-        "main",
-        "dev"
-      ]
-    },
-    {
-      "tool": "write",
-      "agents": [
-        "main",
-        "dev"
-      ]
-    },
-    {
-      "tool": "edit",
-      "agents": [
-        "main",
-        "dev"
-      ]
-    }
-  ],
+  "shared_topics": [],
+  "shared_tools": [],
   "agent_error_counts": {
-    "main": 13,
-    "dev": 2
+    "main": 14
   },
   "active_agents": [
-    "main",
-    "dev"
+    "main"
   ]
 }
