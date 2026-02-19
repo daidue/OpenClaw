@@ -1,5 +1,54 @@
 # Jeff's Inbox
 
+## CODE REVIEW — TitleRun Afternoon Review — 2026-02-19 17:00
+**From:** Automated Code Review Panel (titlerun-code-review skill)
+**Priority:** URGENT
+**Score:** 82/100 🟠 **CONCERNING**
+
+### Summary
+5 commits reviewed (0edca80...ea81a23, past 6 hours). TEP value fixes + live team values + trade suggestions endpoint shipped. **BUT: N+1 query performance bomb + third duplicate valuation implementation.**
+
+**Critical Issues:** 1 🔴 **FIX NOW**  
+**Major Issues:** 3 🟡 **FIX THIS SPRINT**  
+**Minor Issues:** 3 🟢
+
+### 🔴 URGENT — N+1 Query in Teams Endpoint (Fix in Next 30 min)
+**File:** `src/routes/teams.js` lines 556-584  
+**Impact:** For a user with 10 teams, this creates 10 sequential database queries inside `Promise.all`. Under load: severe latency spikes + connection pool exhaustion.  
+**Fix:** Batch all player value queries into ONE query before the map. Collect all unique player IDs across all teams → single `WHERE id = ANY($1)` query → build lookup map → synchronous map with lookup.  
+**Deduction:** -15 points
+
+### Major Issues (Fix This Sprint)
+1. **Third Duplicate Valuation Code Path** — teams.js now has THIRD separate implementation (teams.js direct SQL, leagueData.js valuationService, tradeEngine.js valuationService). Maintenance hell. **Fix:** Use `valuationService.getPlayerValues()` like standings endpoint. Delete direct SQL. (-8 pts)
+2. **Services Required Inside Route Handler** — `tradeEngine.js` lines 434-436 require services inside handler. If any service has syntax error, request crashes with 500. **Fix:** Move imports to top of file + add error boundary. (-8 pts)
+3. **TEP Detection Runs Multiple Times Without Cache** — Both `leagueData.js` and `tradeEngine.js` call `detectTEPTier()` without caching. For 12-team standings, runs 12x. **Fix:** Add Redis cache or memoization keyed by `leagueId`. (-8 pts)
+
+### Minor Issues
+1. Weak validation on trade suggestions (no type checks)
+2. Magic number thresholds without constants (75, 50, 70)
+3. Inconsistent error response format
+
+### What's Working Well ✅
+- **TEP Format Fix is Perfect** — Root cause diagnosis (Home vs Team Details 42K mismatch) was correct. Using `valuationService` with format detection is RIGHT solution.
+- **Smart Free Agent Filtering** — Adding `p.team IS NOT NULL` to movers query prevents free agents polluting "biggest risers."
+- **Percentage Cap on Movers** — Capping at 200% prevents absurd UI (100→10,000 = 9,900% change).
+- **Age-Based Undervaluation** — Using age multipliers (22yo=1.3x, 24yo=1.1x) to find undervalued youth is statistically sound.
+- **Graceful Fallback Pattern** — When `valuationService` fails, falls back to `composite_value` direct query instead of crashing.
+
+### Next Actions for Rush
+- [ ] **URGENT:** Fix N+1 query in teams endpoint (≤30 min)
+- [ ] **This Sprint:** Consolidate three valuation code paths into single service method (1-2 hours)
+- [ ] **This Sprint:** Move service imports to top of tradeEngine.js + add error boundary (15 min)
+- [ ] **This Sprint:** Add Redis caching to TEP detection (30 min)
+- [ ] **Backlog:** Extract trade suggestion logic to service layer
+- [ ] **Backlog:** Add integration test for /api/trade-engine/suggestions
+
+**Full Report:** `/Users/jeffdaniels/.openclaw/workspace-titlerun/reviews/2026-02-19-1700.md`
+
+**Recommendation:** 🛑 **BLOCK FEATURE WORK** — Fix N+1 query immediately (production performance risk). Score <95 threshold means all issues must be fixed before continuing per AGENTS.md protocol.
+
+---
+
 ## CODE REVIEW — TitleRun Afternoon Review — 2026-02-16 17:00
 **From:** Automated Code Review Panel (titlerun-code-review skill)
 **Priority:** HIGH
