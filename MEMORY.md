@@ -146,6 +146,14 @@ _Curated essentials. Details in memory/ files and memory_search._
 - **🔴 Sophomore TE progression = +15%** — TEs historically improve significantly in year 2.
 - **🔴 Rookie TE reception projections** — R1: 50, R2: 38, R3: 25, R4+: 15, UDFA: 10.
 
+- **🔴 TEP age factor anchors (TUNED Feb 17)** — 21yo=1.20, 23yo=1.15, 25yo=1.10, 27yo=1.05. Taylor: "too much emphasis on youth." Null/missing age defaults to 1.0 (neutral).
+- **🔴 `getAgeFactor()` reads MAX_FACTOR from config dynamically** — Was hardcoded 1.35, ignored config changes. Fixed commit `a319c9d`.
+- **🔴 `leagueSettings` bug was ROOT CAUSE of ALL TEP roster failures** — Variable never declared in `/:id/roster` endpoint. `ReferenceError` silently caught → fell back to SF. Fixed commit `ebd6323`.
+- **✅ TEP Production System FULLY OPERATIONAL (verified Feb 19)** — Fannin: 8,014 (TEP2), age factor 1.20. All 5 TEs getting production-based values.
+- **✅ Overnight Tasks (Feb 17, commit `6849138`)** — crossValidationService wired into daily pipeline, importDraftPicks N+1 killed (576→1 query), draft_class_ratings migration ON CONFLICT DO UPDATE.
+- **🔴 60-hour rate limit outage Feb 17-19** — All crons failed. Cause: heavy overnight work burned API credits. Taylor unanswered for 2 days.
+- **🔴 Taylor's pending requests (Feb 17 00:03)** — Dashboard frontend bug fixes + Trade Builder v2. NOT STARTED due to outage.
+
 ---
 
-_Last updated: 2026-02-16 21:13_
+_Last updated: 2026-02-19 13:10_
