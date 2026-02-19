@@ -140,6 +140,12 @@ _Curated essentials. Details in memory/ files and memory_search._
 | 2026-02-16 | Taylor wants production-grounded valuation systems | "Reputable, logical, something people understand." Real stats, draft capital, not arbitrary multipliers. Benchmarked against market. |
 
 - **🔴 TEP model replaces flat multiplier** — `tepProductionService.js` uses additive premium (receptions × bonus × rate × age), NOT multiplicative. Scarcity floor for all rostered TEs.
+- **🔴 `.find()` without `useMemo` = new object every render** — #1 React perf anti-pattern. Caused mobile auto-refresh cascade (Feb 19). ALWAYS memoize derived objects.
+- **🔴 Event listener hooks MUST use empty-dep useEffect + refs** — Never put state or callbacks in dep array. `usePullToRefresh` rewritten to this pattern.
+- **🔴 Request deduplication pattern** — `inflightRequests` Map in `portfolioStore.js`. Prevents concurrent `fetchTeams()` calls. Use `dedup(key, fn)` wrapper.
+- **🔴 Staleness check for async state updates** — Capture entity ID at start, compare to `selectedTeamRef.current` before `setState`. Prevents stale data from overwriting fresh.
+- **🔴 LeagueContext + portfolioStore BOTH fetch teams** — Architectural debt. Both call `teamsAPI.getAll()` independently. Should consolidate.
+- **🔴 Two analysis agents > one fix attempt** — First mobile refresh fix (just hook) failed. Two independent agents found the architectural cascade in 3 min.
 - **🔴 TEP bonus amounts** — TEP: 0.25 per reception, TEP2: 1.0, TEP3: 1.3 (includes 2TE scarcity).
 - **🔴 Value_Per_Point default = 40** — Configurable. Test 35/40/45 during calibration.
 - **🔴 TEP pick adjustments** — Small premium on picks in TEP leagues (1.02-1.07x R1, scaling down).
