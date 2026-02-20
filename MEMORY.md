@@ -177,6 +177,11 @@ _Curated essentials. Details in memory/ files and memory_search._
 - **🔴 Variable rename = grep ALL references in function** — `node -c` syntax check doesn't catch ReferenceErrors. Must search entire function scope.
 - **🔴 Debug query param pattern** — `?debug=secret` returning raw error + stack in production = fast triage. Always remove after.
 
+- **✅ teamValueService — SINGLE SOURCE OF TRUTH (commit `c8d47d6`)** — `getTeamValue()` + `getLeagueTeamValues()`. 282 lines. All 3 endpoints (standings, roster, teams list) now call this. Eliminates 3 separate valuation paths. TEP detection standardized to Sleeper API. 30-min standings cache REMOVED. Frontend N+1 enrichment REMOVED (commit `79ab606`).
+- **🔴 Sub-agent import removal = check ALL routes in file** — Removing `cacheResponse` from standings route also removed the import, but `/activity` and `/trend` still used it. Caused 502. Commit `f66ef13` fixed.
+- **🔴 ALWAYS run `node -e "require('./src/index')"` before pushing** — Catches import/require errors that `node -c` misses.
+- **🔴 Mobile cache = recurring pattern** — Even with correct `no-cache` headers on HTML, mobile browsers serve stale JS bundles from open tabs. User must close tab and reopen (not just refresh). Hit 3 times on Feb 19.
+
 ---
 
-_Last updated: 2026-02-19 20:15_
+_Last updated: 2026-02-19 21:45_
