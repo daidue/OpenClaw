@@ -158,8 +158,16 @@ _Curated essentials. Details in memory/ files and memory_search._
 - **✅ TEP Production System FULLY OPERATIONAL (verified Feb 19)** — Fannin: 8,014 (TEP2), age factor 1.20. All 5 TEs getting production-based values.
 - **✅ Overnight Tasks (Feb 17, commit `6849138`)** — crossValidationService wired into daily pipeline, importDraftPicks N+1 killed (576→1 query), draft_class_ratings migration ON CONFLICT DO UPDATE.
 - **🔴 60-hour rate limit outage Feb 17-19** — All crons failed. Cause: heavy overnight work burned API credits. Taylor unanswered for 2 days.
-- **🔴 Taylor's pending requests (Feb 17 00:03)** — Dashboard frontend bug fixes + Trade Builder v2. NOT STARTED due to outage.
+- **🔴 Taylor's pending requests (Feb 17 00:03)** — Dashboard frontend bug fixes + Trade Builder v2. ✅ BOTH DONE (Feb 19).
+- **✅ Trade Builder v2 — BUILT + AUDITED TO 83/100 ADVERSARIAL** — 7 features shipped (inline values, value bar, roster quick-add, opponent view, smart suggestions, draft picks, analysis preview). R1→R7 fix cycle. Taylor approved "fix dropdown and move on." Commit `f2db3b5`.
+- **✅ Home Page Value Mismatch ROOT CAUSE FIXED** — Backend `/api/teams` was reading stale `roster_snapshots.total_value`. Now calculates live from `players` table. Commit `123f6be` (backend), `1393c44` (frontend).
+- **✅ Mobile Safari "0 teams" bug — ROOT CAUSE: STALE CACHE** — "Works in private, breaks in regular" = mobile Safari serving cached old HTML/JS. Fixed: `Cache-Control: no-cache` on index.html via Cloudflare Pages `_headers`. Commit `ea4c526`. **3 sub-agents wasted on wrong diagnosis** (React rendering, Telegram WebView).
+- **🔴 "Works in private, breaks in regular" = ALWAYS check cache first** — Not auth, not rendering, not WebView. Stale HTML referencing old JS bundles.
+- **🔴 Cloudflare Pages `_headers` for SPAs** — `/ + /index.html` → `no-cache, no-store, must-revalidate`. `/static/*` → `immutable` (hashed). Without this, mobile Safari caches HTML aggressively.
+- **🔴 Always ask "what browser?" before debugging mobile bugs** — Assumed Telegram in-app browser, was actually mobile Safari. Wrong assumption = 3 wasted sub-agents.
+- **🔴 Video/screenshot analysis > speculation** — Extracting frames showed "0 teams" (data failure) not "rapid refresh" (render loop). Get visual evidence FIRST.
+- **✅ WebView hardening deployed (commit `b4aa59e`)** — Page Visibility API, sessionStorage persistence, Telegram scroll hardening, `?debug=1` panel. Not the root cause but good defensive code.
 
 ---
 
-_Last updated: 2026-02-19 13:10_
+_Last updated: 2026-02-19 18:45_
