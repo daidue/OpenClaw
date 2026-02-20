@@ -60,9 +60,13 @@ _Curated essentials. Details in memory/ files and memory_search._
 - **🔴 `pickLabel` field in pick output** — "Pick 1.05" when `pick_number` known, "Round 1 Mid" fallback.
 - **🔴 Sleeper ID type mismatch = recurring pattern** — Sleeper IDs are numbers, frontend sends strings. Must use `String()` coercion on ALL comparisons. Hit 4+ times in Trade Builder alone.
 - **🔴 `importDraftPicks` was using WRONG code path (fixed commit `31b565d`)** — Called `ktcService.getDraftPickValue()` → `draft_pick_values` table (raw scraped data). Now uses `PICK_VALUE_CURVES` + `draftClassService.getDraftClassMultiplier()`. 11 previous commits were dead code for the sync path.
-- **🔴 5 separate pick value code paths existed** — `ktcService`, `PICK_VALUE_CURVES`, `leaguePicksCalculator`, `calculateDraftPickValueFallback`, direct DB queries. Must consolidate to ONE.
+- **✅ Pick Value Engine v2 COMPLETE (2026-02-20, commits 5b84b59→3f21157)** — 6-layer UTH-calibrated system replaces ALL old pick paths. Per-slot granularity (12/14/16 team), class quality (2026=0.82, 2027=1.18), uncertainty discount, smart SF premium, TEP adjustment. Zero DB calls. `pickValueEngineV2.getPickValue()` is the SINGLE entry point.
+- **✅ UTH Integration COMPLETE (2026-02-20, commit 50b1b2f)** — 333 players + 36 rookies from Google Sheets CSV. Daily scraper. Rookie sheet has skill percentiles + NFL draft position.
+- **✅ Pick Calibration Engine (2026-02-20)** — Cross-validates v2 curves against UTH player-to-pick mappings. Auto-recalibration cron Wednesdays 9am EST.
+- **✅ draft_pick_values table is DEAD** — No active code reads it. All 5 old code paths purged. Score 72→99/100.
+- **🔴 `pickValueEngineV2.getPickValue()` is the ONLY pick value entry point** — Never use ktcService.getDraftPickValue(), PICK_VALUE_CURVES, or draft_pick_values table.
+- **🔴 UTH admin endpoints have NO auth** — `/api/admin/uth-refresh`, `/api/admin/pick-calibration`, `/api/admin/class-quality` lack `authenticate`/`requireAdmin` middleware.
 - **🔴 ALWAYS trace actual code path before fixing** — Don't assume which path is used. Trace endpoint → service → DB query → display end-to-end.
-- **🔴 Admin verification endpoints added** — `/api/admin/verify-values` (check any value) + `/api/admin/force-recalc/:teamId` (force recalculate picks).
 - **🔴 `importDraftPicks` was using WRONG code path (fixed commit `31b565d`)** — Called `ktcService.getDraftPickValue()` → `draft_pick_values` table (raw scraped data). Now uses `PICK_VALUE_CURVES` + `draftClassService.getDraftClassMultiplier()`. 11 previous commits were dead code for the sync path.
 - **🔴 5 separate pick value code paths existed** — `ktcService`, `PICK_VALUE_CURVES`, `leaguePicksCalculator`, `calculateDraftPickValueFallback`, direct DB queries. Must consolidate to ONE.
 - **🔴 ALWAYS trace actual code path before fixing** — Don't assume which path is used. Trace endpoint → service → DB query → display end-to-end.
