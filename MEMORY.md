@@ -83,6 +83,11 @@ _Curated essentials. Details in memory/ files and memory_search._
 - **Reddit:** u/JeffOnNotion (pw: aPCsv5g0yQ7Vw2nbm1bG)
 - **Taylor's Sleeper:** taytwotime (user_id: 359116496808476672)
 
+## TitleRun Mobile App (Taylor, 2026-02-20)
+- **Goal:** Native iOS + Android apps for TitleRun. AFTER mWeb and Desktop are fully polished.
+- **Tool:** App Store Connect CLI (`rudrankriyam/App-Store-Connect-CLI`) + OpenClaw skills (`rudrankriyam/app-store-connect-cli-skills`) for iOS submission automation.
+- **Sequence:** mWeb → Desktop → iOS → Android. Don't jump ahead.
+
 ## Post-Launch Reminders (Taylor, 2026-02-20)
 - **Taskmaster** (blader/taskmaster) — Claude Code stop hook. Prevents agents from quitting early. Back-pocketed: only applies to dev sub-agents, adversarial audits catch more.
 - **Code Factory / Antfarm** (snarktank/antfarm) — Ryan Carson's multi-agent workflow system built for OpenClaw. 7-agent feature-dev, security-audit, bug-fix workflows. Back-pocketed: too structured for build phase, valuable once we have paying users and can't push broken code.
