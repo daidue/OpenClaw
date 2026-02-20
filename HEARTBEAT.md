@@ -4,6 +4,13 @@ Token budget: Idle beat < 500 tokens. Active beat < 5,000 tokens. Deep session <
 
 ---
 
+### 0. Cache-Aware Fast Path (every beat — BEFORE everything)
+Check for changes before re-reading files. Cached tokens = 10% cost.
+- `stat inboxes/jeff-inbox.md` — if mtime unchanged since last beat → skip inbox read
+- `stat memory/YYYY-MM-DD.md` — if mtime unchanged → skip memory read
+- If ALL files unchanged AND no active Taylor conversation → respond HEARTBEAT_OK immediately
+- Only re-read files that actually changed. This preserves the prompt cache.
+
 ### 1. Inbox Check (every beat — FIRST)
 - Read `inboxes/jeff-inbox.md` for messages from Grind, Rush, Edge
 - Sort: URGENT → HIGH → NORMAL, then chronological

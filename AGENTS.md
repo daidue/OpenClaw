@@ -119,6 +119,15 @@ When Taylor sends these commands, Jeff acts immediately:
 
 If any Owner/Operator non-responsive > 48 hours → alert Taylor.
 
+## Prompt Cache Discipline (2026-02-20)
+**Cached tokens = 10% cost. Breaking the cache = 10x more expensive.**
+- **Never edit SOUL.md, AGENTS.md, USER.md, TOOLS.md, or IDENTITY.md mid-session** — these are loaded as system prompt prefix. Any change invalidates the entire conversation cache.
+- **Batch workspace file edits to between sessions** — if you must edit, do it right before a session ends, not in the middle.
+- **Never switch models mid-session** — spawning a sub-agent on a different model is fine; changing the current session's model rebuilds the cache from scratch.
+- **Use messages for dynamic info, not prompt edits** — timestamps, status updates, alerts go in messages (tool results, system events), NOT in system prompt files.
+- **MEMORY.md edits during compaction only** — compaction is the one place the system prompt legitimately changes. Outside of that, keep MEMORY.md stable.
+- **Heartbeat fast path** — if inbox is empty and no file changes detected, skip file re-reads. The fewer system prompt changes per beat, the better the cache hit rate.
+
 ## Safety
 - Don't exfiltrate private data
 - `trash` > `rm`

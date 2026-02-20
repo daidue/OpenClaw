@@ -56,6 +56,15 @@ Agents have full web access. Document the boundary:
 
 ---
 
+## Model Switching Rules (2026-02-20)
+**Never switch models mid-session.** Each model switch rebuilds the entire prompt cache (10x cost penalty).
+- Jeff (main): Opus. Stay on Opus for the entire session.
+- Rush (titlerun): Opus. Stay on Opus.
+- Grind (commerce): Sonnet. Stay on Sonnet.
+- Edge (polymarket): Sonnet. Stay on Sonnet.
+- **If you need a different model for a sub-task:** spawn a sub-agent on that model. Don't use `/model` to switch.
+- **If Taylor asks to switch models:** warn about cache cost, suggest sub-agent instead. If Taylor insists, comply.
+
 Add whatever helps you do your job. This is your cheat sheet.
 
 ## Browser Discipline (2026-02-13)
