@@ -167,7 +167,12 @@ _Curated essentials. Details in memory/ files and memory_search._
 - **🔴 Always ask "what browser?" before debugging mobile bugs** — Assumed Telegram in-app browser, was actually mobile Safari. Wrong assumption = 3 wasted sub-agents.
 - **🔴 Video/screenshot analysis > speculation** — Extracting frames showed "0 teams" (data failure) not "rapid refresh" (render loop). Get visual evidence FIRST.
 - **✅ WebView hardening deployed (commit `b4aa59e`)** — Page Visibility API, sessionStorage persistence, Telegram scroll hardening, `?debug=1` panel. Not the root cause but good defensive code.
+- **✅ Value Consistency Fix — 4 COMMITS, 3 PANEL ROUNDS (72→87→94.65)** — All 3 pages (Dashboard, My Teams, Team Details) now use `valuationService.getPlayerValues()` → `titlerun_values` table. Commits `02b84ac`→`182bbad`→`5068050`→`8e65787`.
+- **🔴 Cache key must include format when batching multi-format valuations** — `playerId:format` not just `playerId`. Player in both 1QB and SF teams gets wrong value if last format overwrites.
+- **🔴 Every SQL query where TEP detection runs MUST SELECT `scoring_settings`** — Without it, `detectTEPTier()` gets `{}` and silently falls back to SF. Caused R1 critical (72/100).
+- **🔴 3 separate valuation paths = guaranteed inconsistency** — Direct SQL to `players.composite_value` is NEVER acceptable for user-facing values. Always use `valuationService`.
+- **🔴 `GET /api/teams` response now includes `valueSource` and `valueFormat`** — Observability fields for debugging. `valueSource`: 'live' or 'snapshot'. `valueFormat`: '1qb'/'sf'/'tep'/'tep2'/'tep3'.
 
 ---
 
-_Last updated: 2026-02-19 18:45_
+_Last updated: 2026-02-19 19:25_
