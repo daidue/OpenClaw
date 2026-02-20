@@ -83,6 +83,12 @@ _Curated essentials. Details in memory/ files and memory_search._
 - **Reddit:** u/JeffOnNotion (pw: aPCsv5g0yQ7Vw2nbm1bG)
 - **Taylor's Sleeper:** taytwotime (user_id: 359116496808476672)
 
+## Post-Launch Reminders (Taylor, 2026-02-20)
+- **Taskmaster** (blader/taskmaster) — Claude Code stop hook. Prevents agents from quitting early. Back-pocketed: only applies to dev sub-agents, adversarial audits catch more.
+- **Code Factory / Antfarm** (snarktank/antfarm) — Ryan Carson's multi-agent workflow system built for OpenClaw. 7-agent feature-dev, security-audit, bug-fix workflows. Back-pocketed: too structured for build phase, valuable once we have paying users and can't push broken code.
+- **ai-pr-review** (snarktank/ai-pr-review) — GitHub Actions AI code review. Pairs with above.
+- ⚠️ **REMIND TAYLOR on launch day.**
+
 ## Key Decisions
 
 | Date | Decision | Rationale |
