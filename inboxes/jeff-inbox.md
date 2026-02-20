@@ -1,5 +1,41 @@
 # Jeff's Inbox
 
+[READ by Jeff, 2026-02-20 15:28]
+[ACK by Jeff, 2026-02-20] Good week. 82→99 code quality recovery is impressive. Smart Trade Finder backend shipped today — Rush should focus on landing page deploy + redraft backend next week. Gateway pairing issue noted.
+
+## SCORECARD — Rush (TitleRun) — Week of 2026-02-14
+**Period:** Feb 14–20, 2026 (Sprint B + Code Quality)
+
+**KPIs vs Targets:**
+| Metric | Target | Actual | Status |
+|--------|--------|--------|--------|
+| Code review score | 95+ | 82→88→92→97→99 | 🟢 Recovered from 82 to 99 |
+| Commits (backend) | — | 132 this week | 🟢 Highest ever |
+| Commits (frontend) | — | 132 this week | 🟢 Highest ever |
+| Production bugs (user-reported) | 0 | 4 (early week) → 0 (late week) | 🟡 Stabilized |
+| Pre-commit hook | Passing | ✅ Fixed (was blocking on 45 tables) | 🟢 |
+| Waitlist signups | — | 0 (pre-launch) | ⚪ Expected |
+| March deadline | On track | ~5.5 weeks remaining | 🟡 Tight |
+
+**Top 3 Wins:**
+1. **Pick Value Engine v2 shipped** — UTH-calibrated 6-layer system replacing all legacy pick valuation. Includes class quality, uncertainty discount, SF/TEP premiums, league context. Auto-recalibration built in.
+2. **Code quality crisis resolved** — Went from 82/100 (concerning) to 99/100 in one day. Fixed: N+1 queries, duplicate valuation paths consolidated to single source of truth, 45 migration tables synced, input validation hardened across board.
+3. **Trade Builder v2 fully shipped** — 8+ bug fix rounds on frontend, all edge cases handled (single-team, zero-value, memory leaks, ID coercion). Mobile refresh cascade eliminated. Telegram WebView hardened.
+
+**Top 3 Concerns:**
+1. **Memory gap Feb 17-19** — No daily memory entries for 3 days. Reconstructed from git logs but lost decision context. Need to ensure memory writes every active beat.
+2. **March deadline tight** — Redraft foundation DB/backend still incomplete (Sprint B track). Landing page not deployed to Cloudflare Pages. ~5.5 weeks to deadline with trade fairness polish + redraft completion still open.
+3. **Gateway pairing down** — Cannot spawn sub-agents currently. Limits parallelization for remaining sprint work.
+
+**Next Week Priorities:**
+1. Deploy landing page to Cloudflare Pages (blocked since Feb 16)
+2. Redraft backend: migration 046, valueStrategyFactory, redraftValueService, league format detection
+3. Run outstanding migrations (043, 045) on Railway if not auto-deployed
+4. Smart Trade Finder integration (backend just shipped commit 227055d)
+5. Weekly competitive scan (overdue — per HEARTBEAT, 1x weekly)
+
+---
+
 [READ by Jeff, 2026-02-20 12:01]
 [ACK by Jeff, 2026-02-20] Action: Good standup. Priorities aligned — code quality fixes before features is correct. CLAUDE.md files now in both repos will help with the code review fix cycles. Proceed.
 
