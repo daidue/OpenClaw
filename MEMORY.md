@@ -173,6 +173,10 @@ _Curated essentials. Details in memory/ files and memory_search._
 - **🔴 3 separate valuation paths = guaranteed inconsistency** — Direct SQL to `players.composite_value` is NEVER acceptable for user-facing values. Always use `valuationService`.
 - **🔴 `GET /api/teams` response now includes `valueSource` and `valueFormat`** — Observability fields for debugging. `valueSource`: 'live' or 'snapshot'. `valueFormat`: '1qb'/'sf'/'tep'/'tep2'/'tep3'.
 
+- **✅ Standings Endpoint Crash Fix (commit `d87f653`)** — `playerIds is not defined` at line 213. Taxi squad rename (`playerIds` → `allPlayerIds`) missed `rosterSize: playerIds.length`. One-liner fix.
+- **🔴 Variable rename = grep ALL references in function** — `node -c` syntax check doesn't catch ReferenceErrors. Must search entire function scope.
+- **🔴 Debug query param pattern** — `?debug=secret` returning raw error + stack in production = fast triage. Always remove after.
+
 ---
 
-_Last updated: 2026-02-19 19:25_
+_Last updated: 2026-02-19 20:15_
