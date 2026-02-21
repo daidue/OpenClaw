@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-02-21T17:02:28.204042+00:00",
+  "timestamp": "2026-02-21T23:02:26.904133+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
-      "topic": "twitter",
+      "topic": "template",
       "agents": [
         "main",
         "dev"
@@ -27,13 +27,6 @@
       ]
     },
     {
-      "tool": "process",
-      "agents": [
-        "main",
-        "dev"
-      ]
-    },
-    {
       "tool": "edit",
       "agents": [
         "main",
@@ -46,11 +39,18 @@
         "main",
         "dev"
       ]
+    },
+    {
+      "tool": "process",
+      "agents": [
+        "main",
+        "dev"
+      ]
     }
   ],
   "agent_error_counts": {
-    "main": 24,
-    "dev": 1
+    "main": 16,
+    "dev": 8
   },
   "active_agents": [
     "main",
