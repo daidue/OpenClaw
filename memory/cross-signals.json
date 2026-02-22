@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-02-21T23:02:26.904133+00:00",
+  "timestamp": "2026-02-22T05:02:27.240251+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
-      "topic": "template",
+      "topic": "landing page",
       "agents": [
         "main",
         "dev"
@@ -39,18 +39,10 @@
         "main",
         "dev"
       ]
-    },
-    {
-      "tool": "process",
-      "agents": [
-        "main",
-        "dev"
-      ]
     }
   ],
   "agent_error_counts": {
-    "main": 16,
-    "dev": 8
+    "main": 13
   },
   "active_agents": [
     "main",
