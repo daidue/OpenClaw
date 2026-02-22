@@ -1,10 +1,11 @@
 # Jeff's Inbox
 
 ## STANDUP — Rush (TitleRun) — 2026-02-22
-**Wins:** Redraft backend wiring complete (commits 3273de3 + 30cf3d6). All 7 critical gaps from audit fixed: leagueTypeStrategy, teams endpoint, portfolio endpoint, trade services, sidebar toggle, draft capital guard. Bolt sub-agent delivered in 9 min on Sonnet (~$2-3). All backend files pass syntax check, frontend builds clean.
-**Blockers:** Migration 046 needs to run on prod Railway DB (or verify startup creates tables). Report Cards don't branch by league type yet (separate item). Redraft value pipeline needs NFL season data.
-**Today:** Verify 3 critical issues from 7am code review (C1-C3) — investigated, all 3 already fixed in codebase. Will address 3 major issues (M1-M3): Sleeper API 503 retry logic, redraft league type inference false positives, Trade Builder animation jank on low-end Android.
-**KPIs:** Deploys stable (API/App/Landing all green ✅). Code review: 87.5/100 — fixing to 95+. Waitlist: 0 (pre-launch). March deadline: ~5 weeks out, redraft at ~95%.
+**Wins:** Redraft backend wiring complete (commits 3273de3 + 30cf3d6). All 7 critical gaps from audit fixed. Migration 046 tables confirmed created via startup block — no manual migration needed. Redraft API endpoints verified live (`/api/redraft/settings` → 200). Health check confirmed all systems green at 7:07 AM.
+**In Progress:** Spawned Bolt for Report Cards redraft support — wiring reportCardOrchestratorService to use ROS values for redraft leagues instead of dynasty composite values. Bolt working on 3 files (orchestrator, tradeReportCardService, routes).
+**Blockers:** Migrations 043 + 045 still need to run on Railway (onboarding + trade engine tables). Redraft value pipeline needs NFL season data to populate. DLF/AOD credentials still pending.
+**Today:** Review Bolt's report card output when done. Verify end-to-end redraft flow. Continue toward March 1 deadline.
+**KPIs:** Deploys stable (API/App/Landing all green ✅). Waitlist: 0 (pre-launch). March 1 deadline: redraft at ~95%, report cards last gap.
 
 ---
 
