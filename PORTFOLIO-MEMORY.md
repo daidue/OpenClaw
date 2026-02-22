@@ -76,6 +76,15 @@ Old crons were zombies (reading nonexistent `sessions.log`). New crons read actu
 
 ## Lessons Learned
 
+### Week of Feb 16-22, 2026
+- **100% TitleRun focus paying off.** Rush shipped 6+ major features: Trade Builder Phase 2, Smart Trade Finder (behavioral economics IP), Live Draft Companion (10 features), Redraft backend wiring (expert audited to 95+), comprehensive mobile UX overhaul (iOS + Android). Code quality recovery: 82→99.5/100 on Feb 20 (steepest quality improvement in TitleRun history).
+- **Production outage teaches deployment discipline.** Untested code deployed Feb 22 9am caused API 502 errors. Rollback within 5 min. Lesson: ALWAYS test locally before production. Staged rollouts (backend first, then frontend). Never fix forward under pressure.
+- **Mobile UX now best-in-class.** Comprehensive iOS + Android audit + fixes. Touch targets 48dp (meets both platforms), PWA support, safe area handling, ripple effects, haptic feedback, 16px inputs (prevents iOS auto-zoom), 100dvh (fixes iOS Safari address bar). Bundle optimized: 107KB main chunk gzipped.
+- **Taylor actively testing, finding real bugs.** News ticker too fast → 75s. Desktop scroll broken → fixed. Leaguemates value discrepancy (14K points) → fixed by unifying valuationService across all pages. All issues resolved within minutes via sub-agents.
+- **March 1 deadline: 1 week out.** Redraft wiring ~95% complete. Live Draft Companion shipped. Remaining: final polish, beta testing, bug bash. Timeline is TIGHT but achievable.
+- **Smart Trade Finder = differentiated IP.** 8-factor acceptance prediction model with behavioral economics (endowment effect 15% premium, loss aversion). Two-pass architecture (<500ms first pass, <2s deep analysis). Expert panel: "PhD-level algorithm design." 99.5/100 code review.
+- **Grind + Edge remain paused.** $0 token spend on non-TitleRun work since Feb 14. Total portfolio focus on March deadline. Will reassess after launch.
+
 ### Week of Feb 8-15, 2026
 - **Focus beats diversification at $0 revenue.** Running 3 businesses in parallel consumed $800-1,200 in tokens with $0 return. Taylor's Feb 14 pivot to 100% TitleRun was correct.
 - **Opus marathon sessions deliver.** Feb 13-14 8pm-midnight: 10,500+ lines of original valuation system built (Phases 1-4), ~$700-1,000 in tokens, but code review scored 92/100. High-velocity, high-quality when focused.
@@ -93,4 +102,4 @@ Old crons were zombies (reading nonexistent `sessions.log`). New crons read actu
 - Gumroad ProseMirror editor needs clipboard API + Cmd+V for formatting
 
 ---
-_Updated: 2026-02-11_
+_Updated: 2026-02-22 (weekly review)_

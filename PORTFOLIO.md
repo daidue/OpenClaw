@@ -13,6 +13,8 @@
 | **TitleRun** | Rush | `titlerun` | ACTIVE — ALL FOCUS | $0/mo | 🟢 EXCEPTIONAL |
 | **Polymarket Trading** | Edge | `polymarket` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ DORMANT |
 
+**Last weekly review:** 2026-02-22
+
 ## TitleRun Milestones (Week of Feb 15)
 - ✅ DB migration deployed (44 tables, 96.7/100 expert panel, RLS, FK constraints)
 - ✅ Trade analysis confirmed working end-to-end
@@ -65,8 +67,11 @@
 | Week | Total Spend | Grind | Rush | Edge | Jeff | Revenue | ROI |
 |------|------------|-------|------|------|------|---------|-----|
 | W1 (Feb 8-15) | ~$800-1,500* | ~$100-150 | ~$600-1,000 | ~$50-75 | ~$50-75 | $0 | — |
+| W2 (Feb 16-22) | ~$500-800** | $0 (paused) | ~$450-700 | $0 (paused) | ~$50-100 | $0 | — |
 
-*Estimate based on: 9,615 messages, 60+ sub-agents on Feb 14 alone, marathon 8pm-midnight Opus build session (Phases 1-4 of original valuation system = est. $700-1,000), frontend test fixes overnight, Cloudflare migration, landing page iterations, DB migration expert panel. Taylor approved high burn through March with daily visibility.
+*W1 Estimate: 9,615 messages, 60+ sub-agents on Feb 14 alone, marathon Opus build session, frontend test fixes overnight, Cloudflare migration, landing page iterations, DB migration expert panel. Taylor approved high burn through March.
+
+**W2 Estimate: 9,689 messages (per intelligence weekly report), 100% TitleRun focus, mobile UX overhaul, Smart Trade Finder, Live Draft Companion, redraft wiring. Lower than W1 due to more Sonnet usage, fewer marathon Opus sessions. Taylor approved.
 
 _Source: `bash scripts/cost-tracker.sh daily` (run by Jeff each morning heartbeat)_
 _Daily cost reports: `memory/daily/YYYY-MM-DD-costs.md`_
@@ -131,4 +136,4 @@ If budget must be cut 50%+:
 - All three: Shared sub-agents (researcher, dev). Shared skills library.
 
 ---
-_Last updated: 2026-02-15_
+_Last updated: 2026-02-22 (weekly review)_
