@@ -1,5 +1,50 @@
 # Jeff's Inbox
 
+## [2026-02-22 07:00] TitleRun Code Review Complete — MORNING 🟡 NEEDS FIXES
+**From:** Rush (via titlerun-code-review skill, automated cron)
+**Score:** 87.5/100 🟡 GOOD — **FIX 3 CRITICAL + 3 MAJOR BEFORE CONTINUING**
+**Commits:** 39 total (13 backend + 21 frontend + 5 landing, 5,096 net lines)
+**Major Features:**
+1. 10X Draft Companion (live draft assistant)
+2. Redraft League Support (full backend/frontend)
+3. Trade Builder Phase 2 (sticky summary bar, animations)
+4. Mobile Optimizations (comprehensive, March 1 launch ready)
+**Full Report:** `workspace-titlerun/reviews/2026-02-22-0700.md`
+
+### Summary
+**DO NOT SHIP UNTIL FIXES COMPLETE!** Score is below 95 threshold — 3 critical issues are launch blockers.
+
+**Critical Issues (Fix Today):**
+1. 🔴 **C1: Draft Companion Cache Memory Leak** — `draftCache` Map has no TTL-based expiration, will grow unbounded in production. Fix: Add 5-min max-age cleanup interval or use `lru-cache` library.
+2. 🔴 **C2: Missing Rate Limiting on Draft Endpoints** — `/api/draft/*` has NO rate limits. A malicious user could open 100 tabs and hammer Sleeper API at 50 req/s, getting TitleRun's IP banned. Fix: Add `express-rate-limit` (30 req/min).
+3. 🔴 **C3: iOS Safari Audio Alerts Break After 5 Minutes** — AudioContext suspends after 5 min inactivity. Users miss draft picks because alerts stop working. Fix: Add 4-min keepalive interval to resume suspended context.
+
+**Major Issues (Fix This Week):**
+4. 🟠 **M1: Draft Recommendations Missing Sleeper API 503 Retry Logic** — During Sleeper outages, users see "No draft found" instead of "API temporarily unavailable". Fix: Add exponential backoff retry for 5xx errors.
+5. 🟠 **M2: Redraft League Type Inference Has False Positives** — New dynasty leagues with `keeper_deadline: 0` are misclassified as redraft. Fix: Add roster composition checks (young player %).
+6. 🟠 **M3: Trade Builder Animation Jank on Low-End Android** — AnimatedCounter runs at 15-20 FPS on <2GB RAM devices. Fix: Reduce animation frequency to 20 FPS on low-end devices.
+
+**Minor Issues (7 total):** DEBUG logging, TODOs in production, missing PropTypes, cache invalidation gaps.
+
+**What's Good:**
+- ✅ Draft Companion architecture is excellent (clean separation, server-side caching, well-documented)
+- ✅ Redraft valuation pipeline cleanly integrates FantasyPros data
+- ✅ Mobile optimizations are comprehensive and well-tested (92/100 from mobile expert)
+- ✅ Trade Builder Phase 2 UX polish is premium-quality
+- ✅ Input validation on all new endpoints
+- ✅ Lazy loading reduces bundle size by 11% (1.8MB → 1.6MB gzipped)
+
+**Expert Panel Consensus:**
+This is excellent work (87.5/100 is still "Good"), but the 3 critical issues MUST be fixed before the March 1 launch. The Draft Companion is 95% ready — just needs bug fixes, not rework.
+
+**Estimated Fix Time:** 4-6 hours for critical issues, 8-10 hours for major issues.
+
+**Post-fix target score:** 95+
+
+**Next:** Rush should fix C1-C3 today, M1-M3 this week, then re-review. Once at 95+, this is launch-ready.
+
+---
+
 ## [2026-02-20 17:00] TitleRun Code Review Complete — AFTERNOON 🟢
 **From:** Rush (via titlerun-code-review skill, automated cron)
 **Score:** 99.5/100 🟢 EXCEPTIONAL — BEST CODE OF THE MONTH
