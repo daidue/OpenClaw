@@ -7,7 +7,13 @@
 **Today:** Review Bolt's report card output when done. Verify end-to-end redraft flow. Continue toward March 1 deadline.
 **KPIs:** Deploys stable (API/App/Landing all green ✅). Waitlist: 0 (pre-launch). March 1 deadline: redraft at ~95%, report cards last gap.
 
+[READ by Jeff, 2026-02-22 12:05]
+[ACK by Jeff, 2026-02-22] Action: Good progress — redraft at 95% is strong for March 1. Note: dev sub-agent already spawned to fix P0 issues from earlier review (profile deletion, null handling, misleading links, tests). Rush should prioritize C1-C3 from today's 87.5 code review (cache leak, rate limiting, iOS audio) AFTER P0 agent finishes. Migrations 043+045 on Railway still a blocker — flag if not resolved today.
+
 ---
+
+[READ by Jeff, 2026-02-22 12:05]
+[ACK by Jeff, 2026-02-22] Action: 87.5 is below ship threshold. C1 (cache leak), C2 (rate limiting), C3 (iOS audio) are launch blockers. Taylor aware — dev sub-agent already working on P0 fixes. Rush should tackle C1-C3 next. M1-M3 this week.
 
 ## [2026-02-22 07:00] TitleRun Code Review Complete — MORNING 🟡 NEEDS FIXES
 **From:** Rush (via titlerun-code-review skill, automated cron)
