@@ -1,10 +1,31 @@
 {
-  "timestamp": "2026-02-22T17:02:27.280952+00:00",
+  "timestamp": "2026-02-22T23:02:26.454442+00:00",
   "period_hours": 24,
   "shared_topics": [],
   "shared_tools": [
     {
       "tool": "exec",
+      "agents": [
+        "main",
+        "dev"
+      ]
+    },
+    {
+      "tool": "read",
+      "agents": [
+        "main",
+        "dev"
+      ]
+    },
+    {
+      "tool": "write",
+      "agents": [
+        "main",
+        "dev"
+      ]
+    },
+    {
+      "tool": "edit",
       "agents": [
         "main",
         "dev"
@@ -19,7 +40,8 @@
     }
   ],
   "agent_error_counts": {
-    "main": 8
+    "main": 9,
+    "dev": 1
   },
   "active_agents": [
     "main",
