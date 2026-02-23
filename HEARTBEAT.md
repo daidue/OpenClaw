@@ -11,7 +11,15 @@ Check for changes before re-reading files. Cached tokens = 10% cost.
 - If ALL files unchanged AND no active Taylor conversation → respond HEARTBEAT_OK immediately
 - Only re-read files that actually changed. This preserves the prompt cache.
 
-### 1. Inbox Check (every beat — FIRST)
+### 1. Memory Search (every beat — MANDATORY)
+**BEFORE any other action, search institutional memory:**
+- Run `memory_search` with query: "actionable items" OR "blockers" OR today's date
+- Check for: stale tasks, unresolved decisions, forgotten action items
+- If 0 results: proceed
+- If results found: read relevant snippets with `memory_get`, incorporate into heartbeat actions
+- **Never skip this step** — memory discipline prevents repeated mistakes
+
+### 2. Inbox Check (every beat — SECOND)
 - Read `inboxes/jeff-inbox.md` for messages from Grind, Rush, Edge
 - Sort: URGENT → HIGH → NORMAL, then chronological
 - Process ALL messages: approve, reject, redirect, unblock
@@ -20,7 +28,7 @@ Check for changes before re-reading files. Cached tokens = 10% cost.
 - If `[FLAG FOR TAYLOR]` tag → include verbatim in next Taylor brief
 - If agent blocked on Taylor → message Taylor immediately
 
-### 2. Deep-Dive Rotation (every beat — 5 min max)
+### 3. Deep-Dive Rotation (every beat — 5 min max)
 Rotate which business unit gets the deep-dive each beat:
 - **Beat N:** Deep-dive Templates (Grind) → quick-scan TitleRun → quick-scan Polymarket
 - **Beat N+1:** Deep-dive TitleRun (Rush) → quick-scan Templates → quick-scan Polymarket
@@ -29,7 +37,7 @@ Rotate which business unit gets the deep-dive each beat:
 **Deep-dive:** Read standup, check KPIs, review recent memory notes, resolve blockers
 **Quick-scan:** Check inbox status, verify agent wrote a daily note today, note any alerts
 
-### 3. Agent Liveness Check (every beat — 30 sec)
+### 4. Agent Liveness Check (every beat — 30 sec)
 - Did each active Owner/Operator write to `memory/YYYY-MM-DD.md` today?
   - Grind: `workspace-commerce/memory/` — expect daily note by noon
   - Rush: `workspace-titlerun/memory/` — expect daily note by noon (Phase 1: may be sparse)
@@ -38,13 +46,13 @@ Rotate which business unit gets the deep-dive each beat:
 - If no activity for 48h → alert Taylor: "[Agent] non-responsive for 48h"
 - Quick check: `sessions_list` — are heartbeats firing?
 
-### 4. Cross-Pollination Check (every beat — 1 min)
+### 5. Cross-Pollination Check (every beat — 1 min)
 - Any `[CROSS-POLLINATION FLAG]` in Owner/Operator standups?
 - Any `[CROSS-BIZ]` peer messages to review retroactively?
 - Route insights to relevant Owner/Operators via their inboxes
 - Update `intelligence/portfolio-feed.md` if significant
 
-### 5. Token Budget Check (1x daily, morning)
+### 6. Token Budget Check (1x daily, morning)
 - Run: `bash scripts/cost-tracker.sh daily` → generates `memory/daily/YYYY-MM-DD-costs.md`
 - Read the output. Any agent over 150% of daily budget? → investigate, throttle if needed
 - If total > $50/day → CRITICAL: throttle sub-agent spawning, notify Taylor
@@ -52,16 +60,16 @@ Rotate which business unit gets the deep-dive each beat:
 - Update PORTFOLIO.md cost tracking table weekly with actuals
 - Cross-reference with `session_status` for token counts when available
 
-### 6. Morning Brief (8:30am via cron — see cron config)
+### 7. Morning Brief (8:30am via cron — see cron config)
 - Compile 8-line portfolio brief from Owner/Operator standups
 - Send to Taylor via Telegram
 
-### 7. Evening Brief (8:00pm via cron)
+### 8. Evening Brief (8:00pm via cron)
 - Day recap, overnight priorities
 - Conditional: skip if nothing actionable, but send at least 1 brief/day
 - Include token usage summary
 
-### 8. Weekly Portfolio Review (Sunday via cron)
+### 9. Weekly Portfolio Review (Sunday via cron)
 - Collect all Owner/Operator weekly scorecards
 - Score each business unit (🟢🟡🔴)
 - Top 3 wins, top 3 concerns, decisions needed
