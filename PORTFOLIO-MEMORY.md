@@ -25,6 +25,53 @@
 - Shared sub-agents reduce per-business overhead
 - Institutional memory compounds across all businesses
 
+## TitleRun Redraft ROS Architecture (Shipped Feb 22, 2026)
+
+**Purpose:** Rest-of-season (ROS) player valuations for 6 redraft formats: SF/1QB × PPR/Half/Std
+
+**Data Foundation:**
+- **Weekly stats table:** `player_weekly_stats` — 52,398 records (2015-2024 from nflverse)
+- **Hybrid approach:** Historical data (nflverse CSV) + live current season (ESPN Fantasy API)
+- **Granularity:** Weekly game logs (not season aggregates) — enables proper ROS projections
+
+**Pipeline Steps:**
+1. **Season calculation** - NFL calendar-aware (Feb 2026 = 2025 season)
+2. **ESPN fetch** - Pre-populated via daily 4am cron (not inline)
+3. **Data verification** - Confirm both nflverse + ESPN data exists
+4. **Consensus building** - Average fantasy points per week × remaining weeks, normalized by position
+5. **Final values** - Format-specific scoring (SF QB boost, PPR TE/WR boost), rank assignment
+
+**Format Differentiation:**
+- **SF formats:** QB value × 1.5 (scarcity premium)
+- **PPR:** WR +5%, TE +15%
+- **Half PPR:** TE +8%
+- **Std:** RB +10%
+- Each format uses its own fantasy point column (`fantasy_points_ppr/half/std`)
+
+**Key Tables:**
+- `player_weekly_stats` - Source data (weekly granularity)
+- `redraft_ros_values` - Intermediate (consensus + source data)
+- `titlerun_values` - Final output (6 formats, ranked)
+- `players` - Master table (with `bye_week` column)
+- `nfl_schedule` - Playoff strength calculations
+
+**Quality Gates:**
+- Minimum 8 games played for positional normalization
+- Multiple adversarial audit cycles before ship
+- Elite player verification (Josh Allen, Mahomes, CMC at top per format)
+- Data validation (0 duplicates, 0 nulls, sequential ranks)
+
+**Critical Anti-Patterns Avoided:**
+- ❌ **Phantom schema:** Never build against non-existent DB tables
+- ❌ **Season aggregates for ROS:** Need weekly granularity
+- ❌ **Hard caps without separation:** 10,000 ceiling caused QB ranking ties
+- ❌ **Small sample inflation:** Backup QBs with 2-3 games had inflated averages
+
+**Multi-Source Blending (Ready, Not Active):**
+- Architecture supports FantasyPros ECR + ESPN projections + nflverse actuals
+- Currently single-source (nflverse) due to offseason (ESPN/FPros return 0 results)
+- Will auto-activate when 2025 NFL season starts (September)
+
 ## What We've Tried That Didn't Work
 - **Parallel business units at $0 revenue (Feb 8-14):** Grind (Templates) and Edge (Polymarket) consumed ~20-30% of token budget while generating $0. Taylor pivoted to 100% TitleRun focus on Feb 14. Lesson: focus beats diversification at this stage.
 - **8-agent squad (Feb 5-11):** Fortune 500 org chart for a $0 business. 5 agents were idle. Cut to 4 core + 2 Owner/Operators.
@@ -78,11 +125,13 @@ Old crons were zombies (reading nonexistent `sessions.log`). New crons read actu
 
 ### Week of Feb 16-22, 2026
 - **100% TitleRun focus paying off.** Rush shipped 6+ major features: Trade Builder Phase 2, Smart Trade Finder (behavioral economics IP), Live Draft Companion (10 features), Redraft backend wiring (expert audited to 95+), comprehensive mobile UX overhaul (iOS + Android). Code quality recovery: 82→99.5/100 on Feb 20 (steepest quality improvement in TitleRun history).
+- **🚀 REDRAFT ROS FEATURE: 0% → 100% SHIPPED (Feb 22, 4.5 hours).** Discovered pipeline code written against "phantom schema" (non-existent DB tables). Built complete weekly stats infrastructure (52K records, 2015-2024), ESPN live stats service, consensus building, format-specific scoring (6 formats: SF/1QB × PPR/Half/Std), rank assignment. Fixed critical SF QB ranking bug (Bryce Young #2 → elite QBs at top). Quality gates: multiple adversarial audits, data validation, format differentiation verification. Estimated 1-2 days, delivered 4.5 hours. **Key lesson: Phantom schema anti-pattern is catastrophic** — always verify DB schema parity before building features.
 - **Production outage teaches deployment discipline.** Untested code deployed Feb 22 9am caused API 502 errors. Rollback within 5 min. Lesson: ALWAYS test locally before production. Staged rollouts (backend first, then frontend). Never fix forward under pressure.
 - **Mobile UX now best-in-class.** Comprehensive iOS + Android audit + fixes. Touch targets 48dp (meets both platforms), PWA support, safe area handling, ripple effects, haptic feedback, 16px inputs (prevents iOS auto-zoom), 100dvh (fixes iOS Safari address bar). Bundle optimized: 107KB main chunk gzipped.
 - **Taylor actively testing, finding real bugs.** News ticker too fast → 75s. Desktop scroll broken → fixed. Leaguemates value discrepancy (14K points) → fixed by unifying valuationService across all pages. All issues resolved within minutes via sub-agents.
-- **March 1 deadline: 1 week out.** Redraft wiring ~95% complete. Live Draft Companion shipped. Remaining: final polish, beta testing, bug bash. Timeline is TIGHT but achievable.
+- **March 1 deadline: 7 days out.** Redraft ROS feature SHIPPED ✅. Live Draft Companion shipped ✅. Smart Trade Finder shipped ✅. Remaining: final polish, beta testing, bug bash. Timeline ACHIEVABLE.
 - **Smart Trade Finder = differentiated IP.** 8-factor acceptance prediction model with behavioral economics (endowment effect 15% premium, loss aversion). Two-pass architecture (<500ms first pass, <2s deep analysis). Expert panel: "PhD-level algorithm design." 99.5/100 code review.
+- **Switched to OpenAI Codex (Feb 22 8pm).** Claude Opus at 95% usage (resets Thursday). OpenAI at 100% quota. Model: `openai-codex/gpt-5.3-codex`. Sub-agents successfully running on OpenAI for final redraft fixes.
 - **Grind + Edge remain paused.** $0 token spend on non-TitleRun work since Feb 14. Total portfolio focus on March deadline. Will reassess after launch.
 
 ### Week of Feb 8-15, 2026
