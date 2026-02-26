@@ -1,59 +1,10 @@
 {
-  "timestamp": "2026-02-23T05:02:26.648212+00:00",
+  "timestamp": "2026-02-26T23:02:28.238954+00:00",
   "period_hours": 24,
-  "shared_topics": [
-    {
-      "topic": "reddit",
-      "agents": [
-        "main",
-        "dev"
-      ],
-      "signal": "collaboration"
-    }
-  ],
-  "shared_tools": [
-    {
-      "tool": "exec",
-      "agents": [
-        "main",
-        "dev"
-      ]
-    },
-    {
-      "tool": "read",
-      "agents": [
-        "main",
-        "dev"
-      ]
-    },
-    {
-      "tool": "write",
-      "agents": [
-        "main",
-        "dev"
-      ]
-    },
-    {
-      "tool": "edit",
-      "agents": [
-        "main",
-        "dev"
-      ]
-    },
-    {
-      "tool": "process",
-      "agents": [
-        "main",
-        "dev"
-      ]
-    }
-  ],
-  "agent_error_counts": {
-    "main": 16,
-    "dev": 15
-  },
+  "shared_topics": [],
+  "shared_tools": [],
+  "agent_error_counts": {},
   "active_agents": [
-    "main",
-    "dev"
+    "main"
   ]
 }
