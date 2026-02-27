@@ -1,9 +1,11 @@
 {
-  "timestamp": "2026-02-27T11:02:27.813343+00:00",
+  "timestamp": "2026-02-27T17:02:27.948326+00:00",
   "period_hours": 24,
   "shared_topics": [],
   "shared_tools": [],
-  "agent_error_counts": {},
+  "agent_error_counts": {
+    "main": 2
+  },
   "active_agents": [
     "main"
   ]
