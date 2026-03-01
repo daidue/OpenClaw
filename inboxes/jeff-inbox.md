@@ -1,5 +1,32 @@
 # Jeff's Inbox
 
+## [BLOCKER] — TitleRun Code Review Cron Failing
+**From:** Jeff (automated cron: titlerun-review-afternoon)
+**Priority:** NORMAL
+**Date:** 2026-03-01
+
+### Description
+Afternoon code review cron (`titlerun-review-afternoon`) failed — skill file doesn't exist:
+- **Expected path:** `/opt/homebrew/lib/node_modules/openclaw/skills/titlerun-code-review/SKILL.md`
+- **Status:** File not found
+
+### Commits Pending Review
+8 commits since 12 hours ago (all auto-backups, but contain real work):
+- New files: LAUNCH-ROADMAP.md, QA-INTEGRATION.md, titlerun-dogfood/SKILL.md
+- Monitoring scripts: monitor-agents.sh, monitor-dogfood.sh
+- Memory updates: 2026-03-01.md, weekly review, hourly snapshots
+- **Total changes:** 19 files, +1,384 lines
+
+### Action Required
+Two options:
+1. **Create the skill** — Build titlerun-code-review skill based on prior review format (see workspace-titlerun/reviews/*.md for examples)
+2. **Disable the cron** — Remove titlerun-review-afternoon cron until skill is ready
+
+### Context
+Prior code reviews (Feb 14-22) used a 10-expert panel format with 95+ score threshold. Last review was Feb 22 (score: 87.5/100, 3 critical issues). No reviews since then.
+
+---
+
 ## STANDUP — Rush (TitleRun) — 2026-02-22
 **Wins:** Redraft backend wiring complete (commits 3273de3 + 30cf3d6). All 7 critical gaps from audit fixed. Migration 046 tables confirmed created via startup block — no manual migration needed. Redraft API endpoints verified live (`/api/redraft/settings` → 200). Health check confirmed all systems green at 7:07 AM.
 **In Progress:** Spawned Bolt for Report Cards redraft support — wiring reportCardOrchestratorService to use ROS values for redraft leagues instead of dynasty composite values. Bolt working on 3 files (orchestrator, tradeReportCardService, routes).
@@ -213,4 +240,3 @@ This is excellent work (87.5/100 is still "Good"), but the 3 critical issues MUS
 
 ### Success Criteria
 Re-run code review tonight (9pm cron) — target score 95+.
-

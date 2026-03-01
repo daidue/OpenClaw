@@ -8,7 +8,7 @@
     "repo": "titlerun-api",
     "branch": "main",
     "workdir": "/Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-api",
-    "status": "running",
+    "status": "failed",
     "startedAt": "2026-03-01T21:16:00Z",
     "estimatedDuration": "4-6 hours",
     "notifyOnComplete": true,
@@ -19,6 +19,8 @@
       "pr_created": false,
       "ci_passing": false,
       "self_review_complete": false
-    }
+    },
+    "failedAt": "2026-03-01T22:00:00Z",
+    "note": "Session ended without creating PR"
   }
 }
