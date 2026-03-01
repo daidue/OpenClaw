@@ -1,0 +1,24 @@
+{
+  "titlerun-phase2-backend": {
+    "sessionId": "ember-dune",
+    "agent": "rush",
+    "agentType": "claude-code",
+    "model": "claude-opus-4.5",
+    "description": "Migrate titlerun-api to use @titlerun/validation library",
+    "repo": "titlerun-api",
+    "branch": "main",
+    "workdir": "/Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-api",
+    "status": "running",
+    "startedAt": "2026-03-01T21:16:00Z",
+    "estimatedDuration": "4-6 hours",
+    "notifyOnComplete": true,
+    "definition_of_done": {
+      "tests_passing": false,
+      "typescript_passing": false,
+      "no_console_errors": false,
+      "pr_created": false,
+      "ci_passing": false,
+      "self_review_complete": false
+    }
+  }
+}

@@ -81,6 +81,9 @@ _Curated essentials. Technical anti-patterns now live in repo CLAUDE.md files. D
 | 2026-02-16 | Taylor wants production-grounded valuations | "Reputable, logical, something people understand." |
 | 2026-02-17 | 60-hour rate limit outage | Heavy overnight work burned API credits. All crons failed Feb 17-19. |
 | 2026-02-20 | Setup overhaul | CLAUDE.md in both repos, workspace cleanup (72 files archived), Claude Code settings, prompt cache optimization |
+| 2026-03-01 | **LAUNCH DELAYED to April 15** | Taylor: Systems FIRST → Product SECOND → Distribution THIRD |
+| 2026-03-01 | **Agent swarm infrastructure = priority #1** | Build Elvis-level orchestration before launch. 6-week roadmap. |
+| 2026-03-01 | Dogfood QA integrated into workflow | Weekly automated QA via agent-browser. Full video/screenshot evidence. |
 
 ## Hard-Won Patterns (keep for Jeff/Rush context)
 
@@ -92,6 +95,29 @@ _Curated essentials. Technical anti-patterns now live in repo CLAUDE.md files. D
 - **Request deduplication pattern** — `inflightRequests` Map prevents concurrent identical API calls
 - **"Works in private, breaks in regular" = cache** — always check cache before debugging mobile bugs
 
+## Launch Roadmap (April 15, 2026)
+
+**Full plan:** `LAUNCH-ROADMAP.md`
+
+**6-Week Timeline:**
+- **Weeks 1-2 (March 1-14):** SYSTEMS — Build Elvis-level agent swarm
+- **Weeks 3-4 (March 15-28):** PRODUCT — Zero bugs, polished UX
+- **Weeks 5-6 (March 29-April 11):** DISTRIBUTION — Build audience, launch assets
+- **Week 7 (April 12-18):** LAUNCH 🚀
+
+**Phase 1 Progress (Week 1):**
+- ✅ Task registry deployed (`.clawdbot/active-tasks.json`)
+- ✅ Deterministic monitoring script (runs every 10 min via cron)
+- ✅ Dogfood QA skill integrated (agent-browser)
+- ⏳ Worktree isolation (in progress)
+- ⏳ 3-AI code review pipeline (in progress)
+
+**Success Criteria (Week 2):**
+- 3+ agents run in parallel without conflicts
+- Monitoring catches failures within 10 min
+- Every PR gets 3 AI reviews
+- Pattern learning captures 5+ insights
+
 ---
 
-_Last updated: 2026-02-20_
+_Last updated: 2026-03-01_
