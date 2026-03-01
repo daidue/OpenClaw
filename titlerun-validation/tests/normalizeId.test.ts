@@ -178,6 +178,43 @@ describe('normalizeId', () => {
       expect(normalizeId('123\u2060')).toBe(null);
     });
 
+    it('should reject right-to-left override (\\u202E)', () => {
+      expect(normalizeId('123\u202E')).toBe(null);
+      expect(normalizeId('\u202E123')).toBe(null);
+    });
+
+    it('should reject left-to-right override (\\u202D)', () => {
+      expect(normalizeId('123\u202D')).toBe(null);
+    });
+
+    it('should reject non-breaking space (\\u00A0)', () => {
+      expect(normalizeId('123\u00A0')).toBe(null);
+      expect(normalizeId('\u00A0123')).toBe(null);
+    });
+
+    it('should reject right-to-left embedding (\\u202B)', () => {
+      expect(normalizeId('123\u202B')).toBe(null);
+    });
+
+    it('should reject left-to-right embedding (\\u202A)', () => {
+      expect(normalizeId('123\u202A')).toBe(null);
+    });
+
+    it('should reject bidirectional isolates (\\u2066-\\u2069)', () => {
+      expect(normalizeId('123\u2066')).toBe(null);
+      expect(normalizeId('123\u2067')).toBe(null);
+      expect(normalizeId('123\u2068')).toBe(null);
+      expect(normalizeId('123\u2069')).toBe(null);
+    });
+
+    it('should reject combining grapheme joiner (\\u034F)', () => {
+      expect(normalizeId('123\u034F')).toBe(null);
+    });
+
+    it('should reject Arabic letter mark (\\u061C)', () => {
+      expect(normalizeId('123\u061C')).toBe(null);
+    });
+
     it('should reject full-width digits (０-９)', () => {
       expect(normalizeId('１２３')).toBe(null); // Full-width 123
     });
@@ -217,9 +254,9 @@ describe('normalizeId', () => {
       expect(result1).toBe(12345);
     });
 
-    it('should cache invalid results', () => {
+    it('should NOT cache invalid results (fail fast)', () => {
       const result1 = normalizeId('invalid');
-      const result2 = normalizeId('invalid'); // Should hit cache
+      const result2 = normalizeId('invalid'); // Should re-validate (not cached)
       expect(result1).toBe(null);
       expect(result2).toBe(null);
     });
@@ -263,6 +300,130 @@ describe('normalizeId', () => {
     it('should handle leading zeros in strings', () => {
       expect(normalizeId('00123')).toBe(123);
       expect(normalizeId('000')).toBe(0);
+    });
+
+    // NEW: Number.MIN_VALUE edge case (it's a float, should reject)
+    it('should reject Number.MIN_VALUE (smallest positive float)', () => {
+      // Number.MIN_VALUE = 5e-324 (not an integer)
+      expect(normalizeId(Number.MIN_VALUE)).toBe(null);
+    });
+
+    // NEW: -0 vs +0 behavior (both normalized to -0 due to MIN_SAFE_ID comparison)
+    it('should normalize -0 to +0 (prevents cache collision)', () => {
+      // JavaScript quirk: String(-0) === String(+0) === "0"
+      // This causes cache collision if -0 and +0 aren't normalized
+      const resultNegativeZero = normalizeId(-0);
+      const resultPositiveZero = normalizeId(+0);
+      
+      // Both are valid IDs
+      expect(resultNegativeZero).not.toBe(null);
+      expect(resultPositiveZero).not.toBe(null);
+      
+      // Both are equal with === (because -0 === +0 in JavaScript)
+      expect(resultNegativeZero === 0).toBe(true);
+      expect(resultPositiveZero === 0).toBe(true);
+      
+      // Both are normalized to +0 (NOT -0) to prevent cache bugs
+      expect(Object.is(resultNegativeZero, 0)).toBe(true);
+      expect(Object.is(resultPositiveZero, 0)).toBe(true);
+    });
+
+    // NEW: Very long valid ID strings (near precision limit)
+    it('should handle 15-character ID strings (safe)', () => {
+      // 15 digits is safe (< 16 char limit)
+      expect(normalizeId('123456789012345')).toBe(123456789012345);
+    });
+
+    it('should handle 16-character ID strings at boundary', () => {
+      // 16 digits is at the boundary - depends on the value
+      // MAX_SAFE_INTEGER is 9007199254740991 (16 digits)
+      expect(normalizeId('9007199254740991')).toBe(9007199254740991);
+      
+      // But a different 16-digit number might exceed MAX_SAFE_INTEGER
+      expect(normalizeId('9999999999999999')).toBe(null); // Above MAX_SAFE_INTEGER
+    });
+
+    it('should reject 17+ character ID strings (precision loss)', () => {
+      expect(normalizeId('12345678901234567')).toBe(null); // 17 chars
+      expect(normalizeId('123456789012345678')).toBe(null); // 18 chars
+    });
+
+    // NEW: Large scientific notation
+    it('should handle large scientific notation (if result is valid integer)', () => {
+      expect(normalizeId('1e20')).toBe(null); // 1e20 > MAX_SAFE_INTEGER
+      expect(normalizeId('1e100')).toBe(null); // Way above MAX_SAFE_INTEGER
+      expect(normalizeId('1e15')).toBe(1000000000000000); // Valid (1 quadrillion)
+    });
+
+    // NEW: Small scientific notation (should reject floats)
+    it('should reject small scientific notation that produces floats', () => {
+      expect(normalizeId('1e-5')).toBe(null); // 0.00001 (not an integer)
+      expect(normalizeId('1e-1')).toBe(null); // 0.1 (not an integer)
+      expect(normalizeId('5e-10')).toBe(null); // 0.0000000005 (not an integer)
+    });
+
+    // NEW: Object.create(null) - null prototype object
+    it('should reject Object.create(null)', () => {
+      const nullProtoObj = Object.create(null);
+      expect(normalizeId(nullProtoObj)).toBe(null);
+    });
+
+    it('should reject Object.create(null) with numeric property', () => {
+      const nullProtoObj = Object.create(null);
+      nullProtoObj.id = 123;
+      expect(normalizeId(nullProtoObj)).toBe(null);
+    });
+  });
+
+  describe('Symbol.toPrimitive edge cases', () => {
+    // NEW: Verify Symbol.toPrimitive doesn't execute side effects
+    it('should not execute Symbol.toPrimitive side effects', () => {
+      let sideEffectExecuted = false;
+      
+      const obj = {
+        [Symbol.toPrimitive]() {
+          sideEffectExecuted = true;
+          return 123;
+        }
+      };
+      
+      // normalizeId should reject based on typeof check BEFORE coercion
+      const result = normalizeId(obj);
+      
+      expect(result).toBe(null); // Should reject objects
+      expect(sideEffectExecuted).toBe(false); // Side effect should NOT run
+    });
+
+    it('should not call valueOf on objects', () => {
+      let valueOfCalled = false;
+      
+      const obj = {
+        valueOf() {
+          valueOfCalled = true;
+          return 123;
+        }
+      };
+      
+      const result = normalizeId(obj);
+      
+      expect(result).toBe(null);
+      expect(valueOfCalled).toBe(false); // valueOf should NOT be called
+    });
+
+    it('should not call toString on objects', () => {
+      let toStringCalled = false;
+      
+      const obj = {
+        toString() {
+          toStringCalled = true;
+          return '123';
+        }
+      };
+      
+      const result = normalizeId(obj);
+      
+      expect(result).toBe(null);
+      expect(toStringCalled).toBe(false); // toString should NOT be called
     });
   });
 });

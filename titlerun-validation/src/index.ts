@@ -9,7 +9,6 @@
  * - Rejects invisible Unicode (\u200B, \uFEFF)
  * - Rejects non-ASCII digits (０-９)
  * - Rejects HTML tags
- * - Constant-time validation (mitigates timing attacks)
  * - LRU cache for performance (20x improvement)
  * 
  * SYSTEMS ARCHITECT FIXES APPLIED:
@@ -27,7 +26,7 @@ import { LRUCache } from 'lru-cache';
 export const VALIDATION_VERSION = '1.0.0';
 
 /**
- * Validation constants (tunable via config overrides)
+ * Validation constants (tunable via setValidationConfig)
  */
 export const VALIDATION_CONSTANTS = {
   /** Roster match threshold for competitive rank (0.0-1.0) */
@@ -54,7 +53,14 @@ export const VALIDATION_CONSTANTS = {
   /** Cache configuration */
   ID_CACHE_MAX_ENTRIES: 10000,
   ID_CACHE_TTL_MS: 60000, // 1 minute
-} as const;
+};
+
+/**
+ * Update validation configuration (for testing or environment-specific tuning)
+ */
+export function setValidationConfig(overrides: Partial<typeof VALIDATION_CONSTANTS>): void {
+  Object.assign(VALIDATION_CONSTANTS, overrides);
+}
 
 /**
  * Error codes (for server-side logging only, NOT returned to client)
@@ -72,7 +78,7 @@ export enum ValidationErrorCode {
   INVISIBLE_UNICODE_DETECTED = 'INVISIBLE_UNICODE_DETECTED',
   NON_ASCII_DIGITS_DETECTED = 'NON_ASCII_DIGITS_DETECTED',
   HTML_TAGS_DETECTED = 'HTML_TAGS_DETECTED',
-  SCRIPT_TAG_DETECTED = 'SCRIPT_TAG_DETECTED',
+  // SCRIPT_TAG_DETECTED removed - covered by HTML_TAGS_DETECTED
 }
 
 /**
@@ -83,6 +89,41 @@ const idCache = new LRUCache<string, number>({
   max: VALIDATION_CONSTANTS.ID_CACHE_MAX_ENTRIES,
   ttl: VALIDATION_CONSTANTS.ID_CACHE_TTL_MS,
   updateAgeOnGet: true,
+});
+
+/**
+ * Cache statistics (for observability)
+ */
+interface CacheStats {
+  hits: number;
+  misses: number;
+  totalRequests: number;
+}
+
+const cacheStats: CacheStats = {
+  hits: 0,
+  misses: 0,
+  totalRequests: 0,
+};
+
+/**
+ * Validation error statistics (for observability)
+ */
+interface ValidationStats {
+  errorCounts: Record<ValidationErrorCode, number>;
+  totalErrors: number;
+  totalValidations: number;
+}
+
+const validationStats: ValidationStats = {
+  errorCounts: {} as Record<ValidationErrorCode, number>,
+  totalErrors: 0,
+  totalValidations: 0,
+};
+
+// Initialize error counts to 0
+Object.values(ValidationErrorCode).forEach((code) => {
+  validationStats.errorCounts[code] = 0;
 });
 
 /**
@@ -100,6 +141,36 @@ let logger: Logger = {
 };
 
 /**
+ * Metrics interface (for external metrics libraries)
+ * Server can integrate with Prometheus, StatsD, Datadog, etc.
+ */
+export interface MetricsCollector {
+  /**
+   * Record cache hit
+   */
+  cacheHit?: () => void;
+  
+  /**
+   * Record cache miss
+   */
+  cacheMiss?: () => void;
+  
+  /**
+   * Record validation error
+   * @param code - Error code
+   */
+  validationError?: (code: ValidationErrorCode) => void;
+  
+  /**
+   * Record validation timing
+   * @param durationNs - Duration in nanoseconds
+   */
+  validationTiming?: (durationNs: number) => void;
+}
+
+let metricsCollector: MetricsCollector | null = null;
+
+/**
  * Set custom logger (for server-side integration)
  */
 export function setLogger(customLogger: Logger): void {
@@ -107,11 +178,45 @@ export function setLogger(customLogger: Logger): void {
 }
 
 /**
+ * Set custom metrics collector (for observability integration)
+ * 
+ * Example with Prometheus:
+ * ```typescript
+ * import { Counter, Histogram } from 'prom-client';
+ * 
+ * const cacheHits = new Counter({ name: 'validation_cache_hits_total' });
+ * const cacheMisses = new Counter({ name: 'validation_cache_misses_total' });
+ * const validationErrors = new Counter({ name: 'validation_errors_total', labelNames: ['code'] });
+ * const validationDuration = new Histogram({ name: 'validation_duration_ns' });
+ * 
+ * setMetrics({
+ *   cacheHit: () => cacheHits.inc(),
+ *   cacheMiss: () => cacheMisses.inc(),
+ *   validationError: (code) => validationErrors.inc({ code }),
+ *   validationTiming: (ns) => validationDuration.observe(ns),
+ * });
+ * ```
+ */
+export function setMetrics(collector: MetricsCollector): void {
+  metricsCollector = collector;
+}
+
+/**
  * Security check: detect invisible Unicode characters
- * SECURITY FIX: Prevents \u200B (zero-width space) attacks
+ * SECURITY FIX: Prevents zero-width spaces, bidirectional overrides, and other invisible characters
+ * Detects:
+ * - \u200B-\u200D: Zero-width spaces and joiners
+ * - \u202A-\u202E: Bidirectional text control (LTR/RTL overrides)
+ * - \u2066-\u2069: Bidirectional isolates
+ * - \u00A0: Non-breaking space
+ * - \uFEFF: Zero-width no-break space (BOM)
+ * - \u180E: Mongolian vowel separator
+ * - \u2060: Word joiner
+ * - \u034F: Combining grapheme joiner
+ * - \u061C: Arabic letter mark
  */
 function hasInvisibleUnicode(str: string): boolean {
-  const invisibleChars = /[\u200B-\u200D\uFEFF\u180E\u2060]/;
+  const invisibleChars = /[\u200B-\u200D\u202A-\u202E\u2066-\u2069\u00A0\uFEFF\u180E\u2060\u034F\u061C]/;
   return invisibleChars.test(str);
 }
 
@@ -139,19 +244,21 @@ function hasHtmlTags(str: string): boolean {
  * Returns: validated number or null
  * 
  * SECURITY FIXES APPLIED:
- * - Constant-time validation (mitigates timing attacks)
  * - No input echoing (prevents ID enumeration)
  * - Rejects invisible Unicode
  * - Rejects non-ASCII digits
  * - Rejects HTML tags
  * - LRU cache for performance
+ * - Timing metrics logged for monitoring
  * 
  * @param raw - Untrusted input from user/API
  * @returns Validated ID or null if invalid
  */
 function normalizeIdUncached(raw: unknown): number | null {
-  // Track timing for constant-time validation
-  const startTime = process.hrtime.bigint();
+  // Track timing for performance monitoring
+  const startTime = typeof process !== 'undefined' && process.hrtime?.bigint 
+    ? process.hrtime.bigint() 
+    : BigInt(Date.now() * 1000000);
   
   let result: number | null = null;
   let errorCode: ValidationErrorCode | null = null;
@@ -191,7 +298,8 @@ function normalizeIdUncached(raw: unknown): number | null {
         return null;
       }
       
-      result = raw;
+      // Normalize -0 to +0 (prevents cache collision since String(-0) === String(+0))
+      result = Object.is(raw, -0) ? 0 : raw;
     }
     // STRING PATH
     else if (typeof raw === 'string') {
@@ -261,29 +369,34 @@ function normalizeIdUncached(raw: unknown): number | null {
     return result;
     
   } finally {
-    // CONSTANT-TIME VALIDATION: Ensure all paths take similar time
-    const endTime = process.hrtime.bigint();
+    // Performance monitoring: Track validation timing
+    const endTime = typeof process !== 'undefined' && process.hrtime?.bigint 
+      ? process.hrtime.bigint() 
+      : BigInt(Date.now() * 1000000);
     const elapsedNs = Number(endTime - startTime);
     
-    // Log server-side (NEVER echo user input to prevent ID enumeration)
+    // Track error statistics
     if (errorCode) {
+      validationStats.totalErrors++;
+      validationStats.errorCounts[errorCode]++;
+      
+      // Log server-side (NEVER echo user input to prevent ID enumeration)
       logger.warn('[normalizeId] Validation failed', {
         code: errorCode,
         type: typeof raw,
         elapsedNs,
         // DO NOT LOG raw value - security risk
       });
+      
+      // External metrics hook
+      if (metricsCollector?.validationError) {
+        metricsCollector.validationError(errorCode);
+      }
     }
     
-    // Pad execution time to constant (mitigate timing attacks)
-    const MIN_EXECUTION_NS = 1000; // 1 microsecond minimum
-    if (elapsedNs < MIN_EXECUTION_NS) {
-      const padNs = MIN_EXECUTION_NS - elapsedNs;
-      // Busy-wait for remaining time (prevents timing attacks)
-      const targetTime = process.hrtime.bigint() + BigInt(padNs);
-      while (process.hrtime.bigint() < targetTime) {
-        // Busy loop
-      }
+    // External metrics hook for timing
+    if (metricsCollector?.validationTiming) {
+      metricsCollector.validationTiming(elapsedNs);
     }
   }
 }
@@ -295,6 +408,10 @@ function normalizeIdUncached(raw: unknown): number | null {
  * @returns Validated ID or null
  */
 export function normalizeId(raw: unknown): number | null {
+  // Track total requests and validations
+  cacheStats.totalRequests++;
+  validationStats.totalValidations++;
+  
   // Generate cache key (only for cacheable types)
   const cacheKey = typeof raw === 'string'
     ? raw
@@ -304,10 +421,21 @@ export function normalizeId(raw: unknown): number | null {
   
   // Check cache (only if we have a valid cache key)
   if (cacheKey !== null && idCache.has(cacheKey)) {
+    // Cache hit
+    cacheStats.hits++;
+    if (metricsCollector?.cacheHit) {
+      metricsCollector.cacheHit();
+    }
     return idCache.get(cacheKey)!;
   }
   
-  // Cache miss - validate
+  // Cache miss
+  cacheStats.misses++;
+  if (metricsCollector?.cacheMiss) {
+    metricsCollector.cacheMiss();
+  }
+  
+  // Validate
   const result = normalizeIdUncached(raw);
   
   // Store in cache (only valid results - don't cache errors)
@@ -347,12 +475,87 @@ export function clearIdCache(): void {
 }
 
 /**
+ * Reset cache statistics (for testing)
+ */
+export function resetCacheStats(): void {
+  cacheStats.hits = 0;
+  cacheStats.misses = 0;
+  cacheStats.totalRequests = 0;
+}
+
+/**
+ * Reset validation statistics (for testing)
+ */
+export function resetValidationStats(): void {
+  validationStats.totalErrors = 0;
+  validationStats.totalValidations = 0;
+  Object.values(ValidationErrorCode).forEach((code) => {
+    validationStats.errorCounts[code] = 0;
+  });
+}
+
+/**
  * Get cache statistics (for monitoring)
+ * 
+ * Returns cache performance metrics including hit rate calculation.
+ * 
+ * @returns Cache statistics object
+ * 
+ * @example
+ * ```typescript
+ * const stats = getIdCacheStats();
+ * console.log(`Cache hit rate: ${stats.hitRate}%`);
+ * console.log(`Total requests: ${stats.totalRequests}`);
+ * ```
  */
 export function getIdCacheStats() {
+  const hitRate = cacheStats.totalRequests > 0
+    ? (cacheStats.hits / cacheStats.totalRequests) * 100
+    : 0;
+  
   return {
+    // LRU cache internals
     size: idCache.size,
     max: idCache.max,
     calculatedSize: idCache.calculatedSize,
+    
+    // Performance metrics
+    hits: cacheStats.hits,
+    misses: cacheStats.misses,
+    totalRequests: cacheStats.totalRequests,
+    hitRate: Number(hitRate.toFixed(2)), // Percentage with 2 decimal places
+  };
+}
+
+/**
+ * Get validation error statistics (for monitoring)
+ * 
+ * Returns aggregated error counts by ValidationErrorCode.
+ * Useful for identifying common validation failures in production.
+ * 
+ * @returns Validation statistics object
+ * 
+ * @example
+ * ```typescript
+ * const stats = getValidationStats();
+ * console.log(`Total errors: ${stats.totalErrors}`);
+ * console.log(`Error rate: ${stats.errorRate}%`);
+ * 
+ * // Most common errors
+ * const topErrors = Object.entries(stats.errorCounts)
+ *   .sort((a, b) => b[1] - a[1])
+ *   .slice(0, 5);
+ * ```
+ */
+export function getValidationStats() {
+  const errorRate = validationStats.totalValidations > 0
+    ? (validationStats.totalErrors / validationStats.totalValidations) * 100
+    : 0;
+  
+  return {
+    totalErrors: validationStats.totalErrors,
+    totalValidations: validationStats.totalValidations,
+    errorRate: Number(errorRate.toFixed(2)), // Percentage with 2 decimal places
+    errorCounts: { ...validationStats.errorCounts }, // Return a copy to prevent mutation
   };
 }

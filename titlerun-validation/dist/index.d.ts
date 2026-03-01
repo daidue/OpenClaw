@@ -9,7 +9,6 @@
  * - Rejects invisible Unicode (\u200B, \uFEFF)
  * - Rejects non-ASCII digits (０-９)
  * - Rejects HTML tags
- * - Constant-time validation (mitigates timing attacks)
  * - LRU cache for performance (20x improvement)
  *
  * SYSTEMS ARCHITECT FIXES APPLIED:
@@ -23,28 +22,32 @@
  */
 export declare const VALIDATION_VERSION = "1.0.0";
 /**
- * Validation constants (tunable via config overrides)
+ * Validation constants (tunable via setValidationConfig)
  */
 export declare const VALIDATION_CONSTANTS: {
     /** Roster match threshold for competitive rank (0.0-1.0) */
-    readonly ROSTER_MATCH_THRESHOLD: 0.7;
+    ROSTER_MATCH_THRESHOLD: number;
     /** Maximum safe integer (JS precision limit) */
-    readonly MAX_SAFE_ID: number;
+    MAX_SAFE_ID: number;
     /** Minimum valid ID (must be positive) */
-    readonly MIN_SAFE_ID: 0;
+    MIN_SAFE_ID: number;
     /** Soft limit: warn user but allow */
-    readonly PREFILL_SOFT_LIMIT: 100;
+    PREFILL_SOFT_LIMIT: number;
     /** Hard limit: reject request */
-    readonly PREFILL_HARD_LIMIT: 250;
+    PREFILL_HARD_LIMIT: number;
     /** Rate limiting */
-    readonly MAX_REQUESTS_PER_IP_PER_MINUTE: 60;
-    readonly MAX_VALIDATION_ERRORS_PER_IP_PER_HOUR: 100;
-    readonly MAX_REQUESTS_PER_SESSION_PER_MINUTE: 120;
-    readonly MAX_CONCURRENT_VALIDATIONS: 1000;
+    MAX_REQUESTS_PER_IP_PER_MINUTE: number;
+    MAX_VALIDATION_ERRORS_PER_IP_PER_HOUR: number;
+    MAX_REQUESTS_PER_SESSION_PER_MINUTE: number;
+    MAX_CONCURRENT_VALIDATIONS: number;
     /** Cache configuration */
-    readonly ID_CACHE_MAX_ENTRIES: 10000;
-    readonly ID_CACHE_TTL_MS: 60000;
+    ID_CACHE_MAX_ENTRIES: number;
+    ID_CACHE_TTL_MS: number;
 };
+/**
+ * Update validation configuration (for testing or environment-specific tuning)
+ */
+export declare function setValidationConfig(overrides: Partial<typeof VALIDATION_CONSTANTS>): void;
 /**
  * Error codes (for server-side logging only, NOT returned to client)
  */
@@ -60,8 +63,7 @@ export declare enum ValidationErrorCode {
     WHITESPACE_ONLY = "WHITESPACE_ONLY",
     INVISIBLE_UNICODE_DETECTED = "INVISIBLE_UNICODE_DETECTED",
     NON_ASCII_DIGITS_DETECTED = "NON_ASCII_DIGITS_DETECTED",
-    HTML_TAGS_DETECTED = "HTML_TAGS_DETECTED",
-    SCRIPT_TAG_DETECTED = "SCRIPT_TAG_DETECTED"
+    HTML_TAGS_DETECTED = "HTML_TAGS_DETECTED"
 }
 /**
  * Logger interface (stub for server-side integration)
@@ -72,9 +74,54 @@ export interface Logger {
     error(message: string, meta?: Record<string, unknown>): void;
 }
 /**
+ * Metrics interface (for external metrics libraries)
+ * Server can integrate with Prometheus, StatsD, Datadog, etc.
+ */
+export interface MetricsCollector {
+    /**
+     * Record cache hit
+     */
+    cacheHit?: () => void;
+    /**
+     * Record cache miss
+     */
+    cacheMiss?: () => void;
+    /**
+     * Record validation error
+     * @param code - Error code
+     */
+    validationError?: (code: ValidationErrorCode) => void;
+    /**
+     * Record validation timing
+     * @param durationNs - Duration in nanoseconds
+     */
+    validationTiming?: (durationNs: number) => void;
+}
+/**
  * Set custom logger (for server-side integration)
  */
 export declare function setLogger(customLogger: Logger): void;
+/**
+ * Set custom metrics collector (for observability integration)
+ *
+ * Example with Prometheus:
+ * ```typescript
+ * import { Counter, Histogram } from 'prom-client';
+ *
+ * const cacheHits = new Counter({ name: 'validation_cache_hits_total' });
+ * const cacheMisses = new Counter({ name: 'validation_cache_misses_total' });
+ * const validationErrors = new Counter({ name: 'validation_errors_total', labelNames: ['code'] });
+ * const validationDuration = new Histogram({ name: 'validation_duration_ns' });
+ *
+ * setMetrics({
+ *   cacheHit: () => cacheHits.inc(),
+ *   cacheMiss: () => cacheMisses.inc(),
+ *   validationError: (code) => validationErrors.inc({ code }),
+ *   validationTiming: (ns) => validationDuration.observe(ns),
+ * });
+ * ```
+ */
+export declare function setMetrics(collector: MetricsCollector): void;
 /**
  * Normalize ID with LRU cache (public API)
  *
@@ -97,10 +144,72 @@ export declare function idMatch(a: unknown, b: unknown): boolean;
  */
 export declare function clearIdCache(): void;
 /**
+ * Reset cache statistics (for testing)
+ */
+export declare function resetCacheStats(): void;
+/**
+ * Reset validation statistics (for testing)
+ */
+export declare function resetValidationStats(): void;
+/**
  * Get cache statistics (for monitoring)
+ *
+ * Returns cache performance metrics including hit rate calculation.
+ *
+ * @returns Cache statistics object
+ *
+ * @example
+ * ```typescript
+ * const stats = getIdCacheStats();
+ * console.log(`Cache hit rate: ${stats.hitRate}%`);
+ * console.log(`Total requests: ${stats.totalRequests}`);
+ * ```
  */
 export declare function getIdCacheStats(): {
     size: number;
     max: number;
     calculatedSize: number;
+    hits: number;
+    misses: number;
+    totalRequests: number;
+    hitRate: number;
+};
+/**
+ * Get validation error statistics (for monitoring)
+ *
+ * Returns aggregated error counts by ValidationErrorCode.
+ * Useful for identifying common validation failures in production.
+ *
+ * @returns Validation statistics object
+ *
+ * @example
+ * ```typescript
+ * const stats = getValidationStats();
+ * console.log(`Total errors: ${stats.totalErrors}`);
+ * console.log(`Error rate: ${stats.errorRate}%`);
+ *
+ * // Most common errors
+ * const topErrors = Object.entries(stats.errorCounts)
+ *   .sort((a, b) => b[1] - a[1])
+ *   .slice(0, 5);
+ * ```
+ */
+export declare function getValidationStats(): {
+    totalErrors: number;
+    totalValidations: number;
+    errorRate: number;
+    errorCounts: {
+        NULL_OR_UNDEFINED: number;
+        INVALID_TYPE: number;
+        NOT_A_NUMBER: number;
+        NOT_AN_INTEGER: number;
+        OUT_OF_RANGE: number;
+        NEGATIVE_ID: number;
+        PRECISION_LOSS: number;
+        EMPTY_STRING: number;
+        WHITESPACE_ONLY: number;
+        INVISIBLE_UNICODE_DETECTED: number;
+        NON_ASCII_DIGITS_DETECTED: number;
+        HTML_TAGS_DETECTED: number;
+    };
 };

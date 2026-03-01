@@ -2,6 +2,7 @@
   "name": "@titlerun/validation",
   "version": "1.0.0",
   "description": "Shared validation library for TitleRun - single source of truth for ID validation",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

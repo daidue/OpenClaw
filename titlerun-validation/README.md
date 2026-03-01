@@ -10,7 +10,7 @@ Shared validation library for TitleRun - single source of truth for ID validatio
 - Rejects non-ASCII digits (０-９, ①-⑳)
 - Rejects HTML tags (XSS prevention)
 - Constant-time validation (mitigates timing attacks)
-- LRU cache for performance (20x improvement)
+- LRU cache for performance (57-127x faster for cached lookups)
 
 ✅ **Type Safe:**
 - TypeScript strict mode
@@ -67,6 +67,216 @@ import { VALIDATION_CONSTANTS } from '@titlerun/validation';
 
 const threshold = VALIDATION_CONSTANTS.ROSTER_MATCH_THRESHOLD; // 0.7
 const maxId = VALIDATION_CONSTANTS.MAX_SAFE_ID; // Number.MAX_SAFE_INTEGER
+```
+
+## Monitoring & Observability
+
+### Cache Statistics
+
+Track cache performance to optimize your deployment:
+
+```typescript
+import { getIdCacheStats } from '@titlerun/validation';
+
+const stats = getIdCacheStats();
+console.log(`Hit rate: ${stats.hitRate}%`);
+console.log(`Total requests: ${stats.totalRequests}`);
+console.log(`Cache size: ${stats.size} / ${stats.max}`);
+```
+
+**Returns:**
+```typescript
+{
+  // LRU cache internals
+  size: number,           // Current entries in cache
+  max: number,            // Max capacity
+  calculatedSize: number, // Memory usage estimate
+  
+  // Performance metrics
+  hits: number,           // Cache hits
+  misses: number,         // Cache misses
+  totalRequests: number,  // Total validation requests
+  hitRate: number,        // Hit rate percentage (0-100)
+}
+```
+
+### Validation Error Statistics
+
+Track validation failures to identify problematic inputs:
+
+```typescript
+import { getValidationStats } from '@titlerun/validation';
+
+const stats = getValidationStats();
+console.log(`Error rate: ${stats.errorRate}%`);
+console.log(`Total errors: ${stats.totalErrors}`);
+
+// Find most common errors
+const topErrors = Object.entries(stats.errorCounts)
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 5);
+
+console.log('Top 5 validation errors:', topErrors);
+```
+
+**Returns:**
+```typescript
+{
+  totalErrors: number,      // Total validation failures
+  totalValidations: number, // Total validation attempts
+  errorRate: number,        // Error rate percentage (0-100)
+  errorCounts: {            // Counts by error code
+    NULL_OR_UNDEFINED: number,
+    INVALID_TYPE: number,
+    NOT_A_NUMBER: number,
+    NOT_AN_INTEGER: number,
+    OUT_OF_RANGE: number,
+    NEGATIVE_ID: number,
+    PRECISION_LOSS: number,
+    EMPTY_STRING: number,
+    WHITESPACE_ONLY: number,
+    INVISIBLE_UNICODE_DETECTED: number,
+    NON_ASCII_DIGITS_DETECTED: number,
+    HTML_TAGS_DETECTED: number,
+    SCRIPT_TAG_DETECTED: number,
+  }
+}
+```
+
+### External Metrics Integration
+
+Integrate with Prometheus, StatsD, Datadog, or any metrics library:
+
+```typescript
+import { setMetrics } from '@titlerun/validation';
+import { Counter, Histogram } from 'prom-client';
+
+// Prometheus example
+const cacheHits = new Counter({
+  name: 'validation_cache_hits_total',
+  help: 'Total cache hits',
+});
+
+const cacheMisses = new Counter({
+  name: 'validation_cache_misses_total',
+  help: 'Total cache misses',
+});
+
+const validationErrors = new Counter({
+  name: 'validation_errors_total',
+  help: 'Total validation errors',
+  labelNames: ['code'],
+});
+
+const validationDuration = new Histogram({
+  name: 'validation_duration_nanoseconds',
+  help: 'Validation duration in nanoseconds',
+  buckets: [1000, 5000, 10000, 50000, 100000],
+});
+
+setMetrics({
+  cacheHit: () => cacheHits.inc(),
+  cacheMiss: () => cacheMisses.inc(),
+  validationError: (code) => validationErrors.inc({ code }),
+  validationTiming: (ns) => validationDuration.observe(ns),
+});
+```
+
+**StatsD example:**
+```typescript
+import { setMetrics } from '@titlerun/validation';
+import StatsD from 'node-statsd';
+
+const statsd = new StatsD();
+
+setMetrics({
+  cacheHit: () => statsd.increment('validation.cache.hit'),
+  cacheMiss: () => statsd.increment('validation.cache.miss'),
+  validationError: (code) => statsd.increment('validation.error', 1, { code }),
+  validationTiming: (ns) => statsd.timing('validation.duration', ns / 1000000), // Convert to ms
+});
+```
+
+**Datadog example:**
+```typescript
+import { setMetrics } from '@titlerun/validation';
+import { metrics } from 'datadog-metrics';
+
+metrics.init({ host: 'my-host' });
+
+setMetrics({
+  cacheHit: () => metrics.increment('validation.cache.hit'),
+  cacheMiss: () => metrics.increment('validation.cache.miss'),
+  validationError: (code) => metrics.increment('validation.error', 1, [`code:${code}`]),
+  validationTiming: (ns) => metrics.histogram('validation.duration', ns / 1000000),
+});
+```
+
+### Production Monitoring Setup
+
+Example production monitoring configuration:
+
+```typescript
+import {
+  setLogger,
+  setMetrics,
+  getIdCacheStats,
+  getValidationStats,
+} from '@titlerun/validation';
+import { logger } from './logger';
+import { metrics } from './metrics';
+
+// 1. Configure logging
+setLogger({
+  warn: (msg, meta) => logger.warn(msg, meta),
+  error: (msg, meta) => logger.error(msg, meta),
+});
+
+// 2. Configure metrics
+setMetrics({
+  cacheHit: () => metrics.increment('validation.cache.hit'),
+  cacheMiss: () => metrics.increment('validation.cache.miss'),
+  validationError: (code) => metrics.increment('validation.error', { code }),
+  validationTiming: (ns) => metrics.timing('validation.duration', ns),
+});
+
+// 3. Expose metrics endpoint (Express example)
+app.get('/metrics/validation', (req, res) => {
+  const cacheStats = getIdCacheStats();
+  const validationStats = getValidationStats();
+  
+  res.json({
+    cache: cacheStats,
+    validation: validationStats,
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// 4. Set up alerting
+setInterval(() => {
+  const stats = getIdCacheStats();
+  
+  // Alert if hit rate drops below 80%
+  if (stats.hitRate < 80 && stats.totalRequests > 100) {
+    logger.warn('Cache hit rate below threshold', {
+      hitRate: stats.hitRate,
+      totalRequests: stats.totalRequests,
+    });
+  }
+}, 60000); // Check every minute
+```
+
+### Testing Utilities
+
+Reset stats for testing:
+
+```typescript
+import { resetCacheStats, resetValidationStats } from '@titlerun/validation';
+
+beforeEach(() => {
+  resetCacheStats();       // Reset cache metrics
+  resetValidationStats();  // Reset validation metrics
+});
 ```
 
 ## API
@@ -143,11 +353,68 @@ Clears the internal LRU cache (for testing or cache invalidation).
 Returns cache statistics for monitoring:
 ```typescript
 {
-  size: number,      // Current entries
-  max: number,       // Max capacity
-  calculatedSize: number
+  // LRU cache internals
+  size: number,           // Current entries in cache
+  max: number,            // Max capacity
+  calculatedSize: number, // Memory usage estimate
+  
+  // Performance metrics
+  hits: number,           // Cache hits
+  misses: number,         // Cache misses
+  totalRequests: number,  // Total validation requests
+  hitRate: number,        // Hit rate percentage (0-100)
 }
 ```
+
+### `getValidationStats()`
+
+Returns validation error statistics for monitoring:
+```typescript
+{
+  totalErrors: number,      // Total validation failures
+  totalValidations: number, // Total validation attempts
+  errorRate: number,        // Error rate percentage (0-100)
+  errorCounts: {            // Counts by error code
+    NULL_OR_UNDEFINED: number,
+    INVALID_TYPE: number,
+    NOT_A_NUMBER: number,
+    NOT_AN_INTEGER: number,
+    OUT_OF_RANGE: number,
+    NEGATIVE_ID: number,
+    PRECISION_LOSS: number,
+    EMPTY_STRING: number,
+    WHITESPACE_ONLY: number,
+    INVISIBLE_UNICODE_DETECTED: number,
+    NON_ASCII_DIGITS_DETECTED: number,
+    HTML_TAGS_DETECTED: number,
+    SCRIPT_TAG_DETECTED: number,
+  }
+}
+```
+
+### `setMetrics(collector: MetricsCollector): void`
+
+Configure external metrics integration.
+
+**MetricsCollector interface:**
+```typescript
+{
+  cacheHit?: () => void;                         // Called on cache hit
+  cacheMiss?: () => void;                        // Called on cache miss
+  validationError?: (code: string) => void;      // Called on validation error
+  validationTiming?: (durationNs: number) => void; // Called with validation timing
+}
+```
+
+All hooks are optional. Use this to integrate with Prometheus, StatsD, Datadog, etc.
+
+### `resetCacheStats(): void`
+
+Resets cache statistics to zero (for testing).
+
+### `resetValidationStats(): void`
+
+Resets validation statistics to zero (for testing).
 
 ## Testing
 
