@@ -85,6 +85,12 @@ export enum ValidationErrorCode {
   TOO_LONG = 'TOO_LONG',
   INVALID_FORMAT = 'INVALID_FORMAT',
   
+  // SECURITY: Unicode/injection errors
+  INVISIBLE_UNICODE_DETECTED = 'INVISIBLE_UNICODE_DETECTED',
+  NON_ASCII_DIGITS_DETECTED = 'NON_ASCII_DIGITS_DETECTED',
+  HTML_TAGS_DETECTED = 'HTML_TAGS_DETECTED',
+  SCRIPT_TAG_DETECTED = 'SCRIPT_TAG_DETECTED',
+  
   // Object/array errors
   OBJECTS_NOT_ALLOWED = 'OBJECTS_NOT_ALLOWED',
   ARRAYS_NOT_ALLOWED = 'ARRAYS_NOT_ALLOWED',
@@ -99,6 +105,9 @@ export enum ValidationErrorCode {
   // Prefill errors
   TOO_MANY_ASSETS = 'TOO_MANY_ASSETS',
   INVALID_ASSET_STRUCTURE = 'INVALID_ASSET_STRUCTURE',
+  
+  // SECURITY: Rate limiting
+  RATE_LIMIT_EXCEEDED = 'RATE_LIMIT_EXCEEDED',
 }
 
 // =============================================================================
@@ -179,6 +188,13 @@ export interface IdValidationRules {
   allowArrays: false;
   allowFunctions: false;
   allowSymbols: false;
+  
+  // SECURITY HARDENING
+  allowInvisibleUnicode: false;      // Reject \u200B, \uFEFF, etc.
+  allowNonAsciiDigits: false;        // Reject ０-９, ①-⑳, etc.
+  allowHtmlTags: false;              // Reject <script>, etc.
+  useConstantTimeValidation: true;   // Mitigate timing attacks
+  
   minValue: 0;
   maxValue: typeof VALIDATION_CONSTANTS.MAX_ID;
   maxStringLength: typeof VALIDATION_CONSTANTS.MAX_STRING_LENGTH;
@@ -275,6 +291,12 @@ export interface PrefillDataRules {
   normalizeIds: true;
   filterInvalidIds: true;
   clearOnError: true;
+  
+  // SECURITY HARDENING (XSS prevention)
+  rejectHtmlTags: true;              // Reject any string containing < or >
+  rejectScriptTags: true;            // Extra check for <script>
+  sanitizeBeforeRender: true;        // Use textContent not innerHTML
+  validateJsonStructure: true;       // Reject malformed JSON
 }
 
 // =============================================================================

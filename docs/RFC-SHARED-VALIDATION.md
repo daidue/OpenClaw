@@ -58,16 +58,23 @@ TitleRun has **11 critical bugs** in production trading features caused by:
 
 **Accepts:**
 - `number`: Finite, integer, non-negative, ≤ MAX_SAFE_INTEGER
-- `string`: Trimmed, parsable to integer, non-negative
+- `string`: Trimmed, parsable to integer, non-negative, ASCII-only
 
 **Rejects (returns null):**
 - `null`, `undefined`
 - Empty strings, whitespace-only strings
+- Invisible Unicode characters (zero-width space, etc.)
+- Non-ASCII numeric characters (full-width digits, circled numbers)
 - `NaN`, `Infinity`, `-Infinity`
 - Negative numbers
 - Floats (e.g., `123.45`)
 - Numbers > `Number.MAX_SAFE_INTEGER`
 - Objects, arrays, symbols, functions
+
+**Security hardening:**
+- **Unicode normalization attack prevention:** Rejects `\u200B` (zero-width space), full-width digits `１２３`, circled numbers `①②③`
+- **Timing attack mitigation:** Uses constant-time validation for security-critical paths
+- **No input echoing:** Never returns raw input in error messages (prevents ID enumeration)
 
 **Examples:**
 ```typescript
@@ -131,13 +138,19 @@ export const VALIDATION_CONSTANTS = {
   MAX_ID: Number.MAX_SAFE_INTEGER,  // 9007199254740991
   
   // Roster matching
-  ROSTER_MATCH_THRESHOLD: 0.7,  // 70% player overlap
+  ROSTER_MATCH_THRESHOLD: 0.7,  // 70% player overlap (config-overridable)
   TEAM_NOT_FOUND: -1,
   
   // DOS prevention
   MAX_PREFILL_ASSETS: 100,
   MAX_ROSTER_SIZE: 50,
   MAX_STRING_LENGTH: 1000,  // Prevent 2MB whitespace attacks
+  
+  // Rate limiting (SECURITY FIX)
+  MAX_REQUESTS_PER_IP_PER_MINUTE: 60,
+  MAX_VALIDATION_ERRORS_PER_IP_PER_HOUR: 100,
+  MAX_REQUESTS_PER_SESSION_PER_MINUTE: 120,
+  MAX_CONCURRENT_VALIDATIONS: 1000,
   
   // Schema versioning
   VALIDATION_VERSION: '1.0.0'
@@ -221,9 +234,17 @@ import { normalizeId } from '@titlerun/validation';
 app.post('/api/player/:id', (req, res) => {
   const id = normalizeId(req.params.id);
   if (id === null) {
-    throw new BadRequestError('Invalid player ID', { 
-      code: 'INVALID_PLAYER_ID',
-      input: req.params.id 
+    // SECURITY: Never echo user input back (prevents ID enumeration)
+    // Log detailed error server-side only
+    logger.warn('[normalizeId] Invalid player ID', { 
+      input: req.params.id,
+      ip: req.ip,
+      userAgent: req.headers['user-agent']
+    });
+    
+    // Return generic error to client
+    throw new BadRequestError('Invalid request', { 
+      code: 'BAD_REQUEST'  // Generic, no details
     });
   }
   // id is guaranteed to be valid integer here
@@ -260,12 +281,22 @@ GET /api/trade HTTP/1.1
 X-Validation-Version: 1.0.0
 ```
 
-**Backend validates:**
+**Backend validates (SECURITY FIX: runs FIRST, before body parsing):**
 ```typescript
 import { VALIDATION_VERSION } from '@titlerun/validation';
 
+// CRITICAL: Version check MUST be first middleware (before body parser)
 app.use((req, res, next) => {
   const clientVersion = req.headers['x-validation-version'];
+  
+  // Reject missing version header
+  if (!clientVersion) {
+    return res.status(400).json({ 
+      error: 'Missing validation version header' 
+    });
+  }
+  
+  // Reject incompatible versions BEFORE parsing body (DOS prevention)
   if (!isCompatible(clientVersion, VALIDATION_VERSION)) {
     return res.status(426).json({
       error: 'Client validation version incompatible',
@@ -273,7 +304,21 @@ app.use((req, res, next) => {
       received: clientVersion
     });
   }
+  
   next();
+});
+
+// THEN parse body (only for compatible clients)
+app.use(express.json({ limit: '1mb' }));
+
+// Health check endpoint (OPERATIONAL FIX)
+app.get('/api/health/validation', (req, res) => {
+  res.json({
+    version: VALIDATION_VERSION,
+    compatible_versions: ['1.0.0'],  // Backward compat list
+    status: 'healthy',
+    timestamp: new Date().toISOString()
+  });
 });
 ```
 
@@ -348,29 +393,110 @@ SELECT id, player_id FROM trades
 WHERE CAST(player_id AS BIGINT) > 9007199254740991;
 ```
 
-**Clean data:**
+**Clean data (OPERATIONAL FIX: dry-run first):**
 ```javascript
 // scripts/migrate-dirty-data.js
 const { normalizeId } = require('@titlerun/validation');
+const fs = require('fs');
 
-async function migrate() {
+// PHASE 1: DRY RUN (REQUIRED)
+async function validateMigration() {
+  console.log('=== DRY RUN MODE ===');
+  
   const dirtyRecords = await db.query(`
     SELECT id, player_id FROM trades WHERE player_id != TRIM(player_id)
   `);
   
+  const fixable = [];
+  const unfixable = [];
+  
   for (const record of dirtyRecords) {
     const cleaned = normalizeId(record.player_id);
     if (cleaned === null) {
-      console.error('Cannot normalize:', record);
-      // Manual review required
-      continue;
+      unfixable.push({
+        id: record.id,
+        player_id: record.player_id,
+        reason: 'Cannot normalize to valid ID'
+      });
+    } else {
+      fixable.push({
+        id: record.id,
+        old_value: record.player_id,
+        new_value: cleaned
+      });
     }
-    await db.query('UPDATE trades SET player_id = ? WHERE id = ?', [cleaned, record.id]);
   }
+  
+  // Write reports
+  fs.writeFileSync('migration-fixable.json', JSON.stringify(fixable, null, 2));
+  fs.writeFileSync('migration-unfixable.json', JSON.stringify(unfixable, null, 2));
+  
+  console.log(`Found ${dirtyRecords.length} dirty records`);
+  console.log(`  Fixable: ${fixable.length}`);
+  console.log(`  Unfixable: ${unfixable.length} (REQUIRE MANUAL REVIEW)`);
+  
+  return unfixable.length === 0;
+}
+
+// PHASE 2: EXECUTE (only after manual review of unfixable records)
+async function executeMigration(confirmed = false) {
+  if (!confirmed) {
+    throw new Error('Must pass --confirmed flag after reviewing migration-unfixable.json');
+  }
+  
+  console.log('=== EXECUTING MIGRATION ===');
+  
+  const fixable = JSON.parse(fs.readFileSync('migration-fixable.json'));
+  const auditLog = [];
+  
+  // Use transactions (atomic batches)
+  const BATCH_SIZE = 100;
+  for (let i = 0; i < fixable.length; i += BATCH_SIZE) {
+    const batch = fixable.slice(i, i + BATCH_SIZE);
+    
+    await db.transaction(async (trx) => {
+      for (const record of batch) {
+        await trx.query(
+          'UPDATE trades SET player_id = ? WHERE id = ?',
+          [record.new_value, record.id]
+        );
+        
+        auditLog.push({
+          timestamp: new Date().toISOString(),
+          id: record.id,
+          old_value: record.old_value,
+          new_value: record.new_value
+        });
+      }
+    });
+    
+    console.log(`Migrated batch ${i / BATCH_SIZE + 1} (${batch.length} records)`);
+  }
+  
+  // Write audit log
+  fs.writeFileSync('migration-audit.log', JSON.stringify(auditLog, null, 2));
+  console.log(`Migration complete. Audit log: migration-audit.log`);
+}
+
+// CLI interface
+const args = process.argv.slice(2);
+if (args.includes('--dry-run')) {
+  validateMigration();
+} else if (args.includes('--execute')) {
+  const confirmed = args.includes('--confirmed');
+  executeMigration(confirmed);
+} else {
+  console.log('Usage:');
+  console.log('  npm run migrate -- --dry-run          # Validate migration');
+  console.log('  npm run migrate -- --execute --confirmed  # Execute after review');
 }
 ```
 
-**Rollback plan:** Database backup before migration, restore if issues found
+**Rollback plan:** 
+1. Database backup before migration (automated in deploy pipeline)
+2. Audit log tracks every change (migration-audit.log)
+3. Rollback script reverses changes using audit log
+4. Test rollback on staging before production
 
 ---
 
@@ -378,7 +504,7 @@ async function migrate() {
 
 ### Metrics
 
-**What to measure:**
+**Backend metrics:**
 ```typescript
 // How often are we trimming whitespace? (indicates dirty data source)
 counter('validation.id_trimmed_total', { source: 'user_input' | 'api' })
@@ -391,6 +517,33 @@ histogram('validation.roster_match_percentage')
 
 // Performance: validation latency
 histogram('validation.normalize_id_duration_ms')
+
+// Rate limiting (SECURITY)
+counter('validation.rate_limit_hit_total', { ip, reason })
+```
+
+**Frontend metrics (OPERATIONAL FIX):**
+```typescript
+// Client-side validation failures (critical for debugging)
+analytics.track('validation.client_id_rejected', {
+  reason: error.code,  // 'OUT_OF_RANGE', 'EMPTY_STRING', etc.
+  component: 'TradeBuilder' | 'PlayerSearch',
+  userAgent: navigator.userAgent,
+  // NO raw input (PII risk)
+});
+
+// Version mismatch detection
+analytics.track('validation.version_mismatch', {
+  frontendVersion: LOCAL_VERSION,
+  backendVersion: healthCheck.version,
+  action: 'show_refresh_banner'
+});
+
+// Prefill validation failures
+analytics.track('validation.prefill_rejected', {
+  reason: 'HTML_INJECTION' | 'TOO_MANY_ASSETS' | 'INVALID_STRUCTURE',
+  assetCount: prefill?.teamA?.length || 0
+});
 ```
 
 **Dashboard queries:**
@@ -538,11 +691,51 @@ describe('normalizeId', () => {
 - Deploy frontend + backend
 - Monitor for 3 days
 
-**Week 2: Production (Gradual)**
-- Day 1: 5% of users (feature flag)
-- Day 2: 25% of users (if stable)
-- Day 3: 50% of users
-- Day 4: 100% of users
+**Week 2: Production (Gradual Rollout - OPERATIONAL FIX)**
+
+**Rollout mechanism:** LaunchDarkly feature flags
+```typescript
+// Frontend (checks on load + every API call)
+import { useFeatureFlag } from '@launchdarkly/react-client-sdk';
+
+function TradeBuilder() {
+  const useSharedValidation = useFeatureFlag('shared-validation-enabled', false);
+  
+  const normalizeId = useSharedValidation 
+    ? sharedNormalizeId   // New library
+    : legacyNormalizeId;  // Old code
+  
+  // ... rest of component
+}
+
+// Backend (checks per-request)
+const useSharedValidation = await launchDarkly.variation(
+  'shared-validation-enabled',
+  { key: req.userId },
+  false
+);
+```
+
+**Rollout schedule:**
+- **Day 1:** 5% of users
+  - Set LaunchDarkly: `shared-validation-enabled` → 5% random rollout
+  - No deploy needed (config change only)
+  - Monitor for 4 hours
+  - Rollback: Flip flag to 0% (instant)
+
+- **Day 2:** 25% of users (if error rate <0.1%)
+  - Increase flag to 25%
+  - Monitor for 4 hours
+  - Check: client metrics, backend metrics, support tickets
+
+- **Day 3:** 50% of users
+  - Increase flag to 50%
+  - Monitor for 4 hours
+
+- **Day 4:** 100% of users
+  - Increase flag to 100%
+  - Monitor for 24 hours
+  - Remove legacy code in next release (not immediately)
 
 **Rollback triggers:**
 - Error rate >0.5%
