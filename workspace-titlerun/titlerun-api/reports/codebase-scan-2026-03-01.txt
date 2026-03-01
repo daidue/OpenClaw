@@ -1,0 +1,41 @@
+=== TitleRun Codebase Pattern Scan ===
+Date: Sun Mar  1 18:38:24 EST 2026
+
+## 1. ID Validation (Should use @titlerun/validation)
+Files with Number.isFinite/isInteger:
+src/routes/tradeEngine.js
+src/utils/helpers.js
+Count:       10
+
+## 2. Email Validation (Candidate for library)
+Files with email regex:
+Count:        0
+
+## 3. Date Manipulation (Candidate for library)
+Files with new Date() calls:
+Count:        0
+
+## 4. URL Validation (Candidate for library)
+Files with URL regex:
+Count:        0
+
+## 5. Password/Security Patterns
+Files with password/hash/crypto:
+Count:        0
+
+## 6. Error Handling Patterns
+Files with try/catch:
+       0
+Count:        0
+
+## 7. Duplicate Utility Functions
+Files with 'function ' declarations:
+src/routes/tradeEngine.js
+src/services/tradeAnalysisService.js
+Count:        2
+
+=== Scan Complete ===
+Next steps:
+1. Review files with duplicate patterns
+2. Consider extracting to @titlerun/validation or new libraries
+3. Create migration plan for high-frequency patterns

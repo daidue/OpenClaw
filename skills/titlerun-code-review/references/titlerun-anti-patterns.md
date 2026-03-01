@@ -39,9 +39,21 @@ return res.json({
 
 **Pattern:**
 ```typescript
+// Pattern 1: Simple validation
 const id = String(req.params.id);
 if (!id || isNaN(Number(id))) {
   return res.status(400).json({ error: 'Invalid ID' });
+}
+
+// Pattern 2: Comprehensive validation (what we found in tradeEngine.js)
+if (!Number.isFinite(id)) {
+  throw new TypeError('ID must be finite');
+}
+if (!Number.isInteger(id)) {
+  throw new TypeError('ID must be an integer');
+}
+if (id < 0) {
+  throw new TypeError('ID must be non-negative');
 }
 ```
 
@@ -54,9 +66,13 @@ import { normalizeId } from '@titlerun/validation';
 
 const id = normalizeId(req.params.id);
 // Throws if invalid, returns normalized number
+// Handles: null, undefined, string-to-number, finite, integer, non-negative, range checks
 ```
 
-**Check:** Search for manual ID validation logic
+**Check:** Search for:
+- `Number.isFinite` + `Number.isInteger` (manual validation)
+- `isNaN(Number(` (simple validation)
+- Manual type checking + range validation
 
 ---
 

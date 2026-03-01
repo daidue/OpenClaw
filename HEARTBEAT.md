@@ -76,9 +76,16 @@ Rotate which business unit gets the deep-dive each beat:
   - Generate QA report with video/screenshot evidence
   - Summarize critical/high findings in weekly review
   - Report location: `titlerun-qa/dogfood-YYYY-MM-DD/report.md`
+- **Library Health Check** (TitleRun codebase):
+  - Run: `cd workspace-titlerun/titlerun-api && bash scripts/scan-duplicate-patterns.sh`
+  - Review for new duplicate patterns (email validation, date formatting, etc.)
+  - Check: Have any new validation patterns been added manually?
+  - If YES: Create migration plan (should use @titlerun/validation or new library)
+  - Compare to last week's scan (trend: improving or degrading?)
 - Score each business unit (🟢🟡🔴)
 - Top 3 wins, top 3 concerns, decisions needed
 - Include TitleRun QA summary (X issues: Y critical, Z high)
+- Include Library Health summary (X new patterns, Y migrations needed)
 - Send to Taylor
 - Update PORTFOLIO.md health scores
 - Update PORTFOLIO-MEMORY.md with key learnings
