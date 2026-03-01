@@ -77,8 +77,9 @@ export enum ValidationErrorCode {
 
 /**
  * LRU cache for validated IDs (HIGH FIX #8 - performance optimization)
+ * Stores valid IDs only. Invalid IDs are not cached (fail fast, don't cache errors).
  */
-const idCache = new LRUCache<string, number | null>({
+const idCache = new LRUCache<string, number>({
   max: VALIDATION_CONSTANTS.ID_CACHE_MAX_ENTRIES,
   ttl: VALIDATION_CONSTANTS.ID_CACHE_TTL_MS,
   updateAgeOnGet: true,
@@ -294,23 +295,25 @@ function normalizeIdUncached(raw: unknown): number | null {
  * @returns Validated ID or null
  */
 export function normalizeId(raw: unknown): number | null {
-  // Generate cache key
+  // Generate cache key (only for cacheable types)
   const cacheKey = typeof raw === 'string'
     ? raw
     : typeof raw === 'number'
     ? String(raw)
-    : '__invalid__';
+    : null;
   
-  // Check cache
-  if (idCache.has(cacheKey)) {
+  // Check cache (only if we have a valid cache key)
+  if (cacheKey !== null && idCache.has(cacheKey)) {
     return idCache.get(cacheKey)!;
   }
   
   // Cache miss - validate
   const result = normalizeIdUncached(raw);
   
-  // Store in cache
-  idCache.set(cacheKey, result);
+  // Store in cache (only valid results - don't cache errors)
+  if (cacheKey !== null && result !== null) {
+    idCache.set(cacheKey, result);
+  }
   
   return result;
 }

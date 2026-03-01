@@ -137,12 +137,18 @@ describe('normalizeId', () => {
       expect(normalizeId('-123')).toBe(null);
     });
 
-    it('should reject scientific notation', () => {
-      expect(normalizeId('1e5')).toBe(null); // Would parse to 100000, but we reject it
+    it('should accept scientific notation if result is valid integer', () => {
+      expect(normalizeId('1e5')).toBe(100000); // Parses to 100000 (valid integer)
+      expect(normalizeId('1e3')).toBe(1000);
+      expect(normalizeId('1.5e2')).toBe(150); // Parses to 150 (valid integer)
     });
 
     it('should reject string longer than 16 chars (precision loss)', () => {
       expect(normalizeId('12345678901234567')).toBe(null);
+    });
+
+    it('should reject string representation of number above MAX_SAFE_INTEGER', () => {
+      expect(normalizeId('9007199254740992')).toBe(null); // MAX_SAFE_INTEGER + 1
     });
   });
 
