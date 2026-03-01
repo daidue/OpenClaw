@@ -36,22 +36,51 @@ export const VALIDATION_CONSTANTS = {
 // =============================================================================
 
 /**
- * Branded type for validated player IDs
- * Use this instead of raw number to ensure validation occurred
+ * CRITICAL FIX #1: Branded types removed (they provided zero runtime safety)
+ * 
+ * TypeScript branded types erase at runtime, allowing bypasses via `as PlayerId`.
+ * Instead, we use plain `number` with JSDoc stating validation is required.
+ * 
+ * @deprecated Use `number` directly. Validation enforcement is via function contracts, not types.
  */
-export type PlayerId = number & { readonly __brand: 'PlayerId' };
-export type RosterId = number & { readonly __brand: 'RosterId' };
-export type TeamId = number & { readonly __brand: 'TeamId' };
+// export type PlayerId = number & { readonly __brand: 'PlayerId' };
+// export type RosterId = number & { readonly __brand: 'RosterId' };
+// export type TeamId = number & { readonly __brand: 'TeamId' };
 
 /**
- * Generic validation result
+ * Validated IDs are plain numbers.
+ * Callers must use normalizeId() before treating a value as a valid ID.
+ * 
+ * @example
+ * const rawId: unknown = req.params.id;
+ * const validId: number | null = normalizeId(rawId);
+ * if (validId === null) throw new Error('Invalid ID');
+ * // validId is now guaranteed to be a valid ID
  */
-export type ValidationResult<T> = 
-  | { valid: true; value: T }
-  | { valid: false; error: ValidationError };
+export type ValidatedId = number;
 
 /**
- * Validation error with structured details
+ * CRITICAL FIX #2: ValidationResult pattern simplified and made consistent
+ * 
+ * Decision: Use `T | null` for all validation functions (simple, fast, TypeScript-friendly)
+ * Rationale: ValidationResult<T> adds ceremony without benefit for our use case
+ * 
+ * Error details are logged server-side, not returned to caller (security)
+ */
+
+/**
+ * @deprecated ValidationResult pattern abandoned for simplicity
+ * All validation functions return `T | null` where null = invalid
+ */
+// export type ValidationResult<T> = 
+//   | { valid: true; value: T }
+//   | { valid: false; error: ValidationError };
+
+/**
+ * Validation error codes (for server-side logging only, not API responses)
+ * 
+ * MEDIUM FIX #9: Error codes are now actually USED in implementation
+ * normalizeId() logs error code server-side when returning null
  */
 export interface ValidationError {
   code: ValidationErrorCode;
