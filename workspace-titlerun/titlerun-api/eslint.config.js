@@ -1,7 +1,10 @@
 module.exports = [
   {
     files: ['**/*.js'],
-    ignores: ['src/utils/helpers.js'],  // Exclude helpers.js (ID comparison utility, different use case)
+    ignores: [
+      'src/utils/helpers.js',  // ID comparison utility, supports non-numeric string IDs
+      'src/routes/tradeEngine.js'  // Wrapper around @titlerun/validation for backward-compatible error messages
+    ],
     languageOptions: {
       ecmaVersion: 2021,
       sourceType: 'commonjs',
