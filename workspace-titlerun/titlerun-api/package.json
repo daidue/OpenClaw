@@ -1,0 +1,17 @@
+{
+  "name": "titlerun-api",
+  "version": "1.0.0",
+  "description": "TitleRun API - Backend fixes for rank calculation and ID validation",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "keywords": ["titlerun", "api"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
