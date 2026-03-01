@@ -1,3 +1,4 @@
+"use strict";
 /**
  * @titlerun/validation v1.0.0
  *
@@ -17,15 +18,27 @@
  * - Error codes logged server-side only
  * - Soft + hard limits for prefill assets
  */
-import { LRUCache } from 'lru-cache';
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ValidationErrorCode = exports.VALIDATION_CONSTANTS = exports.VALIDATION_VERSION = void 0;
+exports.setValidationConfig = setValidationConfig;
+exports.setLogger = setLogger;
+exports.setMetrics = setMetrics;
+exports.normalizeId = normalizeId;
+exports.idMatch = idMatch;
+exports.clearIdCache = clearIdCache;
+exports.resetCacheStats = resetCacheStats;
+exports.resetValidationStats = resetValidationStats;
+exports.getIdCacheStats = getIdCacheStats;
+exports.getValidationStats = getValidationStats;
+const lru_cache_1 = require("lru-cache");
 /**
  * Validation version - must match between frontend and backend
  */
-export const VALIDATION_VERSION = '1.0.0';
+exports.VALIDATION_VERSION = '1.0.0';
 /**
  * Validation constants (tunable via setValidationConfig)
  */
-export const VALIDATION_CONSTANTS = {
+exports.VALIDATION_CONSTANTS = {
     /** Roster match threshold for competitive rank (0.0-1.0) */
     ROSTER_MATCH_THRESHOLD: 0.7,
     /** Maximum safe integer (JS precision limit) */
@@ -48,13 +61,13 @@ export const VALIDATION_CONSTANTS = {
 /**
  * Update validation configuration (for testing or environment-specific tuning)
  */
-export function setValidationConfig(overrides) {
-    Object.assign(VALIDATION_CONSTANTS, overrides);
+function setValidationConfig(overrides) {
+    Object.assign(exports.VALIDATION_CONSTANTS, overrides);
 }
 /**
  * Error codes (for server-side logging only, NOT returned to client)
  */
-export var ValidationErrorCode;
+var ValidationErrorCode;
 (function (ValidationErrorCode) {
     ValidationErrorCode["NULL_OR_UNDEFINED"] = "NULL_OR_UNDEFINED";
     ValidationErrorCode["INVALID_TYPE"] = "INVALID_TYPE";
@@ -69,14 +82,14 @@ export var ValidationErrorCode;
     ValidationErrorCode["NON_ASCII_DIGITS_DETECTED"] = "NON_ASCII_DIGITS_DETECTED";
     ValidationErrorCode["HTML_TAGS_DETECTED"] = "HTML_TAGS_DETECTED";
     // SCRIPT_TAG_DETECTED removed - covered by HTML_TAGS_DETECTED
-})(ValidationErrorCode || (ValidationErrorCode = {}));
+})(ValidationErrorCode || (exports.ValidationErrorCode = ValidationErrorCode = {}));
 /**
  * LRU cache for validated IDs (HIGH FIX #8 - performance optimization)
  * Stores valid IDs only. Invalid IDs are not cached (fail fast, don't cache errors).
  */
-const idCache = new LRUCache({
-    max: VALIDATION_CONSTANTS.ID_CACHE_MAX_ENTRIES,
-    ttl: VALIDATION_CONSTANTS.ID_CACHE_TTL_MS,
+const idCache = new lru_cache_1.LRUCache({
+    max: exports.VALIDATION_CONSTANTS.ID_CACHE_MAX_ENTRIES,
+    ttl: exports.VALIDATION_CONSTANTS.ID_CACHE_TTL_MS,
     updateAgeOnGet: true,
 });
 const cacheStats = {
@@ -101,7 +114,7 @@ let metricsCollector = null;
 /**
  * Set custom logger (for server-side integration)
  */
-export function setLogger(customLogger) {
+function setLogger(customLogger) {
     logger = customLogger;
 }
 /**
@@ -124,7 +137,7 @@ export function setLogger(customLogger) {
  * });
  * ```
  */
-export function setMetrics(collector) {
+function setMetrics(collector) {
     metricsCollector = collector;
 }
 /**
@@ -205,11 +218,11 @@ function normalizeIdUncached(raw) {
                 errorCode = ValidationErrorCode.NOT_AN_INTEGER;
                 return null;
             }
-            if (raw < VALIDATION_CONSTANTS.MIN_SAFE_ID) {
+            if (raw < exports.VALIDATION_CONSTANTS.MIN_SAFE_ID) {
                 errorCode = ValidationErrorCode.NEGATIVE_ID;
                 return null;
             }
-            if (raw > VALIDATION_CONSTANTS.MAX_SAFE_ID) {
+            if (raw > exports.VALIDATION_CONSTANTS.MAX_SAFE_ID) {
                 errorCode = ValidationErrorCode.OUT_OF_RANGE;
                 return null;
             }
@@ -254,11 +267,11 @@ function normalizeIdUncached(raw) {
                 errorCode = ValidationErrorCode.NOT_AN_INTEGER;
                 return null;
             }
-            if (parsed < VALIDATION_CONSTANTS.MIN_SAFE_ID) {
+            if (parsed < exports.VALIDATION_CONSTANTS.MIN_SAFE_ID) {
                 errorCode = ValidationErrorCode.NEGATIVE_ID;
                 return null;
             }
-            if (parsed > VALIDATION_CONSTANTS.MAX_SAFE_ID) {
+            if (parsed > exports.VALIDATION_CONSTANTS.MAX_SAFE_ID) {
                 errorCode = ValidationErrorCode.OUT_OF_RANGE;
                 return null;
             }
@@ -305,7 +318,7 @@ function normalizeIdUncached(raw) {
  * @param raw - Untrusted input
  * @returns Validated ID or null
  */
-export function normalizeId(raw) {
+function normalizeId(raw) {
     // Track total requests and validations
     cacheStats.totalRequests++;
     validationStats.totalValidations++;
@@ -346,7 +359,7 @@ export function normalizeId(raw) {
  * @param b - Second ID (untrusted)
  * @returns true if both IDs are valid and equal, false otherwise
  */
-export function idMatch(a, b) {
+function idMatch(a, b) {
     const normalizedA = normalizeId(a);
     const normalizedB = normalizeId(b);
     // CRITICAL: null does NOT match null
@@ -358,13 +371,13 @@ export function idMatch(a, b) {
 /**
  * Clear ID cache (for testing or cache invalidation)
  */
-export function clearIdCache() {
+function clearIdCache() {
     idCache.clear();
 }
 /**
  * Reset cache statistics (for testing)
  */
-export function resetCacheStats() {
+function resetCacheStats() {
     cacheStats.hits = 0;
     cacheStats.misses = 0;
     cacheStats.totalRequests = 0;
@@ -372,7 +385,7 @@ export function resetCacheStats() {
 /**
  * Reset validation statistics (for testing)
  */
-export function resetValidationStats() {
+function resetValidationStats() {
     validationStats.totalErrors = 0;
     validationStats.totalValidations = 0;
     Object.values(ValidationErrorCode).forEach((code) => {
@@ -393,7 +406,7 @@ export function resetValidationStats() {
  * console.log(`Total requests: ${stats.totalRequests}`);
  * ```
  */
-export function getIdCacheStats() {
+function getIdCacheStats() {
     const hitRate = cacheStats.totalRequests > 0
         ? (cacheStats.hits / cacheStats.totalRequests) * 100
         : 0;
@@ -429,7 +442,7 @@ export function getIdCacheStats() {
  *   .slice(0, 5);
  * ```
  */
-export function getValidationStats() {
+function getValidationStats() {
     const errorRate = validationStats.totalValidations > 0
         ? (validationStats.totalErrors / validationStats.totalValidations) * 100
         : 0;

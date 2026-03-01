@@ -1,6 +1,7 @@
 module.exports = [
   {
     files: ['**/*.js'],
+    ignores: ['src/utils/helpers.js'],  // Exclude helpers.js (ID comparison utility, different use case)
     languageOptions: {
       ecmaVersion: 2021,
       sourceType: 'commonjs',
