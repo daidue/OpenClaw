@@ -10,10 +10,10 @@
 | Business | Owner/Operator | Agent ID | Phase | Revenue | Health |
 |----------|---------------|----------|-------|---------|--------|
 | **Notion Templates** | Grind | `commerce` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ DORMANT |
-| **TitleRun** | Rush | `titlerun` | ACTIVE — ALL FOCUS | $0/mo | 🟢 EXCEPTIONAL |
+| **TitleRun** | Rush | `titlerun` | ACTIVE — ALL FOCUS | $0/mo | 🟡 REGRESSION |
 | **Polymarket Trading** | Edge | `polymarket` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ DORMANT |
 
-**Last weekly review:** 2026-02-22
+**Last weekly review:** 2026-03-01
 
 ## TitleRun Milestones (Week of Feb 15)
 - ✅ DB migration deployed (44 tables, 96.7/100 expert panel, RLS, FK constraints)
