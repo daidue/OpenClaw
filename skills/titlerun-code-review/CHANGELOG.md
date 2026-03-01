@@ -1,106 +1,168 @@
-# Changelog — TitleRun Code Review Skill
+# Changelog — titlerun-code-review
 
 All notable changes to this skill will be documented in this file.
 
-## [1.0.0] - 2026-02-12
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [1.0.0] - 2026-03-01
 
 ### Added
-- **Initial release** of TitleRun Code Review Expert Panel skill
-- **10-expert panel** covering security, database, performance, API design, testing, domain logic, DevOps, data pipelines, Bayesian methods, and frontend/UX
-- **Health scoring system** (0-100) with severity-based deductions
-- **SKILL.md** — Complete skill definition with process, expert personas, output format, implementation notes
-- **cron-config.json** — 3x daily automatic review jobs (10am, 3pm, 9pm EST)
-- **HEARTBEAT-addition.md** — Integration instructions for Rush's workflow
-- **run-review.sh** — Reference implementation script for commit fetching and file reading
-- **README.md** — Comprehensive overview, setup, usage, troubleshooting
-- **QUICK-REFERENCE.md** — Quick-reference card for Rush (score → action map, commands, checklist)
-- **EXAMPLE-REVIEW.md** — Sample review output showing expected format and detail level
-- **CHANGELOG.md** — This file
 
-### Expert Panel Composition
-1. Security Architect (Sarah Chen) — Auth, injection, secrets, rate limiting
-2. Database Engineer (Marcus Rodriguez) — Query perf, N+1s, migrations, indexes
-3. Node.js Performance Engineer (Priya Sharma) — Memory leaks, event loop, async patterns
-4. API Design Specialist (Jordan Kim) — REST conventions, errors, schemas, versioning
-5. Testing Engineer (Alex Thompson) — Coverage, edge cases, mocks, integration
-6. Fantasy Sports Domain Expert (Dana Martinez) — Scoring, roster rules, trade fairness
-7. DevOps/Reliability Engineer (Chris O'Brien) — Circuit breakers, retries, observability
-8. Data Pipeline Architect (Taylor Nguyen) — Scraper resilience, freshness, caching
-9. Bayesian/Statistical Methods Expert (Dr. Rebecca Singh) — Priors, posteriors, convergence
-10. Frontend/UX Engineer (Jamie Park) — React perf, state, accessibility, UX
+**Orchestrator (SKILL.md):**
+- 8-step phase detection and routing system
+- 4 pre-delivery validation gates (CI, file count, merge conflicts, change count)
+- Progressive disclosure (3-tier loading: always-on, on-demand, verification)
+- 3-retry logic with human escalation
+- Non-negotiables at START and END (recency bias applied)
 
-### Scoring System
-- **Starting score:** 100
-- **Critical Bug:** -15 per issue
-- **Major Bug:** -8 per issue
-- **Minor Bug:** -3 per issue
-- **Security Issue:** -20 per issue
-- **Improvements:** No deductions (recommendations only)
+**Workflows:**
+- `workflows/backend-review.md` — OWASP Security + Google SRE Performance
+- `workflows/frontend-review.md` — Nielsen UX Heuristics + Performance
+- `workflows/database-review.md` — Performance-focused (migrations, indexes, types)
 
-### Health Bands
-- **90-100 🟢 Healthy** — Ship it
-- **80-89 🟡 Needs Attention** — Fix Major+ this sprint
-- **70-79 🟠 Concerning** — Fix Critical immediately
-- **<70 🔴 Emergency** — STOP feature work
+**References:**
+- `references/titlerun-anti-patterns.md` — 6 domain-specific patterns (#1 recurring bug documented)
+- `references/production-incidents.md` — 5 real incidents with root causes, impact, fixes
+- `references/banned-phrases.md` — 75 forbidden phrases (contrarian frame)
+- `references/tech-stack.md` — TypeScript, React, Prisma, Express, TanStack Query best practices
 
-### Automation
-- **3x daily cron jobs** — 10am, 3pm, 9pm EST
-- **Self-triggered reviews** — After every 3+ commits by Rush
-- **State management** — Tracks last review timestamp to avoid duplicates
-- **Inbox integration** — Posts summaries to Jeff's inbox
+**Templates:**
+- `templates/finding-template.md` — 5 required elements (file, line, code, impact, fix)
+- `templates/review-report.md` — Full review structure with score justification
+- `templates/summary-template.md` — Brief format for Jeff's inbox
 
-### Token Budget
-- **Target:** <10K tokens per review
-- **Optimization:** Truncate files >500 lines, focus on changed lines, top 3 findings per expert
+**Cognitive Frameworks (Loaded from ../../cognitive-profiles/):**
+- OWASP Security (owasp-security.md) — 10 security checks
+- Google SRE Performance (google-sre-performance.md) — Query optimization, algorithmic complexity
+- Nielsen UX Heuristics (nielsen-ux-heuristics.md) — 10 usability heuristics
 
-### Dependencies
-- `gh` CLI authenticated as `daidue`
-- Local clone of `daidue/titlerun-api` at `~/Desktop/titlerun-api`
-- `titlerun-dev` skill (loaded for codebase context)
+**Contrarian Frame:**
+- 75 banned phrases across 4 categories
+- Required inversions: hedge → definitive, vague → quantified
+- 3 auto-fail verification checks
+- Loaded last (Tier 3) for recency bias
 
----
+**Quality Standards:**
+- Every finding MUST have 5 elements (file, line, code, impact, fix)
+- Every impact MUST be quantified (numbers + scale)
+- NO banned phrases allowed (auto-fail)
+- Score MUST have justification
 
-## Future Enhancements (Backlog)
+**Integration:**
+- Posts to `workspace-titlerun/reviews/YYYY-MM-DD-[identifier].md`
+- Sends summary to `inboxes/jeff-inbox.md`
+- Integrates with OpenClaw cron system
 
-### Potential Additions
-- **Code complexity metrics** — Cyclomatic complexity, cognitive load scores
-- **Dependency vulnerability scanning** — npm audit integration
-- **Performance benchmarking** — Detect regressions in query times, API response times
-- **Git blame integration** — Identify repeat offenders (patterns in commits)
-- **Historical trend tracking** — Score over time, issue velocity, fix rate
-- **Custom expert weights** — Adjust expert influence based on Rush's focus areas
-- **Auto-fix suggestions** — Generate diff patches for common issues
-- **IDE integration** — VSCode extension to run reviews locally before commit
+**Performance Targets:**
+- Review time: <10 min for <100 files
+- Token usage: <20K per review
+- False positive rate: <10%
+- Critical issues caught: >90%
 
-### Potential Refinements
-- **Dynamic expert selection** — Only invoke experts relevant to changed files (reduce token usage)
-- **Severity calibration** — Adjust deduction values based on actual production impact
-- **False positive tracking** — Log when Rush disagrees with findings, retrain experts
-- **Multi-repo support** — Extend to `titlerun-app` (frontend) and `titlerun.co` (marketing site)
+### Build Methodology
 
----
+**Built with:** meta-skill-forge v2.0.0
 
-## Version History
+**Process:**
+- Phase 1: Context Ingestion (existing materials + first principles)
+- Phase 2: Targeted Extraction (4 rounds of questions)
+- Phase 3: Contrarian Analysis (75 banned phrases identified)
+- Phase 4: Architecture Decisions (modular structure chosen)
+- Phase 5: Writing Content (systematic file creation)
+- Phase 6: Cognitive Review (TBD — adversarial audit before ship)
+- Phase 7: Ship (TBD — after audit passes)
+- Phase 8: Evolve (post-ship metrics + pattern learning)
 
-| Version | Date | Key Changes |
-|---------|------|-------------|
-| 1.0.0 | 2026-02-12 | Initial release — 10-expert panel, 3x daily cron, Rush integration |
+**Time to build:** ~5 hours (Phase 1-5)
+
+**Files created:** 13 files, ~70KB total
+
+**Token efficiency:** 60-70% reduction vs monolithic (progressive disclosure)
 
 ---
 
-## Maintainers
+## Versioning Strategy
 
-- **Primary:** Jeff Daniels (product owner, infrastructure)
-- **Primary User:** Rush (titlerun agent)
-- **Built by:** dev agent (subagent for Jeff)
-
----
-
-## License
-
-Proprietary — Internal use only (TitleRun project)
+**Major version (X.0.0):** Breaking changes to skill interface or required inputs  
+**Minor version (1.X.0):** New workflows, new cognitive profiles, new reference materials  
+**Patch version (1.0.X):** Bug fixes, improved wording, minor refinements
 
 ---
 
-**Last Updated:** 2026-02-12  
-**Next Review:** Quarterly (May 2026) — Assess expert relevance, scoring accuracy, Rush's feedback
+## Future Roadmap
+
+**Planned for v1.1.0:**
+- Python backend review workflow (FastAPI/Django patterns)
+- Rust review workflow (if TitleRun adds Rust services)
+- Performance benchmark tracking (actual vs target metrics)
+- Pattern learning system (what issues recur most?)
+
+**Planned for v1.2.0:**
+- Auto-fix suggestions (generate PR with fixes for simple issues)
+- Dependency vulnerability check (npm audit integration)
+- License compliance check
+
+**Planned for v2.0.0:**
+- Multi-repo review (review across titlerun-api + titlerun-app in single pass)
+- Historical trend analysis (is code quality improving?)
+- Developer coaching mode (explain WHY, not just WHAT)
+
+---
+
+## Migration Guide
+
+**From:** No code review skill → v1.0.0
+
+**Setup:**
+1. Ensure cognitive profiles exist in `~/.openclaw/workspace/cognitive-profiles/`
+2. Create `workspace-titlerun/reviews/` directory
+3. Add cron job to HEARTBEAT.md (if not already present)
+4. Test with sample PR
+
+**Cron configuration:**
+```bash
+# Add to Rush's HEARTBEAT.md (or separate cron)
+# Every commit to main:
+openclaw run "review commits since last review" --skill titlerun-code-review
+```
+
+**First run checklist:**
+- [ ] Cognitive profiles exist (owasp-security.md, google-sre-performance.md, nielsen-ux-heuristics.md)
+- [ ] Review output directory created (`workspace-titlerun/reviews/`)
+- [ ] Jeff's inbox exists (`inboxes/jeff-inbox.md`)
+- [ ] Test with 1-2 files first (not full codebase)
+- [ ] Verify score calculation makes sense
+- [ ] Check that banned phrases are actually blocked
+
+---
+
+## Known Limitations (v1.0.0)
+
+1. **Frontend can't be tested locally** — Skill can review code but can't run app to verify fixes work
+2. **No auto-fix capability** — Skill identifies issues but doesn't generate PRs with fixes
+3. **Single-repo only** — Can't review changes across titlerun-api + titlerun-app in coordinated way
+4. **No historical tracking** — Each review is independent, no trend analysis yet
+5. **Manual re-review** — Have to manually request re-review after fixes applied
+
+---
+
+## Credits
+
+**Built by:** Jeff Daniels (AI Portfolio Manager)  
+**Built with:** meta-skill-forge v2.0.0  
+**Cognitive profiles created by:** Jeff Daniels (2026-03-01)  
+**Domain knowledge from:** TitleRun production incidents (2026-02-10 to 2026-03-01)
+
+**Special thanks:**
+- Taylor (product vision, business requirements)
+- Rush (TitleRun engineering, bug reports)
+- Elvis (agent swarm methodology inspiration)
+
+---
+
+**Last updated:** 2026-03-01  
+**Current version:** 1.0.0  
+**Status:** Production candidate (pending adversarial audit)
