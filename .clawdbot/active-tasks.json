@@ -1,40 +1,39 @@
 {
   "tasks": [
     {
-      "id": "audit-simplified-code-20260302-1834",
-      "type": "adversarial-audit",
+      "id": "redesign-orchestration-20260302-1842",
+      "type": "architecture-rebuild",
       "agent": "titlerun",
-      "sessionKey": "agent:titlerun:subagent:8d405257-0afa-4ab7-a352-b30e301409c0",
+      "sessionKey": "agent:titlerun:subagent:8e21a4ba-c8cc-4051-8440-17136865066f",
       "status": "running",
-      "started": "2026-03-02T18:34:00-05:00",
-      "target": "Simplified Infrastructure (Security & Correctness)",
-      "expectedCompletion": "2026-03-02T19:34:00-05:00",
-      "description": "Verify simplified code works, is secure, uses OpenClaw correctly, didn't lose critical functionality.",
-      "deliverable": ".clawdbot/audits/simplified-infrastructure-audit-2026-03-02.md"
-    },
+      "started": "2026-03-02T18:42:00-05:00",
+      "target": "Agent Orchestration (From Scratch, Using Actual OpenClaw Features)",
+      "expectedCompletion": "2026-03-02T20:12:00-05:00",
+      "description": "Redesign from scratch based on audit findings. Research actual internal tools, move spawning into Rush heartbeat, bash only for data prep. TEST EVERYTHING.",
+      "deliverable": "REDESIGN-COMPLETE-2026-03-02.md",
+      "priority": "RESEARCH (30min) → REDESIGN (45min) → IMPLEMENT (90min) → TEST (45min)",
+      "phases": "Phase 1: Research tools (30min) | Phase 2: Redesign architecture (45min) | Phase 3: Implement (90min) | Phase 4: Test (45min)"
+    }
+  ],
+  "lastUpdated": "2026-03-02T18:42:30-05:00",
+  "recentCompletions": [
     {
       "id": "audit-functionality-20260302-1834",
       "type": "adversarial-audit",
       "agent": "titlerun",
-      "sessionKey": "agent:titlerun:subagent:1af63f76-f6a2-4629-b324-b7c07d44a98f",
-      "status": "running",
-      "started": "2026-03-02T18:34:00-05:00",
-      "target": "Simplified Infrastructure (Functionality & Completeness)",
-      "expectedCompletion": "2026-03-02T19:34:00-05:00",
-      "description": "Verify all 5 original Phase 1 goals still achievable, check feature parity, identify any lost functionality.",
-      "deliverable": ".clawdbot/audits/functionality-audit-2026-03-02.md"
-    }
-  ],
-  "lastUpdated": "2026-03-02T18:34:30-05:00",
-  "recentCompletions": [
+      "status": "completed",
+      "completed": "2026-03-02T18:39:00-05:00",
+      "runtime": "3m2s",
+      "result": "5/5 goals met, SHIP IT - design is sound"
+    },
     {
-      "id": "simplify-infrastructure-20260302-1824",
-      "type": "refactoring",
+      "id": "audit-simplified-code-20260302-1834",
+      "type": "adversarial-audit",
       "agent": "titlerun",
       "status": "completed",
-      "completed": "2026-03-02T18:34:00-05:00",
-      "runtime": "90 minutes",
-      "result": "Deleted 529 lines, 0 security bugs, simplified to use OpenClaw native features"
+      "completed": "2026-03-02T18:39:00-05:00",
+      "runtime": "~5 minutes",
+      "result": "NO-GO - code uses non-existent CLI commands"
     }
   ]
 }
