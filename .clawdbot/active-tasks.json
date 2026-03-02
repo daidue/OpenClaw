@@ -1,18 +1,6 @@
 {
   "tasks": [
     {
-      "id": "3ai-adversarial-audit-20260301-2248",
-      "type": "adversarial-review",
-      "agent": "researcher",
-      "sessionKey": "agent:researcher:subagent:0d447b2f-ce51-4224-b1bc-b2e34507cc21",
-      "status": "running",
-      "started": "2026-03-01T22:48:00-05:00",
-      "target": "skills/titlerun-code-review/",
-      "expectedCompletion": "2026-03-01T23:48:00-05:00",
-      "description": "Adversarial audit of 3-AI v1.1.0 production hardening (verify 100% claim)",
-      "deliverable": "workspace-titlerun/3ai-v1.1.0-adversarial-audit.md"
-    },
-    {
       "id": "dod-audit-rush-20260301-2255",
       "type": "adversarial-review",
       "agent": "titlerun",
@@ -35,7 +23,19 @@
       "expectedCompletion": "2026-03-01T23:55:00-05:00",
       "description": "Adversarial audit #2: Security expert - bash safety, false claims, portability",
       "deliverable": "workspace-titlerun/dod-v1.1.0-audit-edge.md"
+    },
+    {
+      "id": "3ai-fix-all-issues-20260301-2300",
+      "type": "critical-fixes",
+      "agent": "titlerun",
+      "sessionKey": "agent:titlerun:subagent:ecac422d-10d8-442f-802f-8a2f438aae6a",
+      "status": "running",
+      "started": "2026-03-01T23:00:00-05:00",
+      "target": "skills/titlerun-code-review/",
+      "expectedCompletion": "2026-03-02T07:00:00-05:00",
+      "description": "Fix 3 BLOCKERS + 5 CRITICAL issues: implement chunking, timeout monitor, fix math, add tests",
+      "deliverable": "workspace-titlerun/3ai-v1.2.0-fixes-complete.md"
     }
   ],
-  "lastUpdated": "2026-03-01T22:55:30-05:00"
+  "lastUpdated": "2026-03-01T23:00:30-05:00"
 }

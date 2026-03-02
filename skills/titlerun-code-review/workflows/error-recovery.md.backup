@@ -109,11 +109,9 @@ if (completed.length === 2) {
 
 | Missing Category | Redistribution |
 |------------------|----------------|
-| Security (40%)   | Performance 58.33%, UX 41.67% (proportional to original weights) |
-| Performance (35%)| Security 61.54%, UX 38.46% |
-| UX (25%)         | Security 53.33%, Performance 46.67% |
-
-_Weights sum to 100.00% (verified)_
+| Security (40%)   | Performance 57%, UX 43% (proportional to original weights) |
+| Performance (35%)| Security 62%, UX 38% |
+| UX (25%)         | Security 53%, Performance 47% |
 
 **Formula:**
 ```javascript
@@ -242,57 +240,6 @@ Stack trace:
 
 ---
 ```
-
----
-
-## Retry State Management (NEW v1.2)
-
-**Global retry tracking** to prevent infinite loops:
-
-```javascript
-// Initialize retry state for all reviewers
-const reviewerState = {
-  security: {attemptCount: 0, maxAttempts: 2},    // 1 original + 1 retry
-  performance: {attemptCount: 0, maxAttempts: 2},
-  ux: {attemptCount: 0, maxAttempts: 2}
-};
-
-function spawnReviewer(config, isRetry = false) {
-  const state = reviewerState[config.category];
-  state.attemptCount++;
-  
-  // CRITICAL-2 FIX: Enforce max retry attempts
-  if (state.attemptCount > state.maxAttempts) {
-    console.error('[' + config.category + '] Max retry attempts (' + state.maxAttempts + ') exceeded');
-    proceedWithoutReviewer(config.category);
-    return null;
-  }
-  
-  console.log('[' + config.category + '] Attempt ' + state.attemptCount + '/' + state.maxAttempts);
-  
-  // Spawn reviewer
-  const result = sessions_spawn(config);
-  
-  // Handle failure
-  result.on('error', (err) => {
-    if (shouldRetry(err.reason) && state.attemptCount < state.maxAttempts) {
-      console.log('[' + config.category + '] Retrying in 30s (attempt ' + (state.attemptCount + 1) + '/' + state.maxAttempts + ')');
-      setTimeout(() => spawnReviewer(config, true), 30000);
-    } else {
-      console.log('[' + config.category + '] Max retries reached or permanent failure — proceeding with 2/3');
-      proceedWithoutReviewer(config.category);
-    }
-  });
-  
-  return result;
-}
-```
-
-**Key changes:**
-- Global attempt counter per reviewer category
-- Hard limit of 2 total attempts (1 original + 1 retry)
-- Prevents retry on different transient errors from creating infinite loops
-- Clear logging of attempt count
 
 ---
 

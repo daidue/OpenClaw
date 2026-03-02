@@ -380,9 +380,11 @@ sessions_spawn({
 
 | Missing | Adjusted Weights |
 |---------|------------------|
-| Security | Performance 58%, UX 42% |
-| Performance | Security 62%, UX 38% |
-| UX | Security 53%, Performance 47% |
+| Security | Performance 58.33%, UX 41.67% |
+| Performance | Security 61.54%, UX 38.46% |
+| UX | Security 53.33%, Performance 46.67% |
+
+_Weights sum to 100.00% (verified)_
 
 **Formula:**
 ```javascript

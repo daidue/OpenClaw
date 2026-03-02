@@ -1,0 +1,150 @@
+#!/usr/bin/env node
+
+/**
+ * chunk-file.js - Chunk large files at function/class boundaries
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+function chunkFile(filePath, options = {}) {
+  const {
+    chunkSize = 700,
+    minChunkSize = 600,
+    maxChunkSize = 800,
+    overlap = 50,
+    outputDir = path.join(path.dirname(filePath), '.chunks')
+  } = options;
+
+  if (!fs.existsSync(filePath)) {
+    throw new Error('File not found: ' + filePath);
+  }
+
+  const content = fs.readFileSync(filePath, 'utf-8');
+  const lines = content.split('\n');
+
+  console.log('Chunking file: ' + filePath);
+  console.log('Total lines: ' + lines.length);
+
+  const boundaries = [];
+  const boundaryPatterns = [
+    /^(export\s+)?(async\s+)?function\s*\*?\s*\w+/,
+    /^(export\s+)?class\s+\w+/,
+    /^(export\s+)?const\s+\w+\s*=\s*(async\s+)?\(/,
+    /^(export\s+)?const\s+\w+\s*=\s*\([^)]*\)\s*=>/,
+    /^(export\s+)?(abstract\s+)?class\s+\w+/,
+    /^(export\s+)?interface\s+\w+/,
+    /^(export\s+)?type\s+\w+/,
+    /^\s+(async\s+)?\w+\s*\([^)]*\)\s*[{:]/,
+    /^\(function/
+  ];
+
+  lines.forEach((line, i) => {
+    if (boundaryPatterns.some(pattern => pattern.test(line.trim()))) {
+      boundaries.push(i + 1);
+    }
+  });
+
+  console.log('Found ' + boundaries.length + ' natural boundaries');
+
+  if (boundaries.length === 0 || boundaries[0] !== 1) {
+    boundaries.unshift(1);
+  }
+  if (boundaries[boundaries.length - 1] !== lines.length) {
+    boundaries.push(lines.length);
+  }
+
+  const chunks = [];
+  let chunkStart = 1;
+
+  for (let i = 0; i < boundaries.length - 1; i++) {
+    const nextBoundary = boundaries[i + 1];
+    const currentSize = nextBoundary - chunkStart;
+
+    if (currentSize > maxChunkSize) {
+      chunks.push({
+        startLine: chunkStart,
+        endLine: boundaries[i]
+      });
+      chunkStart = Math.max(1, boundaries[i] + 1 - overlap);
+    }
+  }
+
+  chunks.push({
+    startLine: chunkStart,
+    endLine: lines.length
+  });
+
+  console.log('Created ' + chunks.length + ' chunks');
+
+  fs.mkdirSync(outputDir, {recursive: true});
+  
+  const chunkFiles = chunks.map((chunk, idx) => {
+    const chunkId = 'chunk-' + (idx + 1);
+    const chunkPath = path.join(outputDir, chunkId + '.txt');
+    
+    const chunkLines = lines.slice(chunk.startLine - 1, chunk.endLine);
+    const chunkContent = chunkLines.join('\n');
+    
+    fs.writeFileSync(chunkPath, chunkContent, 'utf-8');
+    
+    const info = {
+      id: chunkId,
+      path: chunkPath,
+      startLine: chunk.startLine,
+      endLine: chunk.endLine,
+      lineCount: chunk.endLine - chunk.startLine + 1
+    };
+
+    console.log('  ' + chunkId + ': lines ' + info.startLine + '-' + info.endLine + ' (' + info.lineCount + ' lines)');
+    
+    return info;
+  });
+
+  const manifest = {
+    originalFile: filePath,
+    totalLines: lines.length,
+    chunkCount: chunkFiles.length,
+    chunks: chunkFiles,
+    options: {chunkSize, minChunkSize, maxChunkSize, overlap},
+    timestamp: new Date().toISOString()
+  };
+
+  const manifestPath = path.join(outputDir, 'manifest.json');
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), 'utf-8');
+
+  console.log('Manifest written: ' + manifestPath);
+
+  return {chunks: chunkFiles, manifest: manifestPath};
+}
+
+if (require.main === module) {
+  const args = process.argv.slice(2);
+  
+  if (args.length === 0) {
+    console.error('Usage: node chunk-file.js <file-path>');
+    process.exit(1);
+  }
+  
+  const filePath = args[0];
+  const options = {};
+  
+  args.slice(1).forEach(arg => {
+    if (arg.startsWith('--')) {
+      const [key, value] = arg.slice(2).split('=');
+      const optKey = key.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+      options[optKey] = isNaN(value) ? value : parseInt(value);
+    }
+  });
+  
+  try {
+    const result = chunkFile(filePath, options);
+    console.log('\n✅ Chunking complete!');
+  } catch (err) {
+    console.error('❌ Error:', err.message);
+    process.exit(1);
+  }
+}
+
+module.exports = {chunkFile};
+
