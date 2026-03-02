@@ -1,31 +1,30 @@
 {
   "tasks": [
     {
-      "id": "dod-v1.3.0-fixes-20260302-1343",
-      "type": "production-hardening",
-      "agent": "dev",
-      "sessionKey": "agent:dev:subagent:dc06368b-5568-4fab-87d8-82d5229febc9",
+      "id": "3ai-tradeEngine-review-20260302-1513",
+      "type": "3ai-code-review",
+      "agent": "titlerun",
+      "sessionKey": "agent:titlerun:subagent:7a22acd5-d655-47ad-b84c-b4a179ccf8ae",
       "status": "running",
-      "started": "2026-03-02T13:43:00-05:00",
-      "target": "skills/definition-of-done/scripts/run-pre-deploy-checks.sh",
-      "expectedCompletion": "2026-03-02T14:43:00-05:00",
-      "description": "Fix 7 issues to reach 95/100: Gate 0, subshell bug, dead code, shellcheck, error messages, docs, self-test",
-      "deliverable": "workspace-dev/dod-v1.3.0-fixes-complete.md",
-      "targetScore": "95/100 (from 78/100)"
+      "started": "2026-03-02T15:13:00-05:00",
+      "target": "titlerun-api/src/routes/tradeEngine.js (1,594 lines)",
+      "expectedCompletion": "2026-03-02T17:13:00-05:00",
+      "description": "Full 3-AI review (Security 40%, Performance 35%, UX 25%) on core trade engine route handler",
+      "deliverable": "workspace-titlerun/tradeEngine-review-2026-03-02.md"
     },
     {
-      "id": "3ai-v1.3.0-verification-20260302-1343",
-      "type": "production-hardening",
-      "agent": "polymarket",
-      "sessionKey": "agent:polymarket:subagent:91f41b60-a017-49eb-8361-ae75abd5a1e9",
+      "id": "dod-fixes-titlerun-api-20260302-1518",
+      "type": "bug-fixes",
+      "agent": "titlerun",
+      "sessionKey": "agent:titlerun:subagent:ca27c968-d06b-41d5-bd04-79d983927fa0",
       "status": "running",
-      "started": "2026-03-02T13:43:00-05:00",
-      "target": "skills/titlerun-code-review/ (v1.2.0 → v1.3.0)",
-      "expectedCompletion": "2026-03-02T14:43:00-05:00",
-      "description": "Run 3 tests to reach 95/100: integration test, timeout battle-test, error recovery, add docs",
-      "deliverable": "workspace-polymarket/3ai-v1.3.0-verification-complete.md",
-      "targetScore": "95/100 (from 92/100)"
+      "started": "2026-03-02T15:18:00-05:00",
+      "target": "titlerun-api (16 DoD issues)",
+      "expectedCompletion": "2026-03-02T17:18:00-05:00",
+      "description": "Fix 4 CRITICAL, 4 HIGH, 8 MEDIUM/LOW issues: build script, 49 tests, npm audit, ESLint, SQL injection, console.log, CHANGELOG, whitespace",
+      "deliverable": "workspace-titlerun/dod-fixes-complete-2026-03-02.md",
+      "priority": "CRITICAL → HIGH → MEDIUM/LOW"
     }
   ],
-  "lastUpdated": "2026-03-02T13:43:30-05:00"
+  "lastUpdated": "2026-03-02T15:18:30-05:00"
 }
