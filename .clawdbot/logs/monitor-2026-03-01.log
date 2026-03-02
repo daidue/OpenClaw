@@ -118,3 +118,12 @@
 [2026-03-01 20:30:00]   Skipping (status: failed)
 [2026-03-01 20:30:00] Checking 3-AI code review sessions...
 [2026-03-01 20:30:00] === Monitoring check complete ===
+[2026-03-01 20:40:00] === Agent Monitoring Check ===
+[2026-03-01 20:40:00] Checking task: dogfood-2026-03-01 (complete)
+[2026-03-01 20:40:00]   Skipping (status: complete)
+[2026-03-01 20:40:00] Checking task: dogfood-20260301-202548 (failed)
+[2026-03-01 20:40:00]   Skipping (status: failed)
+[2026-03-01 20:40:00] Checking task: titlerun-phase2-backend (failed)
+[2026-03-01 20:40:00]   Skipping (status: failed)
+[2026-03-01 20:40:00] Checking 3-AI code review sessions...
+[2026-03-01 20:40:00] === Monitoring check complete ===
