@@ -1,22 +1,31 @@
 {
   "tasks": [
     {
+      "id": "production-preflight-fixes-20260302-1653",
+      "type": "production-hardening",
+      "agent": "titlerun",
+      "sessionKey": "agent:titlerun:subagent:04816f1f-5548-4ebb-ba2c-776d0e9339c8",
+      "status": "running",
+      "started": "2026-03-02T16:53:00-05:00",
+      "target": "titlerun-api (npm vulnerabilities + final smoke tests)",
+      "expectedCompletion": "2026-03-02T18:53:00-05:00",
+      "description": "Fix all npm security vulnerabilities, verify security configuration, run comprehensive smoke tests (8 scenarios), security tests, database stress tests. Generate production-ready checklist.",
+      "deliverable": "workspace-titlerun/production-preflight-complete-2026-03-02.md",
+      "priority": "NPM VULNERABILITIES → SECURITY CONFIG → SMOKE TESTS → FINAL VERIFICATION",
+      "phases": "Phase 1: npm fixes (30min) | Phase 2: Security verification (15min) | Phase 3: Comprehensive smoke tests (30min) | Phase 4: Final verification (15min)"
+    }
+  ],
+  "lastUpdated": "2026-03-02T16:53:30-05:00",
+  "recentCompletions": [
+    {
       "id": "railway-staging-deployment-20260302-1623",
       "type": "deployment",
       "agent": "titlerun",
-      "sessionKey": "agent:titlerun:subagent:3726df3c-b075-484e-b778-55233b2b2f77",
-      "status": "running",
-      "started": "2026-03-02T16:23:00-05:00",
-      "target": "titlerun-api → Railway staging environment",
-      "expectedCompletion": "2026-03-02T18:23:00-05:00",
-      "description": "Deploy to Railway staging, run 8 smoke tests against live URL, capture performance baseline, verify all systems healthy",
-      "deliverable": "workspace-titlerun/staging-deployment-complete-2026-03-02.md",
-      "priority": "DEPLOY → SMOKE TESTS → PERFORMANCE BASELINE → VERIFY",
-      "phases": "Phase 1: Railway deployment (30-45min) | Phase 2: Live smoke tests (30min) | Phase 3: Monitoring (15min) | Phase 4: Performance baseline (15min)"
-    }
-  ],
-  "lastUpdated": "2026-03-02T16:23:30-05:00",
-  "recentCompletions": [
+      "status": "completed",
+      "completed": "2026-03-02T16:53:00-05:00",
+      "runtime": "81 minutes (with database crash recovery)",
+      "result": "Staging deployed, 8/8 smoke tests passing, 234ms avg response time"
+    },
     {
       "id": "ship-blockers-and-smoke-tests-20260302-1608",
       "type": "production-hardening",
@@ -24,25 +33,7 @@
       "status": "completed",
       "completed": "2026-03-02T16:23:00-05:00",
       "runtime": "2.5 hours (50% under budget)",
-      "result": "All 3 ship blockers resolved, 97.1% tests passing, 100% production-ready"
-    },
-    {
-      "id": "adversarial-audit-titlerun-api-20260302-1531",
-      "type": "adversarial-audit",
-      "agent": "polymarket",
-      "status": "completed",
-      "completed": "2026-03-02T15:39:00-05:00",
-      "runtime": "5m42s",
-      "result": "75% production-ready, 3 ship blockers found (all now resolved)"
-    },
-    {
-      "id": "tradeEngine-security-fixes-20260302-1522",
-      "type": "security-hardening",
-      "agent": "titlerun",
-      "status": "completed",
-      "completed": "2026-03-02T16:05:00-05:00",
-      "runtime": "6 hours",
-      "result": "88/100 (72→88, +16 points), 3 CRITICAL security issues fixed"
+      "result": "All 3 ship blockers resolved, 97.1% tests passing"
     }
   ]
 }
