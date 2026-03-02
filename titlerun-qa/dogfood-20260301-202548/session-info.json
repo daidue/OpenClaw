@@ -1,0 +1,9 @@
+{
+  "sessionName": "dogfood-20260301-202548",
+  "taskId": "dogfood-20260301-202548",
+  "targetUrl": "app.titlerun.co",
+  "startedAt": "2026-03-02T01:25:51Z",
+  "pid": 66784,
+  "outputDir": "/Users/jeffdaniels/.openclaw/workspace/titlerun-qa/dogfood-20260301-202548",
+  "status": "running"
+}

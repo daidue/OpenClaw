@@ -36,5 +36,19 @@
     "outputDir": "titlerun-qa/dogfood-2026-03-01",
     "completedAt": "2026-03-02T00:16:59Z",
     "updatedAt": "2026-03-02T01:16:39Z"
+  },
+  "dogfood-20260301-202548": {
+    "sessionId": "dogfood-20260301-202548",
+    "agent": "rush",
+    "agentType": "agent-browser",
+    "description": "Weekly dogfood QA for TitleRun",
+    "target": "app.titlerun.co",
+    "status": "failed",
+    "startedAt": "2026-03-02T01:25:48Z",
+    "estimatedDuration": "30-60 min",
+    "notifyOnComplete": true,
+    "outputDir": "titlerun-qa/dogfood-2026-03-01",
+    "note": "Session ended without generating report.md",
+    "updatedAt": "2026-03-02T01:26:56Z"
   }
 }

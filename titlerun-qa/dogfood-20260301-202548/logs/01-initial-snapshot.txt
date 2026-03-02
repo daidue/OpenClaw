@@ -1,0 +1,26 @@
+- document:
+  - link "TitleRun titlerun.co" [ref=e1]:
+    - /url: /
+    - img
+    - heading "TitleRun" [ref=e2] [level=1]
+    - paragraph: titlerun.co
+  - heading "Welcome Back" [ref=e3] [level=2]
+  - paragraph: Sign in to your account
+  - text: Email Address
+  - img
+  - textbox "Email Address" [ref=e4]:
+    - /placeholder: you@example.com
+  - text: Password
+  - link "Forgot password?" [ref=e5]:
+    - /url: /forgot-password
+  - img
+  - textbox "Password" [ref=e6]:
+    - /placeholder: Enter your password
+  - button [ref=e7]:
+    - img
+  - button "Sign In" [ref=e8]
+  - paragraph:
+    - text: Don't have an account?
+    - link "Sign up" [ref=e9]:
+      - /url: /signup
+  - paragraph: "Demo: Use any email and password to sign in"

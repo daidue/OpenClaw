@@ -17,10 +17,10 @@ DATE=$(date +%Y-%m-%d)
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
 SESSION_NAME="dogfood-${TIMESTAMP}"
 WORKSPACE="$HOME/.openclaw/workspace"
-OUTPUT_DIR="$WORKSPACE/titlerun-qa/dogfood-$DATE"
+OUTPUT_DIR="$WORKSPACE/titlerun-qa/dogfood-${TIMESTAMP}"
 TASK_REGISTRY="$WORKSPACE/.clawdbot/active-tasks.json"
 TARGET_URL="${1:-https://app.titlerun.co}"
-TASK_ID="dogfood-$DATE"
+TASK_ID="dogfood-${TIMESTAMP}"  # Use full timestamp for unique task IDs
 
 # Colors for output
 RED='\033[0;31m'

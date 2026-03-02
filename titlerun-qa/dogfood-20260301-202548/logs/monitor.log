@@ -1,0 +1,13 @@
+[2026-03-01 20:25:51] Starting monitor for task: dogfood-20260301-202548
+[2026-03-01 20:25:51] Session: dogfood-20260301-202548
+[2026-03-01 20:25:51] Output: /Users/jeffdaniels/.openclaw/workspace/titlerun-qa/dogfood-20260301-202548
+[2026-03-01 20:25:51] Process running... (0 seconds elapsed, 0 screenshots)
+[2026-03-01 20:26:51] Process ended - checking for completion...
+[2026-03-01 20:26:56] ❌ Task failed - no report generated
+[2026-03-01 20:26:56] Screenshots captured: 1
+ok
+[2026-03-01 20:26:57] NOTIFICATION: ⚠️ Dogfood QA failed - no report generated
+
+Task: dogfood-20260301-202548
+Screenshots captured: 1
+Check logs: /Users/jeffdaniels/.openclaw/workspace/titlerun-qa/dogfood-20260301-202548/logs/session.log
