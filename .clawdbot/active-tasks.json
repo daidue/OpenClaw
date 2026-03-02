@@ -1,19 +1,6 @@
 {
   "tasks": [
     {
-      "id": "dod-fixes-titlerun-api-20260302-1518",
-      "type": "bug-fixes",
-      "agent": "titlerun",
-      "sessionKey": "agent:titlerun:subagent:ca27c968-d06b-41d5-bd04-79d983927fa0",
-      "status": "running",
-      "started": "2026-03-02T15:18:00-05:00",
-      "target": "titlerun-api (16 DoD issues)",
-      "expectedCompletion": "2026-03-02T17:18:00-05:00",
-      "description": "Fix 4 CRITICAL, 4 HIGH, 8 MEDIUM/LOW issues: build script, 49 tests, npm audit, ESLint, SQL injection, console.log, CHANGELOG, whitespace",
-      "deliverable": "workspace-titlerun/dod-fixes-complete-2026-03-02.md",
-      "priority": "CRITICAL → HIGH → MEDIUM/LOW"
-    },
-    {
       "id": "tradeEngine-security-fixes-20260302-1522",
       "type": "security-hardening",
       "agent": "titlerun",
@@ -26,10 +13,32 @@
       "deliverable": "workspace-titlerun/tradeEngine-fixes-complete-2026-03-02.md",
       "priority": "CRITICAL SECURITY → PERFORMANCE → UX",
       "phases": "Phase 1: Security (4-6h) | Phase 2: Performance (2-3h) | Phase 3: UX (1-2h)"
+    },
+    {
+      "id": "adversarial-audit-titlerun-api-20260302-1531",
+      "type": "adversarial-audit",
+      "agent": "polymarket",
+      "sessionKey": "agent:polymarket:subagent:a608fb89-fa1d-4b9f-865b-f35cf3591867",
+      "status": "running",
+      "started": "2026-03-02T15:31:00-05:00",
+      "target": "titlerun-api (Rush's DoD fixes + critical code gaps)",
+      "expectedCompletion": "2026-03-02T17:31:00-05:00",
+      "description": "Ruthlessly audit Rush's 5 commits (8-min fixes). Verify SQL safety, test fixes, npm vulnerabilities, ESLint config. Find gaps DoD/Rush missed.",
+      "deliverable": "workspace-polymarket/titlerun-api-adversarial-audit-2026-03-02.md",
+      "focus": "Verify Rush's claims | Find new security issues | Ship/no-ship verdict"
     }
   ],
-  "lastUpdated": "2026-03-02T15:22:30-05:00",
+  "lastUpdated": "2026-03-02T15:31:30-05:00",
   "recentCompletions": [
+    {
+      "id": "dod-fixes-titlerun-api-20260302-1518",
+      "type": "bug-fixes",
+      "agent": "titlerun",
+      "status": "completed",
+      "completed": "2026-03-02T15:27:00-05:00",
+      "runtime": "7m52s",
+      "result": "4/4 CRITICAL, 4/4 HIGH fixed. Production-ready (claims)."
+    },
     {
       "id": "3ai-tradeEngine-review-20260302-1513",
       "type": "3ai-code-review",
