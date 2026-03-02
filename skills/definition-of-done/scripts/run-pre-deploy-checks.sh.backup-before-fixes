@@ -1,23 +1,10 @@
 #!/bin/bash
 
 ###############################################################################
-# Pre-Deploy Checks Script v1.2.0 (SECURITY-HARDENED)
+# Pre-Deploy Checks Script v1.1.0
 # Production-ready pre-deployment automation
 # Runs 25 automated checks with --json and --fix modes
 # Exit 0 = PASS (safe to deploy), Exit 1 = FAIL (blocked), Exit 2 = WARN
-#
-# CHANGELOG v1.2.0 (Edge Security Audit Fixes):
-# - BLOCKER-1: Fixed unquoted trap variable (repository deletion risk)
-# - BLOCKER-2: Added mktemp failure checks with safe fallback
-# - BLOCKER-3: Replaced console.log deletion with warning-only
-# - BLOCKER-4: Added permanent backup system (.dod-backups/)
-# - BLOCKER-5: Added max iteration check (prevents infinite --fix loops)
-# - BLOCKER-6: Required jq for --json mode (no manual JSON escaping)
-# - BLOCKER-7: All JSON output via jq (prevents command injection)
-# - CRITICAL-1: Added git diff --staged to catch uncommitted staged files
-# - CRITICAL-2: Fixed circular dependency regex (now detects 10+)
-# - CRITICAL-3: Increased TypeScript timeout to 90s, build to 180s
-# - CRITICAL-4: Tightened import regex to reduce false positives
 ###############################################################################
 
 RED='\033[0;31m'
@@ -81,18 +68,6 @@ while [[ $# -gt 0 ]]; do
 done
 
 ###############################################################################
-# SECURITY: Require jq for --json mode (BLOCKER-6 fix)
-###############################################################################
-
-if [ "$JSON_OUTPUT" = true ]; then
-  if ! command -v jq &>/dev/null; then
-    echo "❌ ERROR: --json mode requires jq for safe JSON escaping"
-    echo "Install: brew install jq (macOS) or apt-get install jq (Linux)"
-    exit 1
-  fi
-fi
-
-###############################################################################
 # STATE
 ###############################################################################
 
@@ -107,51 +82,15 @@ START_TIME=$(date +%s)
 ISSUES=()
 FIX_COUNT=0
 
-# BLOCKER-1 & BLOCKER-2 FIX: Safe temp directory with failure checks
-DOD_TMPDIR=$(mktemp -d 2>/dev/null)
+DOD_TMPDIR=$(mktemp -d)
+trap "rm -rf $DOD_TMPDIR" EXIT
 
-if [ -z "$DOD_TMPDIR" ] || [ ! -d "$DOD_TMPDIR" ]; then
-  echo "❌ FATAL: Failed to create temporary directory"
-  echo "Check permissions and disk space"
-  exit 1
-fi
-
-# Set restrictive permissions
-chmod 700 "$DOD_TMPDIR"
-
-# BLOCKER-1 FIX: Quote variable in trap, use single quotes
-trap 'rm -rf "$DOD_TMPDIR"' EXIT
-
-# BLOCKER-7 FIX: Use jq for all JSON generation
 add_issue() {
   local severity=$1 check=$2 file=${3:-""} line=${4:-0} message=$5 fix=${6:-""}
-  
-  if [ "$JSON_OUTPUT" = true ]; then
-    # Use jq to safely escape and build JSON
-    jq -n \
-      --arg severity "$severity" \
-      --arg check "$check" \
-      --arg file "$file" \
-      --argjson line "$line" \
-      --arg message "$message" \
-      --arg fix "$fix" \
-      '{
-        severity: $severity,
-        check: $check,
-        file: $file,
-        line: $line,
-        message: $message,
-        fix: $fix
-      }' >> "$DOD_TMPDIR/issues.jsonl"
-  fi
-  
-  # Track for text output
-  case "$severity" in
-    CRITICAL) CRITICAL_COUNT=$((CRITICAL_COUNT + 1)) ;;
-    HIGH) HIGH_COUNT=$((HIGH_COUNT + 1)) ;;
-    MEDIUM) MEDIUM_COUNT=$((MEDIUM_COUNT + 1)) ;;
-    LOW) LOW_COUNT=$((LOW_COUNT + 1)) ;;
-  esac
+  message=$(echo "$message" | sed 's/"/\\"/g' | tr '\n' ' ')
+  fix=$(echo "$fix" | sed 's/"/\\"/g' | tr '\n' ' ')
+  file=$(echo "$file" | sed 's/"/\\"/g')
+  ISSUES+=("{\"severity\":\"$severity\",\"check\":\"$check\",\"file\":\"$file\",\"line\":$line,\"message\":\"$message\",\"fix\":\"$fix\"}")
 }
 
 log()  { [ "$JSON_OUTPUT" != true ] && echo "$@"; }
@@ -176,61 +115,6 @@ else
 fi
 
 ###############################################################################
-# BLOCKER-4 FIX: Permanent backup system
-###############################################################################
-
-create_backup() {
-  local timestamp=$(date +%Y%m%d-%H%M%S)
-  local backup_dir=".dod-backups/$timestamp"
-  
-  loge "📦 Creating permanent backup in $backup_dir..."
-  mkdir -p "$backup_dir"
-  
-  # Copy entire src/ directory and package.json
-  if [ -d "src" ]; then
-    cp -r src/ "$backup_dir/" 2>/dev/null || true
-  fi
-  if [ -f "package.json" ]; then
-    cp package.json "$backup_dir/" 2>/dev/null || true
-  fi
-  
-  loge "✅ Backup created: $backup_dir"
-  loge "   To restore: cp -r $backup_dir/src/* src/"
-  loge ""
-}
-
-###############################################################################
-# BLOCKER-3 FIX: Console.log warning (no deletion)
-###############################################################################
-
-warn_console_logs() {
-  loge "🔍 Checking for console.log statements..."
-  
-  if [ ! -d "src" ]; then
-    loge "   (no src/ directory)"
-    return
-  fi
-  
-  local count=$(grep -rn "console\.log" src/ --include="*.js" --include="*.jsx" --include="*.ts" --include="*.tsx" 2>/dev/null | grep -v "// @debug" | wc -l | tr -d ' ')
-  
-  if [ "$count" -gt 0 ]; then
-    loge "${YELLOW}⚠️  Found $count console.log statements${NC}"
-    loge "   Recommendation: Use proper logging library (winston, pino, etc.)"
-    loge "   Or run: npx eslint src/ --fix --rule 'no-console: error'"
-    loge ""
-  else
-    loge "✅ No console.log statements found"
-    loge ""
-  fi
-}
-
-###############################################################################
-# BLOCKER-5 FIX: Max iteration check for --fix mode
-###############################################################################
-
-MAX_FIX_ITERATIONS=3
-
-###############################################################################
 # AUTO-FIX MODE
 ###############################################################################
 
@@ -241,120 +125,91 @@ if [ "$FIX_MODE" = true ]; then
   [ "$DRY_RUN" = true ] && loge "${YELLOW}  (DRY RUN — no files modified)${NC}"
   loge "${BOLD}================================${NC}"
   loge ""
-  
-  # BLOCKER-4: Create permanent backup before any fixes
-  if [ "$DRY_RUN" != true ]; then
-    create_backup
+
+  if [ -d "src" ]; then
+    # Fix 1: Remove .ts/.tsx extensions from imports in .js/.jsx files
+    loge "🔧 Fixing .ts/.tsx extensions in imports..."
+    find src/ -name "*.js" -o -name "*.jsx" 2>/dev/null | while read file; do
+      if grep -qE "(from|import\(|require\()[[:space:]]*['\"].*\.tsx?['\"]" "$file" 2>/dev/null; then
+        if [ "$DRY_RUN" = true ]; then
+          loge "  Would fix: $file"
+        else
+          sed -i.bak -E "s/(from|import\(|require\()([[:space:]]*['\"][^'\"]+)\.tsx?(['\"])/\1\2\3/g" "$file"
+          rm -f "$file.bak"
+          loge "  ${GREEN}✅ Fixed: $file${NC}"
+        fi
+        FIX_COUNT=$((FIX_COUNT + 1))
+      fi
+    done
+
+    # Fix 2: Remove console.log statements (skip test files)
+    loge "🔧 Removing console.log statements..."
+    find src/ \( -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" \) 2>/dev/null | while read file; do
+      [[ "$file" =~ \.test\. ]] && continue
+      [[ "$file" =~ \.spec\. ]] && continue
+      [[ "$file" =~ __test__ ]] && continue
+      if grep -q "console\.log" "$file" 2>/dev/null; then
+        if [ "$DRY_RUN" = true ]; then
+          count=$(grep -c "console\.log" "$file")
+          loge "  Would remove $count console.log(s) from: $file"
+        else
+          sed -i.bak '/console\.log/d' "$file"
+          rm -f "$file.bak"
+          loge "  ${GREEN}✅ Removed console.log: $file${NC}"
+        fi
+        FIX_COUNT=$((FIX_COUNT + 1))
+      fi
+    done
+
+    # Fix 3: Remove trailing whitespace
+    loge "🔧 Removing trailing whitespace..."
+    find src/ \( -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" \) 2>/dev/null | while read file; do
+      if grep -q '[[:space:]]$' "$file" 2>/dev/null; then
+        if [ "$DRY_RUN" = true ]; then
+          loge "  Would fix: $file"
+        else
+          sed -i.bak 's/[[:space:]]*$//' "$file"
+          rm -f "$file.bak"
+          loge "  ${GREEN}✅ Fixed: $file${NC}"
+        fi
+        FIX_COUNT=$((FIX_COUNT + 1))
+      fi
+    done
   fi
-  
-  # BLOCKER-5: Track iterations to prevent infinite loops
-  fix_iteration=0
-  
-  while [ "$fix_iteration" -lt "$MAX_FIX_ITERATIONS" ]; do
-    fix_iteration=$((fix_iteration + 1))
-    
-    if [ "$MAX_FIX_ITERATIONS" -gt 1 ]; then
-      loge "Fix iteration $fix_iteration/$MAX_FIX_ITERATIONS..."
-      loge ""
+
+  # Fix 4: ESLint --fix
+  if [ -f ".eslintrc" ] || [ -f ".eslintrc.js" ] || [ -f ".eslintrc.json" ] || [ -f ".eslintrc.yml" ] || [ -f "eslint.config.js" ] || [ -f "eslint.config.mjs" ]; then
+    loge "🔧 Running ESLint auto-fix..."
+    if [ "$DRY_RUN" = true ]; then
+      loge "  Would run: npx eslint src/ --fix"
+    else
+      npx eslint src/ --ext .js,.jsx,.ts,.tsx --fix 2>/dev/null || loge "  Some ESLint issues remain"
     fi
-    
-    issues_before=$FIX_COUNT
+    FIX_COUNT=$((FIX_COUNT + 1))
+  fi
 
-    if [ -d "src" ]; then
-      # Fix 1: Remove .ts/.tsx extensions from imports in .js/.jsx files
-      # CRITICAL-4: Tightened regex to reduce false positives
-      loge "🔧 Fixing .ts/.tsx extensions in imports..."
-      find src/ \( -name "*.js" -o -name "*.jsx" \) 2>/dev/null | while read file; do
-        # More precise pattern: only match actual import statements
-        if grep -qE "^[[:space:]]*(import|export).*from[[:space:]]+['\"].*\.tsx?['\"]" "$file" 2>/dev/null; then
-          if [ "$DRY_RUN" = true ]; then
-            loge "  Would fix: $file"
-          else
-            sed -i.bak -E "s/(from[[:space:]]+['\"][^'\"]+)\.tsx?(['\"])/\1\2/g" "$file"
-            rm -f "$file.bak"
-            loge "  ${GREEN}✅ Fixed: $file${NC}"
-          fi
-          FIX_COUNT=$((FIX_COUNT + 1))
-        fi
-      done
-
-      # Fix 2: BLOCKER-3 - Warn about console.log instead of deleting
-      warn_console_logs
-
-      # Fix 3: Remove trailing whitespace
-      loge "🔧 Removing trailing whitespace..."
-      find src/ \( -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" \) 2>/dev/null | while read file; do
-        if grep -q '[[:space:]]$' "$file" 2>/dev/null; then
-          if [ "$DRY_RUN" = true ]; then
-            loge "  Would fix: $file"
-          else
-            sed -i.bak 's/[[:space:]]*$//' "$file"
-            rm -f "$file.bak"
-            loge "  ${GREEN}✅ Fixed: $file${NC}"
-          fi
-          FIX_COUNT=$((FIX_COUNT + 1))
-        fi
-      done
-    fi
-
-    # Fix 4: ESLint --fix
-    if [ -f ".eslintrc" ] || [ -f ".eslintrc.js" ] || [ -f ".eslintrc.json" ] || [ -f ".eslintrc.yml" ] || [ -f "eslint.config.js" ] || [ -f "eslint.config.mjs" ]; then
-      loge "🔧 Running ESLint auto-fix..."
-      if [ "$DRY_RUN" = true ]; then
-        loge "  Would run: npx eslint src/ --fix"
-      else
-        npx eslint src/ --ext .js,.jsx,.ts,.tsx --fix 2>/dev/null || loge "  Some ESLint issues remain"
+  # Fix 5: Format package.json
+  if [ -f "package.json" ] && command -v jq &>/dev/null; then
+    loge "🔧 Formatting package.json..."
+    if [ "$DRY_RUN" = true ]; then
+      loge "  Would sort and format package.json"
+    else
+      jq --sort-keys --indent 2 '.' package.json > "$DOD_TMPDIR/pkg.tmp" 2>/dev/null
+      if [ $? -eq 0 ] && [ -s "$DOD_TMPDIR/pkg.tmp" ]; then
+        mv "$DOD_TMPDIR/pkg.tmp" package.json
+        loge "  ${GREEN}✅ Formatted package.json${NC}"
       fi
-      FIX_COUNT=$((FIX_COUNT + 1))
     fi
-
-    # Fix 5: Format package.json (already has jq check)
-    if [ -f "package.json" ] && command -v jq &>/dev/null; then
-      loge "🔧 Formatting package.json..."
-      if [ "$DRY_RUN" = true ]; then
-        loge "  Would sort and format package.json"
-      else
-        jq --sort-keys --indent 2 '.' package.json > "$DOD_TMPDIR/pkg.tmp" 2>/dev/null
-        if [ $? -eq 0 ] && [ -s "$DOD_TMPDIR/pkg.tmp" ]; then
-          mv "$DOD_TMPDIR/pkg.tmp" package.json
-          loge "  ${GREEN}✅ Formatted package.json${NC}"
-        fi
-      fi
-      FIX_COUNT=$((FIX_COUNT + 1))
-    fi
-    
-    # BLOCKER-5: Check if we made progress
-    issues_after=$FIX_COUNT
-    
-    if [ "$issues_after" -le "$issues_before" ] && [ "$fix_iteration" -gt 1 ]; then
-      loge ""
-      loge "No improvement in iteration $fix_iteration — stopping"
-      break
-    fi
-    
-    # Only loop if there might be more work
-    if [ "$fix_iteration" -ge "$MAX_FIX_ITERATIONS" ]; then
-      loge ""
-      loge "${YELLOW}⚠️  Reached max fix iterations ($MAX_FIX_ITERATIONS)${NC}"
-      loge "   Manual intervention may be needed for remaining issues"
-      break
-    fi
-    
-    # For single iteration, don't loop
-    break
-  done
+    FIX_COUNT=$((FIX_COUNT + 1))
+  fi
 
   loge ""
   if [ "$DRY_RUN" = true ]; then
     loge "${YELLOW}Dry run complete. Run without --dry-run to apply fixes.${NC}"
     exit 0
   else
-    loge "${GREEN}✅ Auto-fixes applied ($FIX_COUNT changes). Re-running checks...${NC}"
+    loge "${GREEN}✅ Auto-fixes applied. Re-running checks...${NC}"
     loge ""
-    loge "💾 Backup preserved in .dod-backups/"
-    loge "   (Clean old backups manually when confident)"
-    loge ""
-    
     RERUN_ARGS=()
     [ "$JSON_OUTPUT" = true ] && RERUN_ARGS+=(--json)
     [ -n "$ENVIRONMENT" ] && RERUN_ARGS+=(--env "$ENVIRONMENT")
@@ -380,13 +235,13 @@ log ""
 
 log "Running quick fail gates..."
 
-# Gate 1: Clean working directory (CRITICAL-1: Added --staged check)
-if ! git diff --quiet 2>/dev/null || ! git diff --staged --quiet 2>/dev/null; then
-  loge "${RED}❌ BLOCKED: Uncommitted or unstaged changes detected${NC}"
+# Gate 1: Clean working directory
+if ! git diff --quiet 2>/dev/null; then
+  loge "${RED}❌ BLOCKED: Uncommitted changes detected${NC}"
   [ "$JSON_OUTPUT" != true ] && git status --short
   log "Fix: git add . && git commit OR git stash"
   add_issue "CRITICAL" "clean-workdir" "" 0 "Uncommitted changes" "git add . && git commit OR git stash"
-  CHECKS_RUN=$((CHECKS_RUN + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
+  CRITICAL_COUNT=$((CRITICAL_COUNT + 1)); CHECKS_RUN=$((CHECKS_RUN + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
   [ "$JSON_OUTPUT" != true ] && exit 1
 else
   log "✓ Working directory clean"
@@ -397,7 +252,7 @@ fi
 if git ls-files -u 2>/dev/null | grep -q '^'; then
   loge "${RED}❌ BLOCKED: Merge conflicts detected${NC}"
   add_issue "CRITICAL" "merge-conflicts" "" 0 "Merge conflicts" "Resolve conflicts, git add, git commit"
-  CHECKS_RUN=$((CHECKS_RUN + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
+  CRITICAL_COUNT=$((CRITICAL_COUNT + 1)); CHECKS_RUN=$((CHECKS_RUN + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
   [ "$JSON_OUTPUT" != true ] && exit 1
 else
   log "✓ No merge conflicts"
@@ -408,7 +263,7 @@ fi
 if [ ! -d "node_modules" ]; then
   loge "${RED}❌ BLOCKED: node_modules missing${NC}"
   add_issue "CRITICAL" "node-modules" "" 0 "node_modules missing" "npm install"
-  CHECKS_RUN=$((CHECKS_RUN + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
+  CRITICAL_COUNT=$((CRITICAL_COUNT + 1)); CHECKS_RUN=$((CHECKS_RUN + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
   [ "$JSON_OUTPUT" != true ] && exit 1
 else
   log "✓ node_modules installed"
@@ -419,7 +274,7 @@ fi
 if ! npm ls --depth=0 >/dev/null 2>&1; then
   loge "${RED}❌ BLOCKED: package.json out of sync${NC}"
   add_issue "CRITICAL" "package-lock" "" 0 "package.json out of sync with lock file" "rm -rf node_modules package-lock.json && npm install"
-  CHECKS_RUN=$((CHECKS_RUN + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
+  CRITICAL_COUNT=$((CRITICAL_COUNT + 1)); CHECKS_RUN=$((CHECKS_RUN + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
   [ "$JSON_OUTPUT" != true ] && exit 1
 else
   log "✓ Package lock in sync"
@@ -439,52 +294,48 @@ log ""
 
 log "Running build verification..."
 
-# Check 5: TS/JS Import Mismatch (CRITICAL-4: Tightened regex)
+# Check 5: TS/JS Import Mismatch
 logn "  Checking TS/JS import mismatches... "
-if [ -d "src" ]; then
-  ts_imports=$(grep -rE "^[[:space:]]*(import|export).*from[[:space:]]+['\"].*\.tsx?['\"]" --include="*.js" --include="*.jsx" src/ 2>/dev/null | grep -v node_modules || true)
-  if [ -n "$ts_imports" ]; then
-    loge "${RED}FAIL${NC}"
-    [ "$JSON_OUTPUT" != true ] && echo "$ts_imports"
-    add_issue "CRITICAL" "ts-js-mismatch" "" 0 "TS/JS import mismatch - breaks production bundler" "Remove .ts/.tsx extensions or run --fix"
-    CHECKS_FAILED=$((CHECKS_FAILED + 1))
-  else
-    loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
-  fi
+ts_imports=$(grep -rE "(from|import\(|require\()[[:space:]]*['\"].*\.tsx?['\"]" --include="*.js" --include="*.jsx" src/ 2>/dev/null | grep -v node_modules || true)
+if [ -n "$ts_imports" ]; then
+  loge "${RED}FAIL${NC}"
+  [ "$JSON_OUTPUT" != true ] && echo "$ts_imports"
+  add_issue "CRITICAL" "ts-js-mismatch" "" 0 "TS/JS import mismatch - breaks production bundler" "Remove .ts/.tsx extensions or run --fix"
+  CRITICAL_COUNT=$((CRITICAL_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
 else
-  loge "${GREEN}SKIP${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
+  loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
 fi
 CHECKS_RUN=$((CHECKS_RUN + 1))
 
-# Check 6: TypeScript compilation (CRITICAL-3: Increased timeout to 90s)
+# Check 6: TypeScript compilation
 logn "  Checking TypeScript compilation... "
 if [ -f "tsconfig.json" ]; then
-  if $TIMEOUT_CMD 90 npx tsc --noEmit --skipLibCheck >"$DOD_TMPDIR/tsc.txt" 2>&1; then
+  if $TIMEOUT_CMD 30 npx tsc --noEmit --skipLibCheck >"$DOD_TMPDIR/tsc.txt" 2>&1; then
     loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
   else
     tsc_exit=$?
-    [ $tsc_exit -eq 124 ] && msg="TypeScript timed out (90s)" || msg="TypeScript compilation errors"
+    [ $tsc_exit -eq 124 ] && msg="TypeScript timed out (30s)" || msg="TypeScript compilation errors"
     loge "${RED}FAIL${NC}"
     [ "$JSON_OUTPUT" != true ] && [ $tsc_exit -ne 124 ] && head -20 "$DOD_TMPDIR/tsc.txt"
     add_issue "CRITICAL" "typescript" "" 0 "$msg" "npx tsc --noEmit"
-    CHECKS_FAILED=$((CHECKS_FAILED + 1))
+    CRITICAL_COUNT=$((CRITICAL_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
   fi
 else
   loge "${GREEN}SKIP (no tsconfig)${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
 fi
 CHECKS_RUN=$((CHECKS_RUN + 1))
 
-# Check 7: Production build (CRITICAL-3: Increased timeout to 180s)
+# Check 7: Production build
 logn "  Running production build... "
-if $TIMEOUT_CMD 180 npm run build >"$DOD_TMPDIR/build.txt" 2>"$DOD_TMPDIR/build-err.txt"; then
+if $TIMEOUT_CMD 120 npm run build >"$DOD_TMPDIR/build.txt" 2>"$DOD_TMPDIR/build-err.txt"; then
   loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
 else
   build_exit=$?
-  [ $build_exit -eq 124 ] && msg="Build timed out (180s)" || msg="Production build failed"
+  [ $build_exit -eq 124 ] && msg="Build timed out (120s)" || msg="Production build failed"
   loge "${RED}FAIL${NC}"
   [ "$JSON_OUTPUT" != true ] && [ $build_exit -ne 124 ] && tail -20 "$DOD_TMPDIR/build-err.txt"
   add_issue "CRITICAL" "build" "" 0 "$msg" "npm run build"
-  CHECKS_FAILED=$((CHECKS_FAILED + 1))
+  CRITICAL_COUNT=$((CRITICAL_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
 fi
 CHECKS_RUN=$((CHECKS_RUN + 1))
 
@@ -493,7 +344,7 @@ logn "  Checking build output errors... "
 if grep -i "error" "$DOD_TMPDIR/build-err.txt" 2>/dev/null | grep -v "0 errors" | grep -q .; then
   loge "${RED}FAIL${NC}"
   add_issue "HIGH" "build-errors" "" 0 "Errors in build output" "Review build errors"
-  CHECKS_FAILED=$((CHECKS_FAILED + 1))
+  HIGH_COUNT=$((HIGH_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
 else
   loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
 fi
@@ -517,7 +368,7 @@ else
   loge "${YELLOW}WARN${NC}"
   [ "$JSON_OUTPUT" != true ] && head -10 "$DOD_TMPDIR/eslint.txt"
   add_issue "HIGH" "eslint" "" 0 "$msg" "npx eslint . --fix"
-  CHECKS_FAILED=$((CHECKS_FAILED + 1))
+  HIGH_COUNT=$((HIGH_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
 fi
 CHECKS_RUN=$((CHECKS_RUN + 1))
 
@@ -531,7 +382,7 @@ else
   loge "${RED}FAIL${NC}"
   [ "$JSON_OUTPUT" != true ] && tail -20 "$DOD_TMPDIR/test.txt"
   add_issue "CRITICAL" "tests" "" 0 "$msg" "npm test"
-  CHECKS_FAILED=$((CHECKS_FAILED + 1))
+  CRITICAL_COUNT=$((CRITICAL_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
 fi
 CHECKS_RUN=$((CHECKS_RUN + 1))
 
@@ -541,8 +392,8 @@ if [ -d "src" ]; then
   console_logs=$(grep -r "console\.log" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" src/ 2>/dev/null | grep -v "// @debug" | grep -v node_modules | wc -l | tr -d ' ')
   if [ "$console_logs" -gt 0 ]; then
     loge "${YELLOW}WARN${NC}"
-    add_issue "MEDIUM" "console-log" "" 0 "$console_logs console.log statements" "Use proper logging or run --fix for warning"
-    CHECKS_FAILED=$((CHECKS_FAILED + 1))
+    add_issue "MEDIUM" "console-log" "" 0 "$console_logs console.log statements" "Remove or run --fix"
+    MEDIUM_COUNT=$((MEDIUM_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
   else
     loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
   fi
@@ -559,11 +410,11 @@ high_vulns=$(echo "$audit_output" | jq -r '.metadata.vulnerabilities.high // 0' 
 if [ "$critical_vulns" -gt 0 ]; then
   loge "${RED}FAIL${NC}"
   add_issue "HIGH" "npm-audit" "" 0 "$critical_vulns critical vulnerabilities" "npm audit fix"
-  CHECKS_FAILED=$((CHECKS_FAILED + 1))
+  HIGH_COUNT=$((HIGH_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
 elif [ "$high_vulns" -gt 0 ]; then
   loge "${YELLOW}WARN${NC}"
   add_issue "MEDIUM" "npm-audit" "" 0 "$high_vulns high vulnerabilities" "npm audit fix"
-  CHECKS_FAILED=$((CHECKS_FAILED + 1))
+  MEDIUM_COUNT=$((MEDIUM_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
 else
   loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
 fi
@@ -578,7 +429,7 @@ log ""
 if [[ "$CRITICALITY" == "PRODUCTION" || "$CRITICALITY" == "STAGING" ]]; then
   log "Running production/staging checks..."
 
-  # Check 13: CHANGELOG entry
+  # Check 13: CHANGELOG entry (H4 fix: compare against last tag)
   logn "  Checking CHANGELOG entry... "
   LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
   if [ -n "$LAST_TAG" ]; then
@@ -587,7 +438,7 @@ if [[ "$CRITICALITY" == "PRODUCTION" || "$CRITICALITY" == "STAGING" ]]; then
     else
       loge "${YELLOW}WARN${NC}"
       add_issue "MEDIUM" "changelog" "CHANGELOG.md" 0 "No CHANGELOG update since $LAST_TAG" "Add changelog entry"
-      CHECKS_FAILED=$((CHECKS_FAILED + 1))
+      MEDIUM_COUNT=$((MEDIUM_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
     fi
   else
     if [ -f "CHANGELOG.md" ]; then
@@ -595,7 +446,7 @@ if [[ "$CRITICALITY" == "PRODUCTION" || "$CRITICALITY" == "STAGING" ]]; then
     else
       loge "${YELLOW}WARN${NC}"
       add_issue "MEDIUM" "changelog" "" 0 "No CHANGELOG.md" "Create CHANGELOG.md"
-      CHECKS_FAILED=$((CHECKS_FAILED + 1))
+      MEDIUM_COUNT=$((MEDIUM_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
     fi
   fi
   CHECKS_RUN=$((CHECKS_RUN + 1))
@@ -609,7 +460,7 @@ if [[ "$CRITICALITY" == "PRODUCTION" || "$CRITICALITY" == "STAGING" ]]; then
       if [ -z "$latest_migration" ]; then
         loge "${RED}FAIL${NC}"
         add_issue "CRITICAL" "db-migration" "prisma/schema.prisma" 0 "Schema changed, no migration" "npx prisma migrate dev --name desc"
-        CHECKS_FAILED=$((CHECKS_FAILED + 1))
+        CRITICAL_COUNT=$((CRITICAL_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
       else
         loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
       fi
@@ -635,7 +486,7 @@ if [ -d "src" ]; then
   if [ "$ws_files" -gt 0 ]; then
     loge "${YELLOW}WARN${NC}"
     add_issue "LOW" "trailing-ws" "" 0 "$ws_files files with trailing whitespace" "Run --fix"
-    CHECKS_FAILED=$((CHECKS_FAILED + 1))
+    LOW_COUNT=$((LOW_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
   else
     loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
   fi
@@ -651,7 +502,7 @@ if [ -d "src" ]; then
   if [ "$todo_count" -gt 20 ]; then
     loge "${YELLOW}WARN${NC}"
     add_issue "LOW" "todo-fixme" "" 0 "$todo_count TODO/FIXME comments" "Review before shipping"
-    CHECKS_FAILED=$((CHECKS_FAILED + 1))
+    LOW_COUNT=$((LOW_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
   else
     loge "${GREEN}PASS ($todo_count)${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
   fi
@@ -666,7 +517,7 @@ large_files=$(find . -not -path './node_modules/*' -not -path './.git/*' -not -p
 if [ "$large_files" -gt 0 ]; then
   loge "${YELLOW}WARN${NC}"
   add_issue "MEDIUM" "large-files" "" 0 "$large_files source files >100KB" "Split large files"
-  CHECKS_FAILED=$((CHECKS_FAILED + 1))
+  MEDIUM_COUNT=$((MEDIUM_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
 else
   loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
 fi
@@ -677,21 +528,20 @@ logn "  Checking .env not committed... "
 if git ls-files --error-unmatch .env >/dev/null 2>&1; then
   loge "${RED}FAIL${NC}"
   add_issue "CRITICAL" "env-committed" ".env" 0 ".env tracked in git - secrets exposed" "git rm --cached .env && add to .gitignore"
-  CHECKS_FAILED=$((CHECKS_FAILED + 1))
+  CRITICAL_COUNT=$((CRITICAL_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
 else
   loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
 fi
 CHECKS_RUN=$((CHECKS_RUN + 1))
 
-# Check 19: Circular dependencies (CRITICAL-2: Fixed regex for 10+)
+# Check 19: Circular dependencies
 logn "  Checking circular dependencies... "
 if command -v madge &>/dev/null && [ -d "src" ]; then
   circ_output=$($TIMEOUT_CMD 30 madge --circular src/ --extensions js,jsx,ts,tsx 2>/dev/null || true)
-  # Fixed regex: [0-9]+ matches any number (including 10+)
-  if echo "$circ_output" | grep -qiE "circular|Found [0-9]+"; then
+  if echo "$circ_output" | grep -qi "circular\|Found [1-9]"; then
     loge "${RED}FAIL${NC}"
     add_issue "HIGH" "circular-deps" "" 0 "Circular dependencies detected" "madge --circular src/"
-    CHECKS_FAILED=$((CHECKS_FAILED + 1))
+    HIGH_COUNT=$((HIGH_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
   else
     loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
   fi
@@ -707,7 +557,7 @@ if command -v jscpd &>/dev/null && [ -d "src" ]; then
   if echo "$jscpd_out" | grep -qi "duplicat"; then
     loge "${YELLOW}WARN${NC}"
     add_issue "MEDIUM" "duplicate-code" "" 0 "Duplicate code >5%" "jscpd src/ --threshold 5"
-    CHECKS_FAILED=$((CHECKS_FAILED + 1))
+    MEDIUM_COUNT=$((MEDIUM_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
   else
     loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
   fi
@@ -723,7 +573,7 @@ if command -v ts-prune &>/dev/null && [ -f "tsconfig.json" ]; then
   if [ "$unused" -gt 10 ]; then
     loge "${YELLOW}WARN${NC}"
     add_issue "MEDIUM" "dead-code" "" 0 "$unused unused exports" "ts-prune"
-    CHECKS_FAILED=$((CHECKS_FAILED + 1))
+    MEDIUM_COUNT=$((MEDIUM_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
   else
     loge "${GREEN}PASS ($unused)${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
   fi
@@ -744,7 +594,7 @@ if [ -d "src" ] && [ -f ".env.example" ]; then
   if [ -n "$MISSING" ]; then
     loge "${YELLOW}WARN${NC}"
     add_issue "MEDIUM" "env-docs" ".env.example" 0 "Undocumented env vars:$MISSING" "Add to .env.example"
-    CHECKS_FAILED=$((CHECKS_FAILED + 1))
+    MEDIUM_COUNT=$((MEDIUM_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
   else
     loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
   fi
@@ -765,7 +615,7 @@ if [ -n "$BUILD_DIR" ]; then
   if [ "$TOTAL_KB" -gt 51200 ]; then
     loge "${YELLOW}WARN${NC}"
     add_issue "MEDIUM" "bundle-size" "$BUILD_DIR" 0 "Bundle $TOTAL_SIZE (>50MB)" "Code splitting / tree shaking"
-    CHECKS_FAILED=$((CHECKS_FAILED + 1))
+    MEDIUM_COUNT=$((MEDIUM_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
   else
     loge "${GREEN}PASS ($TOTAL_SIZE)${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
   fi
@@ -781,7 +631,7 @@ if [ -d "src" ]; then
   if [ "$raw_sql" -gt 0 ]; then
     loge "${RED}FAIL${NC}"
     add_issue "HIGH" "sql-injection" "" 0 "$raw_sql potential SQL injection points" "Use parameterized queries"
-    CHECKS_FAILED=$((CHECKS_FAILED + 1))
+    HIGH_COUNT=$((HIGH_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
   else
     loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
   fi
@@ -797,7 +647,7 @@ if [ -d "src" ]; then
   if [ "$xss" -gt 0 ]; then
     loge "${YELLOW}WARN${NC}"
     add_issue "HIGH" "xss" "" 0 "$xss potential XSS vectors" "Sanitize with DOMPurify"
-    CHECKS_FAILED=$((CHECKS_FAILED + 1))
+    HIGH_COUNT=$((HIGH_COUNT + 1)); CHECKS_FAILED=$((CHECKS_FAILED + 1))
   else
     loge "${GREEN}PASS${NC}"; CHECKS_PASSED=$((CHECKS_PASSED + 1))
   fi
@@ -811,7 +661,7 @@ log ""
 fi # end non-gate-failure block
 
 ###############################################################################
-# DECISION LOGIC
+# DECISION LOGIC (H5: broadened WARN conditions)
 ###############################################################################
 
 END_TIME=$(date +%s)
@@ -835,54 +685,38 @@ elif [[ "$CRITICALITY" == "DEVELOPMENT" && ( $HIGH_COUNT -gt 0 || $MEDIUM_COUNT 
 fi
 
 ###############################################################################
-# JSON OUTPUT (BLOCKER-6 & BLOCKER-7 FIX: All via jq)
+# JSON OUTPUT
 ###############################################################################
 
 if [ "$JSON_OUTPUT" = true ]; then
-  # Combine all issues from jsonl file
-  if [ -f "$DOD_TMPDIR/issues.jsonl" ]; then
-    ISSUES_ARRAY=$(cat "$DOD_TMPDIR/issues.jsonl" | jq -s '.')
-  else
-    ISSUES_ARRAY="[]"
-  fi
-  
-  # Build entire JSON output with jq (safe escaping)
-  jq -n \
-    --arg status "$STATUS" \
-    --argjson exitCode "$EXIT_CODE" \
-    --arg environment "$CRITICALITY" \
-    --arg branch "$BRANCH" \
-    --argjson checksRun "$CHECKS_RUN" \
-    --argjson checksPassed "$CHECKS_PASSED" \
-    --argjson checksFailed "$CHECKS_FAILED" \
-    --argjson critical "$CRITICAL_COUNT" \
-    --argjson high "$HIGH_COUNT" \
-    --argjson medium "$MEDIUM_COUNT" \
-    --argjson low "$LOW_COUNT" \
-    --argjson issues "$ISSUES_ARRAY" \
-    --arg executionTime "${DURATION}s" \
-    --arg timestamp "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-    --arg version "1.2.0" \
-    '{
-      status: $status,
-      exitCode: $exitCode,
-      environment: $environment,
-      branch: $branch,
-      checksRun: $checksRun,
-      checksPassed: $checksPassed,
-      checksFailed: $checksFailed,
-      counts: {
-        critical: $critical,
-        high: $high,
-        medium: $medium,
-        low: $low
-      },
-      issues: $issues,
-      executionTime: $executionTime,
-      timestamp: $timestamp,
-      version: $version
-    }'
-  
+  ISSUES_JSON="["
+  for i in "${!ISSUES[@]}"; do
+    [ $i -gt 0 ] && ISSUES_JSON+=","
+    ISSUES_JSON+="${ISSUES[$i]}"
+  done
+  ISSUES_JSON+="]"
+
+  cat << JSONEOF
+{
+  "status": "$STATUS",
+  "exitCode": $EXIT_CODE,
+  "environment": "$CRITICALITY",
+  "branch": "$BRANCH",
+  "checksRun": $CHECKS_RUN,
+  "checksPassed": $CHECKS_PASSED,
+  "checksFailed": $CHECKS_FAILED,
+  "counts": {
+    "critical": $CRITICAL_COUNT,
+    "high": $HIGH_COUNT,
+    "medium": $MEDIUM_COUNT,
+    "low": $LOW_COUNT
+  },
+  "issues": $ISSUES_JSON,
+  "executionTime": "${DURATION}s",
+  "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "version": "1.1.0"
+}
+JSONEOF
   exit $EXIT_CODE
 fi
 

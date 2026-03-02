@@ -1,30 +1,6 @@
 {
   "tasks": [
     {
-      "id": "dod-audit-rush-20260301-2255",
-      "type": "adversarial-review",
-      "agent": "titlerun",
-      "sessionKey": "agent:titlerun:subagent:f4a3324a-3504-4ed0-b5ed-301fe949f3f3",
-      "status": "running",
-      "started": "2026-03-01T22:55:00-05:00",
-      "target": "skills/definition-of-done/",
-      "expectedCompletion": "2026-03-01T23:55:00-05:00",
-      "description": "Adversarial audit #1: TitleRun codebase expert - will it work on our repos?",
-      "deliverable": "workspace-titlerun/dod-v1.1.0-audit-rush.md"
-    },
-    {
-      "id": "dod-audit-edge-20260301-2255",
-      "type": "adversarial-review",
-      "agent": "polymarket",
-      "sessionKey": "agent:polymarket:subagent:ecc364f6-d31f-4850-baea-517586189d92",
-      "status": "running",
-      "started": "2026-03-01T22:55:00-05:00",
-      "target": "skills/definition-of-done/",
-      "expectedCompletion": "2026-03-01T23:55:00-05:00",
-      "description": "Adversarial audit #2: Security expert - bash safety, false claims, portability",
-      "deliverable": "workspace-titlerun/dod-v1.1.0-audit-edge.md"
-    },
-    {
       "id": "3ai-fix-all-issues-20260301-2300",
       "type": "critical-fixes",
       "agent": "titlerun",
@@ -33,9 +9,33 @@
       "started": "2026-03-01T23:00:00-05:00",
       "target": "skills/titlerun-code-review/",
       "expectedCompletion": "2026-03-02T07:00:00-05:00",
-      "description": "Fix 3 BLOCKERS + 5 CRITICAL issues: implement chunking, timeout monitor, fix math, add tests",
+      "description": "Fix 3 BLOCKERS + 5 CRITICAL: implement chunking, timeout monitor, fix math, add tests",
       "deliverable": "workspace-titlerun/3ai-v1.2.0-fixes-complete.md"
+    },
+    {
+      "id": "dod-rush-fixes-20260301-2311",
+      "type": "critical-fixes",
+      "agent": "titlerun",
+      "sessionKey": "agent:titlerun:subagent:be658274-e723-40ff-b31d-e25e4f92d0dc",
+      "status": "running",
+      "started": "2026-03-01T23:11:00-05:00",
+      "target": "skills/definition-of-done/",
+      "expectedCompletion": "2026-03-02T03:11:00-05:00",
+      "description": "Fix Rush's findings: --fix console.log deletion, Gate 4 false positive",
+      "deliverable": "workspace-titlerun/dod-rush-fixes-complete.md"
+    },
+    {
+      "id": "dod-edge-fixes-20260301-2311",
+      "type": "security-fixes",
+      "agent": "polymarket",
+      "sessionKey": "agent:polymarket:subagent:1c96518f-ac65-4e63-9ce3-ee4df8c05601",
+      "status": "running",
+      "started": "2026-03-01T23:11:00-05:00",
+      "target": "skills/definition-of-done/",
+      "expectedCompletion": "2026-03-02T03:11:00-05:00",
+      "description": "Fix 7 BLOCKERS: trap quotes, mktemp check, safe --fix, jq escaping, backups, loop guard",
+      "deliverable": "workspace-titlerun/dod-edge-fixes-complete.md"
     }
   ],
-  "lastUpdated": "2026-03-01T23:00:30-05:00"
+  "lastUpdated": "2026-03-01T23:11:30-05:00"
 }
