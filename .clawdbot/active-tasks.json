@@ -1,18 +1,6 @@
 {
   "tasks": [
     {
-      "id": "3ai-tradeEngine-review-20260302-1513",
-      "type": "3ai-code-review",
-      "agent": "titlerun",
-      "sessionKey": "agent:titlerun:subagent:7a22acd5-d655-47ad-b84c-b4a179ccf8ae",
-      "status": "running",
-      "started": "2026-03-02T15:13:00-05:00",
-      "target": "titlerun-api/src/routes/tradeEngine.js (1,594 lines)",
-      "expectedCompletion": "2026-03-02T17:13:00-05:00",
-      "description": "Full 3-AI review (Security 40%, Performance 35%, UX 25%) on core trade engine route handler",
-      "deliverable": "workspace-titlerun/tradeEngine-review-2026-03-02.md"
-    },
-    {
       "id": "dod-fixes-titlerun-api-20260302-1518",
       "type": "bug-fixes",
       "agent": "titlerun",
@@ -24,7 +12,32 @@
       "description": "Fix 4 CRITICAL, 4 HIGH, 8 MEDIUM/LOW issues: build script, 49 tests, npm audit, ESLint, SQL injection, console.log, CHANGELOG, whitespace",
       "deliverable": "workspace-titlerun/dod-fixes-complete-2026-03-02.md",
       "priority": "CRITICAL → HIGH → MEDIUM/LOW"
+    },
+    {
+      "id": "tradeEngine-security-fixes-20260302-1522",
+      "type": "security-hardening",
+      "agent": "titlerun",
+      "sessionKey": "agent:titlerun:subagent:3de48682-a73a-494b-a8f7-674c4730edc1",
+      "status": "running",
+      "started": "2026-03-02T15:22:00-05:00",
+      "target": "titlerun-api/src/routes/tradeEngine.js (3-AI findings)",
+      "expectedCompletion": "2026-03-03T01:22:00-05:00",
+      "description": "Fix 3 CRITICAL security issues (authorization, XSS, rate limiting) + performance improvements + UX polish. Target: 72→85+/100",
+      "deliverable": "workspace-titlerun/tradeEngine-fixes-complete-2026-03-02.md",
+      "priority": "CRITICAL SECURITY → PERFORMANCE → UX",
+      "phases": "Phase 1: Security (4-6h) | Phase 2: Performance (2-3h) | Phase 3: UX (1-2h)"
     }
   ],
-  "lastUpdated": "2026-03-02T15:18:30-05:00"
+  "lastUpdated": "2026-03-02T15:22:30-05:00",
+  "recentCompletions": [
+    {
+      "id": "3ai-tradeEngine-review-20260302-1513",
+      "type": "3ai-code-review",
+      "agent": "titlerun",
+      "status": "completed",
+      "completed": "2026-03-02T15:22:00-05:00",
+      "runtime": "9 minutes",
+      "result": "72/100 (3 CRITICAL issues found)"
+    }
+  ]
 }
