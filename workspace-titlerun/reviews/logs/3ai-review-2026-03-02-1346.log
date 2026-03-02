@@ -1,0 +1,10 @@
+[0;34m[13:46:04][0m 🚀 3-AI Code Review Pipeline - PRODUCTION
+[0;34m[13:46:04][0m ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[0;34m[13:46:04][0m 📅 Session:     3ai-review-2026-03-02-1346
+[0;34m[13:46:04][0m 🎯 Target:      /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-api/src/index.js
+[0;34m[13:46:04][0m 📂 Output:      /Users/jeffdaniels/.openclaw/workspace/workspace-titlerun/reviews/outputs/2026-03-02-1346-*.md
+[0;34m[13:46:04][0m 📝 Log:         /Users/jeffdaniels/.openclaw/workspace/workspace-titlerun/reviews/logs/3ai-review-2026-03-02-1346.log
+[0;34m[13:46:04][0m ⏱️  Timeout:     20m 0s per reviewer
+[0;34m[13:46:04][0m Step 1/7: Registering session...
+[0;32m✅ Session registered: 3ai-review-2026-03-02-1346[0m
+[0;34m[13:46:04][0m Step 2/7: Spawning 3 parallel reviewers...

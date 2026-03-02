@@ -166,9 +166,9 @@ success "Session registered: $SESSION_ID"
 
 log "Step 2/7: Spawning 3 parallel reviewers..."
 
-# Bash 3.2 compat: using simple variables instead of associative arrays
-
-
+declare -A REVIEWER_SESSIONS
+declare -A REVIEWER_START_TIMES
+declare -A REVIEWER_STATUS
 
 # Security Reviewer
 log "  • Spawning Security reviewer (OWASP)..."
@@ -202,9 +202,9 @@ if [ "$SECURITY_SESSION" = "SPAWN_FAILED" ]; then
   exit 1
 fi
 
-SECURITY_SESSION_KEY="$SECURITY_SESSION"
-SECURITY_START_TIME=$(date +%s)
-SECURITY_STATUS="running"
+REVIEWER_SESSIONS[security]="$SECURITY_SESSION"
+REVIEWER_START_TIMES[security]=$(date +%s)
+REVIEWER_STATUS[security]="running"
 success "Security reviewer spawned: $SECURITY_SESSION"
 
 # Performance Reviewer
@@ -239,9 +239,9 @@ if [ "$PERFORMANCE_SESSION" = "SPAWN_FAILED" ]; then
   exit 1
 fi
 
-PERFORMANCE_SESSION_KEY="$PERFORMANCE_SESSION"
-PERFORMANCE_START_TIME=$(date +%s)
-PERFORMANCE_STATUS="running"
+REVIEWER_SESSIONS[performance]="$PERFORMANCE_SESSION"
+REVIEWER_START_TIMES[performance]=$(date +%s)
+REVIEWER_STATUS[performance]="running"
 success "Performance reviewer spawned: $PERFORMANCE_SESSION"
 
 # UX Reviewer
@@ -276,9 +276,9 @@ if [ "$UX_SESSION" = "SPAWN_FAILED" ]; then
   exit 1
 fi
 
-UX_SESSION_KEY="$UX_SESSION"
-UX_START_TIME=$(date +%s)
-UX_STATUS="running"
+REVIEWER_SESSIONS[ux]="$UX_SESSION"
+REVIEWER_START_TIMES[ux]=$(date +%s)
+REVIEWER_STATUS[ux]="running"
 success "UX reviewer spawned: $UX_SESSION"
 
 # Update registry

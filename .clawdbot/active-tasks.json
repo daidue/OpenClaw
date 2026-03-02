@@ -1,29 +1,31 @@
 {
   "tasks": [
     {
-      "id": "dod-v1.2.0-audit-bolt-20260302-1050",
-      "type": "adversarial-audit",
+      "id": "dod-v1.3.0-fixes-20260302-1343",
+      "type": "production-hardening",
       "agent": "dev",
-      "sessionKey": "agent:dev:subagent:948cb5c2-27a0-456c-b147-bb0b5573bae4",
+      "sessionKey": "agent:dev:subagent:dc06368b-5568-4fab-87d8-82d5229febc9",
       "status": "running",
-      "started": "2026-03-02T10:50:00-05:00",
+      "started": "2026-03-02T13:43:00-05:00",
       "target": "skills/definition-of-done/scripts/run-pre-deploy-checks.sh",
-      "expectedCompletion": "2026-03-02T12:50:00-05:00",
-      "description": "Verify DoD v1.2.0 overnight build (Rush + Edge fixes). Check 7 security blockers + 2 functionality issues.",
-      "deliverable": "workspace-dev/dod-v1.2.0-audit-bolt.md"
+      "expectedCompletion": "2026-03-02T14:43:00-05:00",
+      "description": "Fix 7 issues to reach 95/100: Gate 0, subshell bug, dead code, shellcheck, error messages, docs, self-test",
+      "deliverable": "workspace-dev/dod-v1.3.0-fixes-complete.md",
+      "targetScore": "95/100 (from 78/100)"
     },
     {
-      "id": "3ai-v1.2.0-audit-edge-20260302-1050",
-      "type": "adversarial-audit",
+      "id": "3ai-v1.3.0-verification-20260302-1343",
+      "type": "production-hardening",
       "agent": "polymarket",
-      "sessionKey": "agent:polymarket:subagent:30c1efa2-0bf1-4959-9c09-f3c630943f48",
+      "sessionKey": "agent:polymarket:subagent:91f41b60-a017-49eb-8361-ae75abd5a1e9",
       "status": "running",
-      "started": "2026-03-02T10:50:00-05:00",
-      "target": "skills/titlerun-code-review/ (v1.2.0 implementations)",
-      "expectedCompletion": "2026-03-02T12:50:00-05:00",
-      "description": "Verify 3-AI v1.2.0 overnight build (Rush fixes). Test chunking, timeout monitor, math corrections, deduplication.",
-      "deliverable": "workspace-polymarket/3ai-v1.2.0-audit-edge.md"
+      "started": "2026-03-02T13:43:00-05:00",
+      "target": "skills/titlerun-code-review/ (v1.2.0 → v1.3.0)",
+      "expectedCompletion": "2026-03-02T14:43:00-05:00",
+      "description": "Run 3 tests to reach 95/100: integration test, timeout battle-test, error recovery, add docs",
+      "deliverable": "workspace-polymarket/3ai-v1.3.0-verification-complete.md",
+      "targetScore": "95/100 (from 92/100)"
     }
   ],
-  "lastUpdated": "2026-03-02T10:50:30-05:00"
+  "lastUpdated": "2026-03-02T13:43:30-05:00"
 }

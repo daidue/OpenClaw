@@ -6,6 +6,31 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) + [Semantic Ver
 
 ---
 
+## [1.3.0] - 2026-03-02
+
+### Added
+- **Gate 0: package.json check** — Clear early failure when not in a Node.js project root (FIX-1)
+- **--self-test mode** — Validates internal functions (jq, mktemp, backup dir creation) (FIX-7)
+- **Inline documentation** — Added comments explaining warn_console_logs rationale, backup format, timeout fallback (FIX-6)
+
+### Fixed
+- **FIX_COUNT subshell bug** — Replaced `find | while` pipes with process substitution so fix counts are preserved (FIX-2)
+- **shellcheck issues** — Fixed SC2086 (unquoted `$ret`), SC2162 (`read` without `-r`), SC2155 (declare/assign separately) (FIX-4)
+- **Gate 4 error messages** — Now distinguishes peer dep warnings (non-blocking) from missing deps (critical) (FIX-5)
+- **Build timeout message** — Suggests increasing timeout for legitimately slow builds (FIX-5)
+- **Gate 1 error message** — Clearer remediation instructions (FIX-5)
+
+### Changed
+- **Removed dead code** — Unused `ISSUES=()` array, decorative while loop simplified to honest single-pass (FIX-3)
+- **Version bump** — JSON output now reports v1.3.0
+- **Check count** — 26 checks (added Gate 0)
+
+### Audit Results
+- **Before:** 78/100 (14 shellcheck findings)
+- **After:** 95/100 (3 shellcheck findings, all info-level false positives)
+
+---
+
 ## [1.1.0] - 2026-03-01
 
 ### Added

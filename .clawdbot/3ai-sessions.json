@@ -1,0 +1,16 @@
+{
+  "3ai-review-2026-03-02-1346": {
+    "timestamp": "2026-03-02-1346",
+    "targetFile": "/Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-api/src/index.js",
+    "reviewers": {},
+    "synthesis": null,
+    "status": "initializing",
+    "startedAt": "2026-03-02T18:46:04Z",
+    "outputPrefix": "2026-03-02-1346",
+    "tokenBudget": {
+      "perReviewer": 30000,
+      "synthesis": 40000,
+      "total": 130000
+    }
+  }
+}

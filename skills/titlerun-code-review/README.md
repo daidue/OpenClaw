@@ -197,6 +197,113 @@ Aggregate: 88/100
 
 ---
 
+### Running a 3-AI Code Review (Production Guide)
+
+#### Quick Start (Recommended)
+
+```bash
+cd ~/.openclaw/workspace/skills/titlerun-code-review
+./scripts/run-3ai-review.sh /path/to/file.js
+```
+
+**What Happens:**
+1. **File Analysis** — Checks line count (>700 lines triggers chunking)
+2. **Chunking** (if needed) — Splits file with 50-line overlap for context
+3. **Parallel Spawn** — 3 reviewers launch simultaneously:
+   - Security (40% weight, OWASP Top 10 framework)
+   - Performance (35% weight, Google SRE principles)
+   - UX (25% weight, Nielsen Heuristics)
+4. **Timeout Monitor** — Enforces 10-minute limit per reviewer
+5. **Aggregation** — Findings collected and deduplicated (overlap zones)
+6. **Synthesis** — Unified report generated with weighted scoring
+
+#### Output Files
+
+All outputs saved to `workspace-titlerun/reviews/outputs/`:
+
+```
+2026-03-02-1346-index-security.md       # Security reviewer findings
+2026-03-02-1346-index-performance.md    # Performance reviewer findings
+2026-03-02-1346-index-ux.md             # UX reviewer findings
+2026-03-02-1346-index-synthesis.md      # ← PRIMARY DELIVERABLE (unified report)
+```
+
+**Logs saved to:** `workspace-titlerun/reviews/logs/`
+
+#### Customization Options
+
+**Custom Timeout (default: 20 minutes per reviewer)**
+```bash
+TIMEOUT_MS=900000 ./scripts/run-3ai-review.sh file.js  # 15 minutes
+```
+
+**Custom Chunk Size (default: 700 lines)**
+```bash
+CHUNK_SIZE=500 ./scripts/run-3ai-review.sh file.js  # Smaller chunks
+```
+
+**Skip Chunking (force single review)**
+```bash
+NO_CHUNK=1 ./scripts/run-3ai-review.sh file.js
+```
+
+**Synthesis Only (reviewers already completed)**
+```bash
+./scripts/run-3ai-review.sh file.js --no-synthesis  # Skip final synthesis
+```
+
+#### Typical Execution Times
+
+| File Size | Chunking | Reviewers (parallel) | Synthesis | Total |
+|-----------|----------|----------------------|-----------|-------|
+| <700 lines | 0s | 8-12 min | 3-5 min | ~15 min |
+| 700-2000 lines | 10s | 10-15 min | 4-6 min | ~20 min |
+| 2000-4000 lines | 15s | 12-18 min | 5-8 min | ~25 min |
+| >4000 lines | 20s | 15-20 min | 6-10 min | ~30 min |
+
+**NOTE:** Parallel execution means all 3 reviewers run simultaneously. Time = slowest reviewer + synthesis.
+
+#### Error Recovery
+
+**If 1 reviewer fails:**
+- System continues with 2/3 reviewers
+- Weights redistributed proportionally:
+  - Missing Security (40%): Performance → 58.33%, UX → 41.67%
+  - Missing Performance (35%): Security → 61.54%, UX → 38.46%
+  - Missing UX (25%): Security → 53.33%, Performance → 46.67%
+- Synthesis notes degraded mode
+
+**If 2 reviewers fail:**
+- System continues with 1/3 reviewer
+- Single reviewer given 100% weight
+- Synthesis warns of incomplete coverage
+
+**Automatic retry:** Each reviewer gets 1 automatic retry on transient failures (max 2 attempts total).
+
+#### Troubleshooting
+
+**"Bash 3.2 compatibility error"**
+```bash
+# macOS ships with Bash 3.2. Script requires manual orchestration.
+# Alternative: Use individual component scripts
+node scripts/chunk-file.js file.js
+# Then manually spawn reviewers via subagents
+```
+
+**"File not found"**
+```bash
+# Use absolute path or path relative to workspace root
+./scripts/run-3ai-review.sh ~/Documents/project/src/file.js
+```
+
+**"Timeout exceeded"**
+```bash
+# Increase timeout for very large files
+TIMEOUT_MS=1800000 ./scripts/run-3ai-review.sh file.js  # 30 minutes
+```
+
+---
+
 ### 3-AI Test Results (tradeEngine.js)
 
 **Validation test on workspace-titlerun/titlerun-api/src/routes/tradeEngine.js (26 lines):**
