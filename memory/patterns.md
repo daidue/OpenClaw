@@ -154,3 +154,16 @@ Test prompt pattern
 **Lesson:** Pattern logging is fast and easy
 
 ---
+
+## Pattern: Infrastructure Simplification (2026-03-02)
+**Context:** Deleted 83% of over-engineered code
+
+**What Worked:**
+- Used OpenClaw native features\n- Went from 600→100 lines\n- No more polling antipatterns
+
+**What Didn't:**
+- Built custom infrastructure without checking platform docs\n- Duplicated features OpenClaw already had
+
+**Lesson:** Always read platform documentation BEFORE building custom solutions
+
+---
