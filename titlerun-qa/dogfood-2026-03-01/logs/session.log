@@ -1,6 +1,6 @@
-Starting agent-browser session: dogfood-20260301-191601
-Target: https://example.com
-[32m✓[0m [1mExample Domain[0m
-  [2mhttps://example.com/[0m
+Starting agent-browser session: dogfood-20260301-194243
+Target: app.titlerun.co
+[32m✓[0m [1mTitleRun — Compete With Your League[0m
+  [2mhttps://app.titlerun.co/[0m
 [32m✓[0m Screenshot saved to [32m/Users/jeffdaniels/.openclaw/workspace/titlerun-qa/dogfood-2026-03-01/screenshots/01-home-page.png[0m
 Session initialization complete
