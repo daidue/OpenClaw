@@ -76,6 +76,23 @@ class ValidationError extends TypeError {
 }
 
 /**
+ * Safely convert value to string, handling objects without prototypes.
+ * Prevents "Cannot convert object to primitive value" errors.
+ * @param {any} value - Value to convert
+ * @param {number} [maxLength=100] - Maximum length to return
+ * @returns {string} String representation (truncated if needed)
+ * @private
+ */
+function safeStringify(value, maxLength = 100) {
+  try {
+    const str = String(value);
+    return str.length > maxLength ? str.substring(0, maxLength) : str;
+  } catch (err) {
+    return '[object]'; // Fallback for unconvertible values
+  }
+}
+
+/**
  * Normalize and validate an ID with production-grade security hardening.
  * 
  * This function provides defense-in-depth protection:
@@ -160,13 +177,7 @@ function normalizeId(id, context = {}) {
     
     // Prevent prototype pollution attacks
     if (inputType === 'object' || inputType === 'function') {
-      // Safe string conversion for objects (handles Object.create(null))
-      let safeValue;
-      try {
-        safeValue = String(id).substring(0, 100);
-      } catch (err) {
-        safeValue = '[object]'; // Fallback for objects that can't be stringified
-      }
+      const safeValue = safeStringify(id);
       
       const error = new ValidationError(
         `Invalid ID type: ${inputType}s not allowed`,
@@ -177,7 +188,7 @@ function normalizeId(id, context = {}) {
       logger.warn('ID validation failed: invalid type', {
         event: 'invalid_id_type',
         inputType,
-        inputValue: String(id).substring(0, 100),
+        inputValue: safeValue, // Use pre-computed safe value
         timestamp: new Date().toISOString(),
         // Caller context for audit trail
         callerIp: context.ip,
@@ -222,8 +233,8 @@ function normalizeId(id, context = {}) {
       logger.error('SECURITY: Library returned non-number type', {
         event: 'library_integrity_violation',
         returnedType: typeof result,
-        returnedValue: String(result).substring(0, 100),
-        inputValue: String(id).substring(0, 100),
+        returnedValue: safeStringify(result),
+        inputValue: safeStringify(id),
         timestamp: new Date().toISOString(),
         // Caller context for audit trail
         callerIp: context.ip,
@@ -243,7 +254,7 @@ function normalizeId(id, context = {}) {
       logger.error('SECURITY: Library returned invalid number', {
         event: 'library_integrity_violation',
         returnedValue: result,
-        inputValue: String(id).substring(0, 100),
+        inputValue: safeStringify(id),
         timestamp: new Date().toISOString(),
         // Caller context for audit trail
         callerIp: context.ip,
