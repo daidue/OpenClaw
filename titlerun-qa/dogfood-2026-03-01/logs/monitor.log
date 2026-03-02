@@ -1,0 +1,19 @@
+[2026-03-01 19:16:04] Starting monitor for task: dogfood-2026-03-01
+[2026-03-01 19:16:04] Session: dogfood-20260301-191601
+[2026-03-01 19:16:04] Output: /Users/jeffdaniels/.openclaw/workspace/titlerun-qa/dogfood-2026-03-01
+[2026-03-01 19:16:04] Process running... (0 seconds elapsed, 0 screenshots)
+[2026-03-01 19:17:04] Process ended - checking for completion...
+[2026-03-01 19:17:09] ✅ Task completed successfully
+[2026-03-01 19:17:09] Found: 4 issues (1 critical, 1 high, 1 medium, 1 low)
+ok
+[2026-03-01 19:17:10] NOTIFICATION: 🔍 TitleRun Dogfood QA Complete
+
+Found: 4 issues
+  • 1 critical
+  • 1 high
+  • 1 medium  
+  • 1 low
+
+Report: titlerun-qa/dogfood-2026-03-01/report.md
+
+⚠️ 1 CRITICAL issues require immediate attention

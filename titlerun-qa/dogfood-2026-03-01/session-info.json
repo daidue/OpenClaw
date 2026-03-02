@@ -1,0 +1,9 @@
+{
+  "sessionName": "dogfood-20260301-191601",
+  "taskId": "dogfood-2026-03-01",
+  "targetUrl": "https://example.com",
+  "startedAt": "2026-03-02T00:16:04Z",
+  "pid": 47760,
+  "outputDir": "/Users/jeffdaniels/.openclaw/workspace/titlerun-qa/dogfood-2026-03-01",
+  "status": "running"
+}

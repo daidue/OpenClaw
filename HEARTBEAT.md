@@ -71,11 +71,13 @@ Rotate which business unit gets the deep-dive each beat:
 
 ### 9. Weekly Portfolio Review (Sunday via cron)
 - Collect all Owner/Operator weekly scorecards
-- **Run TitleRun Dogfood QA** (see skills/titlerun-dogfood/SKILL.md):
-  - Spawn coding agent to systematically test app.titlerun.co
-  - Generate QA report with video/screenshot evidence
+- **Run TitleRun Dogfood QA** (automated):
+  - Run: `./scripts/run-dogfood.sh` (spawns agent-browser, auto-monitored)
+  - No manual intervention needed — task auto-completes in 30-60 min
+  - Rush gets notified when complete (via .clawdbot monitoring)
   - Summarize critical/high findings in weekly review
   - Report location: `titlerun-qa/dogfood-YYYY-MM-DD/report.md`
+  - See: `titlerun-qa/README.md` for details
 - **Library Health Check** (TitleRun codebase):
   - Run: `cd workspace-titlerun/titlerun-api && bash scripts/scan-duplicate-patterns.sh`
   - Review for new duplicate patterns (email validation, date formatting, etc.)

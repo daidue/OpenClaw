@@ -134,6 +134,65 @@ Load references/production-incidents.md
 
 ---
 
+## Multi-Agent Review Mode
+
+**When to use:** Pre-deploy critical reviews, security-sensitive changes, high-stakes releases
+
+**Mode flag:** `mode=3ai`
+
+When `mode=3ai` is specified, spawn **3 parallel reviewers** instead of single-agent review:
+
+### The 3 Reviewers
+
+**1. Security Reviewer** (cognitive-profiles/owasp-security.md)
+- **Focus:** OWASP Top 10 vulnerabilities (A01-A10)
+- **Depth:** Authentication, authorization, injection, XSS, CSRF, security misconfig
+- **Output:** `reviews/[timestamp]-security.md`
+
+**2. Performance Reviewer** (cognitive-profiles/google-sre-performance.md)
+- **Focus:** Query efficiency, algorithmic complexity, resource usage
+- **Depth:** O(n) analysis, database N+1 queries, caching, memory leaks
+- **Output:** `reviews/[timestamp]-performance.md`
+
+**3. UX Reviewer** (cognitive-profiles/nielsen-ux-heuristics.md)
+- **Focus:** Nielsen's 10 usability heuristics
+- **Depth:** User error prevention, feedback, consistency, accessibility
+- **Output:** `reviews/[timestamp]-ux.md`
+
+### Each Reviewer Process
+
+1. **Load cognitive profile** (their specialized lens)
+2. **Apply TitleRun anti-patterns** (same reference data)
+3. **Use finding template** (5 elements required: file, line, code, impact, fix)
+4. **Post to shared findings registry** (`reviews/[timestamp]-[reviewer].md`)
+
+### Orchestration Flow
+
+```
+User Request (mode=3ai)
+    ↓
+Spawn 3 Parallel Reviewers (subagents, mode=run, no waiting)
+    ↓           ↓           ↓
+Security   Performance    UX
+  Agent       Agent      Agent
+    ↓           ↓           ↓
+Wait for all 3 to complete (poll subagents list)
+    ↓
+Spawn Synthesis Agent
+    ↓
+Unified Report (deduplicated, ranked, scored)
+```
+
+**Workflow:** See `workflows/multi-agent-review.md` for detailed orchestration steps
+
+**Synthesis:** See `workflows/synthesis.md` for deduplication and scoring logic
+
+**Cost:** ~3x single review (~60K tokens for 3 parallel + synthesis)
+
+**Time:** Similar to 1-AI (parallelism) but better coverage
+
+---
+
 ## Workflow Execution (Thinking Architecture - Layer 2)
 
 **For each active workflow:**

@@ -22,5 +22,19 @@
     },
     "failedAt": "2026-03-01T22:00:00Z",
     "note": "Session ended without creating PR"
+  },
+  "dogfood-2026-03-01": {
+    "sessionId": "dogfood-20260301-191601",
+    "agent": "rush",
+    "agentType": "agent-browser",
+    "description": "Weekly dogfood QA for TitleRun",
+    "target": "https://example.com",
+    "status": "complete",
+    "startedAt": "2026-03-02T00:16:01Z",
+    "estimatedDuration": "30-60 min",
+    "notifyOnComplete": true,
+    "outputDir": "titlerun-qa/dogfood-2026-03-01",
+    "completedAt": "2026-03-02T00:16:59Z",
+    "updatedAt": "2026-03-02T00:17:09Z"
   }
 }

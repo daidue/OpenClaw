@@ -54,3 +54,10 @@
 [2026-03-01 19:10:01] Checking task: titlerun-phase2-backend (failed)
 [2026-03-01 19:10:01]   Skipping (status: failed)
 [2026-03-01 19:10:01] === Monitoring check complete ===
+[2026-03-01 19:16:59] === Agent Monitoring Check ===
+[2026-03-01 19:16:59] Checking task: dogfood-2026-03-01 (running)
+[2026-03-01 19:16:59]   ✗ Agent-browser session ended
+[2026-03-01 19:16:59]   ✓ Report generated
+[2026-03-01 19:17:00] Checking task: titlerun-phase2-backend (failed)
+[2026-03-01 19:17:00]   Skipping (status: failed)
+[2026-03-01 19:17:00] === Monitoring check complete ===
