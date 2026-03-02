@@ -1,9 +1,10 @@
 ---
 name: titlerun-code-review
-description: 'Systematic multi-lens code review for TitleRun. Applies Security (OWASP), Performance (Google SRE), and UX (Nielsen) frameworks with TitleRun-specific anti-pattern detection. Target: 95+ score.'
-version: 1.0.0
+description: 'Systematic multi-lens code review for TitleRun. Applies Security (OWASP), Performance (Google SRE), and UX (Nielsen) frameworks with TitleRun-specific anti-pattern detection. Target: 95+ score. Supports 3-AI parallel review pipeline for comprehensive coverage.'
+version: 1.1.0
 author: Jeff Daniels
 created: 2026-03-01
+updated: 2026-03-01
 ---
 
 # TitleRun Code Review v1.0.0

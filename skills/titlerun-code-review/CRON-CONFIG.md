@@ -135,5 +135,145 @@ openclaw run "review titlerun-api/src/routes/players.ts" --skill titlerun-code-r
 
 ---
 
+## 3-AI Pipeline (Optional, High Coverage)
+
+**For critical pre-deploy reviews:**
+
+**When to use:**
+- Pre-launch reviews (high stakes)
+- Security-critical changes (auth, payments, data handling)
+- Performance-critical paths (trade engine, valuation logic)
+- Post-incident reviews (what did we miss?)
+
+### Recommended Schedule
+
+**Weekly pre-deploy (Fridays):**
+```json
+{
+  "name": "titlerun-3ai-pre-deploy",
+  "schedule": "0 15 * * 5",
+  "command": "Run 3-AI code review on all files changed since last deploy. Mode: 3ai. Target: workspace-titlerun/titlerun-api/src/",
+  "type": "code-review-3ai",
+  "enabled": false
+}
+```
+
+**Schedule:** Every Friday at 3pm EST (before staging deploy)  
+**Rationale:** Comprehensive review before weekend deploy, catches issues before production
+
+**Cost:** ~$2-4 per review (depends on files changed)  
+**Time:** 15-20 minutes (parallel execution)  
+**Token budget:** ~60K tokens per file reviewed
+
+### On-Demand Only (Recommended)
+
+**Instead of cron, trigger manually for critical reviews:**
+
+```bash
+# Security-critical change
+openclaw run "review api/routes/auth.ts mode=3ai" --skill titlerun-code-review
+
+# Performance-critical change
+openclaw run "review api/routes/tradeEngine.js mode=3ai" --skill titlerun-code-review
+
+# Pre-deploy review (all changed files)
+openclaw run "review all files changed since last deploy mode=3ai" --skill titlerun-code-review
+```
+
+### Token Budget Planning
+
+**Monthly budget allocation:**
+
+| Review Type | Frequency | Tokens/review | Monthly tokens | Monthly cost |
+|-------------|-----------|---------------|----------------|--------------|
+| 1-AI (daily) | 30/month | ~18K | 540K | ~$3.24 |
+| 3-AI (weekly) | 4/month | ~60K | 240K | ~$1.44 |
+| 3-AI (on-demand) | 2/month | ~60K | 120K | ~$0.72 |
+| **Total** | - | - | **900K** | **~$5.40/month** |
+
+**Budget by phase:**
+- **Phase 0 (PREP):** 1-AI daily only = ~$3/month
+- **Phase 1 (MVP):** 1-AI daily + 3-AI weekly = ~$5/month
+- **Phase 2 (SCALE):** 1-AI daily + 3-AI pre-deploy = ~$6/month
+
+**Recommendation:** Start with 1-AI daily, add 3-AI on-demand for critical changes, scale to weekly 3-AI in Phase 1+.
+
+### 3-AI Workflow
+
+**When 3-AI cron triggers:**
+1. Spawn 3 parallel reviewers (Security, Performance, UX)
+2. Each reviewer analyzes target file(s) with cognitive profile
+3. Wait for all 3 to complete (~10-15 minutes)
+4. Spawn synthesis agent to deduplicate and rank findings
+5. Generate unified report with aggregate score
+6. Post to Jeff's inbox with recommendation (SHIP/FIX/BLOCK)
+
+**Output files:**
+- `reviews/YYYY-MM-DD-HHMM-security.md`
+- `reviews/YYYY-MM-DD-HHMM-performance.md`
+- `reviews/YYYY-MM-DD-HHMM-ux.md`
+- `reviews/YYYY-MM-DD-HHMM-unified.md` (primary deliverable)
+
+**Inbox format:**
+```markdown
+## [3-AI CODE REVIEW] [File/PR] — Aggregate Score: XX/100
+
+**Breakdown:**
+- Security: XX/100 (40% weight)
+- Performance: XX/100 (35% weight)
+- UX: XX/100 (25% weight)
+
+**Critical issues:** X (block merge)
+**High issues:** Y (fix before deploy)
+
+**Coverage:**
+- All 3 reviewers agreed: N issues (high confidence)
+- 2 reviewers found: M issues (medium confidence)
+- Single reviewer only: K issues (specialist insights)
+
+**Action required:**
+[SHIP / FIX FIRST / BLOCK]
+
+**Full report:** workspace-titlerun/reviews/YYYY-MM-DD-HHMM-unified.md
+```
+
+### Error Handling
+
+**If any reviewer fails:**
+- Continue with available reviews (partial coverage better than none)
+- Note failure in synthesis report
+- Log error to `workspace-titlerun/reviews/YYYY-MM-DD-HHMM-errors.md`
+
+**If synthesis fails:**
+- Deliver individual reports
+- Alert for manual synthesis
+- Fall back to highest-severity reviewer score
+
+**If all reviewers fail:**
+- Fall back to 1-AI review mode
+- Alert immediately
+- Log catastrophic failure
+
+### Monitoring
+
+**Track metrics per 3-AI review:**
+- Total time (target: <15 min)
+- Total tokens (target: ~60K)
+- Findings: Critical/High/Medium/Low counts
+- Consensus rate (2+ reviewers agree)
+- Deduplication rate (duplicates found / total findings)
+- Unique insights vs 1-AI baseline
+
+**Alert conditions:**
+- Any reviewer stalls >15 minutes
+- Token usage >80K (over budget)
+- Score <80 (BLOCK)
+- All reviewers fail (catastrophic)
+
+**Log to:** `workspace-titlerun/reviews/metrics.json`
+
+---
+
 **Created:** 2026-03-01  
-**Status:** Awaiting manual cron enablement
+**Updated:** 2026-03-01 (added 3-AI pipeline)  
+**Status:** 1-AI ready for cron, 3-AI validated (use on-demand)
