@@ -113,6 +113,11 @@ class ValidationError extends TypeError {
  * - All validation failures are logged for security monitoring
  * 
  * @param {string|number|null|undefined} id - ID to normalize
+ * @param {Object} [context={}] - Optional caller context for audit trail (FIX #9: MEDIUM)
+ * @param {string} [context.ip] - Client IP address
+ * @param {string} [context.userId] - Authenticated user ID
+ * @param {string} [context.endpoint] - API endpoint path
+ * @param {string} [context.requestId] - Unique request ID
  * @returns {number|null} - Normalized ID (integer ≥ 0) or null (for null/undefined input)
  * @throws {ValidationError} - If ID is invalid (with specific diagnostic message)
  * @throws {TypeError} - If library returns unexpected type (security violation)
@@ -122,6 +127,16 @@ class ValidationError extends TypeError {
  * const userId = normalizeId(req.params.userId);           // 42 → 42
  * const leagueId = normalizeId(req.query.league);          // "123" → 123
  * const optionalId = normalizeId(req.body.optionalField);  // null → null
+ * 
+ * @example
+ * // With caller context (recommended for security monitoring)
+ * const context = {
+ *   ip: req.ip,
+ *   userId: req.user?.id,
+ *   endpoint: req.path,
+ *   requestId: req.id,
+ * };
+ * const id = normalizeId(req.params.id, context);
  * 
  * @example
  * // Error handling
@@ -138,24 +153,37 @@ class ValidationError extends TypeError {
  *   }
  * }
  */
-function normalizeId(id) {
+function normalizeId(id, context = {}) {
   // FIX 2: HIGH - Input Pre-Validation (Defense Layer 1)
   if (id !== null && id !== undefined) {
     const inputType = typeof id;
     
     // Prevent prototype pollution attacks
     if (inputType === 'object' || inputType === 'function') {
+      // Safe string conversion for objects (handles Object.create(null))
+      let safeValue;
+      try {
+        safeValue = String(id).substring(0, 100);
+      } catch (err) {
+        safeValue = '[object]'; // Fallback for objects that can't be stringified
+      }
+      
       const error = new ValidationError(
         `Invalid ID type: ${inputType}s not allowed`,
-        { inputType, inputValue: String(id).substring(0, 100) }
+        { inputType, inputValue: safeValue }
       );
       
-      // FIX 3: HIGH - Security Logging
+      // FIX 3: HIGH - Security Logging (FIX #9: Added caller context)
       logger.warn('ID validation failed: invalid type', {
         event: 'invalid_id_type',
         inputType,
         inputValue: String(id).substring(0, 100),
         timestamp: new Date().toISOString(),
+        // Caller context for audit trail
+        callerIp: context.ip,
+        callerUser: context.userId,
+        callerEndpoint: context.endpoint,
+        requestId: context.requestId,
       });
       
       throw error;
@@ -172,6 +200,11 @@ function normalizeId(id) {
         event: 'invalid_id_type',
         inputType,
         timestamp: new Date().toISOString(),
+        // Caller context for audit trail
+        callerIp: context.ip,
+        callerUser: context.userId,
+        callerEndpoint: context.endpoint,
+        requestId: context.requestId,
       });
       
       throw error;
@@ -192,6 +225,11 @@ function normalizeId(id) {
         returnedValue: String(result).substring(0, 100),
         inputValue: String(id).substring(0, 100),
         timestamp: new Date().toISOString(),
+        // Caller context for audit trail
+        callerIp: context.ip,
+        callerUser: context.userId,
+        callerEndpoint: context.endpoint,
+        requestId: context.requestId,
       });
       
       throw new TypeError(
@@ -207,6 +245,11 @@ function normalizeId(id) {
         returnedValue: result,
         inputValue: String(id).substring(0, 100),
         timestamp: new Date().toISOString(),
+        // Caller context for audit trail
+        callerIp: context.ip,
+        callerUser: context.userId,
+        callerEndpoint: context.endpoint,
+        requestId: context.requestId,
       });
       
       throw new TypeError(
@@ -223,15 +266,20 @@ function normalizeId(id) {
     let errorMessage = 'Invalid ID: validation failed';
     const idStr = String(id);
     
+    // Truncate long inputs in error messages (max 100 chars for readability)
+    const displayValue = idStr.length > 100 
+      ? `${idStr.substring(0, 97)}...` 
+      : idStr;
+    
     if (typeof id === 'string') {
       if (idStr.trim() === '') {
         errorMessage = 'Invalid ID: cannot be empty string';
       } else if (isNaN(Number(id))) {
-        errorMessage = `Invalid ID "${idStr}": must be a number`;
+        errorMessage = `Invalid ID "${displayValue}": must be a number`;
       } else if (idStr.includes('.')) {
-        errorMessage = `Invalid ID "${idStr}": must be an integer (no decimals)`;
+        errorMessage = `Invalid ID "${displayValue}": must be an integer (no decimals)`;
       } else {
-        errorMessage = `Invalid ID "${idStr}": must be a valid non-negative integer`;
+        errorMessage = `Invalid ID "${displayValue}": must be a valid non-negative integer`;
       }
     } else if (typeof id === 'number') {
       if (!Number.isFinite(id)) {
@@ -250,7 +298,7 @@ function normalizeId(id) {
       inputType: typeof id,
     });
     
-    // FIX 3: HIGH - Security Logging for Failed Validations
+    // FIX 3: HIGH - Security Logging for Failed Validations (FIX #9: Added caller context)
     logger.warn('ID validation failed', {
       event: 'invalid_id_validation',
       inputType: typeof id,
@@ -258,6 +306,11 @@ function normalizeId(id) {
       inputLength: idStr.length,
       errorMessage,
       timestamp: new Date().toISOString(),
+      // Caller context for audit trail
+      callerIp: context.ip,
+      callerUser: context.userId,
+      callerEndpoint: context.endpoint,
+      requestId: context.requestId,
     });
     
     throw error;
