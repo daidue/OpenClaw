@@ -1,12 +1,12 @@
-[2026-03-01 19:42:46] Starting monitor for task: dogfood-2026-03-01
-[2026-03-01 19:42:46] Session: dogfood-20260301-194243
-[2026-03-01 19:42:46] Output: /Users/jeffdaniels/.openclaw/workspace/titlerun-qa/dogfood-2026-03-01
-[2026-03-01 19:42:46] Process running... (0 seconds elapsed, 1 screenshots)
-[2026-03-01 19:43:46] Process ended - checking for completion...
-[2026-03-01 19:43:51] ✅ Task completed successfully
-[2026-03-01 19:43:51] Found: 4 issues (1 critical, 1 high, 1 medium, 1 low)
+[2026-03-01 20:15:33] Starting monitor for task: dogfood-2026-03-01
+[2026-03-01 20:15:33] Session: dogfood-20260301-201530
+[2026-03-01 20:15:33] Output: /Users/jeffdaniels/.openclaw/workspace/titlerun-qa/dogfood-2026-03-01
+[2026-03-01 20:15:33] Process running... (0 seconds elapsed, 1 screenshots)
+[2026-03-01 20:16:33] Process ended - checking for completion...
+[2026-03-01 20:16:39] ✅ Task completed successfully
+[2026-03-01 20:16:39] Found: 4 issues (1 critical, 1 high, 1 medium, 1 low)
 ok
-[2026-03-01 19:43:52] NOTIFICATION: 🔍 TitleRun Dogfood QA Complete
+[2026-03-01 20:16:39] NOTIFICATION: 🔍 TitleRun Dogfood QA Complete
 
 Found: 4 issues
   • 1 critical

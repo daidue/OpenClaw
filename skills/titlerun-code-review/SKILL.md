@@ -169,28 +169,80 @@ When `mode=3ai` is specified, spawn **3 parallel reviewers** instead of single-a
 
 ### Orchestration Flow
 
+**CRITICAL:** Main agent (Jeff) must spawn reviewers directly. Subagents cannot spawn other subagents.
+
 ```
-User Request (mode=3ai)
+User: "Run 3-AI review on tradeEngine.js"
     ↓
-Spawn 3 Parallel Reviewers (subagents, mode=run, no waiting)
+Jeff (main agent) spawns 3 reviewers in parallel:
+    ↓
+sessions_spawn(runtime=subagent, mode=run, label=security-review, task=[security review task])
+sessions_spawn(runtime=subagent, mode=run, label=performance-review, task=[performance review task])
+sessions_spawn(runtime=subagent, mode=run, label=ux-review, task=[UX review task])
     ↓           ↓           ↓
 Security   Performance    UX
   Agent       Agent      Agent
     ↓           ↓           ↓
-Wait for all 3 to complete (poll subagents list)
+All agents auto-announce completion (no polling needed)
     ↓
-Spawn Synthesis Agent
+Jeff spawns synthesis agent:
+    ↓
+sessions_spawn(runtime=subagent, mode=run, label=synthesis, task=[synthesis task])
     ↓
 Unified Report (deduplicated, ranked, scored)
+```
+
+**Example invocation:**
+
+```javascript
+// 1. Spawn Security Reviewer
+sessions_spawn(
+  runtime: "subagent",
+  mode: "run",
+  agentId: "main",
+  label: "security-review",
+  task: "Review src/routes/tradeEngine.js with OWASP security lens. Load cognitive-profiles/owasp-security.md. Apply TitleRun anti-patterns. Output to reviews/[timestamp]-security.md"
+)
+
+// 2. Spawn Performance Reviewer  
+sessions_spawn(
+  runtime: "subagent",
+  mode: "run",
+  agentId: "main",
+  label: "performance-review",
+  task: "Review src/routes/tradeEngine.js with Google SRE performance lens. Load cognitive-profiles/google-sre-performance.md. Apply TitleRun anti-patterns. Output to reviews/[timestamp]-performance.md"
+)
+
+// 3. Spawn UX Reviewer
+sessions_spawn(
+  runtime: "subagent",
+  mode: "run",
+  agentId: "main",
+  label: "ux-review",
+  task: "Review src/routes/tradeEngine.js with Nielsen UX heuristics lens. Load cognitive-profiles/nielsen-ux-heuristics.md. Apply TitleRun anti-patterns. Output to reviews/[timestamp]-ux.md"
+)
+
+// Wait for all 3 to complete (they auto-announce)
+// Then spawn synthesis:
+
+sessions_spawn(
+  runtime: "subagent",
+  mode: "run",
+  agentId: "main",
+  label: "synthesis",
+  task: "Synthesize 3 reviewer outputs. Load reviews/*-security.md, *-performance.md, *-ux.md. Deduplicate findings (same file+line). Weighted scoring: Security 40%, Performance 35%, UX 25%. Output to reviews/[timestamp]-unified.md"
+)
 ```
 
 **Workflow:** See `workflows/multi-agent-review.md` for detailed orchestration steps
 
 **Synthesis:** See `workflows/synthesis.md` for deduplication and scoring logic
 
-**Cost:** ~3x single review (~60K tokens for 3 parallel + synthesis)
+**Cost:** ~60K tokens total (3 reviewers ~10K each + synthesis ~30K) = ~$3
 
-**Time:** Similar to 1-AI (parallelism) but better coverage
+**Time:** 10-15 min (parallel execution, depends on file size)
+
+**Error handling:** If 1 reviewer fails, synthesis proceeds with 2/3 reviewers (degraded mode)
 
 ---
 

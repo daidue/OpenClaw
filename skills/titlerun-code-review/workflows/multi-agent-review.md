@@ -32,15 +32,25 @@
 
 ---
 
-## Step 1: Spawn 3 Parallel Reviewers
+## Step 1: Main Agent Spawns 3 Parallel Reviewers
 
-**Mode:** `subagents spawn` with `mode=run` (no waiting)
+**CRITICAL:** Only the main agent (Jeff) can spawn reviewers. The `subagents` tool has NO spawn action - only list, kill, steer.
+
+**Use `sessions_spawn` with `runtime=subagent, mode=run`:**
 
 ### Reviewer 1 - Security
 
-**Spawn command:**
-```
-subagents spawn --label security-reviewer --message "Review [file path] for security vulnerabilities. Load cognitive-profiles/owasp-security.md. Apply TitleRun anti-patterns from references/titlerun-anti-patterns.md. Use templates/finding-template.md for every finding. Output to workspace-titlerun/reviews/[timestamp]-security.md"
+**Spawn with sessions_spawn:**
+```javascript
+sessions_spawn({
+  runtime: "subagent",
+  mode: "run",
+  agentId: "main",
+  label: "security-review",
+  cwd: "/Users/jeffdaniels/.openclaw/workspace",
+  runTimeoutSeconds: 1800,
+  task: "Review [file path] for security vulnerabilities. Load cognitive-profiles/owasp-security.md. Apply TitleRun anti-patterns from skills/titlerun-code-review/references/titlerun-anti-patterns.md. Use skills/titlerun-code-review/templates/finding-template.md for every finding. Output to workspace-titlerun/reviews/[timestamp]-security.md. Focus: OWASP Top 10 (A01-A10). Required: 5 elements per finding (file, line, code, impact, fix)."
+})
 ```
 
 **Cognitive profile:** `skills/titlerun-code-review/../../cognitive-profiles/owasp-security.md`
@@ -63,9 +73,17 @@ subagents spawn --label security-reviewer --message "Review [file path] for secu
 
 ### Reviewer 2 - Performance
 
-**Spawn command:**
-```
-subagents spawn --label performance-reviewer --message "Review [file path] for performance issues. Load cognitive-profiles/google-sre-performance.md. Apply TitleRun anti-patterns from references/titlerun-anti-patterns.md. Use templates/finding-template.md for every finding. Output to workspace-titlerun/reviews/[timestamp]-performance.md"
+**Spawn with sessions_spawn:**
+```javascript
+sessions_spawn({
+  runtime: "subagent",
+  mode: "run",
+  agentId: "main",
+  label: "performance-review",
+  cwd: "/Users/jeffdaniels/.openclaw/workspace",
+  runTimeoutSeconds: 1800,
+  task: "Review [file path] for performance issues. Load cognitive-profiles/google-sre-performance.md. Apply TitleRun anti-patterns from skills/titlerun-code-review/references/titlerun-anti-patterns.md. Use skills/titlerun-code-review/templates/finding-template.md for every finding. Output to workspace-titlerun/reviews/[timestamp]-performance.md. Focus: Query efficiency, algorithmic complexity (O(n) analysis), resource usage, caching. Required: 5 elements per finding with quantified performance impact."
+})
 ```
 
 **Cognitive profile:** `skills/titlerun-code-review/../../cognitive-profiles/google-sre-performance.md`
@@ -84,9 +102,17 @@ subagents spawn --label performance-reviewer --message "Review [file path] for p
 
 ### Reviewer 3 - UX
 
-**Spawn command:**
-```
-subagents spawn --label ux-reviewer --message "Review [file path] for UX issues. Load cognitive-profiles/nielsen-ux-heuristics.md. Apply TitleRun anti-patterns from references/titlerun-anti-patterns.md. Use templates/finding-template.md for every finding. Output to workspace-titlerun/reviews/[timestamp]-ux.md"
+**Spawn with sessions_spawn:**
+```javascript
+sessions_spawn({
+  runtime: "subagent",
+  mode: "run",
+  agentId: "main",
+  label: "ux-review",
+  cwd: "/Users/jeffdaniels/.openclaw/workspace",
+  runTimeoutSeconds: 1800,
+  task: "Review [file path] for UX issues. Load cognitive-profiles/nielsen-ux-heuristics.md. Apply TitleRun anti-patterns from skills/titlerun-code-review/references/titlerun-anti-patterns.md. Use skills/titlerun-code-review/templates/finding-template.md for every finding. Output to workspace-titlerun/reviews/[timestamp]-ux.md. Focus: Nielsen's 10 usability heuristics, user error prevention, clear feedback, accessibility. Required: 5 elements per finding with user impact analysis."
+})
 ```
 
 **Cognitive profile:** `skills/titlerun-code-review/../../cognitive-profiles/nielsen-ux-heuristics.md`
@@ -109,43 +135,59 @@ subagents spawn --label ux-reviewer --message "Review [file path] for UX issues.
 
 ## Step 2: Wait for All 3 to Complete
 
-**Monitor via:**
-```
-subagents list
+**Auto-announcement:** All reviewers auto-announce completion. No active polling needed.
+
+**Optional monitoring (for debugging):**
+```javascript
+subagents(action: "list")
+// Check for security-review, performance-review, ux-review with status=done
 ```
 
 **Success criteria:**
-- All 3 reviewers show `status=done`
+- All 3 reviewers announce completion
 - All 3 output files exist
 - No reviewer errors or crashes
 
-**Timeout:** 15 minutes per reviewer (alert if exceeded)
+**Timeout:** 30 minutes per reviewer (most files review in < 15 min)
 
-**If any reviewer fails:**
-- Log error to `workspace-titlerun/reviews/[timestamp]-errors.md`
-- Continue with available reviews (partial coverage better than none)
-- Flag failure in synthesis report
+**Error handling (degraded mode):**
+- **If 1 reviewer fails:** Continue with 2/3 reviewers (log which failed)
+- **If 2 reviewers fail:** Abort 3-AI mode, fall back to 1-AI review
+- **If all 3 fail:** Alert critical failure, investigate
+
+**Degraded mode notes:**
+- Document which reviewers completed in synthesis
+- Adjust weighted scoring (if Security missing, Performance + UX get higher weight)
+- Flag partial coverage in final report
 
 ---
 
 ## Step 3: Spawn Synthesis Agent
 
-**When:** All 3 reviewers complete (or timeout reached)
+**When:** All 3 reviewers complete (or 2/3 in degraded mode)
 
-**Spawn command:**
-```
-subagents spawn --label synthesis-agent --message "Synthesize code review findings from 3 reviewers. Load workflows/synthesis.md. Input files: workspace-titlerun/reviews/[timestamp]-security.md, workspace-titlerun/reviews/[timestamp]-performance.md, workspace-titlerun/reviews/[timestamp]-ux.md. Output to workspace-titlerun/reviews/[timestamp]-unified.md"
+**Spawn with sessions_spawn:**
+```javascript
+sessions_spawn({
+  runtime: "subagent",
+  mode: "run",
+  agentId: "main",
+  label: "synthesis",
+  cwd: "/Users/jeffdaniels/.openclaw/workspace",
+  runTimeoutSeconds: 1800,
+  task: "Synthesize code review findings from 3 reviewers. Load skills/titlerun-code-review/workflows/synthesis.md for deduplication logic. Input files: workspace-titlerun/reviews/[timestamp]-security.md, workspace-titlerun/reviews/[timestamp]-performance.md, workspace-titlerun/reviews/[timestamp]-ux.md. Process: 1) Extract all findings, 2) Deduplicate (same file + line ±5), 3) Rank by severity, 4) Calculate weighted score (Security 40%, Performance 35%, UX 25%), 5) Generate unified report. Output to workspace-titlerun/reviews/[timestamp]-unified.md."
+})
 ```
 
 **Workflow:** `skills/titlerun-code-review/workflows/synthesis.md`
 
 **Process:**
-1. Load all 3 review reports
+1. Load all 3 review reports (or 2/3 if degraded)
 2. Extract findings from each
-3. Deduplicate (same file + line + issue type)
+3. Deduplicate (same file + line ±5 lines = same issue)
 4. Rank by severity (CRITICAL → HIGH → MEDIUM → LOW)
 5. Calculate weighted aggregate score
-6. Generate unified report
+6. Generate unified report with coverage analysis
 
 **Output:** `workspace-titlerun/reviews/[timestamp]-unified.md`
 
