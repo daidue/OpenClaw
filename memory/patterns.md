@@ -134,3 +134,23 @@ Do this:
 **Lesson:** [Key takeaway]
 
 ---
+
+## Pattern: Test Pattern (2026-03-02)
+**Context:** Testing pattern learning system
+
+**What Worked:**
+- Script works\n- Easy to use
+
+**What Didn't:**
+- Nothing failed
+
+**Prompt Pattern:**
+```
+Test prompt pattern
+```
+
+**Time:** Estimated 5 min, Actual 3 min
+
+**Lesson:** Pattern logging is fast and easy
+
+---

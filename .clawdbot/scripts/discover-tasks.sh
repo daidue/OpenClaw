@@ -43,12 +43,12 @@ echo ""
 echo "📦 Scanning titlerun-api..."
 cd "$API_REPO"
 
-# Get open issues with bug or critical labels
-gh issue list \
-  --state open \
-  --label bug,critical \
-  --json number,title,labels \
-  --jq '.[] | "\(.number)|\(.title)|\(.labels | map(.name) | join(","))"' | \
+# Get open issues with bug or critical labels (search separately and merge)
+{
+  gh issue list --state open --label bug --json number,title,labels
+  gh issue list --state open --label critical --json number,title,labels
+} | jq -s 'add | unique_by(.number)' | \
+  jq -r '.[] | "\(.number)|\(.title)|\(.labels | map(.name) | join(","))"' | \
 while IFS='|' read -r num title labels; do
   echo "  🐛 Issue #$num: $title"
   
@@ -93,11 +93,11 @@ echo ""
 echo "📱 Scanning titlerun-app..."
 cd "$APP_REPO"
 
-gh issue list \
-  --state open \
-  --label bug,critical \
-  --json number,title,labels \
-  --jq '.[] | "\(.number)|\(.title)|\(.labels | map(.name) | join(","))"' | \
+{
+  gh issue list --state open --label bug --json number,title,labels
+  gh issue list --state open --label critical --json number,title,labels
+} | jq -s 'add | unique_by(.number)' | \
+  jq -r '.[] | "\(.number)|\(.title)|\(.labels | map(.name) | join(","))"' | \
 while IFS='|' read -r num title labels; do
   echo "  🐛 Issue #$num: $title"
   

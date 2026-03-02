@@ -37,7 +37,19 @@
       "description": "Test parallel agent 2",
       "worktree": "/Users/jeffdaniels/.openclaw/workspace/.clawdbot/worktrees/parallel-test-2",
       "branch": "test/parallel-2"
+    },
+    {
+      "id": "gh-titlerun-api-1",
+      "type": "coding",
+      "agent": "titlerun",
+      "sessionKey": "",
+      "status": "completed",
+      "started": "2026-03-02T23:01:25+0000",
+      "target": "titlerun-api (fix/gh-1)",
+      "description": "GitHub #1: Test Bug: Example issue for discovery",
+      "worktree": "/Users/jeffdaniels/.openclaw/workspace/.clawdbot/worktrees/gh-titlerun-api-1",
+      "branch": "fix/gh-1"
     }
   ],
-  "lastUpdated": "2026-03-02T22:59:56+0000"
+  "lastUpdated": "2026-03-02T23:01:41+0000"
 }
