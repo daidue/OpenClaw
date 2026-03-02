@@ -1,0 +1,265 @@
+# Deployment Failure Report
+
+**Generated:** [TIMESTAMP]  
+**Branch:** [BRANCH_NAME]  
+**Commit:** [COMMIT_HASH]  
+**Criticality:** [PRODUCTION / STAGING / DEVELOPMENT]
+
+---
+
+## Summary
+
+**Status:** ❌ DEPLOYMENT BLOCKED
+
+**Checks Run:** [TOTAL_CHECKS]  
+**Checks Passed:** [PASSED_COUNT]  
+**Checks Failed:** [FAILED_COUNT]
+
+**Issues Detected:**
+- **CRITICAL:** [COUNT] — Must fix before deploy
+- **HIGH:** [COUNT] — Strongly recommended to fix
+- **MEDIUM:** [COUNT] — Review recommended
+- **LOW:** [COUNT] — Informational
+
+**Execution Time:** [DURATION] seconds
+
+---
+
+## Critical Issues (MUST FIX)
+
+### Issue 1: [Issue Title]
+
+**Severity:** CRITICAL  
+**Check ID:** [check-id]  
+**File:** [file-path]  
+**Line:** [line-number]
+
+**Code:**
+```[language]
+[problematic-code]
+```
+
+**Issue:** [description-of-what-is-wrong]
+
+**Impact:** [quantified-impact-on-production]
+
+**Fix:**
+```[language]
+[corrected-code]
+```
+
+**Fix Command:**
+```bash
+[automated-fix-command]
+```
+
+**Estimated Fix Time:** [X] minutes
+
+---
+
+### Issue 2: [Issue Title]
+
+[Repeat structure for each critical issue]
+
+---
+
+## High-Severity Issues (RECOMMENDED)
+
+### Issue [N]: [Issue Title]
+
+**Severity:** HIGH  
+**Check ID:** [check-id]  
+**File:** [file-path]  
+**Line:** [line-number]
+
+**Code:**
+```[language]
+[problematic-code]
+```
+
+**Issue:** [description]
+
+**Impact:** [impact-if-not-fixed]
+
+**Fix:**
+```[language]
+[corrected-code]
+```
+
+**Fix Command:**
+```bash
+[automated-fix-command]
+```
+
+**Estimated Fix Time:** [X] minutes
+
+---
+
+## Medium/Low-Severity Issues (INFORMATIONAL)
+
+[List remaining issues in summary format]
+
+- **MEDIUM:** [file]:[line] — [brief description]
+- **MEDIUM:** [file]:[line] — [brief description]
+- **LOW:** [file]:[line] — [brief description]
+
+---
+
+## Quick Fix Commands
+
+**Run all automated fixes:**
+
+```bash
+# Fix Critical Issues
+[automated-fix-command-1]
+[automated-fix-command-2]
+[automated-fix-command-3]
+
+# Fix High-Severity Issues
+[automated-fix-command-4]
+[automated-fix-command-5]
+
+# Re-run checks
+./scripts/run-pre-deploy-checks.sh
+```
+
+**Estimated total fix time:** [X] minutes
+
+---
+
+## Check Details (Full Log)
+
+### Quick Fail Gates
+
+- [x] Clean working directory — PASS
+- [x] No merge conflicts — PASS
+- [x] node_modules installed — PASS
+- [x] Package lock in sync — PASS
+
+### Build Verification
+
+- [ ] TS/JS import mismatch — **FAIL** ([COUNT] mismatches found)
+- [x] TypeScript compilation — PASS
+- [ ] Production build — **FAIL** (build errors detected)
+- [x] Console error detection — PASS
+
+### Code Quality
+
+- [ ] ESLint — **FAIL** ([COUNT] errors)
+- [x] Test suite — PASS
+- [ ] Console.log detection — **WARN** ([COUNT] found)
+- [x] Security audit — PASS
+
+### Production/Staging Checks
+
+- [ ] CHANGELOG entry — **WARN** (missing)
+- [x] Database migration sync — PASS
+- [x] Version bump — PASS
+
+---
+
+## Next Steps
+
+### Immediate Actions (Before Deploying)
+
+1. **Fix all CRITICAL issues** (required)
+   - [Issue 1 summary]
+   - [Issue 2 summary]
+   - [Issue 3 summary]
+
+2. **Fix HIGH issues** (recommended for production)
+   - [Issue N summary]
+
+3. **Re-run checks**
+   ```bash
+   ./scripts/run-pre-deploy-checks.sh
+   ```
+
+4. **Verify all checks pass**
+   - Exit code 0 = safe to deploy
+   - Exit code 1 = still blocked
+   - Exit code 2 = warnings (review)
+
+### After Fixing Issues
+
+- [ ] All critical issues resolved
+- [ ] High issues resolved (or documented why skipped)
+- [ ] Re-run pre-deploy checks (exit code 0)
+- [ ] Update CHANGELOG.md with changes
+- [ ] Commit fixes: `git commit -m "Fix pre-deploy check failures"`
+- [ ] Push to trigger CI/CD: `git push`
+- [ ] Monitor deployment (health checks, logs, user reports)
+
+---
+
+## Historical Context
+
+**Similar incidents:**
+- [YYYY-MM-DD] — [Brief description of similar failure] → [What was learned]
+- [YYYY-MM-DD] — [Brief description of similar failure] → [What was learned]
+
+**Anti-pattern matched:**
+- [Anti-pattern name] (see `references/deployment-anti-patterns.md`)
+
+**Prevention improvements:**
+- [Suggested check enhancement]
+- [Suggested automation improvement]
+
+---
+
+## Contact & Support
+
+**Blocked on something?**
+- Review `workflows/pre-deploy-checklist.md` for detailed guidance
+- Check `references/deployment-anti-patterns.md` for common fixes
+- Ask Taylor for emergency override (document justification)
+
+**Report false positives:**
+- Document in `CHANGELOG.md` under "Check Improvements"
+- Update check logic to prevent future false positives
+
+---
+
+## Appendix: Raw Check Output
+
+<details>
+<summary>TypeScript Errors (tsc-errors.txt)</summary>
+
+```
+[contents-of-tsc-errors.txt]
+```
+
+</details>
+
+<details>
+<summary>Build Errors (build-errors.txt)</summary>
+
+```
+[contents-of-build-errors.txt]
+```
+
+</details>
+
+<details>
+<summary>ESLint Errors (eslint-errors.txt)</summary>
+
+```
+[contents-of-eslint-errors.txt]
+```
+
+</details>
+
+<details>
+<summary>Test Errors (test-errors.txt)</summary>
+
+```
+[contents-of-test-errors.txt]
+```
+
+</details>
+
+---
+
+**Generated by:** Definition of Done v1.0.0  
+**Report ID:** [timestamp-hash]  
+**Saved to:** `workspace-titlerun/reports/deploy-check-[timestamp].md`
