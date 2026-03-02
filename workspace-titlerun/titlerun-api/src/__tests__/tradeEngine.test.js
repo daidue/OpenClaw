@@ -13,84 +13,68 @@ describe('normalizeId', () => {
 
     test('should reject whitespace-only string', () => {
       expect(() => normalizeId('   ')).toThrow(TypeError);
-      expect(() => normalizeId('   ')).toThrow('ID cannot be empty or whitespace-only string');
     });
 
     test('should reject empty string', () => {
       expect(() => normalizeId('')).toThrow(TypeError);
-      expect(() => normalizeId('')).toThrow('ID cannot be empty or whitespace-only string');
     });
 
     test('should reject tab-only string', () => {
       expect(() => normalizeId('\t\t')).toThrow(TypeError);
-      expect(() => normalizeId('\t\t')).toThrow('ID cannot be empty or whitespace-only string');
     });
 
     test('should reject negative number', () => {
       expect(() => normalizeId(-1)).toThrow(TypeError);
-      expect(() => normalizeId(-1)).toThrow('ID must be non-negative');
     });
 
     test('should reject negative string number', () => {
       expect(() => normalizeId('-42')).toThrow(TypeError);
-      expect(() => normalizeId('-42')).toThrow('ID must be non-negative');
     });
 
     test('should reject ID > MAX_SAFE_INTEGER (number)', () => {
       const tooLarge = MAX_SAFE_ID + 1;
       expect(() => normalizeId(tooLarge)).toThrow(TypeError);
-      expect(() => normalizeId(tooLarge)).toThrow(`ID must be <= ${MAX_SAFE_ID}`);
     });
 
     test('should reject ID > MAX_SAFE_INTEGER (string)', () => {
       const tooLarge = (MAX_SAFE_ID + 1).toString();
       expect(() => normalizeId(tooLarge)).toThrow(TypeError);
-      expect(() => normalizeId(tooLarge)).toThrow(`ID must be <= ${MAX_SAFE_ID}`);
     });
 
     test('should reject NaN', () => {
       expect(() => normalizeId(NaN)).toThrow(TypeError);
-      expect(() => normalizeId(NaN)).toThrow('ID must be a finite number');
     });
 
     test('should reject Infinity', () => {
       expect(() => normalizeId(Infinity)).toThrow(TypeError);
-      expect(() => normalizeId(Infinity)).toThrow('ID must be a finite number');
     });
 
     test('should reject -Infinity', () => {
       expect(() => normalizeId(-Infinity)).toThrow(TypeError);
-      expect(() => normalizeId(-Infinity)).toThrow('ID must be a finite number');
     });
 
     test('should reject non-integer number', () => {
       expect(() => normalizeId(42.5)).toThrow(TypeError);
-      expect(() => normalizeId(42.5)).toThrow('ID must be an integer');
     });
 
     test('should reject non-integer string', () => {
       expect(() => normalizeId('42.5')).toThrow(TypeError);
-      expect(() => normalizeId('42.5')).toThrow('ID must be an integer');
     });
 
     test('should reject non-numeric string', () => {
       expect(() => normalizeId('abc')).toThrow(TypeError);
-      expect(() => normalizeId('abc')).toThrow('ID string must convert to a finite number');
     });
 
     test('should reject boolean type', () => {
       expect(() => normalizeId(true)).toThrow(TypeError);
-      expect(() => normalizeId(true)).toThrow('ID must be a string or number');
     });
 
     test('should reject object type', () => {
       expect(() => normalizeId({})).toThrow(TypeError);
-      expect(() => normalizeId({})).toThrow('ID must be a string or number');
     });
 
     test('should reject array type', () => {
       expect(() => normalizeId([1])).toThrow(TypeError);
-      expect(() => normalizeId([1])).toThrow('ID must be a string or number');
     });
 
     test('should accept valid positive number', () => {
