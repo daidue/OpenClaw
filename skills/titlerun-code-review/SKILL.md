@@ -490,3 +490,271 @@ Generate final report using templates/summary-template.md
 ---
 
 **Status:** Production ready — Built with meta-skill forge v2.0.0 ✅
+
+---
+
+## Configuration (v1.1+)
+
+**Production hardening parameters (all optional):**
+
+### Chunking Configuration
+
+**When:** Files >800 lines
+
+```javascript
+{
+  chunk_threshold: 800,    // Lines before chunking trigger (default: 800)
+  chunk_size: 700,         // Target lines per chunk (default: 700)
+  chunk_overlap: 50,       // Overlap zone to prevent boundary issues (default: 50)
+  chunk_method: 'logical'  // 'logical' (function/class) or 'arbitrary' (every N lines)
+}
+```
+
+**Override example:**
+```bash
+# Review with custom chunking threshold
+task: "Review index.js with chunk_threshold=1000, chunk_size=800"
+```
+
+**Supported languages:**
+- JavaScript/TypeScript: Logical chunking (function/class boundaries)
+- Python: Logical chunking (def/class boundaries)
+- Others: Arbitrary chunking (every N lines)
+
+---
+
+### Timeout Configuration
+
+**When:** Reviewer runs >10 min without completion
+
+```javascript
+{
+  reviewer_timeout: 600,    // Seconds before killing reviewer (default: 600 = 10min)
+  synthesis_timeout: 600,   // Seconds for synthesis (default: 600 = 10min)
+  monitor_interval: 30      // Check interval for timeout monitoring (seconds)
+}
+```
+
+**Override example:**
+```bash
+# Increase timeout for very large files
+task: "Review with reviewer_timeout=900"  # 15 min
+```
+
+**Behavior:**
+- At timeout: Kill reviewer, mark as FAILED
+- Continue with remaining reviewers (graceful degradation)
+- Log timeout with duration and reason
+
+---
+
+### Retry Configuration
+
+**When:** Reviewer fails with transient error
+
+```javascript
+{
+  max_retries: 1,           // Maximum retry attempts (default: 1)
+  retry_delay: 30000,       // Milliseconds before retry (default: 30s)
+  retry_on: [               // Failure types that trigger retry
+    'timeout',
+    'rate_limit',
+    'network_error',
+    'memory_pressure'       // First occurrence only
+  ],
+  no_retry_on: [            // Failure types that skip retry
+    'user_cancelled',
+    'invalid_input',
+    'parse_error',
+    'memory_crash'          // Second occurrence
+  ]
+}
+```
+
+**Override example:**
+```bash
+# Disable retries (fail fast)
+task: "Review with max_retries=0"
+```
+
+**Behavior:**
+- Retry once after delay
+- If retry fails, proceed without that reviewer
+- Annotate report with retry status
+
+---
+
+### Weighted Scoring Configuration
+
+**Default weights (3/3 reviewers):**
+
+```javascript
+{
+  weights: {
+    security: 0.40,      // 40%
+    performance: 0.35,   // 35%
+    ux: 0.25             // 25%
+  }
+}
+```
+
+**Auto-adjusted (2/3 reviewers):**
+
+| Missing Category | Adjusted Weights |
+|------------------|------------------|
+| Security         | Performance 58%, UX 42% |
+| Performance      | Security 62%, UX 38% |
+| UX               | Security 53%, Performance 47% |
+
+**Formula:**
+```javascript
+const remaining_weight = categories.reduce((sum, c) => sum + c.original_weight, 0);
+categories.forEach(c => {
+  c.adjusted_weight = (c.original_weight / remaining_weight) * 100;
+});
+```
+
+**1/3 reviewer:**
+- Single category gets 100% weight
+- Score = that category's score (not aggregated)
+- Report flagged as PARTIAL REVIEW
+
+---
+
+### Graceful Degradation Configuration
+
+**When:** <3 reviewers complete
+
+```javascript
+{
+  min_reviewers: 1,         // Minimum to proceed (default: 1)
+  fail_threshold: 0,        // Abort if all fail (default: 0)
+  partial_confidence: {
+    '3/3': 100,
+    '2/3': 66,
+    '1/3': 33,
+    '0/3': 0
+  }
+}
+```
+
+**Behavior:**
+
+| Scenario | Action | Confidence | Template |
+|----------|--------|-----------|----------|
+| 3/3 ✅   | Full review | 100% | review-report.md |
+| 2/3 ⚠️   | Adjusted scoring | 66% | partial-results-report.md |
+| 1/3 ❌   | Single-category | 33% | partial-results-report.md |
+| 0/3 ❌   | Abort + error log | 0% | None (errors.log only) |
+
+---
+
+### Multi-Agent Review Configuration (3-AI mode)
+
+**When:** `mode=3ai` flag specified
+
+```javascript
+{
+  mode: '3ai',              // Enable 3-parallel-reviewer mode
+  spawn_delay: 0,           // Delay between spawns (ms, default: 0 = parallel)
+  synthesis_mode: 'auto',   // 'auto' (after reviewers) or 'manual'
+  dedup_threshold: 5        // Line tolerance for deduplication (±N lines)
+}
+```
+
+**Token budget (estimates):**
+
+| File Size | Chunked? | Total Tokens | Cost (Sonnet) |
+|-----------|----------|--------------|---------------|
+| <800 lines | No | ~60K | ~$0.36 |
+| 800-1200 | Yes (2 chunks) | ~85K | ~$0.51 |
+| 1200-1600 | Yes (3 chunks) | ~110K | ~$0.66 |
+| >1600 | Yes (4+ chunks) | ~140K+ | ~$0.84+ |
+
+**Override example:**
+```bash
+# Review in 3-AI mode with custom deduplication threshold
+task: "Review PR #123 mode=3ai dedup_threshold=10"
+```
+
+---
+
+### Example: Full Custom Configuration
+
+```javascript
+{
+  // Chunking
+  chunk_threshold: 1000,
+  chunk_size: 800,
+  chunk_overlap: 75,
+  
+  // Timeouts
+  reviewer_timeout: 900,     // 15 min
+  synthesis_timeout: 900,
+  monitor_interval: 45,
+  
+  // Retry
+  max_retries: 2,            // Try up to 3 times total
+  retry_delay: 60000,        // 1 min between retries
+  
+  // Scoring
+  weights: {
+    security: 0.50,          // Increase security weight
+    performance: 0.30,
+    ux: 0.20
+  },
+  
+  // Degradation
+  min_reviewers: 2,          // Require at least 2/3
+  
+  // 3-AI mode
+  mode: '3ai',
+  dedup_threshold: 3         // Stricter deduplication
+}
+```
+
+**Pass via task:**
+```javascript
+task: `Review ${file_path} with config: ${JSON.stringify(config)}`
+```
+
+---
+
+### Environment Variables (Alternative)
+
+**Set via environment:**
+
+```bash
+export TITLERUN_REVIEW_CHUNK_THRESHOLD=1000
+export TITLERUN_REVIEW_TIMEOUT=900
+export TITLERUN_REVIEW_MAX_RETRIES=2
+```
+
+**Priority:** CLI args > environment vars > defaults
+
+---
+
+### Performance Tuning Recommendations
+
+**For small files (<500 lines):**
+- Disable chunking: `chunk_threshold=99999`
+- Reduce timeout: `reviewer_timeout=300` (5 min)
+- Disable retry: `max_retries=0` (fail fast)
+
+**For large files (>1500 lines):**
+- Increase chunk size: `chunk_size=900`
+- Increase timeout: `reviewer_timeout=1200` (20 min)
+- Increase retry: `max_retries=2`
+
+**For slow networks:**
+- Increase retry delay: `retry_delay=60000` (1 min)
+- Enable retries on timeout: Add `'timeout'` to `retry_on`
+
+**For high-reliability (production):**
+- Require 2/3 minimum: `min_reviewers=2`
+- Increase timeouts: `reviewer_timeout=1200`
+- Enable retries: `max_retries=2`
+
+---
+
+**Configuration documentation updated:** 2026-03-01 (v1.1.0)

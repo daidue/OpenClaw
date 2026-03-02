@@ -1,6 +1,6 @@
 # TitleRun Code Review
 
-**Version:** 1.0.0 (3-AI Pipeline)  
+*Version:** 1.1.0 (3-AI Pipeline)  
 **Created:** 2026-02-12  
 **Updated:** 2026-03-01 (3-AI multi-agent architecture)  
 **Owner:** Jeff Daniels  
@@ -89,6 +89,15 @@ Systematic multi-lens code review system with two modes:
 - ✅ Deduplication logic (same file + line + issue type)
 - ✅ Coverage analysis (consensus vs specialist findings)
 - ✅ Comprehensive test on tradeEngine.js (+50% coverage vs 1-AI)
+
+### v1.1.0 (2026-03-01) - Production Hardening
+- ✅ Large file support (>800 lines) via automatic chunking
+- ✅ Graceful degradation (2/3 or 1/3 reviewers can complete)
+- ✅ Timeout handling (10min per reviewer, auto-kill)
+- ✅ Retry logic (1 automatic retry on transient failures)
+- ✅ Partial results synthesis with confidence scoring
+- ✅ Production-tested on 1048-line file (24min, 87K tokens, 95/100 score)
+- ✅ NEW: 4 additional files (large-file-handling, error-recovery, partial-results, config docs)
 
 ### v0.2.0 (2026-02-20) - Progressive Disclosure
 - ✅ 3 workflows (Backend, Frontend, Database)

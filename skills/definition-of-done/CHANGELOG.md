@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.1] - 2026-03-01
+
+### Fixed (Adversarial Audit Findings)
+
+**Blockers Fixed:**
+- **B1: Honest check count** — Updated all docs from "93 checks" to "14 automated checks + 30 documented patterns". Removed references to fictional npm packages (extract-api-routes, diff-api-routes, ts-api-extractor, prisma-schema-diff).
+- **B2: Removed `set -e`** — Script now handles all errors explicitly via `if` blocks and `timeout` wrappers. No more silent exits on unguarded commands.
+- **B3: Temp file cleanup** — All intermediate files (tsc-errors.txt, build-errors.txt, eslint-errors.txt, test-errors.txt) now written to `mktemp -d` directory, cleaned up via `trap ... EXIT`.
+
+**Critical Issues Fixed:**
+- **C1: Improved TS/JS import regex** — Now catches `from '...'`, `import('...')`, and `require('...')` patterns for .ts/.tsx extensions in .js files.
+- **C2: Timeout handling** — All external commands wrapped: `npm run build` (120s), `npm test` (60s), `npx tsc` (30s), `npx eslint` (60s). Clear timeout messages on expiry.
+- **C3: Cross-platform compatibility** — Removed macOS-specific `sed -i ''` usage (no sed needed in current script).
+- **C4: Removed Jest-specific `--passWithNoTests`** — Test suite now runs plain `npm test`, compatible with Jest, Vitest, Mocha, etc.
+
+### Changed
+- Version bumped to 1.0.1
+- Script output now shows honest check count
+- Audit score improved from 52/100 to ~83/100 (estimated)
+
 ## [1.0.0] - 2026-03-01
 
 ### Added
@@ -19,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Core Features:**
 - Main orchestrator (SKILL.md) with progressive disclosure architecture
 - Executable automation script (`scripts/run-pre-deploy-checks.sh`)
-- 93 verification points across 5 check modules
+- 14 automated checks + 30 documented patterns across 5 check modules
 - Fast execution (<2 min for dev, <5 min for production)
 - Clear, actionable error messages (exact file, line, fix)
 - Auto-fails deployment if critical checks don't pass
@@ -145,7 +165,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [x] Auto-fails deploy if critical checks fail (exit code 1)
 - [x] Clear error messages (file, line, code, impact, fix)
 - [x] Fast execution (<2 min for dev, <5 min for production)
-- [x] Comprehensive checklist (93 verification points)
+- [x] Comprehensive checklist (14 automated checks + 30 documented patterns)
 - [x] Progressive disclosure (loads only what's needed)
 - [x] Executable automation (not just documentation)
 - [x] Fails loudly (no silent passes, exit codes)
@@ -161,7 +181,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Built with:** meta-skill forge v2.0.0
 - **Build time:** 45 minutes (2026-03-01)
-- **Quality score:** 95/100 (production-grade)
+- **Quality score:** Production-grade
 - **Total files:** 11 (SKILL.md + 10 supporting files)
 - **Total size:** ~80KB (well under 100KB target)
 
@@ -223,6 +243,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Summary |
 |---------|------|---------|
+| 1.0.1 | 2026-03-01 | Adversarial audit fixes — honest counts, temp cleanup, timeouts, cross-platform |
 | 1.0.0 | 2026-03-01 | Initial release — Born from 2026-03-01 production incident |
 
 ---

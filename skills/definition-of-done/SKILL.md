@@ -1,6 +1,6 @@
 ---
 name: definition-of-done
-description: 'Production-ready pre-deployment automation that catches deployment mistakes BEFORE they hit production. Built after 2026-03-01 login failure (TS/JS import mismatch). Enforces 90+ verification points with fast execution (<2 min).'
+description: 'Production-ready pre-deployment automation that catches deployment mistakes BEFORE they hit production. Built after 2026-03-01 login failure (TS/JS import mismatch). Runs 14 automated checks + 30 documented patterns with fast execution (<2 min).'
 version: 1.0.0
 author: Jeff Daniels
 created: 2026-03-01
@@ -235,11 +235,11 @@ const counts = {
 ```
 ✅ DEPLOYMENT READY
 
-All 93 checks passed in 1m 47s
+All automated checks passed in 1m 47s
 
 Branch: main
 Commit: abc1234
-Checks run: 93/93
+Checks run: 14 (automated)
 Failures: 0
 Warnings: 2 (non-blocking)
 
@@ -254,7 +254,7 @@ Safe to deploy.
 
 Branch: main
 Commit: abc1234
-Checks run: 93/93
+Checks run: 14 (automated)
 Failures: 5 CRITICAL, 3 HIGH, 1 MEDIUM
 
 CRITICAL ISSUES (must fix before deploy):
@@ -437,7 +437,7 @@ module.exports = {
 - [x] Auto-fails deploy if critical checks fail? → YES (exit 1 logic)
 - [x] Clear error messages? → YES (exact file, line, code, fix)
 - [x] Fast execution? → YES (<2 min for dev, <5 min for production)
-- [x] Comprehensive checklist? → YES (93 verification points)
+- [x] Comprehensive checklist? → YES (14 automated checks + 30 documented patterns)
 - [x] Progressive disclosure? → YES (loads only what's needed)
 - [x] Executable (not just docs)? → YES (run-pre-deploy-checks.sh)
 - [x] Fails loudly? → YES (no silent passes, exit codes)
@@ -484,7 +484,7 @@ Agent: "❌ DEPLOYMENT BLOCKED - 3 critical issues detected..."
 **v1.0.0 (2026-03-01):**
 - Initial release
 - Built after 2026-03-01 login failure (TS/JS import mismatch)
-- 93 verification points across 5 check modules
+- 14 automated checks + 30 documented patterns across 5 check modules
 - <2 min execution for dev, <5 min for production
 - Progressive disclosure architecture
 - Executable automation (not just documentation)

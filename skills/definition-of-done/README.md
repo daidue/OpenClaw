@@ -48,7 +48,7 @@ This skill was built to prevent that specific failure and every other deployment
 - Missing CHANGELOG entries
 - Console errors in build output
 
-**And 83 more checks across 5 modules.**
+**Plus 30+ documented patterns in check modules for manual review.**
 
 ---
 
@@ -179,7 +179,7 @@ Add to build command:
 - Migration size check
 - Production DB backup verification
 
-**Total:** 93 verification points
+**Total:** 14 automated checks + 30 documented patterns
 
 ---
 
@@ -187,9 +187,9 @@ Add to build command:
 
 | Environment | Checks | Time | Criticality |
 |------------|--------|------|-------------|
-| Development | 33 checks | <2 min | Fast feedback |
-| Staging | 70 checks | <4 min | Comprehensive |
-| Production | 93 checks | <5 min | Exhaustive |
+| Development | 8-10 checks | <2 min | Fast feedback |
+| Staging | 10-12 checks | <4 min | Comprehensive |
+| Production | 10-14 checks | <5 min | Exhaustive |
 
 **Optimization:**
 - Progressive disclosure (load only what's needed)
@@ -246,11 +246,11 @@ Add to build command:
 ```
 ✅ DEPLOYMENT READY
 
-All 93 checks passed in 1m 47s
+All automated checks passed in 1m 47s
 
 Branch: main
 Commit: abc1234
-Checks run: 93/93
+Checks run: $CHECKS_RUN automated
 Failures: 0
 Warnings: 2 (non-blocking)
 
@@ -266,7 +266,7 @@ Safe to deploy.
 
 Branch: main
 Commit: abc1234
-Checks run: 93/93
+Checks run: $CHECKS_RUN automated
 Failures: 5 CRITICAL, 3 HIGH, 1 MEDIUM
 
 CRITICAL ISSUES (must fix before deploy):
@@ -383,7 +383,7 @@ git push --no-verify  # DOCUMENT JUSTIFICATION IN COMMIT
 **Current:** v1.0.0 (2026-03-01)
 
 **Built with:** meta-skill forge v2.0.0  
-**Quality score:** 95/100 (production-grade)  
+**Quality score:** Production-grade  
 **Status:** Production ready ✅
 
 ---

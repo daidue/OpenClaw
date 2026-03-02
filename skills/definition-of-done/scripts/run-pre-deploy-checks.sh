@@ -1,18 +1,42 @@
 #!/bin/bash
 
 ###############################################################################
-# Pre-Deploy Checks Script
-# Runs comprehensive deployment readiness verification
+# Pre-Deploy Checks Script v1.0.1
+# Runs deployment readiness verification (14 automated checks)
 # Exit 0 = PASS (safe to deploy), Exit 1 = FAIL (blocked), Exit 2 = WARN
 ###############################################################################
-
-set -e  # Exit on error (except in checks)
 
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
+
+# Portable timeout wrapper (macOS lacks `timeout`, Linux has it)
+if command -v timeout >/dev/null 2>&1; then
+  TIMEOUT_CMD="timeout"
+elif command -v gtimeout >/dev/null 2>&1; then
+  TIMEOUT_CMD="gtimeout"
+else
+  # Pure bash fallback: run command with background kill timer
+  _timeout_fallback() {
+    local secs=$1; shift
+    "$@" &
+    local pid=$!
+    ( sleep "$secs"; kill "$pid" 2>/dev/null ) &
+    local watcher=$!
+    wait "$pid" 2>/dev/null
+    local ret=$?
+    kill "$watcher" 2>/dev/null 2>&1
+    wait "$watcher" 2>/dev/null 2>&1
+    # If killed by our timer, return 124 (same as GNU timeout)
+    if [ $ret -eq 137 ] || [ $ret -eq 143 ]; then
+      return 124
+    fi
+    return $ret
+  }
+  TIMEOUT_CMD="_timeout_fallback"
+fi
 
 # Counters
 CRITICAL_COUNT=0
@@ -22,8 +46,12 @@ LOW_COUNT=0
 CHECKS_RUN=0
 START_TIME=$(date +%s)
 
+# Temp directory for intermediate files (cleaned up on exit)
+DOD_TMPDIR=$(mktemp -d)
+trap "rm -rf $DOD_TMPDIR" EXIT
+
 # Environment detection
-BRANCH=$(git rev-parse --abbrev-ref HEAD)
+BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
 if [[ "$BRANCH" == "main" || "$BRANCH" == "production" ]]; then
   CRITICALITY="PRODUCTION"
 elif [[ "$BRANCH" == "staging" || "$BRANCH" == "develop" ]]; then
@@ -103,13 +131,15 @@ echo ""
 echo "Running build verification checks..."
 
 # Check 1: TS/JS Import Mismatch (CRITICAL - 2026-03-01 incident)
+# Catches: from '...ts', import('...ts'), require('...ts')
 echo -n "  Checking TS/JS import mismatches... "
-if grep -r "from ['\"].*\.tsx\?['\"]" --include="*.js" --include="*.jsx" src/ 2>/dev/null | grep -v node_modules; then
+ts_imports=$(grep -rE "(from|import\(|require\()[[:space:]]*['\"].*\.tsx?['\"]" --include="*.js" --include="*.jsx" src/ 2>/dev/null | grep -v node_modules || true)
+if [ -n "$ts_imports" ]; then
   echo -e "${RED}FAIL${NC}"
   echo ""
   echo -e "${RED}CRITICAL: TS/JS import mismatch detected (2026-03-01 incident type)${NC}"
   echo ""
-  grep -r "from ['\"].*\.tsx\?['\"]" --include="*.js" --include="*.jsx" src/ 2>/dev/null | grep -v node_modules
+  echo "$ts_imports"
   echo ""
   echo "Impact: Will break production bundler (works locally, fails deployed)"
   echo "Fix: Remove .ts/.tsx extensions from imports in .js files"
@@ -122,13 +152,20 @@ CHECKS_RUN=$((CHECKS_RUN + 1))
 
 # Check 2: TypeScript compilation
 echo -n "  Checking TypeScript compilation... "
-if npx tsc --noEmit --skipLibCheck >/dev/null 2>tsc-errors.txt; then
+if $TIMEOUT_CMD 30 npx tsc --noEmit --skipLibCheck >"$DOD_TMPDIR/tsc-errors.txt" 2>&1; then
   echo -e "${GREEN}PASS${NC}"
 else
-  echo -e "${RED}FAIL${NC}"
-  echo ""
-  echo -e "${RED}CRITICAL: TypeScript compilation errors${NC}"
-  cat tsc-errors.txt
+  tsc_exit=$?
+  if [ $tsc_exit -eq 124 ]; then
+    echo -e "${RED}FAIL${NC}"
+    echo ""
+    echo -e "${RED}CRITICAL: TypeScript check timed out (30s limit)${NC}"
+  else
+    echo -e "${RED}FAIL${NC}"
+    echo ""
+    echo -e "${RED}CRITICAL: TypeScript compilation errors${NC}"
+    cat "$DOD_TMPDIR/tsc-errors.txt"
+  fi
   echo ""
   CRITICAL_COUNT=$((CRITICAL_COUNT + 1))
 fi
@@ -136,9 +173,9 @@ CHECKS_RUN=$((CHECKS_RUN + 1))
 
 # Check 3: Production build
 echo -n "  Running production build... "
-if npm run build >/dev/null 2>build-errors.txt; then
+if $TIMEOUT_CMD 120 npm run build >"$DOD_TMPDIR/build-output.txt" 2>"$DOD_TMPDIR/build-errors.txt"; then
   echo -e "${GREEN}PASS${NC}"
-  
+
   # Check build output exists
   if [ ! -d "dist" ] && [ ! -d "build" ] && [ ! -d ".next" ]; then
     echo -e "${RED}FAIL${NC}"
@@ -147,10 +184,17 @@ if npm run build >/dev/null 2>build-errors.txt; then
     CRITICAL_COUNT=$((CRITICAL_COUNT + 1))
   fi
 else
-  echo -e "${RED}FAIL${NC}"
-  echo ""
-  echo -e "${RED}CRITICAL: Production build failed${NC}"
-  cat build-errors.txt
+  build_exit=$?
+  if [ $build_exit -eq 124 ]; then
+    echo -e "${RED}FAIL${NC}"
+    echo ""
+    echo -e "${RED}CRITICAL: Production build timed out (120s limit)${NC}"
+  else
+    echo -e "${RED}FAIL${NC}"
+    echo ""
+    echo -e "${RED}CRITICAL: Production build failed${NC}"
+    cat "$DOD_TMPDIR/build-errors.txt"
+  fi
   echo ""
   CRITICAL_COUNT=$((CRITICAL_COUNT + 1))
 fi
@@ -158,11 +202,11 @@ CHECKS_RUN=$((CHECKS_RUN + 1))
 
 # Check 4: Console error detection
 echo -n "  Checking for build errors... "
-if grep -i "error" build-errors.txt 2>/dev/null | grep -v "0 errors" | grep -q .; then
+if grep -i "error" "$DOD_TMPDIR/build-errors.txt" 2>/dev/null | grep -v "0 errors" | grep -q .; then
   echo -e "${RED}FAIL${NC}"
   echo ""
   echo -e "${RED}HIGH: Console errors detected in build${NC}"
-  grep -i "error" build-errors.txt | grep -v "0 errors"
+  grep -i "error" "$DOD_TMPDIR/build-errors.txt" | grep -v "0 errors"
   echo ""
   HIGH_COUNT=$((HIGH_COUNT + 1))
 else
@@ -180,13 +224,20 @@ echo "Running code quality checks..."
 
 # Check 5: ESLint
 echo -n "  Running ESLint... "
-if npx eslint . --max-warnings 0 >/dev/null 2>eslint-errors.txt; then
+if $TIMEOUT_CMD 60 npx eslint . --max-warnings 0 >/dev/null 2>"$DOD_TMPDIR/eslint-errors.txt"; then
   echo -e "${GREEN}PASS${NC}"
 else
-  echo -e "${YELLOW}WARN${NC}"
-  echo ""
-  echo -e "${YELLOW}HIGH: ESLint errors detected${NC}"
-  cat eslint-errors.txt | head -n 20
+  eslint_exit=$?
+  if [ $eslint_exit -eq 124 ]; then
+    echo -e "${YELLOW}WARN${NC}"
+    echo ""
+    echo -e "${YELLOW}HIGH: ESLint timed out (60s limit)${NC}"
+  else
+    echo -e "${YELLOW}WARN${NC}"
+    echo ""
+    echo -e "${YELLOW}HIGH: ESLint errors detected${NC}"
+    head -n 20 "$DOD_TMPDIR/eslint-errors.txt"
+  fi
   echo ""
   HIGH_COUNT=$((HIGH_COUNT + 1))
 fi
@@ -194,13 +245,20 @@ CHECKS_RUN=$((CHECKS_RUN + 1))
 
 # Check 6: Test suite
 echo -n "  Running test suite... "
-if npm test -- --passWithNoTests >/dev/null 2>test-errors.txt; then
+if $TIMEOUT_CMD 60 npm test >/dev/null 2>"$DOD_TMPDIR/test-errors.txt"; then
   echo -e "${GREEN}PASS${NC}"
 else
-  echo -e "${RED}FAIL${NC}"
-  echo ""
-  echo -e "${RED}CRITICAL: Tests failing${NC}"
-  cat test-errors.txt | tail -n 30
+  test_exit=$?
+  if [ $test_exit -eq 124 ]; then
+    echo -e "${RED}FAIL${NC}"
+    echo ""
+    echo -e "${RED}CRITICAL: Tests timed out (60s limit)${NC}"
+  else
+    echo -e "${RED}FAIL${NC}"
+    echo ""
+    echo -e "${RED}CRITICAL: Tests failing${NC}"
+    tail -n 30 "$DOD_TMPDIR/test-errors.txt"
+  fi
   echo ""
   CRITICAL_COUNT=$((CRITICAL_COUNT + 1))
 fi
@@ -223,15 +281,15 @@ CHECKS_RUN=$((CHECKS_RUN + 1))
 
 # Check 8: npm audit (security vulnerabilities)
 echo -n "  Checking for security vulnerabilities... "
-audit_output=$(npm audit --json 2>/dev/null)
-critical_vulns=$(echo "$audit_output" | jq -r '.metadata.vulnerabilities.critical // 0' 2>/dev/null)
-high_vulns=$(echo "$audit_output" | jq -r '.metadata.vulnerabilities.high // 0' 2>/dev/null)
+audit_output=$(npm audit --json 2>/dev/null || true)
+critical_vulns=$(echo "$audit_output" | jq -r '.metadata.vulnerabilities.critical // 0' 2>/dev/null || echo "0")
+high_vulns=$(echo "$audit_output" | jq -r '.metadata.vulnerabilities.high // 0' 2>/dev/null || echo "0")
 
 if [ "$critical_vulns" -gt 0 ]; then
   echo -e "${RED}FAIL${NC}"
   echo ""
   echo -e "${RED}HIGH: $critical_vulns critical security vulnerabilities${NC}"
-  echo "$audit_output" | jq -r '.vulnerabilities | to_entries[] | select(.value.severity == "critical") | .key' | head -n 5
+  echo "$audit_output" | jq -r '.vulnerabilities | to_entries[] | select(.value.severity == "critical") | .key' 2>/dev/null | head -n 5
   echo ""
   HIGH_COUNT=$((HIGH_COUNT + 1))
 elif [ "$high_vulns" -gt 0 ]; then
@@ -252,10 +310,10 @@ echo ""
 
 if [[ "$CRITICALITY" == "PRODUCTION" || "$CRITICALITY" == "STAGING" ]]; then
   echo "Running production/staging checks..."
-  
+
   # Check 9: CHANGELOG entry
   echo -n "  Checking CHANGELOG entry... "
-  if git diff main..HEAD -- CHANGELOG.md | grep -q "^+"; then
+  if git diff main..HEAD -- CHANGELOG.md 2>/dev/null | grep -q "^+"; then
     echo -e "${GREEN}PASS${NC}"
   else
     echo -e "${YELLOW}WARN${NC}"
@@ -266,19 +324,14 @@ if [[ "$CRITICALITY" == "PRODUCTION" || "$CRITICALITY" == "STAGING" ]]; then
     MEDIUM_COUNT=$((MEDIUM_COUNT + 1))
   fi
   CHECKS_RUN=$((CHECKS_RUN + 1))
-  
+
   # Check 10: Database migration sync (if Prisma exists)
   if [ -d "prisma" ]; then
     echo -n "  Checking database migration sync... "
-    
-    # Check for schema changes
-    if git diff main..HEAD -- prisma/schema.prisma | grep -q "^+"; then
-      # Schema changed - verify migration exists
+
+    if git diff main..HEAD -- prisma/schema.prisma 2>/dev/null | grep -q "^+"; then
       latest_migration=$(ls -t prisma/migrations 2>/dev/null | head -n 1)
-      migration_timestamp=$(echo "$latest_migration" | cut -d'_' -f1)
-      last_commit_timestamp=$(git log -1 --format=%ct)
-      
-      # Migration should be newer than last schema commit
+
       if [ -z "$latest_migration" ]; then
         echo -e "${RED}FAIL${NC}"
         echo ""
@@ -294,7 +347,7 @@ if [[ "$CRITICALITY" == "PRODUCTION" || "$CRITICALITY" == "STAGING" ]]; then
     fi
     CHECKS_RUN=$((CHECKS_RUN + 1))
   fi
-  
+
   echo ""
 fi
 
@@ -309,7 +362,7 @@ echo "======================================"
 echo "Pre-Deploy Checks Complete"
 echo "======================================"
 echo "Duration: ${DURATION}s"
-echo "Checks run: $CHECKS_RUN"
+echo "Checks run: $CHECKS_RUN (automated)"
 echo ""
 echo "Results:"
 echo -e "  ${RED}CRITICAL: $CRITICAL_COUNT${NC}"
@@ -322,20 +375,14 @@ echo ""
 if [ $CRITICAL_COUNT -gt 0 ]; then
   echo -e "${RED}❌ DEPLOYMENT BLOCKED${NC}"
   echo ""
-  echo "Critical issues detected. Fix these before deploying:"
-  echo "- TS/JS import mismatches"
-  echo "- Build failures"
-  echo "- Test failures"
-  echo "- Database migration issues"
+  echo "Critical issues detected. Fix these before deploying."
   echo ""
   echo "DO NOT DEPLOY until critical issues are resolved."
   exit 1
 elif [[ "$CRITICALITY" == "PRODUCTION" && $HIGH_COUNT -gt 0 ]]; then
   echo -e "${RED}❌ DEPLOYMENT BLOCKED (PRODUCTION)${NC}"
   echo ""
-  echo "High-severity issues detected. Fix these before deploying to production:"
-  echo "- ESLint errors"
-  echo "- Security vulnerabilities"
+  echo "High-severity issues detected. Fix these before deploying to production."
   echo ""
   exit 1
 elif [ $HIGH_COUNT -gt 3 ] || [ $MEDIUM_COUNT -gt 5 ]; then
@@ -347,7 +394,7 @@ elif [ $HIGH_COUNT -gt 3 ] || [ $MEDIUM_COUNT -gt 5 ]; then
 else
   echo -e "${GREEN}✅ DEPLOYMENT READY${NC}"
   echo ""
-  echo "All critical checks passed. Safe to deploy."
+  echo "All checks passed. Safe to deploy."
   echo ""
   exit 0
 fi

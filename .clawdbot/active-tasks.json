@@ -1,18 +1,6 @@
 {
   "tasks": [
     {
-      "id": "dod-adversarial-audit-20260301-2224",
-      "type": "adversarial-review",
-      "agent": "dev",
-      "sessionKey": "agent:dev:subagent:21cd59af-b519-47c5-aa2b-d7bc96eb6398",
-      "status": "running",
-      "started": "2026-03-01T22:24:00-05:00",
-      "target": "skills/definition-of-done/",
-      "expectedCompletion": "2026-03-01T23:24:00-05:00",
-      "description": "Adversarial audit of Definition of Done skill (93 checks, production readiness)",
-      "deliverable": "workspace-titlerun/definition-of-done-adversarial-audit.md"
-    },
-    {
       "id": "3ai-production-hardening-20260301-2227",
       "type": "feature-build",
       "agent": "titlerun",
@@ -20,10 +8,22 @@
       "status": "running",
       "started": "2026-03-01T22:27:00-05:00",
       "target": "skills/titlerun-code-review/",
-      "expectedCompletion": "2026-03-01T23:57:00-05:00",
+      "expectedCompletion": "2026-03-02T00:00:00-05:00",
       "description": "Build remaining 20%: large file handling, error recovery, partial results, timeout, retry",
       "deliverable": "Updated workflows + live test on titlerun-api/src/index.js (1048 lines)"
+    },
+    {
+      "id": "dod-fix-blockers-critical-20260301-2234",
+      "type": "bug-fix",
+      "agent": "dev",
+      "sessionKey": "agent:dev:subagent:aeaf0ad2-3af7-45ac-968f-ac37ec007350",
+      "status": "running",
+      "started": "2026-03-01T22:34:00-05:00",
+      "target": "skills/definition-of-done/",
+      "expectedCompletion": "2026-03-02T00:34:00-05:00",
+      "description": "Fix 3 BLOCKERS + 4 CRITICAL issues from adversarial audit (52→80+ score)",
+      "deliverable": "workspace-titlerun/dod-fixes-complete.md + tested script"
     }
   ],
-  "lastUpdated": "2026-03-01T22:27:30-05:00"
+  "lastUpdated": "2026-03-01T22:34:30-05:00"
 }
