@@ -20,12 +20,31 @@ _Curated essentials. Technical anti-patterns now live in repo CLAUDE.md files. D
 ## Infrastructure
 
 - **OpenClaw:** LaunchAgent, gateway 127.0.0.1:18789, version 2026.2.13
+- **Gateway auth:** Disabled for local access (`allowInsecureAuth: true`, `auth.mode: "none"`) - safe for loopback-only
 - **Git backup:** Auto-push every 10 min to `git@github.com:daidue/OpenClaw.git`
 - **Browser:** Managed Brave profile (orange-tinted). X: @JeffDanielsB4U, Gmail: jeffdanielsbymail@gmail.com
 - **Heartbeat:** Jeff 90m (Qwen 3 4B local triage), Rush 30m (Qwen 3 4B local triage, Opus for real work), Grind 30m (Sonnet), Edge cron-only
 - **Jeff's Facebook:** https://www.facebook.com/profile.php?id=61587930220275
 - **Claude Code settings:** `~/.claude/settings.json` — Agent Teams ON, autocompact 80%, output 64K, permission model (deny/ask/allow)
 - **CLAUDE.md files:** Both `titlerun-api/CLAUDE.md` and `titlerun-app/CLAUDE.md` contain all technical anti-patterns and architecture docs. Update those, NOT this file, for code-level knowledge.
+
+### TitleRun API Deployment
+
+**Production URLs:**
+- ✅ **PRIMARY:** `https://api.titlerun.co` (custom domain)
+- ✅ **Railway:** `https://dynastyfolio-api-production.up.railway.app`
+- ❌ **WRONG:** `titlerun-api-production.up.railway.app` (doesn't exist - common mistake)
+
+**Railway CLI:**
+- Project: `selfless-peace`
+- Environment: `production`
+- Service: `titlerun-api`
+- Link command: `railway link --project selfless-peace --environment production --service titlerun-api`
+- Status: `railway status` | Logs: `railway logs --tail 50`
+
+**Repos:**
+- API: `~/Documents/Claude Cowork Business/titlerun-api/` → `git@github.com:daidue/titlerun-api.git`
+- App: `~/Documents/Claude Cowork Business/titlerun-app/` → `git@github.com:daidue/titlerun-app.git`
 
 ## Active Projects
 
@@ -120,4 +139,4 @@ _Curated essentials. Technical anti-patterns now live in repo CLAUDE.md files. D
 
 ---
 
-_Last updated: 2026-03-01_
+_Last updated: 2026-03-02_
