@@ -1,0 +1,28 @@
+{
+  "originalFile": "chunk-file.js",
+  "totalLines": 167,
+  "chunkCount": 2,
+  "chunks": [
+    {
+      "id": "chunk-1",
+      "path": ".chunks/chunk-1.txt",
+      "startLine": 1,
+      "endLine": 167,
+      "lineCount": 167
+    },
+    {
+      "id": "chunk-2",
+      "path": ".chunks/chunk-2.txt",
+      "startLine": 118,
+      "endLine": 167,
+      "lineCount": 50
+    }
+  ],
+  "options": {
+    "chunkSize": 700,
+    "minChunkSize": 600,
+    "maxChunkSize": 800,
+    "overlap": 50
+  },
+  "timestamp": "2026-03-02T18:50:36.060Z"
+}

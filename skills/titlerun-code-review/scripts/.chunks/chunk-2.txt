@@ -1,0 +1,49 @@
+    return info;
+  });
+
+  const manifest = {
+    originalFile: filePath,
+    totalLines: lines.length,
+    chunkCount: chunkFiles.length,
+    chunks: chunkFiles,
+    options: {chunkSize, minChunkSize, maxChunkSize, overlap},
+    timestamp: new Date().toISOString()
+  };
+
+  const manifestPath = path.join(outputDir, 'manifest.json');
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), 'utf-8');
+
+  console.log('Manifest written: ' + manifestPath);
+
+  return {chunks: chunkFiles, manifest: manifestPath};
+}
+
+if (require.main === module) {
+  const args = process.argv.slice(2);
+  
+  if (args.length === 0) {
+    console.error('Usage: node chunk-file.js <file-path>');
+    process.exit(1);
+  }
+  
+  const filePath = args[0];
+  const options = {};
+  
+  args.slice(1).forEach(arg => {
+    if (arg.startsWith('--')) {
+      const [key, value] = arg.slice(2).split('=');
+      const optKey = key.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+      options[optKey] = isNaN(value) ? value : parseInt(value);
+    }
+  });
+  
+  try {
+    const result = chunkFile(filePath, options);
+    console.log('\n✅ Chunking complete!');
+  } catch (err) {
+    console.error('❌ Error:', err.message);
+    process.exit(1);
+  }
+}
+
+module.exports = {chunkFile};
