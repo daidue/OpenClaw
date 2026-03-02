@@ -1,18 +1,6 @@
 {
   "tasks": [
     {
-      "id": "dod-game-changers-v1.1.0-20260301-2243",
-      "type": "feature-build",
-      "agent": "dev",
-      "sessionKey": "agent:dev:subagent:5034ee49-55e8-45f4-a1df-1c7581ce5015",
-      "status": "running",
-      "started": "2026-03-01T22:43:00-05:00",
-      "target": "skills/definition-of-done/",
-      "expectedCompletion": "2026-03-02T06:43:00-05:00",
-      "description": "Build v1.1.0: Fix 5 HIGH issues + --json output + --fix mode + 25 real checks (83→95/100)",
-      "deliverable": "workspace-titlerun/dod-v1.1.0-game-changers.md"
-    },
-    {
       "id": "3ai-adversarial-audit-20260301-2248",
       "type": "adversarial-review",
       "agent": "researcher",
@@ -21,9 +9,33 @@
       "started": "2026-03-01T22:48:00-05:00",
       "target": "skills/titlerun-code-review/",
       "expectedCompletion": "2026-03-01T23:48:00-05:00",
-      "description": "Adversarial audit of 3-AI v1.1.0 production hardening (verify 100% claim, find gaps)",
+      "description": "Adversarial audit of 3-AI v1.1.0 production hardening (verify 100% claim)",
       "deliverable": "workspace-titlerun/3ai-v1.1.0-adversarial-audit.md"
+    },
+    {
+      "id": "dod-audit-rush-20260301-2255",
+      "type": "adversarial-review",
+      "agent": "titlerun",
+      "sessionKey": "agent:titlerun:subagent:f4a3324a-3504-4ed0-b5ed-301fe949f3f3",
+      "status": "running",
+      "started": "2026-03-01T22:55:00-05:00",
+      "target": "skills/definition-of-done/",
+      "expectedCompletion": "2026-03-01T23:55:00-05:00",
+      "description": "Adversarial audit #1: TitleRun codebase expert - will it work on our repos?",
+      "deliverable": "workspace-titlerun/dod-v1.1.0-audit-rush.md"
+    },
+    {
+      "id": "dod-audit-edge-20260301-2255",
+      "type": "adversarial-review",
+      "agent": "polymarket",
+      "sessionKey": "agent:polymarket:subagent:ecc364f6-d31f-4850-baea-517586189d92",
+      "status": "running",
+      "started": "2026-03-01T22:55:00-05:00",
+      "target": "skills/definition-of-done/",
+      "expectedCompletion": "2026-03-01T23:55:00-05:00",
+      "description": "Adversarial audit #2: Security expert - bash safety, false claims, portability",
+      "deliverable": "workspace-titlerun/dod-v1.1.0-audit-edge.md"
     }
   ],
-  "lastUpdated": "2026-03-01T22:48:30-05:00"
+  "lastUpdated": "2026-03-01T22:55:30-05:00"
 }

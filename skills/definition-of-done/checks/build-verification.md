@@ -332,10 +332,7 @@ fi
 
 ```javascript
 // Load this file
-const buildChecks = require('./checks/build-verification.md')
-
-// Execute all checks
-const results = await buildChecks.runAll()
+# Integration: ./scripts/run-pre-deploy-checks.sh --json | jq .status
 
 // Aggregate results
 if (results.errors.some(e => e.severity === 'CRITICAL')) {

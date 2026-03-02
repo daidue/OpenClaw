@@ -337,10 +337,7 @@ fi
 
 ```javascript
 // Load this file
-const breakingChangesChecks = require('./checks/breaking-changes.md')
-
-// Execute all checks
-const results = await breakingChangesChecks.runAll()
+# Integration: ./scripts/run-pre-deploy-checks.sh --json | jq .status
 
 // Aggregate results
 if (results.errors.some(e => e.severity === 'CRITICAL')) {

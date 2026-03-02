@@ -363,10 +363,7 @@ npm update [package-name]
 
 ```javascript
 // Load this file
-const codeQualityChecks = require('./checks/code-quality.md')
-
-// Execute all checks
-const results = await codeQualityChecks.runAll()
+# Integration: ./scripts/run-pre-deploy-checks.sh --json | jq .status
 
 // Aggregate results
 const criticalIssues = results.errors.filter(e => e.severity === 'CRITICAL')
