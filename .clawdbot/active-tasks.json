@@ -1,54 +1,29 @@
 {
-  "titlerun-phase2-backend": {
-    "sessionId": "ember-dune",
-    "agent": "rush",
-    "agentType": "claude-code",
-    "model": "claude-opus-4.5",
-    "description": "Migrate titlerun-api to use @titlerun/validation library",
-    "repo": "titlerun-api",
-    "branch": "main",
-    "workdir": "/Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-api",
-    "status": "failed",
-    "startedAt": "2026-03-01T21:16:00Z",
-    "estimatedDuration": "4-6 hours",
-    "notifyOnComplete": true,
-    "definition_of_done": {
-      "tests_passing": false,
-      "typescript_passing": false,
-      "no_console_errors": false,
-      "pr_created": false,
-      "ci_passing": false,
-      "self_review_complete": false
+  "tasks": [
+    {
+      "id": "dod-adversarial-audit-20260301-2224",
+      "type": "adversarial-review",
+      "agent": "dev",
+      "sessionKey": "agent:dev:subagent:21cd59af-b519-47c5-aa2b-d7bc96eb6398",
+      "status": "running",
+      "started": "2026-03-01T22:24:00-05:00",
+      "target": "skills/definition-of-done/",
+      "expectedCompletion": "2026-03-01T23:24:00-05:00",
+      "description": "Adversarial audit of Definition of Done skill (93 checks, production readiness)",
+      "deliverable": "workspace-titlerun/definition-of-done-adversarial-audit.md"
     },
-    "failedAt": "2026-03-01T22:00:00Z",
-    "note": "Session ended without creating PR"
-  },
-  "dogfood-2026-03-01": {
-    "sessionId": "dogfood-20260301-201530",
-    "agent": "rush",
-    "agentType": "agent-browser",
-    "description": "Weekly dogfood QA for TitleRun",
-    "target": "app.titlerun.co",
-    "status": "complete",
-    "startedAt": "2026-03-02T01:15:30Z",
-    "estimatedDuration": "30-60 min",
-    "notifyOnComplete": true,
-    "outputDir": "titlerun-qa/dogfood-2026-03-01",
-    "completedAt": "2026-03-02T00:16:59Z",
-    "updatedAt": "2026-03-02T01:16:39Z"
-  },
-  "dogfood-20260301-202548": {
-    "sessionId": "dogfood-20260301-202548",
-    "agent": "rush",
-    "agentType": "agent-browser",
-    "description": "Weekly dogfood QA for TitleRun",
-    "target": "app.titlerun.co",
-    "status": "failed",
-    "startedAt": "2026-03-02T01:25:48Z",
-    "estimatedDuration": "30-60 min",
-    "notifyOnComplete": true,
-    "outputDir": "titlerun-qa/dogfood-2026-03-01",
-    "note": "Session ended without generating report.md",
-    "updatedAt": "2026-03-02T01:26:56Z"
-  }
+    {
+      "id": "3ai-production-hardening-20260301-2227",
+      "type": "feature-build",
+      "agent": "titlerun",
+      "sessionKey": "agent:titlerun:subagent:40285c6c-3040-4bfe-abda-945439174fe8",
+      "status": "running",
+      "started": "2026-03-01T22:27:00-05:00",
+      "target": "skills/titlerun-code-review/",
+      "expectedCompletion": "2026-03-01T23:57:00-05:00",
+      "description": "Build remaining 20%: large file handling, error recovery, partial results, timeout, retry",
+      "deliverable": "Updated workflows + live test on titlerun-api/src/index.js (1048 lines)"
+    }
+  ],
+  "lastUpdated": "2026-03-01T22:27:30-05:00"
 }
