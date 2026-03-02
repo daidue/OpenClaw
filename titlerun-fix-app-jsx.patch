@@ -1,0 +1,29 @@
+--- a/src/App.jsx
++++ b/src/App.jsx
+@@ -95,21 +95,11 @@ const AuthLoading = () => (
+ 
+ // Protected Route wrapper
+ const ProtectedRoute = ({ children }) => {
+-  const { isAuthenticated, token, _hasHydrated } = useAuthStore();
++  const { isAuthenticated, _hasHydrated } = useAuthStore();
+   const location = useLocation();
+ 
+   // Wait for hydration to complete before making auth decisions
+   if (!_hasHydrated) {
+     return <AuthLoading />;
+   }
+ 
+-  // CRITICAL FIX (P0): Ensure token exists in localStorage before rendering
+-  // Prevents 401 errors from race condition between hydration and API calls
+-  if (isAuthenticated && token) {
+-    const storedToken = localStorage.getItem('authToken');
+-    if (!storedToken) {
+-      // Token exists in store but not localStorage - sync it immediately
+-      localStorage.setItem('authToken', token);
+-    }
+-  }
+-
+-  if (!isAuthenticated || !token) {
++  if (!isAuthenticated) {
+     return <Navigate to="/login" state={{ from: location }} replace />;
+   }
