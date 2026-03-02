@@ -16,6 +16,7 @@ log() {
 
 # Initialize log
 mkdir -p "$CLAWDBOT/logs"
+mkdir -p "$CLAWDBOT/redirects/archive"
 log "=== Agent Monitoring Check ==="
 
 # Check if task registry exists
@@ -34,6 +35,23 @@ echo "$TASKS" | jq -r 'keys[]' | while read -r task_id; do
   DESCRIPTION=$(echo "$TASKS" | jq -r ".[\"$task_id\"].description // empty")
   
   log "Checking task: $task_id ($STATUS)"
+  
+  # Check for redirection file
+  REDIRECT_FILE="$CLAWDBOT/redirects/$task_id.redirect"
+  if [ -f "$REDIRECT_FILE" ]; then
+    log "  🔀 REDIRECT FOUND for $task_id"
+    REDIRECT_MSG=$(cat "$REDIRECT_FILE")
+    log "  📨 Sending redirection: $REDIRECT_MSG"
+    
+    # Send message to agent session
+    if [ -n "$SESSION_ID" ]; then
+      openclaw subagents steer --target "$SESSION_ID" --message "$REDIRECT_MSG" 2>&1 | tee -a "$LOG_FILE" || log "  ⚠️ Failed to send redirect"
+    fi
+    
+    # Archive redirect file
+    mv "$REDIRECT_FILE" "$CLAWDBOT/redirects/archive/$task_id-$(date +%s).redirect"
+    log "  ✅ Redirect sent and archived"
+  fi
   
   # Skip if not running
   if [ "$STATUS" != "running" ]; then
