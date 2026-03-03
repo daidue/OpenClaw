@@ -1,0 +1,2 @@
+2026-03-03T01:30:26Z | LOCK_THEFT | resource=stale-test | old_owner=old-agent | old_pid=99999 | age=700s | new_owner=rush-test-3 | new_pid=72526
+2026-03-03T01:30:45Z | LOCK_THEFT | resource=stale-test2 | old_owner=old-agent | old_pid=99999 | age=700s | new_owner=rush-test-4 | new_pid=72554
