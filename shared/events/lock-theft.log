@@ -1,2 +1,4 @@
 2026-03-03T01:30:26Z | LOCK_THEFT | resource=stale-test | old_owner=old-agent | old_pid=99999 | age=700s | new_owner=rush-test-3 | new_pid=72526
 2026-03-03T01:30:45Z | LOCK_THEFT | resource=stale-test2 | old_owner=old-agent | old_pid=99999 | age=700s | new_owner=rush-test-4 | new_pid=72554
+2026-03-03T01:57:25Z | LOCK_THEFT | resource=test-resource | old_owner=rush-test-1 | old_pid=72507 | age=1628s | new_owner=edge-test-1 | new_pid=74107
+2026-03-03T01:57:57Z | LOCK_THEFT | resource=test-stale | old_owner=stale-owner | old_pid=99999 | age=700s | new_owner=edge-test-3 | new_pid=74148
