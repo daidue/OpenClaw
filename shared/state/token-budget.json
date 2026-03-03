@@ -1,0 +1,10 @@
+{
+  "daily_target": 37,
+  "daily_max": 50,
+  "allocations": {
+    "jeff": 4,
+    "titlerun": 33
+  },
+  "current_spend": 0,
+  "last_reset": "2026-03-02"
+}

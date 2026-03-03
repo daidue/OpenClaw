@@ -37,7 +37,107 @@ Rotate which business unit gets the deep-dive each beat:
 **Deep-dive:** Read standup, check KPIs, review recent memory notes, resolve blockers
 **Quick-scan:** Check inbox status, verify agent wrote a daily note today, note any alerts
 
-### 4. Agent Liveness Check (every beat — 30 sec)
+### 4. TitleRun Operations (Rush's Logic)
+
+**Only when TitleRun is active:**
+
+#### 4a. Check TitleRun Production Health (5 min)
+```bash
+# Verify production environment
+if ! command -v gh &> /dev/null || ! gh auth status &> /dev/null; then
+  echo "⚠️ GitHub CLI not ready"
+  # Skip TitleRun operations this beat
+  return
+fi
+
+if ! command -v railway &> /dev/null || ! railway whoami &> /dev/null; then
+  echo "⚠️ Railway CLI not ready"
+  # Skip TitleRun operations this beat
+  return
+fi
+
+# API health
+API_STATUS=$(curl -s https://api.titlerun.co/health | jq -r '.status // "unknown"')
+if [ "$API_STATUS" != "healthy" ]; then
+  echo "🚨 TitleRun API unhealthy: $API_STATUS"
+  # Alert in daily note
+fi
+
+# Frontend health
+FRONTEND_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://app.titlerun.co)
+if [ "$FRONTEND_STATUS" != "200" ]; then
+  echo "🚨 TitleRun Frontend down: HTTP $FRONTEND_STATUS"
+fi
+
+# Railway error check
+cd ~/Documents/Claude\ Cowork\ Business/titlerun-api
+ERROR_COUNT=$(railway logs -e production --tail 100 2>/dev/null | grep -ciE "error|critical|fatal" || echo "0")
+if [ "$ERROR_COUNT" -gt 10 ]; then
+  echo "⚠️ TitleRun high error rate: $ERROR_COUNT errors"
+fi
+```
+
+#### 4b. Prepare GitHub Tasks (10 min)
+```bash
+# Run task preparation (scans GitHub, creates .task files)
+if [ -f ~/.openclaw/workspace-titlerun/scripts/prepare-github-tasks.sh ]; then
+  bash ~/.openclaw/workspace-titlerun/scripts/prepare-github-tasks.sh
+fi
+```
+
+#### 4c. Spawn Agents for Pending Tasks (10 min)
+```bash
+# Process pending tasks
+task_dir="$HOME/.openclaw/workspace-titlerun/tasks/pending"
+completed_dir="$HOME/.openclaw/workspace-titlerun/tasks/completed"
+failed_dir="$HOME/.openclaw/workspace-titlerun/tasks/failed"
+
+if [ -d "$task_dir" ]; then
+  for task_file in "$task_dir"/*.task; do
+    [ -e "$task_file" ] || continue
+    
+    # Source task data
+    source "$task_file"
+    
+    # Sanitize title
+    SAFE_TITLE=$(echo "$ISSUE_TITLE" | tr -cd '[:alnum:][:space:]-' | head -c 100)
+    
+    # Spawn subagent using sessions_spawn
+    spawn_result=$(sessions_spawn \
+      agent="titlerun" \
+      task="Fix GitHub #$ISSUE_NUMBER in $REPO: $SAFE_TITLE\n\nURL: $ISSUE_URL\nPriority: $PRIORITY\n\nFix the bug, write tests, create PR." \
+      mode="run" \
+      runtime="subagent" \
+      label="gh-$REPO-$ISSUE_NUMBER" \
+      runTimeoutSeconds=7200
+    )
+    
+    # Check spawn success
+    if echo "$spawn_result" | grep -q "childSessionKey"; then
+      mv "$task_file" "$completed_dir/"
+      echo "✅ Spawned agent for: gh-$REPO-$ISSUE_NUMBER"
+    else
+      mkdir -p "$failed_dir"
+      mv "$task_file" "$failed_dir/"
+      echo "❌ Failed to spawn for: gh-$REPO-$ISSUE_NUMBER"
+      echo "Error: $spawn_result"
+    fi
+  done
+fi
+```
+
+#### 4d. Monitor Active Subagents (5 min)
+```bash
+# Check TitleRun subagents
+titlerun_agents=$(subagents action="list" recentMinutes=90 | grep "gh-titlerun")
+
+if echo "$titlerun_agents" | grep -q "failed"; then
+  echo "⚠️ TitleRun agent failures detected"
+  # Log to memory for review
+fi
+```
+
+### 5. Agent Liveness Check (every beat — 30 sec)
 - Did each active Owner/Operator write to `memory/YYYY-MM-DD.md` today?
   - Grind: `workspace-commerce/memory/` — expect daily note by noon
   - Rush: `workspace-titlerun/memory/` — expect daily note by noon (Phase 1: may be sparse)
@@ -46,13 +146,13 @@ Rotate which business unit gets the deep-dive each beat:
 - If no activity for 48h → alert Taylor: "[Agent] non-responsive for 48h"
 - Quick check: `sessions_list` — are heartbeats firing?
 
-### 5. Cross-Pollination Check (every beat — 1 min)
+### 6. Cross-Pollination Check (every beat — 1 min)
 - Any `[CROSS-POLLINATION FLAG]` in Owner/Operator standups?
 - Any `[CROSS-BIZ]` peer messages to review retroactively?
 - Route insights to relevant Owner/Operators via their inboxes
 - Update `intelligence/portfolio-feed.md` if significant
 
-### 6. Token Budget Check (1x daily, morning)
+### 7. Token Budget Check (1x daily, morning)
 - Run: `bash scripts/cost-tracker.sh daily` → generates `memory/daily/YYYY-MM-DD-costs.md`
 - Read the output. Any agent over 150% of daily budget? → investigate, throttle if needed
 - If total > $50/day → CRITICAL: throttle sub-agent spawning, notify Taylor
@@ -60,16 +160,16 @@ Rotate which business unit gets the deep-dive each beat:
 - Update PORTFOLIO.md cost tracking table weekly with actuals
 - Cross-reference with `session_status` for token counts when available
 
-### 7. Morning Brief (8:30am via cron — see cron config)
+### 8. Morning Brief (8:30am via cron — see cron config)
 - Compile 8-line portfolio brief from Owner/Operator standups
 - Send to Taylor via Telegram
 
-### 8. Evening Brief (8:00pm via cron)
+### 9. Evening Brief (8:00pm via cron)
 - Day recap, overnight priorities
 - Conditional: skip if nothing actionable, but send at least 1 brief/day
 - Include token usage summary
 
-### 9. Weekly Portfolio Review (Sunday via cron)
+### 10. Weekly Portfolio Review (Sunday via cron)
 - Collect all Owner/Operator weekly scorecards
 - **Run TitleRun Dogfood QA** (automated):
   - Run: `./scripts/run-dogfood.sh` (spawns agent-browser, auto-monitored)
