@@ -1,28 +1,30 @@
 {
   "tasks": [
     {
+      "id": "fix-bugs-test-spawn-20260302-1931",
+      "type": "bug-fixes-testing",
+      "agent": "titlerun",
+      "sessionKey": "agent:titlerun:subagent:5308d71b-267c-4a84-8397-3feeb956ccc9",
+      "status": "running",
+      "started": "2026-03-02T19:31:00-05:00",
+      "target": "Critical Bug Fixes + Spawning Test",
+      "expectedCompletion": "2026-03-02T21:01:00-05:00",
+      "description": "Fix critical data-loss bug, fix pipe injection, add production checks, test sessions_spawn mechanism, run end-to-end workflow test.",
+      "deliverable": "FIXES-AND-TESTING-2026-03-02.md",
+      "priority": "FIX BUGS (30min) → FIX OTHER ISSUES (30min) → TEST SPAWNING (60min)",
+      "phases": "Phase 1: Fix critical bug (30min) | Phase 2: Fix other issues (30min) | Phase 3: Test spawning (60min)"
+    }
+  ],
+  "lastUpdated": "2026-03-02T19:31:30-05:00",
+  "recentCompletions": [
+    {
       "id": "audit-redesign-20260302-1921",
       "type": "adversarial-audit",
       "agent": "titlerun",
-      "sessionKey": "agent:titlerun:subagent:5aee9a8b-66b5-4b2b-a245-dbe39c6ca91d",
-      "status": "running",
-      "started": "2026-03-02T19:21:00-05:00",
-      "target": "Redesigned Orchestration (Final Verification)",
-      "expectedCompletion": "2026-03-02T20:06:00-05:00",
-      "description": "Final audit before Rush deploys. Verify architecture uses real OpenClaw features, code quality, testing claims, Rush action items clear.",
-      "deliverable": ".clawdbot/audits/redesign-final-audit-2026-03-02.md"
-    }
-  ],
-  "lastUpdated": "2026-03-02T19:21:30-05:00",
-  "recentCompletions": [
-    {
-      "id": "redesign-orchestration-20260302-1842",
-      "type": "architecture-rebuild",
-      "agent": "titlerun",
       "status": "completed",
-      "completed": "2026-03-02T19:21:00-05:00",
-      "runtime": "39 minutes",
-      "result": "80% verified working, architecture redesigned from scratch using actual OpenClaw features"
+      "completed": "2026-03-02T19:31:00-05:00",
+      "runtime": "~10 minutes",
+      "result": "CONDITIONAL SHIP - 1 CRITICAL bug, spawning untested, 2-3h realistic timeline"
     }
   ]
 }
