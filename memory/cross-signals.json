@@ -1,12 +1,50 @@
 {
-  "timestamp": "2026-03-04T11:02:27.982554+00:00",
+  "timestamp": "2026-03-04T17:02:29.268775+00:00",
   "period_hours": 24,
   "shared_topics": [],
-  "shared_tools": [],
+  "shared_tools": [
+    {
+      "tool": "exec",
+      "agents": [
+        "main",
+        "dev"
+      ]
+    },
+    {
+      "tool": "read",
+      "agents": [
+        "main",
+        "dev"
+      ]
+    },
+    {
+      "tool": "edit",
+      "agents": [
+        "main",
+        "dev"
+      ]
+    },
+    {
+      "tool": "process",
+      "agents": [
+        "main",
+        "dev"
+      ]
+    },
+    {
+      "tool": "write",
+      "agents": [
+        "main",
+        "dev"
+      ]
+    }
+  ],
   "agent_error_counts": {
-    "main": 14
+    "main": 12,
+    "dev": 5
   },
   "active_agents": [
-    "main"
+    "main",
+    "dev"
   ]
 }
