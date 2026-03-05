@@ -1,12 +1,52 @@
 {
-  "timestamp": "2026-03-05T11:02:28.152898+00:00",
+  "timestamp": "2026-03-05T17:02:28.455975+00:00",
   "period_hours": 24,
-  "shared_topics": [],
-  "shared_tools": [],
+  "shared_topics": [
+    {
+      "topic": "template",
+      "agents": [
+        "main",
+        "researcher"
+      ],
+      "signal": "collaboration"
+    }
+  ],
+  "shared_tools": [
+    {
+      "tool": "read",
+      "agents": [
+        "main",
+        "researcher"
+      ]
+    },
+    {
+      "tool": "exec",
+      "agents": [
+        "main",
+        "researcher"
+      ]
+    },
+    {
+      "tool": "write",
+      "agents": [
+        "main",
+        "researcher"
+      ]
+    },
+    {
+      "tool": "process",
+      "agents": [
+        "main",
+        "researcher"
+      ]
+    }
+  ],
   "agent_error_counts": {
-    "main": 8
+    "main": 4,
+    "researcher": 10
   },
   "active_agents": [
-    "main"
+    "main",
+    "researcher"
   ]
 }
