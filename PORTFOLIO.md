@@ -38,30 +38,31 @@
 
 ## Phased Launch Schedule
 
-| Phase | Period | Templates | TitleRun | Polymarket |
-|-------|--------|-----------|----------|------------|
-| **1** | Now - Day 30 | 🟢 FULL (60%) | 🟡 PREP (25%) | 🔵 RESEARCH (10%) |
-| **2** | Day 31-60 | 🟢 FULL (45%) | 🟢 FULL (40%) | 🔵 SANDBOX (10%) |
-| **3** | Day 61-90 | 🟢 FULL (35%) | 🟢 FULL (35%) | 🟡 LIVE? (20%) |
+**UPDATED 2026-03-08:** TitleRun-only focus until April 15 launch. Templates and Polymarket dormant.
 
-**Phase gates:**
-- Rush → FULL: Templates have 25+ free downloads AND MVP deployed
-- Edge → SANDBOX: Backtesting shows 58%+ win rate over 200+ simulated trades
-- Edge → LIVE: Sandbox shows 58%+ over 200 sandbox trades
+| Phase | Period | TitleRun | Notes |
+|-------|--------|----------|-------|
+| **Systems** | Week 1-2 (Mar 1-14) | 🟢 Agent orchestration, monitoring, quality gates | In progress |
+| **Product** | Week 3-4 (Mar 15-28) | 🟢 Zero bugs, polished UX, mobile QA | Next |
+| **Distribution** | Week 5-6 (Mar 29-Apr 11) | 🟢 Audience building, launch assets | Planned |
+| **Launch** | Week 7 (Apr 12-18) | 🚀 April 15 target | 33 days |
+
+**Post-launch:** Evaluate Templates/Polymarket reactivation based on TitleRun traction.
 
 ## Budget
 
 **Daily target: $20-37/day ($585-1,110/month)**
+**UPDATED 2026-03-08:** Throttle to Sonnet (Day 45 kill switch Mar 28). Opus only when Taylor requests or critical decisions.
 
-| Agent | Fixed (heartbeats) | Variable (sub-agents) | Total |
-|-------|-------------------|----------------------|-------|
-| Jeff | $2-3 | $0-1 | $2-4 |
-| Grind | $3-5 | $5-10 | $8-15 |
-| Rush | $1-2 | $3-5 | $4-7 |
-| Edge | $0.50-1 | $1-3 | $1.50-4 |
-| Buffer (20%) | — | — | $3-6 |
+| Agent | Fixed (heartbeats) | Variable (sub-agents) | Total | Status |
+|-------|-------------------|----------------------|-------|--------|
+| Jeff | $1-2 (Sonnet) | $0-1 | $1-3 | 🟢 ACTIVE |
+| Grind | — | — | $0 | ⚪ DORMANT |
+| Rush | $0.50-1 (Sonnet) | $15-25 (Sonnet default) | $15.50-26 | 🟢 ACTIVE |
+| Edge | — | — | $0 | ⚪ DORMANT |
+| Buffer (10%) | — | — | $1.50-3 | — |
 
-**Break-even:** ~$600-1,200/month → 22-44 template sales at $27
+**Break-even:** TitleRun launch (April 15) → $1,000+/month target by Oct 2026
 
 ## Cost Tracking (Updated Weekly)
 | Week | Total Spend | Grind | Rush | Edge | Jeff | Revenue | ROI |

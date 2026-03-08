@@ -11,11 +11,13 @@
 
 ## The Portfolio
 
-| Business | Owner/Operator | Agent ID | Workspace | Inbox |
-|----------|---------------|----------|-----------|-------|
-| Notion Templates | Grind | `commerce` | workspace-commerce | workspace-commerce/inboxes/grind-inbox.md |
-| TitleRun | Rush | `titlerun` | workspace-titlerun | workspace-titlerun/inboxes/rush-inbox.md |
-| Polymarket | Edge | `polymarket` | workspace-polymarket | workspace-polymarket/inboxes/edge-inbox.md |
+**UPDATED 2026-03-08:** TitleRun-only focus until April 15 launch.
+
+| Business | Owner/Operator | Agent ID | Workspace | Status |
+|----------|---------------|----------|-----------|--------|
+| TitleRun | Rush | `titlerun` | workspace-titlerun | 🟢 ACTIVE (April 15 launch) |
+| Notion Templates | Grind | `commerce` | workspace-commerce | ⚪ DORMANT |
+| Polymarket | Edge | `polymarket` | workspace-polymarket | ⚪ DORMANT |
 
 ### Shared Sub-Agents (Ephemeral)
 | Agent ID | Role | Notes |

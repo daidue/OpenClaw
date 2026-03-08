@@ -103,6 +103,9 @@ _Curated essentials. Technical anti-patterns now live in repo CLAUDE.md files. D
 | 2026-03-01 | **LAUNCH DELAYED to April 15** | Taylor: Systems FIRST → Product SECOND → Distribution THIRD |
 | 2026-03-01 | **Agent swarm infrastructure = priority #1** | Build Elvis-level orchestration before launch. 6-week roadmap. |
 | 2026-03-01 | Dogfood QA integrated into workflow | Weekly automated QA via agent-browser. Full video/screenshot evidence. |
+| 2026-03-08 | **Jeff's role clarified** | Portfolio manager helping Taylor coordinate Rush to build TitleRun. Orchestration layer, not doing specialist work. |
+| 2026-03-08 | **Throttle to Sonnet** | Token budget concern (Day 45 approaching). Sonnet default, Opus only when Taylor requests or critical decisions. |
+| 2026-03-08 | **TitleRun-only focus confirmed** | No commerce, templates, or polymarket work. 100% TitleRun support. |
 
 ## Hard-Won Patterns (keep for Jeff/Rush context)
 
