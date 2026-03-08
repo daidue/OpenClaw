@@ -1,0 +1,63 @@
+=== Worktree Agent Spawn Log ===
+Task ID: fix-performance-critical
+Agent ID: opus
+Description: Add lazy loading to all images (6.4MB loading eagerly) and implement code splitting to reduce 491KB bundle. Performance P0 issues.
+Repository: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app
+Started: 2026-03-08 13:04:41
+====================================
+
+[2026-03-08 13:04:41] INFO: Starting worktree agent spawn for task: fix-performance-critical
+[2026-03-08 13:04:41] INFO: Step 0/5: Querying relevant patterns...
+[2026-03-08 13:04:41] SUCCESS: ✓ Patterns queried — apply relevant lessons
+[2026-03-08 13:04:41] INFO: Step 1/5: Registering task in registry...
+🔍 Searching for relevant patterns...
+
+📚 Relevant patterns found for 'worktree':
+📚 Patterns matching 'worktree':
+
+
+### 2026-03-08 git worktree Silent Failure — Check Disk Space First
+- **Symptom:** `git worktree add` command succeeded but directory was empty or corrupt
+- **Root cause:** Disk space exhausted during checkout
+- **Fix:** `df -h` to check disk space, clean up old worktrees with `git worktree prune`, verify with `git worktree list`
+- **Time saved:** 20 minutes (prevented wild goose chase through git internals)
+
+### 2026-03-02 Database Connection Storms — Pool Size + SSL + KeepAlive
+- **Symptom:** PostgreSQL throwing repeated ECONNRESET errors in production
+- **Root cause:** Connection pool too large (20 max connections on free tier), missing SSL config, no keepalive
+
+
+✅ Task registered: fix-performance-critical
+   Type: worktree
+   Agent: opus
+   Timeout: 120m
+
+📋 Active tasks:
+   - pattern-learning-system (infrastructure)
+   - test-final (worktree)
+   - fix-auth-system (worktree)
+   - fix-api-500-errors (worktree)
+   - fix-data-display-bugs (worktree)
+   - fix-performance-critical (worktree)
+[2026-03-08 13:04:41] SUCCESS: ✓ Task registered via register-task.sh (canonical schema)
+[2026-03-08 13:04:41] INFO: Step 2/5: Creating worktree...
+[2026-03-08 13:04:41] INFO: Using base branch: main
+Preparing worktree (new branch 'agent/fix-performance-critical')
+Creating worktree for task: fix-performance-critical
+  Base branch: main
+  New branch: agent/fix-performance-critical
+  Worktree path: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-performance-critical
+HEAD is now at ab8f6f3 fix: remove unused useCallback import
+[0;32m✓ Worktree created successfully: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-performance-critical[0m
+/Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-performance-critical
+[2026-03-08 13:04:41] SUCCESS: ✓ Worktree created at: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-performance-critical
+[2026-03-08 13:04:41] INFO: Step 3/5: Preparing agent spawn...
+[2026-03-08 13:04:41] INFO: Agent description prepared with worktree context
+[2026-03-08 13:04:41] INFO: Step 4/5: Spawning agent...
+[2026-03-08 13:04:41] INFO: Spawning agent 'opus' for task 'fix-performance-critical'...
+[2026-03-08 13:04:41] INFO: Working directory will be: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-performance-critical
+error: unknown option '--agent-id'
+(Did you mean --agent?)
+[2026-03-08 13:04:42] WARNING: Agent spawn may have failed. Check log: /Users/jeffdaniels/.openclaw/workspace/.clawdbot/logs/worktree-fix-performance-critical.log
+[2026-03-08 13:04:42] WARNING: Worktree preserved at: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-performance-critical
+[2026-03-08 13:04:42] WARNING: To cleanup manually: /Users/jeffdaniels/.openclaw/workspace/scripts/worktree/cleanup-worktree.sh fix-performance-critical /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app

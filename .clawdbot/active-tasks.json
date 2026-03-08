@@ -19,9 +19,75 @@
       "startTime": "2026-03-08T15:35:54Z",
       "timeoutMinutes": 120,
       "status": "active"
+    },
+    {
+      "id": "fix-auth-system",
+      "type": "worktree",
+      "agent": "opus",
+      "description": "Fix all auth issues: silent login failures, demo login broken, signup broken, forgot password. Critical P0 blockers.",
+      "sessionKey": "",
+      "startTime": "2026-03-08T17:04:37Z",
+      "timeoutMinutes": 120,
+      "status": "spawn_failed",
+      "worktreePath": "/Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-auth-system"
+    },
+    {
+      "id": "fix-api-500-errors",
+      "type": "worktree",
+      "agent": "opus",
+      "description": "Fix API 500 errors on onboarding stats and preferences endpoints. Backend critical issues.",
+      "sessionKey": "",
+      "startTime": "2026-03-08T17:04:39Z",
+      "timeoutMinutes": 120,
+      "status": "spawn_failed",
+      "worktreePath": "/Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-api-worktrees/fix-api-500-errors"
+    },
+    {
+      "id": "fix-data-display-bugs",
+      "type": "worktree",
+      "agent": "opus",
+      "description": "Fix Invalid Date bug and 2025 stats showing 0.0 despite having real data. Frontend data display issues.",
+      "sessionKey": "",
+      "startTime": "2026-03-08T17:04:40Z",
+      "timeoutMinutes": 120,
+      "status": "spawn_failed",
+      "worktreePath": "/Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-data-display-bugs"
+    },
+    {
+      "id": "fix-performance-critical",
+      "type": "worktree",
+      "agent": "opus",
+      "description": "Add lazy loading to all images (6.4MB loading eagerly) and implement code splitting to reduce 491KB bundle. Performance P0 issues.",
+      "sessionKey": "",
+      "startTime": "2026-03-08T17:04:41Z",
+      "timeoutMinutes": 120,
+      "status": "spawn_failed",
+      "worktreePath": "/Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-performance-critical"
+    },
+    {
+      "id": "fix-routing-404s",
+      "type": "worktree",
+      "agent": "opus",
+      "description": "Fix all routing issues: direct URLs broken, Similar Players 404s, Trophy Case wrong component, exposed source maps. Routing + security.",
+      "sessionKey": "",
+      "startTime": "2026-03-08T17:04:42Z",
+      "timeoutMinutes": 120,
+      "status": "spawn_failed",
+      "worktreePath": "/Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-routing-404s"
+    },
+    {
+      "id": "add-values-explanations",
+      "type": "worktree",
+      "agent": "opus",
+      "description": "Add explanations for values system: what 9,871 pts means, scale, methodology, update frequency. Add tooltips and help content.",
+      "sessionKey": "",
+      "startTime": "2026-03-08T17:04:43Z",
+      "timeoutMinutes": 120,
+      "status": "spawn_failed",
+      "worktreePath": "/Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/add-values-explanations"
     }
   ],
-  "lastUpdated": "2026-03-08T15:52:24Z",
+  "lastUpdated": "2026-03-08T17:04:44Z",
   "recentCompletions": [
     {
       "id": "test-c1",

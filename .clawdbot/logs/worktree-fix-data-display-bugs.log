@@ -1,0 +1,62 @@
+=== Worktree Agent Spawn Log ===
+Task ID: fix-data-display-bugs
+Agent ID: opus
+Description: Fix Invalid Date bug and 2025 stats showing 0.0 despite having real data. Frontend data display issues.
+Repository: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app
+Started: 2026-03-08 13:04:40
+====================================
+
+[2026-03-08 13:04:40] INFO: Starting worktree agent spawn for task: fix-data-display-bugs
+[2026-03-08 13:04:40] INFO: Step 0/5: Querying relevant patterns...
+[2026-03-08 13:04:40] SUCCESS: ✓ Patterns queried — apply relevant lessons
+[2026-03-08 13:04:40] INFO: Step 1/5: Registering task in registry...
+🔍 Searching for relevant patterns...
+
+📚 Relevant patterns found for 'worktree':
+📚 Patterns matching 'worktree':
+
+
+### 2026-03-08 git worktree Silent Failure — Check Disk Space First
+- **Symptom:** `git worktree add` command succeeded but directory was empty or corrupt
+- **Root cause:** Disk space exhausted during checkout
+- **Fix:** `df -h` to check disk space, clean up old worktrees with `git worktree prune`, verify with `git worktree list`
+- **Time saved:** 20 minutes (prevented wild goose chase through git internals)
+
+### 2026-03-02 Database Connection Storms — Pool Size + SSL + KeepAlive
+- **Symptom:** PostgreSQL throwing repeated ECONNRESET errors in production
+- **Root cause:** Connection pool too large (20 max connections on free tier), missing SSL config, no keepalive
+
+
+✅ Task registered: fix-data-display-bugs
+   Type: worktree
+   Agent: opus
+   Timeout: 120m
+
+📋 Active tasks:
+   - pattern-learning-system (infrastructure)
+   - test-final (worktree)
+   - fix-auth-system (worktree)
+   - fix-api-500-errors (worktree)
+   - fix-data-display-bugs (worktree)
+[2026-03-08 13:04:40] SUCCESS: ✓ Task registered via register-task.sh (canonical schema)
+[2026-03-08 13:04:40] INFO: Step 2/5: Creating worktree...
+[2026-03-08 13:04:40] INFO: Using base branch: main
+Preparing worktree (new branch 'agent/fix-data-display-bugs')
+Creating worktree for task: fix-data-display-bugs
+  Base branch: main
+  New branch: agent/fix-data-display-bugs
+  Worktree path: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-data-display-bugs
+HEAD is now at ab8f6f3 fix: remove unused useCallback import
+[0;32m✓ Worktree created successfully: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-data-display-bugs[0m
+/Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-data-display-bugs
+[2026-03-08 13:04:40] SUCCESS: ✓ Worktree created at: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-data-display-bugs
+[2026-03-08 13:04:40] INFO: Step 3/5: Preparing agent spawn...
+[2026-03-08 13:04:40] INFO: Agent description prepared with worktree context
+[2026-03-08 13:04:40] INFO: Step 4/5: Spawning agent...
+[2026-03-08 13:04:40] INFO: Spawning agent 'opus' for task 'fix-data-display-bugs'...
+[2026-03-08 13:04:40] INFO: Working directory will be: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-data-display-bugs
+error: unknown option '--agent-id'
+(Did you mean --agent?)
+[2026-03-08 13:04:41] WARNING: Agent spawn may have failed. Check log: /Users/jeffdaniels/.openclaw/workspace/.clawdbot/logs/worktree-fix-data-display-bugs.log
+[2026-03-08 13:04:41] WARNING: Worktree preserved at: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app-worktrees/fix-data-display-bugs
+[2026-03-08 13:04:41] WARNING: To cleanup manually: /Users/jeffdaniels/.openclaw/workspace/scripts/worktree/cleanup-worktree.sh fix-data-display-bugs /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-app
