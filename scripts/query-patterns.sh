@@ -21,10 +21,11 @@ fi
 
 # Search and return matching sections with context
 # -i = case insensitive
+# -F = fixed string (no regex interpretation) [C1 FIX: prevents regex injection]
 # -B 1 = 1 line before match
 # -A 5 = 5 lines after match
 # sed = format the -- separator as visual break
-RESULTS=$(grep -A 5 -B 1 -i "$KEYWORD" "$PATTERNS_FILE" | sed 's/^--$/\n---\n/')
+RESULTS=$(grep -A 5 -B 1 -iF "$KEYWORD" "$PATTERNS_FILE" | sed 's/^--$/\n---\n/')
 
 if [ -z "$RESULTS" ]; then
   echo "No patterns found matching: $KEYWORD"

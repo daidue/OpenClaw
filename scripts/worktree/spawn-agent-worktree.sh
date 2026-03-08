@@ -2,7 +2,7 @@
 # spawn-agent-worktree.sh - Wrapper for spawning agents with worktree isolation
 # Usage: spawn-agent-worktree.sh <task-id> <agent-id> <description> <repo-path>
 
-set -euo pipefail
+set -uo pipefail
 
 # Color codes for output
 RED='\033[0;31m'
