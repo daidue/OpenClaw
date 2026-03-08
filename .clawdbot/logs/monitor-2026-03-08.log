@@ -31,3 +31,7 @@
 [2026-03-08 12:10:00]   Task pattern-learning-system: age -171m (timeout 120m)
 [2026-03-08 12:10:00]   Task test-final: age -205m (timeout 120m)
 [2026-03-08 12:10:00] Monitor complete
+[2026-03-08 12:20:00] Checking 2 active tasks...
+[2026-03-08 12:20:00]   Task pattern-learning-system: age -161m (timeout 120m)
+[2026-03-08 12:20:00]   Task test-final: age -195m (timeout 120m)
+[2026-03-08 12:20:00] Monitor complete
