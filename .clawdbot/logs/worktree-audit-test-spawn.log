@@ -1,0 +1,32 @@
+=== Worktree Agent Spawn Log ===
+Task ID: audit-test-spawn
+Agent ID: bolt
+Description: Test spawn
+Repository: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-api
+Started: 2026-03-08 11:13:39
+====================================
+
+[2026-03-08 11:13:39] INFO: Starting worktree agent spawn for task: audit-test-spawn
+[2026-03-08 11:13:39] INFO: Step 1/5: Registering task in registry...
+[2026-03-08 11:13:39] SUCCESS: ✓ Task registered in registry
+[2026-03-08 11:13:39] INFO: Step 2/5: Creating worktree...
+[2026-03-08 11:13:39] INFO: Using base branch: main
+Creating worktree for task: audit-test-spawn
+  Base branch: main
+  New branch: agent/audit-test-spawn
+  Worktree path: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-api-worktrees/audit-test-spawn
+Preparing worktree (new branch 'agent/audit-test-spawn')
+HEAD is now at 93d5b1a feat: integrate nflverse contract data
+[0;32m✓ Worktree created successfully: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-api-worktrees/audit-test-spawn[0m
+/Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-api-worktrees/audit-test-spawn
+[2026-03-08 11:13:39] SUCCESS: ✓ Worktree created at: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-api-worktrees/audit-test-spawn
+[2026-03-08 11:13:39] INFO: Step 3/5: Preparing agent spawn...
+[2026-03-08 11:13:39] INFO: Agent description prepared with worktree context
+[2026-03-08 11:13:39] INFO: Step 4/5: Spawning agent...
+[2026-03-08 11:13:39] INFO: Spawning agent 'bolt' for task 'audit-test-spawn'...
+[2026-03-08 11:13:39] INFO: Working directory will be: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-api-worktrees/audit-test-spawn
+error: unknown option '--agent-id'
+(Did you mean --agent?)
+[2026-03-08 11:13:41] WARNING: Agent spawn may have failed. Check log: /Users/jeffdaniels/.openclaw/workspace/.clawdbot/logs/worktree-audit-test-spawn.log
+[2026-03-08 11:13:41] WARNING: Worktree preserved at: /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-api-worktrees/audit-test-spawn
+[2026-03-08 11:13:41] WARNING: To cleanup manually: /Users/jeffdaniels/.openclaw/workspace/scripts/worktree/cleanup-worktree.sh audit-test-spawn /Users/jeffdaniels/Documents/Claude Cowork Business/titlerun-api

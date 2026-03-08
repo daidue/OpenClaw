@@ -11,8 +11,26 @@
       "status": "active"
     }
   ],
-  "lastUpdated": "2026-03-08T15:06:04Z",
+  "lastUpdated": "2026-03-08T15:13:59Z",
   "recentCompletions": [
+    {
+      "id": "audit-test-2",
+      "type": "testing",
+      "agent": "main",
+      "status": "completed",
+      "completed": "2026-03-08T15:13:59Z",
+      "runtime": "0m",
+      "result": "Test 2 done"
+    },
+    {
+      "id": "audit-test-1",
+      "type": "testing",
+      "agent": "main",
+      "status": "completed",
+      "completed": "2026-03-08T15:13:23Z",
+      "runtime": "0m",
+      "result": "Audit test"
+    },
     {
       "id": "worktree-isolation-system",
       "type": "infrastructure",
