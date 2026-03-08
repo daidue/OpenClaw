@@ -10,10 +10,10 @@
 | Business | Owner/Operator | Agent ID | Phase | Revenue | Health |
 |----------|---------------|----------|-------|---------|--------|
 | **Notion Templates** | Grind | `commerce` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ DORMANT |
-| **TitleRun** | Rush | `titlerun` | ACTIVE — ALL FOCUS | $0/mo | 🟡 REGRESSION |
+| **TitleRun** | Rush | `titlerun` | ACTIVE — Week 2/6 Systems Phase | $0/mo | 🟢 BUILDING |
 | **Polymarket Trading** | Edge | `polymarket` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ DORMANT |
 
-**Last weekly review:** 2026-03-01
+**Last weekly review:** 2026-03-08
 
 ## TitleRun Milestones (Week of Feb 15)
 - ✅ DB migration deployed (44 tables, 96.7/100 expert panel, RLS, FK constraints)
@@ -68,6 +68,8 @@
 |------|------------|-------|------|------|------|---------|-----|
 | W1 (Feb 8-15) | ~$800-1,500* | ~$100-150 | ~$600-1,000 | ~$50-75 | ~$50-75 | $0 | — |
 | W2 (Feb 16-22) | ~$500-800** | $0 (paused) | ~$450-700 | $0 (paused) | ~$50-100 | $0 | — |
+| W9 (Feb 22-Mar 1) | ~$400-600*** | $0 (paused) | ~$350-500 | $0 (paused) | ~$50-100 | $0 | — |
+| W10 (Mar 1-8) | ~$500-800**** | $0 (paused) | ~$450-700 | $0 (paused) | ~$50-100 | $0 | — |
 
 *W1 Estimate: 9,615 messages, 60+ sub-agents on Feb 14 alone, marathon Opus build session, frontend test fixes overnight, Cloudflare migration, landing page iterations, DB migration expert panel. Taylor approved high burn through March.
 
