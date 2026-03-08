@@ -289,3 +289,13 @@
 [2026-03-08 17:00:01]   Task fix-data-display-bugs: age -4m (timeout 120m)
 [2026-03-08 17:00:01]   Task fix-performance-critical: age -4m (timeout 120m)
 [2026-03-08 17:00:01]   Task fix-routing-404s: age -4m (timeout 120m)
+[2026-03-08 17:00:01]   Task add-values-explanations: age -4m (timeout 120m)
+[2026-03-08 17:00:01] Monitor complete
+[2026-03-08 17:10:01] Checking 8 active tasks...
+[2026-03-08 17:10:01]   Task pattern-learning-system: age 128m (timeout 120m)
+[2026-03-08 17:10:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-08 17:10:01]   Task test-final: age 94m (timeout 120m)
+[2026-03-08 17:10:01]   Task fix-auth-system: age 5m (timeout 120m)
+[2026-03-08 17:10:01]   Task fix-api-500-errors: age 5m (timeout 120m)
+[2026-03-08 17:10:01]   Task fix-data-display-bugs: age 5m (timeout 120m)
+[2026-03-08 17:10:01]   Task fix-performance-critical: age 5m (timeout 120m)
