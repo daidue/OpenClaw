@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # cleanup-worktree.sh - Merges completed work and removes worktree
 # Usage: cleanup-worktree.sh <task-id> <repo-path> [--force]
+#
+# Integration Contract: ~/.openclaw/workspace/.clawdbot/INTEGRATION-CONTRACT.md
+# - Does NOT update registry directly — delegates to complete-task.sh
+# - complete-task.sh handles archival + pattern capture prompt
+# - Uses canonical .id field (not .taskId)
 
 set -euo pipefail
 
@@ -8,27 +13,24 @@ set -euo pipefail
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Function to log errors
 error() {
     echo -e "${RED}ERROR: $1${NC}" >&2
     exit 1
 }
 
-# Function to log warnings
 warn() {
     echo -e "${YELLOW}WARNING: $1${NC}" >&2
 }
 
-# Function to log success
 success() {
     echo -e "${GREEN}$1${NC}"
 }
 
-# Function to log info
 info() {
-    echo "$1"
+    echo -e "${BLUE}$1${NC}"
 }
 
 # Parse arguments
@@ -70,7 +72,6 @@ if [ ! -d "$REPO_PATH" ]; then
     error "Repository path does not exist: $REPO_PATH"
 fi
 
-# Check if it's a git repository
 if [ ! -d "$REPO_PATH/.git" ]; then
     error "Not a git repository: $REPO_PATH"
 fi
@@ -79,7 +80,7 @@ fi
 BRANCH_NAME="agent/${TASK_ID}"
 WORKTREE_BASE="${REPO_PATH}-worktrees"
 WORKTREE_PATH="${WORKTREE_BASE}/${TASK_ID}"
-REGISTRY_FILE="${HOME}/.openclaw/workspace/.clawdbot/active-tasks.json"
+COMPLETE_SCRIPT="${HOME}/.openclaw/workspace/.clawdbot/scripts/complete-task.sh"
 
 # Check if worktree exists
 if [ ! -d "$WORKTREE_PATH" ]; then
@@ -99,38 +100,65 @@ fi
 # Change to worktree directory
 cd "$WORKTREE_PATH" || error "Failed to change to worktree directory"
 
-# Use locking for mutual exclusion (macOS compatible)
+# H1 fix: Per-repo lock with retry mechanism for parallel operations
 LOCK_DIR="${WORKTREE_BASE}/.worktree.lock"
+MAX_LOCK_RETRIES=3
+LOCK_RETRY_DELAY=2
+LOCK_ACQUIRED=false
 
-# Try to acquire lock (mkdir is atomic)
-if ! mkdir "$LOCK_DIR" 2>/dev/null; then
-    # Check if lock is stale (> 5 minutes old)
+for _lock_attempt in $(seq 1 $MAX_LOCK_RETRIES); do
+    if mkdir "$LOCK_DIR" 2>/dev/null; then
+        LOCK_ACQUIRED=true
+        break
+    fi
+
     if [ -d "$LOCK_DIR" ]; then
-        LOCK_AGE=$(($(date +%s) - $(stat -f %m "$LOCK_DIR" 2>/dev/null || stat -c %Y "$LOCK_DIR" 2>/dev/null || echo 0)))
+        LOCK_MTIME=$(stat -f %m "$LOCK_DIR" 2>/dev/null || stat -c %Y "$LOCK_DIR" 2>/dev/null || echo "")
+        if [ -z "$LOCK_MTIME" ]; then
+            error "Cannot determine lock age. Remove manually: rmdir $LOCK_DIR"
+        fi
+        LOCK_AGE=$(($(date +%s) - LOCK_MTIME))
         if [ "$LOCK_AGE" -gt 300 ]; then
             warn "Stale lock detected (${LOCK_AGE}s old), removing..."
-            rmdir "$LOCK_DIR" 2>/dev/null || true
-            if ! mkdir "$LOCK_DIR" 2>/dev/null; then
-                error "Another worktree operation is in progress. Please wait and try again."
+            rmdir "$LOCK_DIR" 2>/dev/null || rm -rf "$LOCK_DIR" 2>/dev/null || true
+            if mkdir "$LOCK_DIR" 2>/dev/null; then
+                LOCK_ACQUIRED=true
+                break
             fi
-        else
-            error "Another worktree operation is in progress. Please wait and try again."
         fi
-    else
-        error "Another worktree operation is in progress. Please wait and try again."
     fi
+
+    if [ "$_lock_attempt" -lt "$MAX_LOCK_RETRIES" ]; then
+        warn "Lock held by another operation. Retry $_lock_attempt/$MAX_LOCK_RETRIES in ${LOCK_RETRY_DELAY}s..."
+        sleep "$LOCK_RETRY_DELAY"
+    fi
+done
+
+if ! $LOCK_ACQUIRED; then
+    error "Another worktree operation is in progress after $MAX_LOCK_RETRIES retries. Please wait and try again."
 fi
 
 # Ensure lock is released on exit
 trap 'rmdir "$LOCK_DIR" 2>/dev/null || true' EXIT
 
-# Check for uncommitted changes
-if ! $FORCE_MODE; then
+# Check for uncommitted changes in worktree
+if $FORCE_MODE; then
+    # H4 fix: Even in force mode, warn about uncommitted changes being discarded
+    if ! git diff-index --quiet HEAD -- 2>/dev/null; then
+        DIRTY_FILES=$(git diff --name-only HEAD -- 2>/dev/null || true)
+        warn "⚠️  --force will discard uncommitted changes in worktree:"
+        echo "$DIRTY_FILES" | while IFS= read -r f; do [ -n "$f" ] && echo "  - $f"; done
+    fi
+    UNTRACKED_FORCE=$(git ls-files --others --exclude-standard 2>/dev/null || true)
+    if [ -n "$UNTRACKED_FORCE" ]; then
+        warn "⚠️  --force will discard untracked files in worktree:"
+        echo "$UNTRACKED_FORCE" | while IFS= read -r f; do [ -n "$f" ] && echo "  - $f"; done
+    fi
+else
     if ! git diff-index --quiet HEAD --; then
         error "Uncommitted changes detected in worktree. Commit changes or use --force to discard."
     fi
     
-    # Check for untracked files that might be important
     UNTRACKED=$(git ls-files --others --exclude-standard)
     if [ -n "$UNTRACKED" ]; then
         warn "Untracked files detected:"
@@ -151,12 +179,17 @@ else
     error "Could not find main or master branch"
 fi
 
+# C2 fix: Check main repo for uncommitted changes before checkout/merge
+if ! git diff-index --quiet HEAD -- 2>/dev/null; then
+    error "Main repository has uncommitted changes. Commit or stash before cleanup.
+Worktree preserved at: $WORKTREE_PATH"
+fi
+
 info "Merging $BRANCH_NAME into $MAIN_BRANCH..."
 
-# Get current branch to restore if merge fails
+# C3 fix: Save current branch to restore on ALL paths (success + failure)
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-# Switch to main branch
 if ! git checkout "$MAIN_BRANCH"; then
     error "Failed to checkout $MAIN_BRANCH"
 fi
@@ -164,14 +197,8 @@ fi
 # Attempt merge
 if ! git merge --no-ff "$BRANCH_NAME" -m "Merge agent task: $TASK_ID"; then
     warn "Merge conflict detected!"
-    
-    # Abort the merge
     git merge --abort
-    
-    # Restore original branch
     git checkout "$CURRENT_BRANCH" &>/dev/null || true
-    
-    # Release lock (trap will handle it, but be explicit for error path)
     rmdir "$LOCK_DIR" 2>/dev/null || true
     
     error "Merge conflicts detected. Please resolve manually:
@@ -187,11 +214,15 @@ fi
 
 success "✓ Merged $BRANCH_NAME into $MAIN_BRANCH"
 
+# C3 fix: Restore original branch after successful merge
+if [ "$CURRENT_BRANCH" != "$MAIN_BRANCH" ] && [ "$CURRENT_BRANCH" != "HEAD" ]; then
+    git checkout "$CURRENT_BRANCH" &>/dev/null || warn "Could not restore branch: $CURRENT_BRANCH (staying on $MAIN_BRANCH)"
+fi
+
 # Remove the worktree
 info "Removing worktree: $WORKTREE_PATH"
 
 if ! git worktree remove "$WORKTREE_PATH"; then
-    # If normal removal fails, try force
     warn "Normal worktree removal failed, forcing..."
     git worktree remove --force "$WORKTREE_PATH" || error "Failed to remove worktree"
 fi
@@ -208,23 +239,26 @@ fi
 
 success "✓ Branch deleted"
 
-# Update task registry if it exists
-if [ -f "$REGISTRY_FILE" ]; then
-    # Use jq if available, otherwise use a simple approach
-    if command -v jq &>/dev/null; then
-        TEMP_FILE=$(mktemp)
-        jq --arg task_id "$TASK_ID" '
-            if type == "array" then
-                map(if .taskId == $task_id then .status = "completed" | .completedAt = now else . end)
-            else
-                .
-            end
-        ' "$REGISTRY_FILE" > "$TEMP_FILE" && mv "$TEMP_FILE" "$REGISTRY_FILE"
-        
-        success "✓ Task registry updated"
-    else
-        info "jq not found, skipping registry update"
-    fi
+# ==========================================================================
+# PATTERN INTEGRATION (C3 fix): Delegate to complete-task.sh
+# This handles: registry archival + pattern capture prompt
+# ==========================================================================
+
+info "Completing task and capturing patterns..."
+
+if [ -x "$COMPLETE_SCRIPT" ]; then
+    # Call complete-task.sh — it handles registry update AND pattern capture
+    "$COMPLETE_SCRIPT" "$TASK_ID" "completed" "Merged $BRANCH_NAME into $MAIN_BRANCH via cleanup-worktree"
+    success "✓ Task completed and archived via complete-task.sh"
+else
+    warn "complete-task.sh not found at $COMPLETE_SCRIPT"
+    warn "Skipping registry archival and pattern capture."
+    warn "Run manually: complete-task.sh $TASK_ID completed 'Merged'"
+    
+    echo ""
+    echo -e "${YELLOW}📝 REMINDER: Capture patterns from this task!${NC}"
+    echo "   Run: complete-task.sh $TASK_ID completed \"<result summary>\""
+    echo "   This will prompt you to capture lessons learned."
 fi
 
 # Release lock (trap will handle it, but be explicit)

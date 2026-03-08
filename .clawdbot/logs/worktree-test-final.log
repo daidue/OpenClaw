@@ -1,0 +1,40 @@
+=== Worktree Agent Spawn Log ===
+Task ID: test-final
+Agent ID: bolt
+Description: Test
+Repository: /tmp/nonexistent
+Started: 2026-03-08 11:35:54
+====================================
+
+[2026-03-08 11:35:54] INFO: Starting worktree agent spawn for task: test-final
+[2026-03-08 11:35:54] INFO: Step 0/5: Querying relevant patterns...
+[2026-03-08 11:35:54] SUCCESS: ✓ Patterns queried — apply relevant lessons
+[2026-03-08 11:35:54] INFO: Step 1/5: Registering task in registry...
+🔍 Searching for relevant patterns...
+
+📚 Relevant patterns found for 'worktree':
+📚 Patterns matching 'worktree':
+
+
+### 2026-03-08 git worktree Silent Failure — Check Disk Space First
+- **Symptom:** `git worktree add` command succeeded but directory was empty or corrupt
+- **Root cause:** Disk space exhausted during checkout
+- **Fix:** `df -h` to check disk space, clean up old worktrees with `git worktree prune`, verify with `git worktree list`
+- **Time saved:** 20 minutes (prevented wild goose chase through git internals)
+
+### 2026-03-02 Database Connection Storms — Pool Size + SSL + KeepAlive
+- **Symptom:** PostgreSQL throwing repeated ECONNRESET errors in production
+- **Root cause:** Connection pool too large (20 max connections on free tier), missing SSL config, no keepalive
+
+
+✅ Task registered: test-final
+   Type: worktree
+   Agent: bolt
+   Timeout: 120m
+
+📋 Active tasks:
+   - pattern-learning-system (infrastructure)
+   - test-final (worktree)
+[2026-03-08 11:35:54] SUCCESS: ✓ Task registered via register-task.sh (canonical schema)
+[2026-03-08 11:35:54] INFO: Step 2/5: Creating worktree...
+[2026-03-08 11:35:54] ERROR: Failed to change to repository directory

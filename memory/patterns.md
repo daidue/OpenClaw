@@ -61,7 +61,7 @@ Last updated: 2026-03-08
 
 **Before starting work:**
 ```bash
-~/. openclaw/workspace/scripts/query-patterns.sh <keyword>
+~/.openclaw/workspace/scripts/query-patterns.sh <keyword>
 ```
 
 **After completing work:**

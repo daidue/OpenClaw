@@ -26,6 +26,38 @@ if [ -z "$TASK_ID" ]; then
 fi
 
 # ============================================================================
+# CONCURRENT WRITE PROTECTION - mkdir-based atomic locking
+# ============================================================================
+
+LOCK_DIR="/tmp/task-registry.lock"
+MAX_RETRIES=15
+
+acquire_registry_lock() {
+  local retries=0
+  while [ $retries -lt $MAX_RETRIES ]; do
+    if mkdir "$LOCK_DIR" 2>/dev/null; then
+      trap 'rmdir "$LOCK_DIR" 2>/dev/null || true' EXIT
+      return 0
+    fi
+    # Check for stale lock (> 5 minutes)
+    if [ -d "$LOCK_DIR" ]; then
+      local age=$(($(date +%s) - $(stat -f %m "$LOCK_DIR" 2>/dev/null || echo 0)))
+      if [ "$age" -gt 300 ]; then
+        rmdir "$LOCK_DIR" 2>/dev/null || true
+        continue
+      fi
+    fi
+    retries=$((retries + 1))
+    # Random jitter: 0.1-0.4s to reduce thundering herd
+    sleep "0.$((RANDOM % 3 + 1))"
+  done
+  echo "ERROR: Could not acquire registry lock after $MAX_RETRIES retries" >&2
+  return 1
+}
+
+acquire_registry_lock
+
+# ============================================================================
 # PATTERN LEARNING SYSTEM - Query relevant patterns before registering
 # ============================================================================
 

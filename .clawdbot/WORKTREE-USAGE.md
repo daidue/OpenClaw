@@ -73,8 +73,9 @@ create-worktree.sh <task-id> <base-branch> <repo-path>
 2. Creates branch: `agent/<task-id>`
 3. Creates worktree at: `<repo-path>-worktrees/<task-id>/`
 4. Checks disk space (requires 1GB+ free)
-5. Uses flock for mutual exclusion
-6. Cleans up on failure (no orphaned worktrees)
+5. Uses atomic `mkdir` for mutual exclusion (cross-platform, no flock dependency)
+6. Retries lock acquisition (3 attempts, 2s delay) for parallel spawning
+7. Cleans up on failure (no orphaned worktrees)
 
 #### Example
 ```bash
@@ -96,7 +97,7 @@ Creating worktree for task: auth-fix
 - **Base branch missing**: `ERROR: Base branch does not exist: feature-x`
 - **Task already exists**: `ERROR: Branch already exists: agent/auth-fix. Task ID may already be in use.`
 - **Low disk space**: `ERROR: Insufficient disk space. At least 1GB required, 500MB available.`
-- **Concurrent operation**: `ERROR: Another worktree operation is in progress. Please wait and try again.`
+- **Concurrent operation**: Retries 3 times with 2s delay. `ERROR: Another worktree operation is in progress after 3 retries.`
 
 ---
 
@@ -271,7 +272,9 @@ Deleting branch: agent/failed-task
 - **Uncommitted changes**: Refuses cleanup unless `--force`
 - **Merge conflicts**: Aborts merge, preserves worktree, provides manual resolution instructions
 - **Worktree missing**: Attempts to clean up branch only
-- **Concurrent operation**: Uses flock to prevent race conditions
+- **Main repo dirty**: Refuses cleanup if main repo has uncommitted changes
+- **Concurrent operation**: Uses atomic `mkdir` lock with retry to prevent race conditions
+- **Branch preservation**: Saves and restores your current branch after merge
 
 ---
 
@@ -485,18 +488,17 @@ cleanup-worktree.sh <task-id> <repo-path>
 ERROR: Another worktree operation is in progress. Please wait and try again.
 ```
 
-**Cause:** Concurrent create/cleanup detected by flock.
+**Cause:** Concurrent create/cleanup detected by atomic `mkdir` lock. The script retries 3 times with 2s delay automatically.
 
 **Solution:**
 ```bash
-# Wait for other operation to complete (usually < 30 seconds)
-# If stuck (rare), check for stale lock:
+# Usually resolves automatically via retry. If stuck, check for stale lock:
 
-LOCK_FILE="<repo-path>-worktrees/.worktree.lock"
-ls -lh "$LOCK_FILE"
+LOCK_DIR="<repo-path>-worktrees/.worktree.lock"
+ls -ld "$LOCK_DIR"
 
-# If mtime > 5 minutes old, safe to delete
-rm "$LOCK_FILE"
+# If mtime > 5 minutes old, safe to remove
+rmdir "$LOCK_DIR"
 ```
 
 ### Problem: "Insufficient disk space"

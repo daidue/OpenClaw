@@ -103,26 +103,44 @@ if [ "$AVAILABLE_SPACE" -lt 1048576 ]; then
     error "Insufficient disk space. At least 1GB required, $(( AVAILABLE_SPACE / 1024 ))MB available."
 fi
 
-# Use locking for mutual exclusion (macOS compatible)
+# H1 fix: Per-repo lock with retry mechanism for parallel spawning
 LOCK_DIR="${WORKTREE_BASE}/.worktree.lock"
+MAX_LOCK_RETRIES=3
+LOCK_RETRY_DELAY=2
+LOCK_ACQUIRED=false
 
-# Try to acquire lock (mkdir is atomic)
-if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+for _lock_attempt in $(seq 1 $MAX_LOCK_RETRIES); do
+    # Try to acquire lock (mkdir is atomic)
+    if mkdir "$LOCK_DIR" 2>/dev/null; then
+        LOCK_ACQUIRED=true
+        break
+    fi
+
     # Check if lock is stale (> 5 minutes old)
     if [ -d "$LOCK_DIR" ]; then
-        LOCK_AGE=$(($(date +%s) - $(stat -f %m "$LOCK_DIR" 2>/dev/null || stat -c %Y "$LOCK_DIR" 2>/dev/null || echo 0)))
+        LOCK_MTIME=$(stat -f %m "$LOCK_DIR" 2>/dev/null || stat -c %Y "$LOCK_DIR" 2>/dev/null || echo "")
+        if [ -z "$LOCK_MTIME" ]; then
+            error "Cannot determine lock age. Remove manually: rmdir $LOCK_DIR"
+        fi
+        LOCK_AGE=$(($(date +%s) - LOCK_MTIME))
         if [ "$LOCK_AGE" -gt 300 ]; then
             warn "Stale lock detected (${LOCK_AGE}s old), removing..."
-            rmdir "$LOCK_DIR" 2>/dev/null || true
-            if ! mkdir "$LOCK_DIR" 2>/dev/null; then
-                error "Another worktree operation is in progress. Please wait and try again."
+            rmdir "$LOCK_DIR" 2>/dev/null || rm -rf "$LOCK_DIR" 2>/dev/null || true
+            if mkdir "$LOCK_DIR" 2>/dev/null; then
+                LOCK_ACQUIRED=true
+                break
             fi
-        else
-            error "Another worktree operation is in progress. Please wait and try again."
         fi
-    else
-        error "Another worktree operation is in progress. Please wait and try again."
     fi
+
+    if [ "$_lock_attempt" -lt "$MAX_LOCK_RETRIES" ]; then
+        warn "Lock held by another operation. Retry $_lock_attempt/$MAX_LOCK_RETRIES in ${LOCK_RETRY_DELAY}s..."
+        sleep "$LOCK_RETRY_DELAY"
+    fi
+done
+
+if ! $LOCK_ACQUIRED; then
+    error "Another worktree operation is in progress after $MAX_LOCK_RETRIES retries. Please wait and try again."
 fi
 
 # Ensure lock is released on exit

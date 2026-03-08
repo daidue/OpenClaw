@@ -122,7 +122,7 @@ Why we built things a certain way. Include:
 
 **Usage:**
 ```bash
-~/. openclaw/workspace/scripts/query-patterns.sh <keyword>
+~/.openclaw/workspace/scripts/query-patterns.sh <keyword>
 ```
 
 **Examples:**
