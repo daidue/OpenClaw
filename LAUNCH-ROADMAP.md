@@ -22,15 +22,17 @@
 **Goal:** Build full Elvis-level agent swarm infrastructure
 
 **Deliverables:**
-- [x] Task registry (`.clawdbot/active-tasks.json`)
-- [x] Deterministic monitoring script (runs every 10 min)
-- [ ] Rush as persistent agent (real session, real heartbeat)
-- [ ] Worktree isolation for parallel coding agents
-- [ ] 3-AI code review pipeline (GitHub Actions)
-- [ ] Definition of Done checklist (automated verification)
-- [ ] Pattern learning system (`memory/patterns.md`)
-- [ ] Mid-task redirection capability
-- [ ] Proactive task discovery (Jeff scans GitHub → spawns agents)
+- [x] Task registry (`.clawdbot/active-tasks.json`) — 2026-03-08
+- [x] Deterministic monitoring script (runs every 10 min) — 2026-03-08
+- [x] Definition of Done checklist (automated verification) — exists, tested 2026-03-08
+- [ ] Worktree isolation for parallel coding agents — Monday 2026-03-09
+- [ ] Pattern learning system (`memory/patterns.md`) — Tuesday 2026-03-10
+- [ ] Rush as persistent agent (real session, real heartbeat) — Wednesday 2026-03-11
+- [ ] Stress test (5 parallel agents) — Thursday 2026-03-12
+- [ ] 3-AI code review pipeline (GitHub Actions) — Friday 2026-03-13
+- [ ] Documentation (DEVELOPER-GUIDE.md) — Friday 2026-03-13
+- [ ] Mid-task redirection capability — DEFERRED (not critical for MVP)
+- [ ] Proactive task discovery (Jeff scans GitHub → spawns agents) — COVERED by Rush agent
 
 **Success Criteria:**
 - Jeff can spawn 3+ coding agents in parallel (worktree isolation)

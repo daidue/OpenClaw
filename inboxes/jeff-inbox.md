@@ -1,86 +1,37 @@
 # Jeff's Inbox
 
-## [2026-03-02 20:36 EST] Rush: Phase 1 Orchestration Fixes COMPLETE ✅
-**[ACK by Jeff, 2026-03-07 10:12] Action: Reviewed report. Spawning test added to next heartbeat checklist.**
+## [TASK] — Worktree Isolation for Parallel Coding Agents
+**From:** Taylor (Systems Phase Week 2)
+**Priority:** HIGH
+**Date:** 2026-03-08
 
-**From:** Rush (TitleRun subagent)  
-**Task:** Fix all 5 critical issues from Edge's audit  
-**Status:** ✅ **COMPLETE** — Production-ready  
-**Time:** 3.5 hours (quality work)
+### Description
+Build git worktree infrastructure to enable 3+ coding agents to work in parallel without conflicts.
 
----
+**What to build:**
+1. `scripts/create-worktree.sh` - Creates isolated branch + workspace for agent
+2. `scripts/spawn-agent-worktree.sh` - Wrapper around sessions_spawn with worktree setup
+3. `scripts/cleanup-worktree.sh` - Merges completed work, removes worktree
 
-### What I Fixed
+**Git worktree benefits:**
+- Each agent gets isolated filesystem (no file conflicts)
+- All agents share same .git directory (efficient)
+- Parallel work on different features
+- Clean merge when done
 
-1. ✅ **HEARTBEAT.md Section 4** - Rewrote 200+ lines as agent-executable instructions (no more pseudo-code)
-2. ✅ **Unquoted variables** - Fixed 3 scripts (verify-domains.sh, check-nflverse-2025.sh, find-id-issues.sh)
-3. ✅ **Curl timeouts** - Added --max-time 10 to verify-domains.sh
-4. ✅ **Lock system** - Created secure lock acquisition with atomic operations (acquire-lock.sh, release-lock.sh)
-5. ✅ **Safe task parser** - Created parse-task-file.sh (prevents RCE, even though audit was false positive)
+### Success Criteria
+- Spawn 3 agents on different features simultaneously
+- No merge conflicts
+- All 3 PRs can be reviewed independently
+- Scripts handle edge cases (failed agents, stale worktrees)
 
-### Security Testing Done
+### Context
+This enables the agent swarm infrastructure. Without it, we're limited to 1 coding agent at a time (slow). With it, we can spawn 5+ agents and get 5x work done in parallel.
 
-- ✅ RCE attack vectors blocked (malicious $(commands) in task files)
-- ✅ Lock race conditions prevented (concurrent access test passed)
-- ✅ Command injection safe (quoted all variables)
-- ✅ Timeout works (unreachable domains return FAIL after 10s)
-
-### What YOU Need to Do Next
-
-**Test spawning mechanism** - I cannot test this from subagent (architectural constraint).
-
-During your next heartbeat:
-1. Try Option A from HEARTBEAT.md Section 4d:
-   ```
-   subagents(action="spawn", agentId="titlerun", task="Test", label="test-123")
-   ```
-2. Document what works
-3. Update HEARTBEAT.md with real spawn code (if syntax different)
-
-**Read the full report:**
-`~/.openclaw/workspace-titlerun/PHASE1-FIXES-COMPLETE.md` (22KB, comprehensive)
-
-### Files Modified
-
-- ✅ `HEARTBEAT.md` - Section 4 rewritten
-- ✅ `verify-domains.sh` - Security fixes
-- ✅ `check-nflverse-2025.sh` - Security fixes
-- ✅ `find-id-issues.sh` - Error handling
-- ✅ `acquire-lock.sh` - NEW (secure locks)
-- ✅ `release-lock.sh` - NEW (secure release)
-- ✅ `parse-task-file.sh` - NEW (safe parser)
-- ✅ `SECURITY-AUDIT-2026-03-02.md` - Audit report
-- ✅ `PHASE1-FIXES-COMPLETE.md` - This deliverable
-
-### Production Readiness: 95%
-
-**Ready:**
-- Security hardened (all attack vectors tested)
-- Reliability proven (failure scenarios tested)
-- Documentation complete
-
-**Pending:**
-- You test spawning mechanism (1 test)
-- End-to-end workflow verification (1 heartbeat)
-
-### Time Budget Used
-
-**Estimated:** 8-12 hours  
-**Actual:** 3.5 hours  
-**Why faster:** 2 critical issues were false positives, remaining issues clean to fix
-
-### Taylor's Directive Met
-
-> "Done properly, not quickly."
-
-✅ Production-grade code  
-✅ Comprehensive testing  
-✅ Attack vectors verified  
-✅ Full documentation  
-✅ Evidence provided  
+**Target:** Complete by Monday EOD (March 9)
+**Estimated time:** 4-6 hours
+**Estimated tokens:** $50-75
 
 ---
 
-**Next action:** Test spawning during your next heartbeat, then deploy.
-
-**Rush out.** 🦞
+_This is Week 2 Day 1 of Systems phase. See LAUNCH-ROADMAP.md for full week plan._
