@@ -19,7 +19,15 @@ Check for changes before re-reading files. Cached tokens = 10% cost.
 - If results found: read relevant snippets with `memory_get`, incorporate into heartbeat actions
 - **Never skip this step** — memory discipline prevents repeated mistakes
 
-### 2. Inbox Check (every beat — SECOND)
+### 2. Task Registry Check (every beat — BEFORE spawning agents)
+- Read `.clawdbot/active-tasks.json` before spawning any sub-agent
+- Check if task already exists (prevent duplicate work)
+- If duplicate found → skip spawn, notify Taylor
+- Register task BEFORE spawning: `bash ~/.openclaw/workspace/.clawdbot/scripts/register-task.sh <id> <type> <agent> <desc>`
+- Complete task after done: `bash ~/.openclaw/workspace/.clawdbot/scripts/complete-task.sh <id> <status> <result>`
+- Reference: `.clawdbot/TASK-REGISTRY-USAGE.md`
+
+### 3. Inbox Check (every beat — THIRD)
 - Read `inboxes/jeff-inbox.md` for messages from Grind, Rush, Edge
 - Sort: URGENT → HIGH → NORMAL, then chronological
 - Process ALL messages: approve, reject, redirect, unblock
