@@ -99,13 +99,30 @@ fi
 # Change to worktree directory
 cd "$WORKTREE_PATH" || error "Failed to change to worktree directory"
 
-# Use flock for mutual exclusion
-LOCK_FILE="${WORKTREE_BASE}/.worktree.lock"
-exec 200>"$LOCK_FILE"
+# Use locking for mutual exclusion (macOS compatible)
+LOCK_DIR="${WORKTREE_BASE}/.worktree.lock"
 
-if ! flock -n 200; then
-    error "Another worktree operation is in progress. Please wait and try again."
+# Try to acquire lock (mkdir is atomic)
+if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+    # Check if lock is stale (> 5 minutes old)
+    if [ -d "$LOCK_DIR" ]; then
+        LOCK_AGE=$(($(date +%s) - $(stat -f %m "$LOCK_DIR" 2>/dev/null || stat -c %Y "$LOCK_DIR" 2>/dev/null || echo 0)))
+        if [ "$LOCK_AGE" -gt 300 ]; then
+            warn "Stale lock detected (${LOCK_AGE}s old), removing..."
+            rmdir "$LOCK_DIR" 2>/dev/null || true
+            if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+                error "Another worktree operation is in progress. Please wait and try again."
+            fi
+        else
+            error "Another worktree operation is in progress. Please wait and try again."
+        fi
+    else
+        error "Another worktree operation is in progress. Please wait and try again."
+    fi
 fi
+
+# Ensure lock is released on exit
+trap 'rmdir "$LOCK_DIR" 2>/dev/null || true' EXIT
 
 # Check for uncommitted changes
 if ! $FORCE_MODE; then
@@ -154,8 +171,8 @@ if ! git merge --no-ff "$BRANCH_NAME" -m "Merge agent task: $TASK_ID"; then
     # Restore original branch
     git checkout "$CURRENT_BRANCH" &>/dev/null || true
     
-    # Release lock
-    flock -u 200
+    # Release lock (trap will handle it, but be explicit for error path)
+    rmdir "$LOCK_DIR" 2>/dev/null || true
     
     error "Merge conflicts detected. Please resolve manually:
     1. cd $REPO_PATH
@@ -210,8 +227,8 @@ if [ -f "$REGISTRY_FILE" ]; then
     fi
 fi
 
-# Release lock
-flock -u 200
+# Release lock (trap will handle it, but be explicit)
+rmdir "$LOCK_DIR" 2>/dev/null || true
 
 success "✓ Cleanup complete for task: $TASK_ID"
 

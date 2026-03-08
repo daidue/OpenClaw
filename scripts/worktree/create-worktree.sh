@@ -103,16 +103,36 @@ if [ "$AVAILABLE_SPACE" -lt 1048576 ]; then
     error "Insufficient disk space. At least 1GB required, $(( AVAILABLE_SPACE / 1024 ))MB available."
 fi
 
-# Use flock for mutual exclusion
-LOCK_FILE="${WORKTREE_BASE}/.worktree.lock"
-exec 200>"$LOCK_FILE"
+# Use locking for mutual exclusion (macOS compatible)
+LOCK_DIR="${WORKTREE_BASE}/.worktree.lock"
 
-if ! flock -n 200; then
-    error "Another worktree operation is in progress. Please wait and try again."
+# Try to acquire lock (mkdir is atomic)
+if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+    # Check if lock is stale (> 5 minutes old)
+    if [ -d "$LOCK_DIR" ]; then
+        LOCK_AGE=$(($(date +%s) - $(stat -f %m "$LOCK_DIR" 2>/dev/null || stat -c %Y "$LOCK_DIR" 2>/dev/null || echo 0)))
+        if [ "$LOCK_AGE" -gt 300 ]; then
+            warn "Stale lock detected (${LOCK_AGE}s old), removing..."
+            rmdir "$LOCK_DIR" 2>/dev/null || true
+            if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+                error "Another worktree operation is in progress. Please wait and try again."
+            fi
+        else
+            error "Another worktree operation is in progress. Please wait and try again."
+        fi
+    else
+        error "Another worktree operation is in progress. Please wait and try again."
+    fi
 fi
 
-# Trap to ensure cleanup on failure
-trap 'cleanup_on_failure "$WORKTREE_PATH" "$BRANCH_NAME"' ERR
+# Ensure lock is released on exit
+trap_cleanup() {
+    rmdir "$LOCK_DIR" 2>/dev/null || true
+    cleanup_on_failure "$WORKTREE_PATH" "$BRANCH_NAME"
+}
+trap 'trap_cleanup' ERR EXIT
+
+# Note: trap will be set after lock acquisition
 
 # Create the worktree
 echo "Creating worktree for task: $TASK_ID"
@@ -125,16 +145,18 @@ if ! git worktree add -b "$BRANCH_NAME" "$WORKTREE_PATH" "$BASE_BRANCH"; then
 fi
 
 # Verify worktree was created successfully
-if [ ! -d "$WORKTREE_PATH/.git" ]; then
-    error "Worktree created but .git directory not found"
+# Note: worktrees have a .git file (not directory) that points to the main repo
+if [ ! -e "$WORKTREE_PATH/.git" ]; then
+    error "Worktree created but .git link not found"
 fi
-
-# Release the lock
-flock -u 200
 
 # Output the absolute path
 ABSOLUTE_PATH=$(cd "$WORKTREE_PATH" && pwd)
 success "✓ Worktree created successfully: $ABSOLUTE_PATH"
 echo "$ABSOLUTE_PATH"
+
+# Release the lock and clear trap
+rmdir "$LOCK_DIR" 2>/dev/null || true
+trap - ERR EXIT
 
 exit 0
