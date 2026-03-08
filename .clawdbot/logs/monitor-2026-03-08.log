@@ -201,3 +201,11 @@
 [2026-03-08 15:30:00]   Task fix-routing-404s: age -94m (timeout 120m)
 [2026-03-08 15:30:01]   Task add-values-explanations: age -94m (timeout 120m)
 [2026-03-08 15:30:01] Monitor complete
+[2026-03-08 15:40:00] Checking 8 active tasks...
+[2026-03-08 15:40:00]   Task pattern-learning-system: age 38m (timeout 120m)
+[2026-03-08 15:40:01]   Task test-final: age 4m (timeout 120m)
+[2026-03-08 15:40:01]   Task fix-auth-system: age -84m (timeout 120m)
+[2026-03-08 15:40:01]   Task fix-api-500-errors: age -84m (timeout 120m)
+[2026-03-08 15:40:01]   Task fix-data-display-bugs: age -84m (timeout 120m)
+[2026-03-08 15:40:01]   Task fix-performance-critical: age -84m (timeout 120m)
+[2026-03-08 15:40:01]   Task fix-routing-404s: age -84m (timeout 120m)
