@@ -10,6 +10,7 @@ set -euo pipefail
 
 WORKSPACE="$HOME/.openclaw/workspace"
 TASK_REGISTRY="$WORKSPACE/.clawdbot/active-tasks.json"
+QUERY_SCRIPT="$WORKSPACE/scripts/query-patterns.sh"
 
 # Parse arguments
 TASK_ID="${1:-}"
@@ -23,6 +24,36 @@ if [ -z "$TASK_ID" ]; then
   echo "Usage: register-task.sh <task-id> [type] [agent] [description] [session-key] [timeout-minutes]"
   exit 1
 fi
+
+# ============================================================================
+# PATTERN LEARNING SYSTEM - Query relevant patterns before registering
+# ============================================================================
+
+if [ -x "$QUERY_SCRIPT" ]; then
+  echo "🔍 Searching for relevant patterns..."
+  echo ""
+  
+  # Search by task type
+  RELEVANT=$("$QUERY_SCRIPT" "$TASK_TYPE" 2>/dev/null | head -20)
+  
+  if [ -n "$RELEVANT" ]; then
+    echo "📚 Relevant patterns found for '$TASK_TYPE':"
+    echo "$RELEVANT"
+    echo ""
+    read -p "Review full patterns file? (y/n): " review
+    if [ "$review" = "y" ] || [ "$review" = "Y" ]; then
+      less "$WORKSPACE/memory/patterns.md"
+    fi
+    echo ""
+  else
+    echo "No existing patterns found for '$TASK_TYPE'"
+    echo ""
+  fi
+fi
+
+# ============================================================================
+# TASK REGISTRATION
+# ============================================================================
 
 # Ensure registry exists
 if [ ! -f "$TASK_REGISTRY" ]; then

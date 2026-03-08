@@ -1,169 +1,76 @@
-# Pattern Learning — What Works & What Doesn't
+# Agent Execution Patterns
 
-Auto-generated learnings from completed tasks. Read this before starting similar work.
+Last updated: 2026-03-08
 
----
+## Prompts That Work
 
-## Pattern: Production Deployment Database Crash (2026-03-02)
-**Context:** Deployed titlerun-api to Railway staging, database connection reset loop
-
-**What Worked:**
-- Emergency diagnosis via Railway logs (ECONNRESET pattern)
-- Immediate DATABASE_URL verification
-- Connection pool reduction (20 → 3)
-- SSL configuration fix (`rejectUnauthorized: false`)
-- KeepAlive settings prevented future resets
-
-**What Didn't:**
-- Assumed staging DATABASE_URL was correct (it pointed to non-existent DB)
-- Didn't verify URL before deploying
-- Initial pool size too large for free tier (20 max connections)
-
-**Prompt Pattern:**
-```
-🚨 EMERGENCY: Database Connection Reset Loop Detected
-
-**Issue:** PostgreSQL throwing ECONNRESET errors
-
-**Immediate Actions:**
-1. Check Railway Postgres service status
-2. Verify DATABASE_URL points to correct instance
-3. Test connection directly with psql
-4. Fix pool settings (reduce max, add SSL, add keepAlive)
-5. Restart services
-```
-
-**Time:** Estimated 15 min, Actual 30 min (diagnosis took longer than expected)
-
-**Lesson:** Always verify environment variables point to correct resources before deploying. Railway staging/production can have different DATABASE_URLs.
+### 2026-03-08 Infrastructure Tasks — Comprehensive Error Handling Required
+- **Prompt:** "For infrastructure tasks, require comprehensive error handling and edge case testing. Before marking complete: (1) test happy path, (2) test 3 edge cases, (3) verify error messages are actionable, (4) document failure modes."
+- **Outcome:** Reduces post-deployment bugs by catching issues during build phase
+- **Reusable:** Yes
+- **Context:** Use when building scripts, automation, or infrastructure tooling that will run unattended
 
 ---
 
-## Pattern: Adversarial Audit Saves Time (2026-03-02)
-**Context:** Rush claimed 100% complete on 3-AI pipeline, Edge found 7 blockers
+## Anti-Patterns (Avoid These)
 
-**What Worked:**
-- Spawning independent adversarial reviewer (Edge) before accepting "done"
-- Found 33-point gap between claimed score (100) and reality (67)
-- Caught documentation-heavy build (8 min) vs real implementation (needed 6h)
-- Prevented shipping incomplete system
+### 2026-03-08 macOS File Locking — Don't Rely on flock
+- **Attempted:** Used `flock` for atomic file operations on macOS
+- **Failure mode:** flock is not available by default on macOS; scripts fail silently or with "command not found"
+- **Root cause:** flock is a Linux utility, not part of macOS BSD userland
+- **Lesson:** On macOS, use atomic `mkdir` for locks (mkdir is atomic and fails if dir exists). Example: `mkdir "$LOCKDIR" 2>/dev/null && trap "rm -rf $LOCKDIR" EXIT`
 
-**What Didn't:**
-- Trusting self-assessment without verification
-- Fast builds (8-13 min) tend to be documentation, not code
-
-**Prompt Pattern:**
-```
-ADVERSARIAL AUDIT REQUEST
-
-**Claimed Status:** [100% complete / 95/100 / etc]
-**Build Time:** [X minutes]
-**Deliverable:** [skill/feature/fix]
-
-**Your job:** Find what's missing or broken.
-- Verify all claimed functionality works
-- Test edge cases
-- Check for ship blockers
-- Score honestly (don't inflate)
-
-SHIP / FIX-FIRST / NO-GO verdict.
-```
-
-**Time:** Estimated 30 min audit, Actual 15 min (Edge is efficient)
-
-**Lesson:** Fast builds are suspicious. Always adversarially audit before shipping. Budget 15-30 min for verification audits.
+### 2026-03-02 Production Deployment — Never Trust Unverified Environment Variables
+- **Attempted:** Deployed titlerun-api to Railway staging, assumed DATABASE_URL was correct
+- **Failure mode:** Connection reset loop (ECONNRESET), database didn't exist
+- **Root cause:** Staging DATABASE_URL pointed to non-existent database instance
+- **Lesson:** Always verify environment variables point to correct resources before deploying. Test connection with direct client (psql, redis-cli, etc.) before app deployment.
 
 ---
 
-## Pattern: Inline Dependencies > npm Publish (2026-03-01)
-**Context:** @titlerun/validation package broke production (not published to npm)
+## Debugging Wins
 
-**What Worked:**
-- Inline validation code directly in titlerun-api (`src/utils/idValidation.js`)
-- Zero external dependencies
-- Immediate deployment (no npm auth needed)
-- Single source of truth
+### 2026-03-08 git worktree Silent Failure — Check Disk Space First
+- **Symptom:** `git worktree add` command succeeded but directory was empty or corrupt
+- **Root cause:** Disk space exhausted during checkout
+- **Fix:** `df -h` to check disk space, clean up old worktrees with `git worktree prune`, verify with `git worktree list`
+- **Time saved:** 20 minutes (prevented wild goose chase through git internals)
 
-**What Didn't:**
-- Relying on local symlink (works locally, breaks in Railway)
-- Assuming npm link would "just work" in production
-
-**Prompt Pattern:**
-```
-INLINE CRITICAL DEPENDENCIES
-
-Instead of:
-- Publishing to npm (requires auth, versioning)
-- Using workspace symlinks (breaks in production)
-
-Do this:
-1. Copy validation code to `src/utils/`
-2. Export functions
-3. Update imports
-4. Zero external deps
-
-**Why:** Faster, simpler, production-safe.
-```
-
-**Time:** Estimated 45 min, Actual 10 min (much faster than npm publish flow)
-
-**Lesson:** For small utility libraries used in one project, inline the code instead of creating separate npm packages.
+### 2026-03-02 Database Connection Storms — Pool Size + SSL + KeepAlive
+- **Symptom:** PostgreSQL throwing repeated ECONNRESET errors in production
+- **Root cause:** Connection pool too large (20 max connections on free tier), missing SSL config, no keepalive
+- **Fix:** Reduced pool max to 3, added `ssl: { rejectUnauthorized: false }`, added TCP keepAlive settings
+- **Time saved:** 30 minutes (immediate resolution vs. trial-and-error connection debugging)
 
 ---
 
-## Template (copy for new patterns)
+## Architecture Decisions
 
-## Pattern: [Name] (YYYY-MM-DD)
-**Context:** [What we were doing]
-
-**What Worked:**
-- [Success 1]
-- [Success 2]
-
-**What Didn't:**
-- [Failure 1]
-- [Failure 2]
-
-**Prompt Pattern:**
-```
-[Effective prompt that led to success]
-```
-
-**Time:** Estimated X min, Actual Y min
-
-**Lesson:** [Key takeaway]
+### 2026-03-01 Shared Libraries — Inline Code vs npm Packages
+- **Context:** Needed shared validation logic between titlerun-api and other services
+- **Decision:** Inline the code directly in each service (`src/utils/validation.js`)
+- **Alternatives:**
+  - Publish to npm (rejected: requires auth, versioning, slows iteration)
+  - Use workspace symlinks (rejected: works locally, breaks in Railway/production)
+  - Git submodules (rejected: adds complexity, merge conflicts)
+- **Rationale:** For small utility libraries (<200 lines) used by 1-3 services, inlining is faster to iterate, simpler to deploy, and eliminates npm auth/version coordination overhead. Trade copying 50 lines of code for 30 minutes of npm publish ceremony.
 
 ---
 
-## Pattern: Test Pattern (2026-03-02)
-**Context:** Testing pattern learning system
+## How to Use This File
 
-**What Worked:**
-- Script works\n- Easy to use
-
-**What Didn't:**
-- Nothing failed
-
-**Prompt Pattern:**
-```
-Test prompt pattern
+**Before starting work:**
+```bash
+~/. openclaw/workspace/scripts/query-patterns.sh <keyword>
 ```
 
-**Time:** Estimated 5 min, Actual 3 min
+**After completing work:**
+Run `complete-task.sh` and choose to capture a pattern when prompted.
 
-**Lesson:** Pattern logging is fast and easy
+**Pattern Quality Standards:**
+- ✅ GOOD: "When spawning coding agents, always include file paths in task description"
+- ❌ BAD: "Do better" (too vague, not actionable)
 
 ---
 
-## Pattern: Infrastructure Simplification (2026-03-02)
-**Context:** Deleted 83% of over-engineered code
-
-**What Worked:**
-- Used OpenClaw native features\n- Went from 600→100 lines\n- No more polling antipatterns
-
-**What Didn't:**
-- Built custom infrastructure without checking platform docs\n- Duplicated features OpenClaw already had
-
-**Lesson:** Always read platform documentation BEFORE building custom solutions
-
----
+_This file is auto-updated via `.clawdbot/scripts/complete-task.sh`. Do not manually edit patterns; use the capture workflow._

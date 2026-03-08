@@ -6,3 +6,6 @@
 [2026-03-08 11:00:00] Checking 1 active tasks...
 [2026-03-08 11:00:00]   Task worktree-isolation-system: age -227m (timeout 180m)
 [2026-03-08 11:00:00] Monitor complete
+[2026-03-08 11:10:01] Checking 1 active tasks...
+[2026-03-08 11:10:01]   Task pattern-learning-system: age -231m (timeout 120m)
+[2026-03-08 11:10:01] Monitor complete
