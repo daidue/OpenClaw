@@ -680,3 +680,18 @@
 [2026-03-08 21:20:01]   Task fix-performance-critical: age 255m (timeout 120m)
 [2026-03-08 21:20:01]     ⚠️  STALE (exceeded timeout)
 [2026-03-08 21:20:01]   Task fix-routing-404s: age 255m (timeout 120m)
+[2026-03-08 21:20:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-08 21:20:01]   Task add-values-explanations: age 255m (timeout 120m)
+[2026-03-08 21:20:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-08 21:20:01] Archiving 8 stale + 0 completed tasks...
+[2026-03-08 21:30:00] Checking 8 active tasks...
+[2026-03-08 21:30:00]   Task pattern-learning-system: age 388m (timeout 120m)
+[2026-03-08 21:30:00]     ⚠️  STALE (exceeded timeout)
+[2026-03-08 21:30:00]   Task test-final: age 354m (timeout 120m)
+[2026-03-08 21:30:00]     ⚠️  STALE (exceeded timeout)
+[2026-03-08 21:30:00]   Task fix-auth-system: age 265m (timeout 120m)
+[2026-03-08 21:30:00]     ⚠️  STALE (exceeded timeout)
+[2026-03-08 21:30:00]   Task fix-api-500-errors: age 265m (timeout 120m)
+[2026-03-08 21:30:00]     ⚠️  STALE (exceeded timeout)
+[2026-03-08 21:30:00]   Task fix-data-display-bugs: age 265m (timeout 120m)
+[2026-03-08 21:30:00]     ⚠️  STALE (exceeded timeout)
