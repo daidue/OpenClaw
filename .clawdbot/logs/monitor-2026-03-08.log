@@ -951,3 +951,6 @@
 [2026-03-08 23:50:01]     ⚠️  STALE (exceeded timeout)
 [2026-03-08 23:50:01]   Task fix-routing-404s: age 405m (timeout 120m)
 [2026-03-08 23:50:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-08 23:50:01]   Task add-values-explanations: age 405m (timeout 120m)
+[2026-03-08 23:50:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-08 23:50:01] Archiving 8 stale + 0 completed tasks...
