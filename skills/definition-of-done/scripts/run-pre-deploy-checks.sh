@@ -571,7 +571,7 @@ CHECKS_RUN=$((CHECKS_RUN + 1))
 
 # Check 8: Build error detection
 logn "  Checking build output errors... "
-if grep -i "error" "$DOD_TMPDIR/build-err.txt" 2>/dev/null | grep -v "0 errors" | grep -q .; then
+if grep -i "error" "$DOD_TMPDIR/build-err.txt" 2>/dev/null | grep -v "0 errors" | grep -vi "no errors" | grep -vi "no error" | grep -q .; then
   loge "${RED}FAIL${NC}"
   add_issue "HIGH" "build-errors" "" 0 "Errors in build output" "Review build errors"
   CHECKS_FAILED=$((CHECKS_FAILED + 1))
