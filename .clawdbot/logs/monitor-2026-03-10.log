@@ -1204,3 +1204,21 @@
 [2026-03-10 11:00:01]   Task add-values-explanations: age 2515m (timeout 120m)
 [2026-03-10 11:00:01]     ⚠️  STALE (exceeded timeout)
 [2026-03-10 11:00:01] Archiving 8 stale + 0 completed tasks...
+[2026-03-10 11:10:00] Checking 8 active tasks...
+[2026-03-10 11:10:01]   Task pattern-learning-system: age 2648m (timeout 120m)
+[2026-03-10 11:10:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-10 11:10:01]   Task test-final: age 2614m (timeout 120m)
+[2026-03-10 11:10:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-10 11:10:01]   Task fix-auth-system: age 2525m (timeout 120m)
+[2026-03-10 11:10:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-10 11:10:01]   Task fix-api-500-errors: age 2525m (timeout 120m)
+[2026-03-10 11:10:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-10 11:10:01]   Task fix-data-display-bugs: age 2525m (timeout 120m)
+[2026-03-10 11:10:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-10 11:10:01]   Task fix-performance-critical: age 2525m (timeout 120m)
+[2026-03-10 11:10:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-10 11:10:01]   Task fix-routing-404s: age 2525m (timeout 120m)
+[2026-03-10 11:10:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-10 11:10:01]   Task add-values-explanations: age 2525m (timeout 120m)
+[2026-03-10 11:10:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-10 11:10:01] Archiving 8 stale + 0 completed tasks...
