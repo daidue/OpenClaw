@@ -64,11 +64,25 @@ if ! command -v railway &> /dev/null || ! railway whoami &> /dev/null; then
   return
 fi
 
-# API health
-API_STATUS=$(curl -s https://api.titlerun.co/health | jq -r '.status // "unknown"')
+# API health (now includes scraper status)
+HEALTH_JSON=$(curl -s https://api.titlerun.co/health)
+API_STATUS=$(echo "$HEALTH_JSON" | jq -r '.status // "unknown"')
+SCRAPER_STATUS=$(echo "$HEALTH_JSON" | jq -r '.scraper // "unknown"')
+DB_STATUS=$(echo "$HEALTH_JSON" | jq -r '.database // "unknown"')
+
 if [ "$API_STATUS" != "healthy" ]; then
   echo "🚨 TitleRun API unhealthy: $API_STATUS"
-  # Alert in daily note
+fi
+
+if [ "$SCRAPER_STATUS" != "healthy" ]; then
+  echo "⚠️ TitleRun Scraper unhealthy: $SCRAPER_STATUS"
+  # Get scraper details if available
+  SCRAPER_DETAILS=$(echo "$HEALTH_JSON" | jq -r '.checks.scraper')
+  echo "Details: $SCRAPER_DETAILS"
+fi
+
+if [ "$DB_STATUS" != "connected" ]; then
+  echo "🚨 TitleRun Database error: $DB_STATUS"
 fi
 
 # Frontend health
