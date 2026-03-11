@@ -64,26 +64,137 @@ if ! command -v railway &> /dev/null || ! railway whoami &> /dev/null; then
   return
 fi
 
-# API health (now includes scraper status)
-HEALTH_JSON=$(curl -s https://api.titlerun.co/health)
-API_STATUS=$(echo "$HEALTH_JSON" | jq -r '.status // "unknown"')
-SCRAPER_STATUS=$(echo "$HEALTH_JSON" | jq -r '.scraper // "unknown"')
-DB_STATUS=$(echo "$HEALTH_JSON" | jq -r '.database // "unknown"')
+# Configuration
+LOG_FILE="/var/log/titlerun/heartbeat.log"
+STATE_FILE="/var/run/titlerun/last-health-state"
+TIMESTAMP=$(date -Iseconds)
 
-if [ "$API_STATUS" != "healthy" ]; then
-  echo "🚨 TitleRun API unhealthy: $API_STATUS"
+# Fetch health data with security flags (Fix: CRITICAL #2)
+HEALTH_JSON=$(curl -sSf --max-time 10 --max-redirs 0 https://api.titlerun.co/health)
+CURL_EXIT_CODE=$?
+
+if [ $CURL_EXIT_CODE -ne 0 ]; then
+  echo "[$TIMESTAMP] 🚨 TitleRun API unreachable (curl exit code: $CURL_EXIT_CODE)"
+  return
 fi
 
-if [ "$SCRAPER_STATUS" != "healthy" ]; then
-  echo "⚠️ TitleRun Scraper unhealthy: $SCRAPER_STATUS"
-  # Get scraper details if available
-  SCRAPER_DETAILS=$(echo "$HEALTH_JSON" | jq -r '.checks.scraper')
-  echo "Details: $SCRAPER_DETAILS"
+# Validate JSON structure (Fix: CRITICAL #2)
+if ! echo "$HEALTH_JSON" | jq empty 2>/dev/null; then
+  echo "[$TIMESTAMP] 🚨 TitleRun API returned invalid JSON"
+  return
 fi
 
-if [ "$DB_STATUS" != "connected" ]; then
-  echo "🚨 TitleRun Database error: $DB_STATUS"
+# Validate required fields exist (Fix: HIGH #3)
+REQUIRED_FIELDS=".status .scraper .database"
+for field in $REQUIRED_FIELDS; do
+  if ! echo "$HEALTH_JSON" | jq -e "$field" > /dev/null 2>&1; then
+    echo "[$TIMESTAMP] 🚨 TitleRun API incomplete data (missing: $field)"
+    return
+  fi
+done
+
+# Extract all values in single jq call (Fix: HIGH #5 - Performance)
+read -r API_STATUS SCRAPER_STATUS DB_STATUS <<< \
+  $(echo "$HEALTH_JSON" | jq -r '
+    (.status // "unknown"),
+    (.scraper // "unknown"),
+    (.database // "unknown")
+  ')
+
+# Load previous state for context (Fix: MEDIUM #10)
+if [ -f "$STATE_FILE" ]; then
+  PREV_API_STATUS=$(cat "$STATE_FILE")
+else
+  PREV_API_STATUS="unknown"
 fi
+
+# Count healthy systems
+HEALTHY_COUNT=0
+[ "$API_STATUS" = "healthy" ] && ((HEALTHY_COUNT++))
+[ "$SCRAPER_STATUS" = "healthy" ] && ((HEALTHY_COUNT++))
+[ "$DB_STATUS" = "connected" ] && ((HEALTHY_COUNT++))
+
+# AGGREGATED STATUS (Fix: HIGH #7 - always show summary)
+if [ $HEALTHY_COUNT -eq 3 ]; then
+  echo "[$TIMESTAMP] ✅ TitleRun: ALL SYSTEMS HEALTHY (3/3)"
+elif [ "$DB_STATUS" != "connected" ] && [ "$DB_STATUS" != "unknown" ]; then
+  echo "[$TIMESTAMP] 🚨 TitleRun: OFFLINE (database down)"
+elif [ "$DB_STATUS" = "unknown" ] || [ "$API_STATUS" = "unknown" ]; then
+  echo "[$TIMESTAMP] ❓ TitleRun: MONITORING FAILURE (health check degraded)"
+elif [ $HEALTHY_COUNT -ge 2 ]; then
+  echo "[$TIMESTAMP] ⚠️ TitleRun: DEGRADED (1 component unhealthy)"
+else
+  echo "[$TIMESTAMP] 🚨 TitleRun: CRITICAL (multiple components down)"
+fi
+
+# DETAILED STATUS (only show problems, with security-conscious logging)
+
+# API Status (Fix: HIGH #6 - consistent emoji, MEDIUM #9 - unknown handling)
+if [ "$API_STATUS" = "unknown" ]; then
+  echo "  ❓ API status unknown - verify health endpoint"
+  echo "     Check: curl https://api.titlerun.co/health"
+elif [ "$API_STATUS" != "healthy" ]; then
+  # External alert (generic) - Fix: HIGH #4 - no info disclosure
+  echo "  ⚠️ API degraded: ${API_STATUS}"
+  
+  # Internal log (detailed, restricted)
+  {
+    echo "[$TIMESTAMP] API_DEGRADED"
+    echo "  status: ${API_STATUS}"
+    echo "  previous: ${PREV_API_STATUS}"
+  } >> "$LOG_FILE"
+fi
+
+# Scraper Status (Fix: HIGH #8 - human-readable details)
+if [ "$SCRAPER_STATUS" = "unknown" ]; then
+  echo "  ❓ Scraper status unknown - health endpoint missing data"
+elif [ "$SCRAPER_STATUS" != "healthy" ]; then
+  # External alert (generic)
+  echo "  ℹ️ Scraper degraded: ${SCRAPER_STATUS}"
+  
+  # Parse scraper details (Fix: HIGH #8)
+  LAST_RUN=$(echo "$HEALTH_JSON" | jq -r '.checks.scraper.lastRun // "unknown"')
+  ERROR_COUNT=$(echo "$HEALTH_JSON" | jq -r '.checks.scraper.errorCount // 0')
+  ERROR_MSG=$(echo "$HEALTH_JSON" | jq -r '.checks.scraper.lastError // "none"')
+  
+  if [ "$LAST_RUN" != "unknown" ]; then
+    LAST_RUN_EPOCH=$(date -j -f "%Y-%m-%dT%H:%M:%SZ" "$LAST_RUN" "+%s" 2>/dev/null || echo 0)
+    NOW_EPOCH=$(date +%s)
+    MINUTES_AGO=$(( (NOW_EPOCH - LAST_RUN_EPOCH) / 60 ))
+    echo "     Last run: ${MINUTES_AGO} minutes ago"
+  fi
+  
+  echo "     Error count: ${ERROR_COUNT}"
+  
+  # Internal log only (Fix: HIGH #4 - no info disclosure in console)
+  if [ "$ERROR_MSG" != "none" ] && [ "$ERROR_MSG" != "null" ]; then
+    {
+      echo "[$TIMESTAMP] SCRAPER_ERROR"
+      echo "  message: ${ERROR_MSG}"
+    } >> "$LOG_FILE"
+  fi
+fi
+
+# Database Status
+if [ "$DB_STATUS" = "unknown" ]; then
+  echo "  ❓ Database status unknown - verify DB connection from API"
+elif [ "$DB_STATUS" != "connected" ]; then
+  # External alert (generic)
+  echo "  🚨 Database OFFLINE"
+  echo "     ACTION REQUIRED: Investigate database connection immediately"
+  
+  # Internal log (detailed)
+  {
+    echo "[$TIMESTAMP] DB_OFFLINE"
+    echo "  status: ${DB_STATUS}"
+  } >> "$LOG_FILE"
+fi
+
+# Save current state for next run (Fix: MEDIUM #10)
+echo "$API_STATUS" > "$STATE_FILE"
+
+# Ensure log file has restricted permissions (Fix: HIGH #4)
+chmod 600 "$LOG_FILE" 2>/dev/null || true
 
 # Frontend health
 FRONTEND_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://app.titlerun.co)

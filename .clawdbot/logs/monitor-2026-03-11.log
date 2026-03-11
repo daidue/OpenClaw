@@ -1042,3 +1042,4 @@
 [2026-03-11 09:30:01]   Task add-values-explanations: age 3865m (timeout 120m)
 [2026-03-11 09:30:01]     ⚠️  STALE (exceeded timeout)
 [2026-03-11 09:30:01] Archiving 8 stale + 0 completed tasks...
+[2026-03-11 09:40:00] No active tasks in registry
