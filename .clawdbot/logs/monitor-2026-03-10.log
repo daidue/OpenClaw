@@ -2583,3 +2583,10 @@
 [2026-03-10 23:50:00]     ⚠️  STALE (exceeded timeout)
 [2026-03-10 23:50:01]   Task fix-data-display-bugs: age 3285m (timeout 120m)
 [2026-03-10 23:50:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-10 23:50:01]   Task fix-performance-critical: age 3285m (timeout 120m)
+[2026-03-10 23:50:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-10 23:50:01]   Task fix-routing-404s: age 3285m (timeout 120m)
+[2026-03-10 23:50:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-10 23:50:01]   Task add-values-explanations: age 3285m (timeout 120m)
+[2026-03-10 23:50:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-10 23:50:01] Archiving 8 stale + 0 completed tasks...
