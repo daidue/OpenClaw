@@ -1,41 +1,116 @@
 # Rush's Inbox
 
-## [CODE REVIEW AUDIT] 8 PRs from Today's Build — Score: 71/100 🔴
+## 🚨 [URGENT] — Security Vulnerability + Cleanup Pass
+**From:** Jeff (Taylor request: "Let's fix all outstanding issues")
+**Priority:** URGENT
+**Date:** 2026-03-11
 
-**Date:** 2026-03-07 11:49 EST  
-**Status:** 🔴 **RED LIGHT - DO NOT MERGE**  
-**Audited:** 8 open PRs (2 API, 6 App)
+### Description
 
-### Critical Issues: 1
-- **App PR #14:** Nested `response.data.data` anti-pattern (#1 recurring bug)
+**Taylor wants ALL outstanding issues fixed.** I've identified 3 categories:
 
-### High Issues: 4
-- **App PR #15, #18:** `.find()` without `useMemo` (caused Feb 16 production incident)
-- **API PR #10:** Manual ID validation instead of `@titlerun/validation` library
-- **App PR #19:** Missing rate limiting on password reset token validation
+#### 1. CRITICAL SECURITY (Fix First — ~2.5 hours)
+**File:** `~/.openclaw/workspace/HEARTBEAT.md` (Jeff's heartbeat script)  
+**Score:** 61/100 (target: 95+)  
+**Blocker:** Command injection + MITM vulnerabilities
 
-### Medium Issues: 6
-- API #11: Unbounded cache growth, cache key collision risk
-- App #14: Missing request deduplication
-- App #15: Regex created every render, large component (344 lines)
-- App #17: Missing sync deduplication
+**Full review:** `workspace-titlerun/reviews/2026-03-11-0701-unified.md`  
+**Fixed code:** See appendix in unified review (production-ready version)
 
-### Action Required
+**2 CRITICAL issues:**
+- Command injection via unquoted `$SCRAPER_DETAILS` variable expansion
+- Missing curl security flags (`--max-time`, `--max-redirs`, `--fail`)
 
-**Immediate (before merge):**
-1. Fix App PR #14 nested data envelope (1 hour)
-2. Fix App PR #15, #18 useMemo issues (1 hour)
-3. Fix API PR #10 manual validation (1.5 hours)
-4. Add rate limiting to App PR #19 (30 min)
+**5 HIGH issues:**
+- No JSON schema validation before parsing
+- Information disclosure in error messages
+- 4× redundant jq subprocess spawns (performance)
+- Inconsistent severity emoji (🚨 used for both critical + warning)
+- No aggregated health summary (silent success ambiguity)
 
-**Total fix time: ~4 hours**
+**What to do:**
+1. Read the full review: `workspace-titlerun/reviews/2026-03-11-0701-unified.md`
+2. Apply the fixed code from the Appendix (complete rewrite included)
+3. Test with malicious payloads (command injection attempts, malformed JSON, redirect attacks)
+4. Verify all 9 findings are addressed
+5. Request re-review (expect 95+ score)
 
-**Safe to merge now:** App PR #16 (tests only) ✅
-
-**Can merge after quick fixes:** API #11, App #17, App #19 (30-45 min each)
-
-**Full report:** `/Users/jeffdaniels/.openclaw/workspace-titlerun/reviews/2026-03-07-build-audit.md`
+**Success Criteria:**
+- All variables quoted: `"${VAR}"` instead of `$VAR`
+- curl has security flags: `curl -sSf --max-time 10 --max-redirs 0`
+- JSON validated before parsing
+- Single jq call instead of 4
+- Aggregated status always shown (✅/⚠️/🚨)
+- Re-review score ≥ 95/100
 
 ---
 
-**[ACK by Rush, YYYY-MM-DD]** Action: [reviewing report and planning fixes]
+#### 2. CLEANUP — Stale Failed Worktree Tasks (~30 min)
+**Impact:** 6 orphaned tasks blocking task registry, consuming disk space
+
+**Tasks to clean up:**
+```bash
+# All stuck in spawn_failed state since March 8th
+fix-auth-system
+fix-api-500-errors
+fix-data-display-bugs
+fix-performance-critical
+fix-routing-404s
+add-values-explanations
+pattern-learning-system (active but no session - stale?)
+test-final (active but no session - stale?)
+```
+
+**What to do:**
+1. Check if worktree directories still exist
+2. Remove orphaned worktrees: `bash ~/.openclaw/workspace/.clawdbot/scripts/cleanup-worktree.sh <task-id>`
+3. Mark tasks as failed in registry: `bash ~/.openclaw/workspace/.clawdbot/scripts/complete-task.sh <task-id> failed "Stale task cleanup"`
+4. Verify `active-tasks.json` is clean
+
+**Success Criteria:**
+- All March 8th tasks removed from active list
+- Worktree directories cleaned up
+- Task registry shows only current work
+
+---
+
+#### 3. INFRASTRUCTURE — Worktree Isolation (Deferred)
+**From:** Taylor (Systems Phase Week 2)  
+**Priority:** HIGH (but after security fix)
+
+Build git worktree infrastructure for parallel coding agents. This enables 3+ agents to work simultaneously without conflicts.
+
+**Decision:** Hold this until security issues are fixed. Taylor wants "all outstanding issues" fixed, which means blockers first, infrastructure second.
+
+---
+
+### Sequencing
+
+**Phase 1 (CRITICAL):** Fix security vulnerability (~2.5 hours)
+- Apply HEARTBEAT.md fixes
+- Test malicious payloads
+- Request re-review
+- Get 95+ score
+
+**Phase 2 (CLEANUP):** Clean stale tasks (~30 min)
+- Remove orphaned worktrees
+- Update task registry
+- Verify clean state
+
+**Phase 3 (INFRASTRUCTURE):** Worktree isolation (TBD)
+- Deferred until Taylor confirms priority
+- Estimate: 4-6 hours
+
+---
+
+### Context
+
+**Code review findings:** workspace-titlerun/reviews/2026-03-11-0701-unified.md  
+**Task registry:** .clawdbot/active-tasks.json  
+**Worktree scripts:** .clawdbot/scripts/cleanup-worktree.sh  
+
+**Taylor's ask:** "Let's fix all outstanding issues" (2026-03-11 08:55 EDT)
+
+---
+
+_This is the complete outstanding issues list as of March 11, 2026. Security first, then cleanup, then infrastructure._

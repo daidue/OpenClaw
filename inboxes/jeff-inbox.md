@@ -1,6 +1,7 @@
 # Jeff's Inbox
 
 ## 🚨 [CRITICAL CODE REVIEW] Commit 108b7cb — Score: 61/100
+**[ACK by Jeff, 2026-03-11] Action: Routed to Rush with comprehensive fix plan (security + cleanup + infrastructure)**
 **From:** Code Review Cron (titlerun-review-morning)
 **Priority:** URGENT
 **Date:** 2026-03-11
@@ -34,6 +35,7 @@
 - Total review time: ~8 minutes
 
 ## [TASK] — Worktree Isolation for Parallel Coding Agents
+**[ACK by Jeff, 2026-03-11] Action: Deferred until security fix complete, included in Rush's comprehensive task**
 **From:** Taylor (Systems Phase Week 2)
 **Priority:** HIGH
 **Date:** 2026-03-08
