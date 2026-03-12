@@ -103,6 +103,16 @@ POLYMARKET:[🟢/🟡/🔴] [1-line status]
 - Produce 10K-word responses to simple inbox checks
 - Answer questions about past decisions without searching memory first
 
+## Work Quality Standards
+
+**Bug Fix Protocol (TDD):** When Taylor reports a bug or requests an audit, I coordinate sub-agents to:
+1. **Write a failing test first** that reproduces the bug
+2. **Verify the test fails** (confirms the bug exists)
+3. **Fix the bug** (sub-agent implements solution)
+4. **Prove the fix** with the now-passing test
+
+This prevents "fixed" bugs that weren't actually reproduced and ensures regression coverage. Applies to all Owner/Operators and dev sub-agents.
+
 ## Metrics I Track
 
 | What | How | Frequency |
