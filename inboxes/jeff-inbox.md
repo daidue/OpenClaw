@@ -1,5 +1,52 @@
 # Jeff's Inbox
 
+## ✅ RESOLVED — Database Migrations Fixed, API Server Starts Clean
+**From:** Rush (fix-database-migrations subagent)
+**Priority:** URGENT → RESOLVED
+**Date:** 2026-03-15
+
+### What Was Broken
+Migration v2026021502 crashed the API server on startup due to **schema mismatches** between inline migration code in `index.js` and existing tables created by service files (`newsService.js`, etc.):
+
+| Table | Migration Expected | DB Actually Has |
+|-------|-------------------|-----------------|
+| `news_players` | `news_item_id` column | `news_id` column |
+| `user_news_preferences` | `favorite_teams` column | Different schema |
+| `redraft_schedule_factors` | `season_year` column | `season` column |
+| `player_weekly_stats` | `player_id` column | `sleeper_id` column |
+
+Additionally:
+- RLS policy creation (`CREATE POLICY`) aborted the PostgreSQL transaction (no SAVEPOINT rollback)
+- `schema_migrations` table lacked `applied_by` column referenced in INSERT statements
+- Migration 2026030803 (trigram index) failed to record due to `applied_by` column mismatch
+
+### What Was Fixed (4 code changes in `src/index.js`)
+1. **`news_players` index** → Wrapped in DO block with column existence check
+2. **`user_news_preferences` GIN index** → Wrapped in DO block with column existence check
+3. **`redraft_schedule_factors` indexes** → Wrapped in DO block supporting both `season_year` and `season` column names
+4. **RLS policies** → Added SAVEPOINT/ROLLBACK TO SAVEPOINT so errors don't abort the transaction
+5. **`schema_migrations` INSERTs** → Removed `applied_by` column references (column doesn't exist)
+6. **v2026021502 marked as applied** → Tables already exist via service files; migration now skips cleanly
+
+### Verification Results
+| Check | Status |
+|-------|--------|
+| Migration v2026021502 recorded | ✅ Applied 2026-03-15 |
+| Migration 2026030803 recorded | ✅ Applied 2026-03-15 |
+| API server starts on port 3001 | ✅ No migration errors |
+| `/health` returns 200 | ✅ Status: healthy, DB: connected |
+| Login endpoint works | ✅ test@titlerun.co authenticated |
+| Player endpoint works | ✅ Lamar Jackson (QB/BAL) returned |
+| E2E testing unblocked | ✅ Server accepting requests |
+
+### Root Cause Analysis
+The migration was written for a **clean database**, but the production DB had tables pre-created by service files with slightly different column names. `CREATE TABLE IF NOT EXISTS` skipped (tables exist), but `CREATE INDEX IF NOT EXISTS` still validated column names even when the index already existed. PostgreSQL's behavior: column validation happens before name deduplication check.
+
+### Files Changed
+- `~/Documents/Claude Cowork Business/titlerun-api/src/index.js` — 5 surgical edits to migration code
+
+---
+
 ## 🔴 CRITICAL BLOCKER — Advanced Stats E2E Testing Blocked by API Failure
 **From:** Rush (complete-e2e-testing subagent)
 **Priority:** URGENT
