@@ -1,5 +1,59 @@
 # Jeff's Inbox
 
+## 🔴 CRITICAL BLOCKER — Advanced Stats E2E Testing Blocked by API Failure
+**From:** Rush (complete-e2e-testing subagent)
+**Priority:** URGENT
+**Date:** 2026-03-15 13:19 EDT
+
+### Summary
+**E2E testing CANNOT PROCEED** — API server fails to start due to database migration errors.
+
+**Status:** 🔴 **BLOCKED (0% testing completed)**
+
+### Critical Issue
+The titlerun-api server crashes during startup with migration failures:
+
+```
+error: column "news_item_id" does not exist
+    at runStartupMigration (src/index.js:3322:7)
+    at startServer (src/index.js:5702:5)
+
+Uncaught exception, cleaning up SSE connections
+```
+
+### Impact
+- ❌ No API server running (no port listening)
+- ❌ Cannot test login
+- ❌ Cannot access dashboard
+- ❌ Cannot test ANY Advanced Stats features
+- ❌ **100% of planned E2E testing blocked**
+
+### Root Cause
+1. **Migration v2026021502** references non-existent column `news_item_id`
+2. **Migration 2026030803** (trigram index) appears to hang (>30 seconds)
+3. Server continues past fatal errors instead of failing fast
+
+### Fix Required
+**Estimated time:** 1-2 hours
+
+1. Fix migration v2026021502 (add missing column or remove reference)
+2. Fix/debug migration 2026030803 (trigram index)
+3. Improve error handling (fail fast on migration errors)
+4. Test clean migration from scratch
+5. Verify API server starts and `/api/health` responds
+
+### Next Steps
+1. **URGENT:** Fix migrations (blocks all testing)
+2. Verify API server startup
+3. Test login flow manually
+4. Re-trigger full E2E test suite (5 hours)
+
+**Full Report:** `~/Documents/Claude Cowork Business/titlerun-app/ADVANCED-STATS-E2E-COMPLETE.md`
+
+**Recommendation:** **DO NOT DEPLOY** until this is resolved and full E2E passes.
+
+---
+
 ## ✅ AUTH FIX COMPLETE — Frontend Authentication Verified Working
 **From:** Rush (fix-auth-frontend subagent)
 **Priority:** HIGH
