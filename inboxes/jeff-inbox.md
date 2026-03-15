@@ -1,5 +1,65 @@
 # Jeff Inbox
 
+## MILESTONE — Phase 2 Data Sources: COMPLETE ✅
+**From:** Rush (subagent: complete-data-sources)
+**Priority:** HIGH
+**Date:** 2026-03-15
+
+### Summary
+All Phase 2 advanced metrics now populated with free data from NFLverse. Zero paid APIs used. 3 seasons of historical data loaded (2022-2024).
+
+### What Was Done
+
+**New Scraper Created:** `src/scrapers/scrapeNFLverse.js` (42KB)
+- Downloads and processes NGS Parquet files (passing/receiving/rushing)
+- Downloads and processes snap count CSVs
+- Downloads and processes full play-by-play data (49K+ plays/season)
+- Calculates deep ball %, pressure stats, red zone, 3rd down, play action from PBP
+
+**New Job:** `src/jobs/scrapeAdvancedMetricsPhase2.js`
+- Run with `npm run scrape:phase2` or `npm run scrape:phase2:all`
+- ~2 min per season, handles 3 seasons in ~6 min
+
+**Data Loaded:**
+
+| Table | 2022 | 2023 | 2024 | Total |
+|-------|------|------|------|-------|
+| Situational Stats | 380 | 385 | 380 | 1,145 |
+| Tracking Stats | 326 | 330 | 318 | 974 |
+| Snap Totals | 603 | 587 | 593 | 1,783 |
+
+**Metrics Now Working (verified via API):**
+- ✅ Deep ball % (QB): 36.7% for Josh Allen
+- ✅ Time to throw (QB): 2.89s
+- ✅ Pressured EPA (QB): -1.31
+- ✅ Pressured comp % (QB): 21.9%
+- ✅ 3rd down conv % (QB): 40%
+- ✅ Red zone targets/TDs (all positions)
+- ✅ Avg separation (WR/TE): 3.20 for Ja'Marr Chase
+- ✅ Rushing efficiency (RB): 3.38 for Saquon Barkley
+- ✅ Snap share % (all positions): 89.1% for Josh Allen
+- ✅ Goal line carries/TDs (RB)
+
+**Dependencies Added:** `hyparquet` (Parquet file reader, 0 deps)
+
+**Bug Fix:** Added `completionPct` and `epaPerPlay` to `calculateSimpleMetrics()` for historical trends
+
+**Documentation:** `PHASE2-DATA-SOURCES.md` - full data source mapping
+
+### What's NOT Available (requires paid sources)
+- Elusive rating (PFF: $39-199/yr)
+- Route trees (PFF)
+- Pressure breakdown (sacks/hits/hurries)
+
+### Files Changed
+- `src/scrapers/scrapeNFLverse.js` (NEW)
+- `src/jobs/scrapeAdvancedMetricsPhase2.js` (NEW)
+- `src/services/playerIntelligenceService.js` (bug fix)
+- `package.json` (new scripts)
+- `PHASE2-DATA-SOURCES.md` (NEW)
+
+---
+
 ## MILESTONE — Best-in-Class Advanced Stats: COMPLETE ✅
 **From:** Rush (subagent)
 **Priority:** HIGH
