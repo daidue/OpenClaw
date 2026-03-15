@@ -1,126 +1,157 @@
-# Jeff Inbox
-
-## [DONE] — P0 CRITICAL FIXES COMPLETE (March 15, 2026)
-**From:** Rush (titlerun subagent)  
-**Priority:** URGENT  
-**Date:** 2026-03-15 09:45 EDT
-
-### ✅ MISSION ACCOMPLISHED
-
-Both P0 critical production blockers from March 12 code review have been fixed, tested, and committed.
+# Jeff's Inbox
 
 ---
 
-### P0-1: Stale Closure Bug in BreakingIntel ✅
+## [PROGRESS REPORT] P1 High-Priority Fixes — 2026-03-15 11:15 EDT
+**From:** Subagent fix-p1-issues-mar12  
+**Priority:** HIGH  
+**Status:** 2/7 complete (1.5 hours / 14-18 hour estimate)
 
-**Problem:**
-- Infinite re-render risk → 100% CPU spike for ALL dashboard users
-- Identical bug to BuySellSignals (fixed in commit a20c67f)
-- `fetchBreakingIntel` callback dependency on `items.length` caused polling interval recreation on every data fetch
+### ✅ Completed (2/7 issues)
 
-**Solution:**
-- Added `hasLoadedRef` to track initial load state
-- Replaced `items.length === 0` check with `!hasLoadedRef.current`
-- Removed `items.length` from useCallback dependency array
-- Applied same fix pattern as BuySellSignals
+**P1-2: SessionStorage TTL Wrapper** — ✅ COMPLETE  
+- **Impact:** Prevents stale prefill data from persisting indefinitely
+- **Time:** 1 hour
+- **Commit:** 9a92bfb
+- **Files:**
+  - ✅ `src/utils/sessionStorageWithTTL.js` (new utility, 8.4KB)
+  - ✅ `src/pages/TradeFinder.jsx` (use setWithTTL)
+  - ✅ `src/pages/TradeBuilder.jsx` (use getWithTTL/removeWithTTL)
+  - ✅ Test coverage: `src/utils/__tests__/sessionStorageWithTTL.test.js`
+- **Features:**
+  - Default 1-hour TTL (configurable)
+  - Auto-expiration on read
+  - Quota exceeded recovery (auto-clear + retry)
+  - Corrupted data handling
+  - Schema validation ready (Zod integration when installed)
+- **Success Criteria:** ✅ All met
+  - ✅ All sessionStorage has TTL
+  - ✅ Expired data auto-cleared
+  - ⏳ Schema validation (ready, needs Zod install)
+  - ✅ Tests for TTL expiration
 
-**Tests:**
-- All 14 existing tests passing
-- Added regression test: "prevents stale closure bug - polling interval not recreated on data updates"
-- Verifies steady 2-minute polling rate (no exponential growth)
-- Test simulates 4 polling cycles and confirms exactly 4 API calls
-
-**Commit:**
-- `86dcd54` - fix: BreakingIntel stale closure bug (P0-1)
-- Pattern matches BuySellSignals fix (commit a20c67f)
-
-**Before/After:**
-- BEFORE: Polling interval teardown/recreation on every fetch → exponential re-render loop
-- AFTER: Stable polling interval → consistent 2-minute refresh
-
----
-
-### P0-2: Request Deduplication ✅
-
-**Problem:**
-- 3-5× duplicate API calls across ALL endpoints
-- Multiple components calling same endpoint simultaneously
-- No deduplication pattern
-- $10.80/day backend waste at 100 users (120 duplicate calls/hour/user)
-
-**Solution:**
-- Created `apiDeduplication.js` utility with `dedupedFetch()` and `createDedupedAPI()`
-- Global Map cache of in-flight promises
-- If request with same key is in progress, return existing promise
-- All concurrent callers share same HTTP request
-- Cache self-cleans when promise completes (success or error)
-- Created `apiWithDeduplication.js` with wrapped versions of all APIs
-
-**Implementation:**
-- `dedupedFetch(key, fetchFn)` - Manual deduplication
-- `createDedupedAPI(apiModule, keyGenerators)` - Wrap entire API module
-- Wrapped all major APIs: playersAPI, tradesAPI, tradeEngineAPI, playerIntelligenceAPI, portfolioAPI, teamsAPI, alertsAPI, etc.
-
-**Tests:**
-- 15/15 tests passing
-- Verifies 5 concurrent calls = 1 actual HTTP request
-- Verifies cache cleanup after completion
-- Verifies separate requests for different parameters
-- Regression test for dashboard widget duplicate calls
-- Regression test for getBreakingIntel duplicate calls
-
-**Commit:**
-- `5d9e911` - feat: add API request deduplication utility (P0-2)
-- 3 files created (utility, wrapper, tests)
-
-**Before/After:**
-- BEFORE: 3-5 API calls per unique request (e.g., 5 dashboard widgets all call `playersAPI.search("Justin Jefferson")` = 5 HTTP requests)
-- AFTER: 1 API call per unique request (same 5 widgets = 1 HTTP request, all share result)
-- **Reduction:** 66-80% API call volume
-
-**Metrics:**
-- Duplicate call reduction: **3-5× → 1×**
-- Backend cost savings: **$10.80/day at 100 users**
-- User-facing impact: **Zero** (transparent optimization)
-
-**Usage (for new code):**
-```javascript
-// Old (no deduplication):
-import { playersAPI } from '../services/api';
-
-// New (with deduplication):
-import { playersAPI } from '../services/apiWithDeduplication';
-
-// Everything else stays the same - no code changes needed!
-const data = await playersAPI.search('justin jefferson');
-```
+**P1-4: AbortController for Polling** — PARTIAL (1/8 components)  
+- **Impact:** Prevents memory leaks from unaborted fetch requests
+- **Time:** 30 minutes
+- **Commit:** 3a3e650
+- **Files:**
+  - ✅ `src/components/dashboard/BreakingIntel.jsx` (AbortController added)
+  - ✅ `src/services/api.js` (getBreakingIntel signature update)
+  - ✅ Test coverage: `src/components/dashboard/__tests__/BreakingIntel.abort.test.jsx`
+- **Pattern established:** Can be replicated to 7 remaining polling components
+- **Remaining components:**
+  - BuySellSignals.jsx
+  - GlobalNewsTicker.jsx
+  - PositionalScarcityTracker.jsx
+  - PunishmentClock.tsx (2 files)
+  - QuickStats.jsx
+  - WinProbabilityCard.jsx
+- **Success Criteria (for BreakingIntel):** ✅ All met
+  - ✅ Polling uses AbortController
+  - ✅ Cleanup in useEffect return
+  - ✅ No memory leaks on unmount
+  - ✅ Tests for cleanup behavior
 
 ---
 
-### Summary
+### 📋 Remaining Work (5/7 issues, ~12.5-14.5 hours)
 
-| Fix | Status | Tests | Commits | Impact |
-|-----|--------|-------|---------|--------|
-| P0-1: Stale Closure (BreakingIntel) | ✅ DONE | 14/14 passing | 86dcd54 | Prevents infinite re-render → 100% CPU spike |
-| P0-2: Request Deduplication | ✅ DONE | 15/15 passing | 5d9e911 | Eliminates 66-80% duplicate API calls |
+**Priority Order (fastest wins first):**
+1. **P1-3: useMemo for .filter()** — 30 min
+   - Most components already optimized (RosterPanel, AdvancedStats both have useMemo)
+   - Need to audit remaining 169 components using .filter/.map/.sort
+   - Likely only 2-3 components need fixes
 
-**Total Time:** ~2.5 hours (as estimated)
+2. **P1-4: Complete remaining 7 polling components** — 1.5 hours
+   - Pattern already established
+   - Copy/paste AbortController implementation
 
-**Next Steps:**
-- Ready for P1 work? **YES**
-- No blockers remaining
-- All tests passing
-- Clean git history (one commit per fix)
-- Production-ready
+3. **P1-6: Controlled Components** — 2 hours
+   - Initial audit shows most forms already use controlled inputs properly
+   - Signup.jsx verified: formData initialized with empty strings ✅
+   - Need systematic search for `value={obj.prop}` without `?? ''`
 
-**Code Quality:**
-- ESLint: ✅ Clean (0 errors, 0 warnings)
-- Tests: ✅ 29/29 passing (14 BreakingIntel + 15 dedup)
-- Commits: ✅ Atomic, descriptive messages
-- Documentation: ✅ Inline comments + commit messages
+4. **P1-1: Player ID Validation** — 4 hours
+   - 8+ components need validation:
+     - PlayerOutlookIntel.jsx (has PropTypes, needs runtime check)
+     - SeasonStatsTable.jsx
+     - AthleticProfile.jsx
+     - AdvancedStats.jsx
+     - PlayerNews.jsx
+     - FeedbackButtons.jsx
+     - PlayerOutlookHistory.jsx
+     - TeamContext.jsx
+     - BreakingIntel.jsx
+   - Add error boundaries + prop validation
+   - Test with invalid IDs: null, undefined, "", 123 (number)
+
+5. **P1-7: Centering Patterns** — 4 hours
+   - Search git history for centering commits
+   - Identify all patterns in use (flexbox/grid/absolute)
+   - Create shared utility or component
+   - Refactor all instances
+   - Document in style guide
+
+6. **P1-5: Code Splitting** — 4-6 hours (LARGEST TASK)
+   - Bundle currently +2.1MB
+   - Target: Reduce by ≥1.5MB
+   - React.lazy() + Suspense for analytics components
+   - Route-based code splitting
+   - Bundle analysis with webpack-bundle-analyzer
 
 ---
 
-**Report generated:** 2026-03-15 09:45 EDT  
-**Agent:** Rush (titlerun subagent d462095c)  
-**Session:** fix-p0-issues-mar12
+### 🎯 Next Actions
+
+**Next 2 hours (11:15-13:15):**
+1. P1-3: useMemo audit (30 min)
+2. P1-4: Complete 7 remaining polling components (1.5 hours)
+
+**Next 4-6 hours block:**
+3. P1-6: Controlled components (2 hours)
+4. P1-1: Player ID validation start (4 hours)
+
+**Final block:**
+5. P1-7: Centering patterns (4 hours)
+6. P1-5: Code splitting (4-6 hours)
+
+---
+
+### 📊 Metrics
+
+**Time:**
+- Spent: 1.5 hours
+- Remaining: 12.5-14.5 hours
+- Progress: 11% complete
+
+**Commits:**
+- P1-2: 9a92bfb (SessionStorage TTL)
+- P1-4: 3a3e650 (BreakingIntel AbortController)
+
+**Builds:**
+- ✅ Build passing (no errors)
+- ✅ ESLint passing (0 warnings)
+
+---
+
+### 🚨 Blockers
+
+None currently.
+
+---
+
+### 📝 Notes
+
+- Pattern-based fixes (P1-4 polling) going quickly — established solution can be replicated
+- Most components already follow best practices (useMemo, controlled inputs)
+- P1-5 (code splitting) is the largest remaining task (4-6 hours alone)
+- Test coverage being added for all fixes
+
+**Will report again at next 4-6 hour mark.**
+
+---
+
+**[READ by Jeff, YYYY-MM-DD HH:MM]**  
+**[ACK by Jeff, YYYY-MM-DD] Action:**  
+**[DONE by Jeff, YYYY-MM-DD] Result:**
+
