@@ -1,5 +1,67 @@
 # Jeff Inbox
 
+## TASK COMPLETE — Season Outlook Quality Control System Designed
+**From:** Rush (subagent: design-outlook-quality-system)
+**Priority:** URGENT
+**Date:** 2026-03-15
+
+### Root Cause Analysis — COMPLETE
+
+**Two parallel systems feed "Season Outlook" on the player profile:**
+
+1. **Template engine** (`seasonOutlookService.js` → `player_outlook` table): Generic narratives, NO coaching data, LOW risk. This is NOT the source of errors.
+
+2. **LLM engine** (`insightGenerationService.js` → `player_insights` table): Claude Haiku generates prose from assembled facts. This IS the source of all 3 reported errors.
+
+**Root causes identified:**
+- `checkCoachingChanges()` is a **STUB/MOCK** — returns empty data since initial build. Was never implemented.
+- `coaching_changes` table has stale data (Arthur Smith as ATL HC from 2023)
+- `validateBlurb()` checks style only (AI tells, banned words), NOT factual accuracy
+- LLM (Haiku) hallucinates position-incompatible descriptions ("pass-catcher" for RB, "catching passes" for QB)
+- No gate to block factually wrong content from reaching production
+
+### Deliverables — All Created
+
+| Document | Location |
+|----------|----------|
+| Root Cause Audit | `titlerun-api/docs/SEASON-OUTLOOK-AUDIT.md` |
+| Quality System Design (4 tiers) | `titlerun-api/docs/SEASON-OUTLOOK-QUALITY-SYSTEM.md` |
+| Content Quality Framework | `titlerun-api/docs/CONTENT-QUALITY-FRAMEWORK.md` |
+| Validation Engine Spec | `titlerun-api/docs/VALIDATION-ENGINE-SPEC.md` |
+| Immediate Fixes Report | `titlerun-api/docs/IMMEDIATE-FIXES-REPORT.md` |
+
+### 4-Tier Quality System Designed
+
+- **Tier 1 (every save):** Position-role validation, coaching staff check, team assignment check, number hallucination detection
+- **Tier 2 (daily cron):** Staleness detection, news event triggers, auto-queue for regeneration
+- **Tier 3 (on-demand):** LLM-powered fact-checking against verified data, auto-correction pipeline
+- **Tier 4 (human-in-loop):** Editorial review queue, side-by-side diff, approve/reject workflow
+
+### Immediate Actions Required
+
+1. Create `data/coaching-staff-2026.json` (all 32 teams, verified HC/OC)
+2. Add position-role validation to `validateBlurb()` in insightGenerationService
+3. Regenerate insights for Bijan Robinson + Josh Allen
+4. Run audit script on top 50 dynasty players
+5. Build `outlookValidator.js` module (Week 1-2)
+
+### 5-Week Implementation Roadmap
+- Week 1: Emergency fixes (coaching data, validation gate, top 50 audit)
+- Week 2: Full automated validation engine (Tier 1)
+- Week 3: Freshness monitoring cron (Tier 2)
+- Week 4: LLM fact-checking (Tier 3)
+- Week 5: Editorial review dashboard (Tier 4)
+
+### Key Insight
+The `coaching_changes` data pipeline was **never built** — it's been a stub since day 1. The fix is simple: a manually-maintained JSON file of coaching staff (changes ~5 times/year). No need for complex scraping.
+
+### Cost
+- LLM validation: ~$5-15/month (Haiku for fact-checking)
+- Coaching data: $0 (manual JSON, quarterly updates)
+- Total engineering: ~2-3 dev days across 5 weeks
+
+---
+
 ## MILESTONE — Advanced Stats Deployed to Production 🚀
 **From:** Rush (subagent: deploy-production)
 **Priority:** HIGH
