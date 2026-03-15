@@ -1,5 +1,70 @@
 # Jeff Inbox
 
+## TASK COMPLETE — Season Outlook Immediate Fixes + Validation Implemented
+**From:** Rush (subagent: implement-outlook-fixes)
+**Priority:** URGENT
+**Date:** 2026-03-15
+
+### Summary
+All 3 critical production errors fixed. Validation system built, tested, and integrated.
+
+### What Was Done
+
+**Phase 1 — Critical Fixes (DONE):**
+- ✅ Created `src/data/coachingStaff.json` — All 32 NFL teams with accurate 2026 coaching staffs (verified via gridironexperts.com)
+- ✅ Fixed Bijan Robinson outlook — "Arthur Smith" → "Kevin Stefanski" (ATL's actual new HC)
+- ✅ Fixed Colston Loveland outlook — "Matt Eberflus" → "Ben Johnson" (CHI's actual new HC)
+- ✅ Josh Allen (QB, BUF) — content was already clean (no position confusion in current version)
+- ⚠️ **Important discovery:** Task assumed Raheem Morris was still ATL HC — he was fired Jan 2026. Kevin Stefanski is the current HC. Coaching data updated accordingly.
+
+**Phase 2 — Validation Module (DONE):**
+- ✅ Created `src/services/intelligence/outlookValidator.js` with 4 validation checks:
+  1. **Coaching staff** — flags ex-coach references by team
+  2. **Position-role** — catches QB "catching passes", RB "throwing touchdowns", etc.
+  3. **Content recency** — flags stale content
+  4. **Name confusion** — catches Josh Allen QB/DE mixups
+- ✅ Integrated into `insightGenerationService.js`:
+  - `validateBlurb()` now includes factual checks with `blockers` array
+  - Auto-retry with error-aware prompt when critical errors detected
+  - `getCoachingChanges()` now reads from verified JSON (not stale DB table)
+- ✅ 33 unit tests — all passing
+
+**Phase 3 — Audit (DONE):**
+- ✅ Audited top 100 dynasty players: **100/100 clean** after fixes
+- ✅ Report saved to `OUTLOOK-AUDIT-REPORT.md`
+
+**Phase 4 — Scripts (DONE):**
+- ✅ `scripts/fix-outlook-errors.js` — targeted fix script with dry-run mode
+- ✅ `scripts/audit-all-outlooks.js` — batch audit with report generation
+
+### Files Created/Modified
+| File | Status | Purpose |
+|------|--------|---------|
+| `src/data/coachingStaff.json` | **NEW** | All 32 teams, verified 2026 coaching staffs |
+| `src/services/intelligence/outlookValidator.js` | **NEW** | Validation module (4 checks) |
+| `src/services/intelligence/insightGenerationService.js` | **MODIFIED** | Integrated validation + retry logic |
+| `scripts/fix-outlook-errors.js` | **NEW** | Targeted fix script |
+| `scripts/audit-all-outlooks.js` | **NEW** | Batch audit script |
+| `src/tests/outlookValidator.test.js` | **NEW** | 33 unit tests |
+| `OUTLOOK-AUDIT-REPORT.md` | **NEW** | Generated audit report |
+
+### Key Coaching Changes Discovered (2026 Season)
+The coaching landscape changed dramatically after the 2025 season:
+- **ATL:** Raheem Morris fired → **Kevin Stefanski** hired (from CLE)
+- **BUF:** Sean McDermott fired → **Joe Brady** promoted
+- **BAL:** John Harbaugh left → **Jesse Minter** hired (Harbaugh to NYG)
+- **PIT:** Mike Tomlin fired, Arthur Smith (OC) gone → **Mike McCarthy** hired
+- **CHI:** Matt Eberflus fired mid-2024 → **Ben Johnson** hired (from DET)
+- **MIA:** Mike McDaniel fired → **Jeff Hafley** hired
+- 7+ more changes captured in coachingStaff.json
+
+### Remaining Work
+- [ ] coachingStaff.json should be updated at start of each NFL offseason
+- [ ] Consider adding coaching data to a scheduled update job
+- [ ] Regenerate all insights that reference stale coaches (currently 0 critical)
+
+---
+
 ## TASK COMPLETE — Season Outlook Quality Control System Designed
 **From:** Rush (subagent: design-outlook-quality-system)
 **Priority:** URGENT
