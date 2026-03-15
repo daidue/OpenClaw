@@ -1,5 +1,175 @@
 # Jeff Inbox
 
+## [BLOCKER] — Advanced Stats Testing: UI Testing Blocked by Auth/CORS ⚠️
+**From:** Rush (TitleRun Subagent)
+**Priority:** URGENT
+**Date:** 2026-03-15 12:33 PM
+
+### 🚨 Status: UI Testing Blocked - Cannot Verify Frontend Integration
+
+Attempted comprehensive testing of Advanced Stats Phase 1 + Phase 2 features. **API layer verified and working**, but **UI testing blocked** by authentication/CORS configuration issues.
+
+---
+
+### ✅ What Was Tested
+
+**API Endpoints (via curl):**
+- ✅ Josh Allen (QB) - All Phase 1 & 2 features confirmed
+  - Percentiles: ✅ Working (cpoe: 78, ypa: 92, etc.)
+  - Tiers: ✅ Working ("GREAT" tier)
+  - Metric Groups: ✅ Present (passingEfficiency, pocketManagement, volume)
+  - Response time: ~200ms ✅ Under target
+- ✅ API structure matches spec perfectly
+- ✅ Graceful handling of missing data
+
+**Code Quality:**
+- ✅ Fixed critical compilation error in TeamContext.jsx
+  - Missing imports for `validatePlayerId` and `InvalidPlayerIdFallback`
+  - App now compiles without errors
+
+---
+
+### ❌ What Could NOT Be Tested
+
+**Blocked by Auth/CORS:**
+- ❌ AdvancedStats component rendering
+- ❌ Percentile rings visualization
+- ❌ Tier badge display
+- ❌ Metric tooltips
+- ❌ Historical trend sparklines
+- ❌ Metric group collapse/expand
+- ❌ Mobile responsiveness
+- ❌ Performance benchmarks
+- ❌ Browser compatibility
+- ❌ Screenshot documentation
+
+---
+
+### 🔴 Critical Blocker
+
+**Problem:**  
+Frontend auth endpoints hitting production API (`https://api.titlerun.co`) despite local `.env.local` configuration setting `REACT_APP_API_URL=http://localhost:3001`.
+
+**Error:**
+```
+Access to fetch at 'https://api.titlerun.co/api/auth/register' from origin 
+'http://localhost:3000' has been blocked by CORS policy
+```
+
+**Root Cause:**  
+- Created `.env.local` with correct API URL
+- Restarted frontend server
+- Browser still showing requests to production API
+- Possible caching issue or auth service not respecting env var
+
+---
+
+### 🛠️ Solutions (Pick One)
+
+**Option A: Provide Test Credentials (Fastest)**
+- Create test user in production DB
+- Document credentials in testing docs
+- Time to implement: 5 minutes
+
+**Option B: Add Demo Mode (Best for Testing)**
+```javascript
+// In src/App.js
+const isDemoMode = process.env.REACT_APP_DEMO_MODE === 'true';
+if (isDemoMode) {
+  // Skip auth, use mock user with access to test players
+}
+```
+- Time to implement: 15 minutes
+- Enables comprehensive testing without auth
+
+**Option C: Fix .env.local Loading (Root Cause Fix)**
+- Debug why `REACT_APP_API_URL` not applied to auth endpoints
+- Verify webpack bundle includes env var
+- Add console logging to confirm
+- Time to implement: 30-60 minutes
+
+---
+
+### 📊 Testing Completion Status
+
+| Phase | Planned | Completed | Blocked |
+|-------|---------|-----------|---------|
+| Setup | 30 min | ✅ 60 min | - |
+| UI Testing | 120 min | - | ❌ Auth/CORS |
+| Data Verification | 60 min | - | ❌ Requires UI |
+| Performance | 30 min | - | ❌ Requires UI |
+| Browser Compat | 30 min | - | ❌ Requires UI |
+| Screenshots | 30 min | - | ❌ Requires UI |
+| **Total** | **5 hours** | **1 hour (20%)** | **4 hours blocked** |
+
+---
+
+### 🚨 Recommendation
+
+**DO NOT SHIP** Advanced Stats to production until UI testing complete.
+
+**Rationale:**
+- API layer is solid and ready ✅
+- Frontend integration remains **completely unverified** ❌
+- Cannot confirm component renders, tooltips work, animations smooth, etc.
+- High risk shipping UI code that hasn't been manually tested
+
+---
+
+### 📋 Immediate Actions Required
+
+1. **Choose blocker resolution approach** (Option A, B, or C above)
+2. **Implement chosen solution** (5-60 min depending on option)
+3. **Resume UI testing** with full checklist:
+   - 4 test players (QB, RB, WR, TE)
+   - All Phase 1 features (percentiles, tiers, tooltips, trends)
+   - All Phase 2 features (metric groups, collapse/expand)
+   - Mobile responsiveness
+   - Performance benchmarks
+4. **Complete data accuracy verification** against external sources
+5. **Capture screenshots** for documentation
+6. **Generate final go/no-go report**
+
+---
+
+### 📁 Deliverables
+
+**Full Report:**  
+`~/Documents/Claude Cowork Business/titlerun-app/ADVANCED-STATS-TESTING-REPORT.md`
+
+**Includes:**
+- Detailed API test results
+- Compilation error fix documentation
+- Complete blocker analysis
+- Step-by-step resolution options
+- Recommendations for better testing DX
+
+---
+
+### ⏱️ Time to Resolution
+
+- **Fast track (Option A):** 5 min + 4 hours UI testing = **4.1 hours total**
+- **Recommended (Option B):** 15 min + 4 hours UI testing = **4.25 hours total**
+- **Root fix (Option C):** 60 min + 4 hours UI testing = **5 hours total**
+
+---
+
+### 💬 For Taylor
+
+Testing blocked by auth configuration. Need to either:
+1. Provide test credentials for existing account, or
+2. Add demo mode to bypass auth for local testing, or
+3. Debug why .env.local not working
+
+API is verified working. Just need UI access to complete testing.
+
+---
+
+[ACK REQUIRED from Jeff]  
+**Action:** Choose blocker resolution approach (A, B, or C)
+
+---
+
 ## [MILESTONE] — Advanced Stats Phase 2: Backend Complete ✅
 **From:** Rush (TitleRun)
 **Priority:** HIGH
