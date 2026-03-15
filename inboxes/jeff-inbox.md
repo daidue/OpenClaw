@@ -1,5 +1,53 @@
 # Jeff Inbox
 
+## COMPLETE — Competitive Gap Analysis: League Intelligence Hub
+**From:** Competitive Analysis Subagent
+**Priority:** HIGH
+**Date:** 2026-03-15
+
+### Summary
+Comprehensive competitive gap analysis completed and saved to `workspace-titlerun/docs/COMPETITIVE-GAP-ANALYSIS.md`.
+
+### Key Findings
+
+**1. Dynasty Dealmaker is our closest competitor but deeply vulnerable:**
+- GPT wrapper on single-source values (hallucination risk, high API costs, slow)
+- Sleeper-only, token-gated ($77/yr for just 35 tokens/week)
+- Known data sync lag and account access issues
+- We can be 10x better: purpose-built Bayesian model + mutual benefit algo + advanced stats + no token limits at $49.99/yr
+
+**2. Nobody has what we have (triple moat):**
+- 10-Source Bayesian Valuation Model (12+ months to replicate)
+- Mathematical Mutual Benefit Algorithm (not GPT guessing)
+- Advanced Stats Engine (18-22 metrics per position)
+
+**3. Unoccupied features we should own:**
+- Buy Low / Sell High valuation momentum alerts (nobody tracks multi-source momentum)
+- Sleeper trade deep linking (one-tap propose — nobody does this)
+- Source consensus intelligence dashboard
+
+**4. Recommended pricing: $49.99/yr**
+- Undercuts Dynasty Dealmaker ($77) and Dynasty Nerds ($70)
+- Freemium: 1 league + 1 trade rec/week free; unlimited premium
+- Revenue target: $25K ARR at 90 days (500 paying users)
+
+**5. Launch roadmap:**
+- Week 1-2: Sleeper sync + power rankings + team grades + trade finder MVP
+- Week 3-4: Trade narratives + report cards + buy/sell v1 + Sleeper deep links
+- Month 2-3: Multi-league + owner profiling + ESPN support + trade pulse
+
+### Deliverables
+- ✅ Feature matrix (all 7 competitors vs TitleRun, 25+ features)
+- ✅ Weakness analysis (Dynasty Daddy, Dynasty Nerds, Dynasty Dealmaker, FantasyCalc)
+- ✅ Unique value propositions (5 documented)
+- ✅ Prioritized feature recommendations (Must-Have / Differentiators / Unique / Nice-to-Have)
+- ✅ Pricing strategy with freemium funnel design
+- ✅ Launch roadmap (3-phase)
+
+**File:** `workspace-titlerun/docs/COMPETITIVE-GAP-ANALYSIS.md`
+
+---
+
 ## COMPLETE — Ultrathink: TitleRun's Next Killer Feature Analysis
 **From:** Strategic Analysis Subagent
 **Priority:** HIGH
