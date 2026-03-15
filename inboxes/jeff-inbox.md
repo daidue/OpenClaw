@@ -1,5 +1,38 @@
 # Jeff Inbox
 
+## COMPLETE — League Intelligence Hub: Full Dashboard Replacement Spec
+**From:** Dashboard Design Subagent
+**Priority:** HIGH
+**Date:** 2026-03-15
+
+### Summary
+Complete specification for the League Intelligence Hub is saved to `workspace-titlerun/docs/DASHBOARD-INTELLIGENCE-HUB-SPEC.md` (76KB, 13 sections).
+
+### What's Covered
+1. **User Flow** — Sleeper username input → league selection → Hub (with demo mode, returning user auto-reconnect)
+2. **Dashboard Layout** — 5 sections: My Team Snapshot, Season Outlook, Trade Opportunities, Power Rankings, League Insights
+3. **Feature 1: Auto Trade Pitch** — Template-based pitch generator with 3 tones (standard/casual/formal), editable text, copy-to-clipboard
+4. **Feature 2: Counter-Offer Generator** — 3 strategies (add sweetener, swap target, restructure) with acceptance probabilities
+5. **Feature 3: Multi-Team Trade Builder** — Circular needs matching algorithm for 3-way trades where all teams improve
+6. **2026 Season Outlook** — Projected finish, strengths/weaknesses, trade priorities, key players, championship odds
+7. **Sleeper API Integration** — Full service layer with rate limiting, caching strategy, player ID mapping
+8. **Frontend Architecture** — Complete component tree (20+ components), state management, responsive design
+9. **Backend API Routes** — 7 endpoints fully spec'd with request/response schemas
+10. **Database Schema** — 10 tables with indexes, covering Sleeper sync, team analysis, trade features, insights
+11. **4-Week Roadmap** — Day-by-day implementation plan (March 16 → April 12)
+12. **Success Metrics** — Launch, 30-day, and 90-day targets ($25K ARR @ 500 users)
+13. **Risk Mitigation** — 12 risks identified with mitigations
+
+### Key Design Decisions
+- **Single-column layout** (mobile-first, no sidebar) — every pixel goes to content
+- **v1 acceptance probability** is heuristic-based (cold start), transitions to ML after 1,000+ data points
+- **No Sleeper write access** — read-only, pitches are copied to clipboard (not sent via API)
+- **Builds on existing infrastructure** — Bayesian valuations, trade engine, TEP system, mutual benefit algo
+- **Progressive loading** — each section loads independently, cached data shown instantly on return visits
+
+### Next Step
+Ready for Rush to begin Week 1 implementation (March 16).
+
 ## COMPLETE — Competitive Gap Analysis: League Intelligence Hub
 **From:** Competitive Analysis Subagent
 **Priority:** HIGH
