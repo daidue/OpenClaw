@@ -123,6 +123,18 @@ Old crons were zombies (reading nonexistent `sessions.log`). New crons read actu
 
 ## Lessons Learned
 
+### Week of Mar 8-15, 2026
+- 🟢 **Agent swarm productivity is REAL.** Saturday March 14: 40 agents deployed, ~185 hours of estimated work completed in 5.5 hours actual time. 33-36× faster than human baseline. This validates the Systems Phase investment.
+- 🟢 **Adversarial audits are mandatory.** Agent 14 found Advanced Stats had 52/100 quality score with 4 P0 bugs (fabricated metrics, EPA 10-20× too high, admin auth missing). Self-testing agents claimed 85-95/100 scores. External audit prevented shipping broken features.
+- 🟢 **Test-driven development works.** Added TDD protocol to all repos after bug report. Protocol: write failing test (reproduce bug) → verify test fails → fix bug → prove fix (test passes). Prevents "fixed" bugs that weren't actually reproduced.
+- 🟢 **Incremental deployment beats big-bang.** Draft Capital: Phase 1 (detection badge) → Phase 2 (projections) → Phase 3 (polish). Caught bugs early. Player Intelligence: Backend complete + tested before frontend integration.
+- 🔴 **Build for existing pages, not new standalone pages.** ML features (P0-1 through P0-4) built as standalone pages, broke Trade Finder, rolled back in <30 min. Correct approach: enhance existing pages (PlayerDetail, TradeBuilder) with graceful degradation.
+- 🔴 **Data accuracy > feature velocity.** Advanced Stats shipped with fabricated metrics (Adj Comp% = raw comp%, Pressure Rate = sack rate). EPA values 10-20× too high. Better to delay 2-4 hours for accuracy than ship broken data.
+- 🔴 **Quality gate thresholds need real-world tuning.** Trade Finder needle movers required overall ≥65, acceptance ≥40, lineup change ≥2% → filtered 100% of trades. Adjusted to ≥55, ≥30 with fallback. Test with production data before deploying filters.
+- 🟡 **Model switching mid-session costs 10×.** Prompt cache invalidation = huge token penalty. Taylor requested Sonnet throttle (Mar 8). All agents stayed on assigned models. Budget improved.
+- 🟡 **Browser tabs accumulate fast.** 14 tabs closed during Saturday morning cleanup (7 TitleRun pages, 1 GitHub, 1 Cloudflare, 5 iframes, 2 service workers). Brave uses ~300MB per tab. Cleanup cron now mandatory.
+- 🟡 **Scraper staleness monitoring needed.** KTC TEP scraper stale 26 days (since Feb 16), went unnoticed until validation. Added scraper health checks. Alert if any scraper hasn't run in >7 days.
+
 ### Week of Feb 23-Mar 1, 2026
 - 🔴 **Portfolio manager focus violation.** Jeff spent 568 messages (Feb 26-28) on commerce/template work (Etsy, Gumroad, invoice tracker, newsletter) despite Taylor's Feb 14 directive: "100% focus on TitleRun." Root cause: No formal Grind/Edge shutdown protocol executed. Grind/Edge remained in mental context. **Lesson: Pausing a business requires formal dormancy protocol** — disable crons, archive workspace, clear portfolio manager's todo list. Half-paused = distraction.
 - 🔴 **Code quality regression at worst time.** TitleRun went 99.5/100 (Feb 20) → 82/100 (Mar 1) — 7 days before deadline. Three critical bugs introduced: circuit breaker removed (Sleeper API resilience = zero), SQL injection risk (dynamic query construction), ESPN operator precedence bug. **Lesson: Quality is not monotonic.** Shipping excellent features mid-week doesn't prevent regressions late-week. Need continuous monitoring, not point-in-time celebration.
