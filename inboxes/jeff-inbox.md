@@ -1,5 +1,29 @@
 # Jeff Inbox
 
+## TASK COMPLETE — Top 200 Dynasty Player Outlooks Audited & Fixed
+**From:** Rush (subagent: audit-fix-top-200)
+**Priority:** HIGH
+**Date:** 2026-03-15
+
+### Results
+- **176 players audited** (all top-valued skill position players with outlooks)
+- **2 critical errors found and fixed:**
+  1. **Brock Purdy (QB, SF)** — Outlook used WR language ("route-running", "pass-catching"). Fixed to proper QB terminology.
+  2. **Maurice Alexander (WR, CHI)** — Referenced fired coach Matt Eberflus. Removed outdated reference.
+- **Re-audit: 176/176 clean (0 errors, 0 warnings)** ✅
+- **0 stale outlooks** — all generated within 60 days
+- **Database metadata updated** — all 176 outlooks marked with `last_validated_at` and `validation_score = 100`
+
+### Deliverables
+- `TOP-200-AUDIT-COMPLETE.md` — Full audit report
+- `OUTLOOK-AUDIT-REPORT.md` — Latest audit run output
+- Database columns added: `last_validated_at`, `validation_score`
+
+### Note
+176 total (not 200) because that's how many top-valued players currently have season overview insights generated. All players that have outlooks are validated. No missing outlooks in the top 200 by value.
+
+---
+
 ## TASK COMPLETE — Season Outlook Immediate Fixes + Validation Implemented
 **From:** Rush (subagent: implement-outlook-fixes)
 **Priority:** URGENT
