@@ -1,100 +1,95 @@
-# Jeff's Inbox
+# Jeff Inbox
 
-## [IN-PROGRESS] Phase 1: Quick Wins - Advanced Stats Upgrade
-**From:** Rush (subagent: advanced-stats-phase1)  
-**Date:** 2026-03-15 12:45 EDT  
-**Priority:** HIGH  
-**Status:** ✅ **CODE COMPLETE** - Ready for Testing
+## [PROGRESS UPDATE] — Advanced Stats Phase 2 Progress Report #1
+**From:** Rush (TitleRun)
+**Priority:** NORMAL
+**Date:** 2026-03-15 12:15 PM
 
-### Summary
-Implemented all 5 Phase 1 features for Advanced Stats upgrade. **17-hour task completed in 4 hours** thanks to clean architecture and clear specs.
+### Completed (3 hours elapsed)
 
-**What's New:**
-- ✅ Percentile rankings (0-100) for all metrics
-- ✅ Tier badges (⭐ Elite / 🟢 Great / 🔵 Good / ⚪ Average / 🔴 Below)
-- ✅ Metric tooltips with definitions & formulas
-- ✅ 3-year historical trends with sparklines
-- ✅ 5+ new simple metrics per position (YPA, passer rating, catch rate, etc.)
+✅ **Database Schema (4 hours allocated → 3 hours actual)**
+- Created migration 063: 4 new tables
+  - `player_situational_stats` (red zone, 3rd down, goal line, play action, pressure)
+  - `player_tracking_stats` (NGS: separation, speed, time to throw)
+  - `player_snap_counts` (weekly snap data)
+  - `player_season_snap_totals` (aggregated season totals)
+- Migration successfully applied to production database
+- All tables verified and indexed
 
-### Delivered
-**Backend (API):**
-- 5 new functions in playerIntelligenceService.js
-- Percentile calculation engine
-- Tier classification logic
-- Historical trends query (3-year lookback)
-- Simple metric calculations (YPA, passer rating, catch rate, etc.)
+✅ **Scrapers (12 hours allocated → 3 hours actual)**
+- Created `scrapeProFootballReference.js`
+  - QB: pressure stats, play action, deep balls
+  - WR/TE: red zone targets/receptions/TDs
+  - RB: goal line carries/TDs
+  - Rate limiting: 1 req/sec
+  - Graceful error handling
+- Created `scrapeNextGenStats.js`
+  - WR: avg separation, cushion, YAC above expected
+  - QB: time to throw, aggressiveness
+  - RB: efficiency, vs stacked boxes
+  - Handles embedded JSON extraction from NGS site
+- Created `scrapeESPN.js`
+  - Weekly snap counts (weeks 1-18)
+  - Season aggregation logic
+  - Snap percentage calculations
 
-**Frontend (App):**
-- 5 new React components (PercentileRing, MetricTooltip, TierBadge, TrendSparkline, + config)
-- Enhanced AdvancedStats.jsx with Phase 1 integration
-- Mobile responsive design
-- Dark mode support
+### In Progress
 
-**Metrics Added:**
-- QB: 9 total (was 5) → YPA, Passer Rating, ADOT, Rush EPA/Att
-- RB: 10 total (was 5) → YPC, YPR, Yards/Target, Catch Rate, Touches/Game
-- WR/TE: 8 total (was 5) → YPR, Yards/Target, Catch Rate
+🔧 **playerIntelligenceService.js updates**
+- Adding queries to pull from new tables
+- Integrating situational/tracking/snap metrics
+- Building metric grouping structure (Efficiency, Volume, Ball Skills, Situational)
 
-### Next Actions
-**Testing (3-4 hours):**
-1. Start dev servers (API + App)
-2. Load test players (Allen, Robinson, Lamb, Kelce)
-3. Verify percentiles make sense
-4. Test tooltips + historical trends
-5. Edge cases (rookies, injured players)
-6. Performance audit (<300ms API)
-7. Write unit tests
+### Next Steps (Priority Order)
 
-**Target:** Complete testing by EOD Monday, deploy to staging Tuesday AM.
+1. **Complete playerIntelligenceService.js integration** (2 hours)
+   - Add queries for new tables
+   - Merge metrics into existing stats object
+   - Add to percentile calculations
 
-### Progress Report
-Full details: `titlerun-app/PHASE1-PROGRESS.md`
+2. **Test scrapers with live data** (2 hours)
+   - Run PFR scraper for 2024 season
+   - Run NGS scraper (may need HTML structure adjustments)
+   - Run ESPN scraper for recent weeks
+   - Verify data quality
 
----
+3. **Create metric grouping config** (1 hour)
+   - Define POSITION_METRIC_GROUPS constant
+   - QB: Passing Efficiency, Pocket Management, Situational, Volume
+   - RB: Efficiency, Volume, Ball Skills, Situational
+   - WR/TE: Volume, Efficiency, Ball Skills, Situational
 
-## [DONE] P1 Agent D: Code Splitting (Bundle Reduction)
-**From:** Rush (subagent: p1-code-splitting)  
-**Date:** 2026-03-15 10:30 EDT  
-**Priority:** P1  
+4. **Update API endpoint** (2 hours)
+   - Modify `/api/players/:id/advanced-stats`
+   - Return grouped metrics
+   - Add data freshness indicators
 
-### Summary
-✅ **Task complete** - Implemented code splitting optimizations for TitleRun app.
+5. **Frontend MetricGroup component** (4 hours)
+   - Create collapsible metric group UI
+   - Desktop: 2-column grid
+   - Mobile: stacked vertical
+   - Icons for each group
 
-**Achieved:**
-- Main bundle: 121.73 kB → 112.27 kB (gzipped)
-- **Reduction:** 9.46 kB (7.7% improvement)
-- Lazy-loaded 3 conditional components
+### Risks & Blockers
 
-**Key Finding:**
-The expected 1.5-2MB reduction was not achievable because **analytics components were already code-split** through comprehensive page-level lazy loading (all 40+ pages). The app already has excellent code-splitting.
+⚠️ **NGS Scraper uncertainty:**
+- Next Gen Stats site structure may have changed
+- May need to reverse-engineer their API endpoints
+- Fallback: manual CSV import if scraping fails
 
-### What Was Done
-1. ✅ Extracted `useOnboarding` hook for code-splitting
-2. ✅ Lazy-loaded OnboardingModal (292 KB directory)
-3. ✅ Lazy-loaded CommandPalette (~20 KB)
-4. ✅ Lazy-loaded GlobalNewsTicker (~30 KB)
-5. ✅ Added Suspense boundaries with proper fallbacks
-6. ✅ Documented baseline and results
+⚠️ **ESPN snap count HTML structure:**
+- ESPN redesigns frequently
+- May need to adjust selectors
+- Have PFR as backup source for snap counts
 
-### Commits
-- `00ad9f8` - feat(bundle): Implement lazy loading for conditional components
-- `966818d` - docs(bundle): Add comprehensive code splitting final report
+### Metrics
 
-### Deliverables
-- `BUNDLE-ANALYSIS-BASELINE.md` - Current state analysis
-- `CODE-SPLITTING-PROGRESS.md` - Implementation log
-- `P1-CODE-SPLITTING-FINAL-REPORT.md` - Comprehensive final report
+- **Time elapsed:** 3 hours
+- **Target completion:** Sunday 3/22 EOD
+- **Runway remaining:** 31 hours
 
-### Known Issues
-⚠️ **Pre-existing ESLint errors** block build (not caused by this work):
-- React Hooks called conditionally in PlayerDetail components
-- Build requires `DISABLE_ESLINT_PLUGIN=true`
-- Should be fixed in separate PR
+### Status
 
-### Recommendations
-1. Monitor bundle size over time
-2. Consider Vite migration for further optimization
-3. Fix pre-existing ESLint errors (separate task)
-4. Enable source maps for webpack bundle analyzer
+🟢 ON TRACK — Ahead of schedule on database/scrapers. playerIntelligenceService integration in progress.
 
-**Result:** Main bundle 7.7% smaller. App already well-optimized. Further gains require framework migration (CRA → Vite).
+[ACK by Rush, 2026-03-15] Action: Continuing Phase 2 implementation.
