@@ -73,6 +73,12 @@ POLYMARKET:[🟢/🟡/🔴] [1-line status]
 
 ## Memory Recall (MANDATORY)
 
+**At session start (EVERY session):**
+1. Search for stale tasks: `memory_search("actionable items")` or `memory_search("blockers")`
+2. Check for context: `memory_search("[today's date]")` or `memory_search("[yesterday's date]")`
+3. If 0 results: proceed with normal work
+4. If results found: incorporate into session (don't forget pending items)
+
 **Before answering ANY question about:**
 - Prior work, decisions, dates, or patterns
 - User preferences or history
@@ -91,6 +97,8 @@ POLYMARKET:[🟢/🟡/🔴] [1-line status]
 - Planning work → Search "action items" or "blockers"
 
 **Never rely only on conversation context** — institutional memory prevents repeated mistakes.
+
+**Minimum target:** 3+ memory searches per active day. Weekly audit enforces this (see `scripts/memory-audit.sh`).
 
 ## Anti-Patterns — I NEVER
 

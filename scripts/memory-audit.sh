@@ -24,7 +24,7 @@ count_searches() {
     
     # Count memory_search tool invocations
     local search_count=$(grep -c "memory_search" "$log_file" 2>/dev/null || echo "0")
-    local days_active=$(grep -oE "2026-02-[0-9]{2}" "$log_file" 2>/dev/null | sort -u | wc -l | xargs)
+    local days_active=$(grep -oE "[0-9]{4}-[0-9]{2}-[0-9]{2}" "$log_file" 2>/dev/null | sort -u | wc -l | xargs)
     
     if [[ $days_active -eq 0 ]]; then
         echo "  ℹ️  $agent_name: No activity in logs"
@@ -52,9 +52,20 @@ if [[ -f "$GATEWAY_LOG" ]]; then
     # Extract last N days of logs
     CUTOFF_DATE=$(date -v-${DAYS}d +"%Y-%m-%d" 2>/dev/null || date -d "$DAYS days ago" +"%Y-%m-%d")
     
-    # Count memory_search invocations (grep for the tool name in logs)
-    TOTAL_SEARCHES=$(grep "memory_search" "$GATEWAY_LOG" | grep -E "2026-02-(1[6-9]|2[0-2])" | wc -l | xargs)
-    DAYS_SPAN=7  # Feb 16-22
+    # Count memory_search invocations in the last N days
+    CUTOFF_EPOCH=$(date -v-${DAYS}d +%s 2>/dev/null || date -d "$DAYS days ago" +%s)
+    TOTAL_SEARCHES=$(awk -v cutoff="$CUTOFF_EPOCH" '/memory_search/ {
+        # Extract timestamp and convert to epoch
+        match($0, /[0-9]{4}-[0-9]{2}-[0-9]{2}/)
+        if (RSTART > 0) {
+            date_str = substr($0, RSTART, RLENGTH)
+            cmd = "date -j -f \"%Y-%m-%d\" \"" date_str "\" +%s 2>/dev/null || date -d \"" date_str "\" +%s 2>/dev/null"
+            cmd | getline epoch
+            close(cmd)
+            if (epoch >= cutoff) count++
+        }
+    } END {print count+0}' "$GATEWAY_LOG")
+    DAYS_SPAN=$DAYS
     AVG_PER_DAY=$(echo "scale=1; $TOTAL_SEARCHES / $DAYS_SPAN" | bc -l)
     
     echo "  Overall (all agents): $TOTAL_SEARCHES searches in $DAYS_SPAN days (avg: $AVG_PER_DAY/day)"
