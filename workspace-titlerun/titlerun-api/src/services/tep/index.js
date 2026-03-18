@@ -32,6 +32,7 @@
 
 const tepValueService = require('./tepValueService');
 const tepConfig = require('./tep-config');
+const positionRankCache = require('./positionRankCache');
 
 module.exports = {
   // Core calculation functions
@@ -50,4 +51,7 @@ module.exports = {
   
   // Configuration
   config: tepConfig,
+
+  // Position rank caching (performance)
+  positionRankCache,
 };

@@ -442,4 +442,7 @@ module.exports = {
   
   // Batch limits (exported for testing and documentation)
   BATCH_LIMITS,
+
+  // Position rank cache (for invalidation hooks and monitoring)
+  positionRankCache,
 };
