@@ -285,6 +285,24 @@ function calculateTEPValue({
 // =============================================================================
 
 /**
+ * Batch processing limits to prevent Denial of Service attacks.
+ * Without these limits, an attacker could send millions of players
+ * causing memory exhaustion and CPU starvation (OWASP A04:2021).
+ * 
+ * Limits:
+ * - MAX_PLAYERS: 1000 per batch (split larger datasets into multiple calls)
+ * - MAX_CALCULATION_TIME_MS: 5 second timeout (checked every 100 players)
+ * - MAX_OBJECT_SIZE_BYTES: 10MB payload limit
+ * 
+ * For larger datasets, split into multiple batches of 500 players each.
+ */
+const BATCH_LIMITS = {
+  MAX_PLAYERS: 1000,
+  MAX_CALCULATION_TIME_MS: 5000,   // 5 second timeout
+  MAX_OBJECT_SIZE_BYTES: 10485760, // 10MB
+};
+
+/**
  * Calculate TEP values for an array of players.
  * Automatically computes position ranks for TEs.
  * 
@@ -292,13 +310,40 @@ function calculateTEPValue({
  * @param {string} tepLevel - TEP level to calculate
  * @param {string} [format='sf'] - Format for value selection
  * @returns {Array<Object>} Players with tepValue, multiplierBreakdown, tierInfo added
+ * @throws {TypeError} If players is not an array
+ * @throws {RangeError} If batch exceeds size or memory limits
+ * @throws {Error} If calculation exceeds timeout
  */
 function calculateBatchTEPValues(players, tepLevel, format = 'sf') {
-  if (!Array.isArray(players) || players.length === 0) return [];
+  // Validate input is array
+  if (!Array.isArray(players)) {
+    throw new TypeError('players must be an array');
+  }
+  
+  if (players.length === 0) return [];
+  
+  // SIZE LIMIT: Reject oversized batches
+  if (players.length > BATCH_LIMITS.MAX_PLAYERS) {
+    throw new RangeError(
+      `Batch size ${players.length} exceeds maximum ${BATCH_LIMITS.MAX_PLAYERS}. Split into multiple batches.`
+    );
+  }
+  
+  // MEMORY LIMIT: Estimate object size
+  const estimatedSize = JSON.stringify(players).length;
+  if (estimatedSize > BATCH_LIMITS.MAX_OBJECT_SIZE_BYTES) {
+    throw new RangeError(
+      `Batch data size ${(estimatedSize / 1024 / 1024).toFixed(2)}MB exceeds maximum 10MB`
+    );
+  }
+  
+  // TIMEOUT: Set calculation deadline
+  const startTime = Date.now();
+  const deadline = startTime + BATCH_LIMITS.MAX_CALCULATION_TIME_MS;
   
   // Sort TEs by base value to assign position ranks
   const sortedTEs = players
-    .filter(p => p.position === 'TE')
+    .filter(p => p && typeof p === 'object' && p.position === 'TE')
     .sort((a, b) => (b.value || b.baseValue || 0) - (a.value || a.baseValue || 0));
   
   // Build rank map
@@ -307,8 +352,24 @@ function calculateBatchTEPValues(players, tepLevel, format = 'sf') {
     teRankMap.set(te.playerId || te.player_id || te.id, idx + 1);
   });
   
-  // Calculate TEP for each player
-  return players.map(player => {
+  // Calculate TEP for each player with timeout checks
+  const results = [];
+  for (let i = 0; i < players.length; i++) {
+    // Check timeout every 100 players (minimal overhead: <1ms per check)
+    if (i % 100 === 0 && i > 0 && Date.now() > deadline) {
+      throw new Error(
+        `TIMEOUT: Processed ${i}/${players.length} players before ${BATCH_LIMITS.MAX_CALCULATION_TIME_MS}ms deadline`
+      );
+    }
+    
+    const player = players[i];
+    
+    // Validate player object — pass through malformed entries gracefully
+    if (!player || typeof player !== 'object') {
+      results.push(player);
+      continue;
+    }
+    
     const playerId = player.playerId || player.player_id || player.id;
     const baseValue = player.value || player.baseValue || player.ktc_value || 0;
     const positionRank = teRankMap.get(playerId) || player.positionRank || null;
@@ -322,15 +383,17 @@ function calculateBatchTEPValues(players, tepLevel, format = 'sf') {
       tepLevel,
     });
     
-    return {
+    results.push({
       ...player,
       tepValue: result.tepValue,
       tepAdjusted: result.isAdjusted,
       tepMultiplierBreakdown: result.multiplierBreakdown,
       tepTierInfo: result.tierInfo,
       tepPositionRank: positionRank,
-    };
-  });
+    });
+  }
+  
+  return results;
 }
 
 // =============================================================================
@@ -376,4 +439,7 @@ module.exports = {
   
   // Comparison utility
   estimateKTCValue,
+  
+  // Batch limits (exported for testing and documentation)
+  BATCH_LIMITS,
 };
