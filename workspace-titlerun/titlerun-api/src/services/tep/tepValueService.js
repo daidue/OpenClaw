@@ -28,6 +28,8 @@ const {
   VALID_TEP_LEVELS,
 } = require('./tep-config');
 
+const positionRankCache = require('./positionRankCache');
+
 // =============================================================================
 // SCARCITY MULTIPLIER
 // =============================================================================
@@ -341,16 +343,14 @@ function calculateBatchTEPValues(players, tepLevel, format = 'sf') {
   const startTime = Date.now();
   const deadline = startTime + BATCH_LIMITS.MAX_CALCULATION_TIME_MS;
   
-  // Sort TEs by base value to assign position ranks
-  const sortedTEs = players
-    .filter(p => p && typeof p === 'object' && p.position === 'TE')
-    .sort((a, b) => (b.value || b.baseValue || 0) - (a.value || a.baseValue || 0));
-  
-  // Build rank map
-  const teRankMap = new Map();
-  sortedTEs.forEach((te, idx) => {
-    teRankMap.set(te.playerId || te.player_id || te.id, idx + 1);
-  });
+  // Build cache key based on format + date for automatic daily invalidation.
+  // Repeated calls within the same day & format hit the cache (O(1)) instead
+  // of re-sorting all TEs (O(n log n)).
+  const today = new Date().toISOString().split('T')[0];
+  const cacheKey = `${format}-${today}`;
+
+  // Get position ranks — cached or computed
+  const teRankMap = positionRankCache.getPositionRanks(players, cacheKey);
   
   // Calculate TEP for each player with timeout checks
   const results = [];

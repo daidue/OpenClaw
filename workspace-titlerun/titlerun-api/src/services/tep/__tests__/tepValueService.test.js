@@ -13,6 +13,8 @@
 
 'use strict';
 
+const tepValueService = require('../tepValueService');
+
 const {
   calculateTEPValue,
   calculateBatchTEPValues,
@@ -22,7 +24,8 @@ const {
   getAgeCurveModifier,
   assignTier,
   estimateKTCValue,
-} = require('../tepValueService');
+  BATCH_LIMITS,
+} = tepValueService;
 
 const { VALUE_CAP } = require('../tep-config');
 
@@ -690,5 +693,145 @@ describe('TitleRun vs KTC Comparison', () => {
     // Should be close to the base 1.32 multiplier (no scarcity, no stats, slight age discount)
     expect(result.multiplierBreakdown.combined).toBeLessThan(1.35);
     expect(result.multiplierBreakdown.combined).toBeGreaterThan(1.25);
+  });
+});
+
+// =============================================================================
+// BATCH PROCESSING DoS DEFENSE TESTS (Security Fix - OWASP A04:2021)
+// =============================================================================
+
+describe('Batch Processing DoS Defense', () => {
+  test('should reject non-array input with TypeError', () => {
+    expect(() => {
+      calculateBatchTEPValues('not an array', 'tep3');
+    }).toThrow(TypeError);
+    expect(() => {
+      calculateBatchTEPValues('not an array', 'tep3');
+    }).toThrow('players must be an array');
+
+    expect(() => {
+      calculateBatchTEPValues(123, 'tep3');
+    }).toThrow(TypeError);
+
+    expect(() => {
+      calculateBatchTEPValues({}, 'tep3');
+    }).toThrow(TypeError);
+
+    expect(() => {
+      calculateBatchTEPValues(null, 'tep3');
+    }).toThrow(TypeError);
+  });
+
+  test('should reject batches larger than 1000 players', () => {
+    const largeBatch = Array(1001).fill({
+      position: 'TE',
+      value: 5000,
+      age: 25,
+    });
+
+    expect(() => {
+      calculateBatchTEPValues(largeBatch, 'tep3');
+    }).toThrow(RangeError);
+    expect(() => {
+      calculateBatchTEPValues(largeBatch, 'tep3');
+    }).toThrow(/exceeds maximum 1000/);
+  });
+
+  test('should reject payloads larger than 10MB', () => {
+    // Each player ~25KB of padding → 500 × 25KB = ~12.5MB total
+    const largePlayers = Array(500).fill({
+      position: 'TE',
+      value: 5000,
+      age: 25,
+      largeField: 'x'.repeat(25000),
+    });
+
+    expect(() => {
+      calculateBatchTEPValues(largePlayers, 'tep3');
+    }).toThrow(RangeError);
+    expect(() => {
+      calculateBatchTEPValues(largePlayers, 'tep3');
+    }).toThrow(/exceeds maximum 10MB/);
+  });
+
+  test('should timeout on computationally expensive batches', () => {
+    // Mock Date.now to simulate time passing beyond the 5s deadline.
+    // The function calls Date.now() once for startTime, then checks at i=100, i=200, etc.
+    // We make the first call return a base time, then subsequent calls return past the deadline.
+    const baseTime = 1000000;
+    let callCount = 0;
+    jest.spyOn(Date, 'now').mockImplementation(() => {
+      callCount++;
+      if (callCount === 1) return baseTime;        // startTime
+      return baseTime + 6000;                       // 6s later — always past deadline
+    });
+
+    const batch = Array(200).fill({
+      id: 'test',
+      position: 'TE',
+      value: 5000,
+      age: 25,
+    });
+
+    expect(() => {
+      calculateBatchTEPValues(batch, 'tep3');
+    }).toThrow(/TIMEOUT/);
+
+    jest.restoreAllMocks();
+  });
+
+  test('should accept valid-sized batches (at limit)', () => {
+    // Exactly 1000 players — should be accepted
+    const validBatch = Array(1000).fill({
+      id: 'test',
+      position: 'TE',
+      value: 5000,
+      age: 25,
+    });
+
+    const results = calculateBatchTEPValues(validBatch, 'tep3');
+    expect(results.length).toBe(1000);
+  });
+
+  test('should accept normal-sized batches', () => {
+    const validBatch = [];
+    for (let i = 0; i < 500; i++) {
+      validBatch.push({
+        id: `player-${i}`,
+        position: i % 4 === 0 ? 'TE' : 'WR',
+        value: 3000 + Math.floor(Math.random() * 5000),
+        age: 20 + Math.floor(Math.random() * 15),
+      });
+    }
+
+    const results = calculateBatchTEPValues(validBatch, 'tep3');
+    expect(results.length).toBe(500);
+  });
+
+  test('should handle malformed player objects gracefully', () => {
+    const batch = [
+      { id: '1', position: 'TE', value: 5000, age: 25 },  // Valid
+      null,                                                   // Invalid — passed through
+      undefined,                                              // Invalid — passed through
+      { position: 'INVALID' },                               // Invalid position — still processed
+      { id: '5', position: 'TE', value: 'not a number' },   // Invalid value — still processed
+    ];
+
+    const results = calculateBatchTEPValues(batch, 'tep3');
+    expect(results.length).toBe(5);
+
+    // null and undefined are passed through as-is
+    expect(results[1]).toBeNull();
+    expect(results[2]).toBeUndefined();
+
+    // Valid TE still gets processed
+    expect(results[0]).toHaveProperty('tepValue');
+    expect(results[0].tepAdjusted).toBe(true);
+  });
+
+  test('BATCH_LIMITS constants are correctly configured', () => {
+    expect(BATCH_LIMITS.MAX_PLAYERS).toBe(1000);
+    expect(BATCH_LIMITS.MAX_CALCULATION_TIME_MS).toBe(5000);
+    expect(BATCH_LIMITS.MAX_OBJECT_SIZE_BYTES).toBe(10485760); // 10MB
   });
 });
