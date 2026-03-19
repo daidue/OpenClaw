@@ -39,6 +39,8 @@ const AITradeAnalysis = ({ analysis, giveName, getName, isLoading = false }) => 
     againstReceiving,
     consensus,
     generatedDate,
+    isMultiPlayer,
+    disclaimer,
   } = analysis;
 
   // Collapsed view shows just the consensus
@@ -138,6 +140,13 @@ const AITradeAnalysis = ({ analysis, giveName, getName, isLoading = false }) => 
           </div>
           <p className="text-sm text-gray-100 font-medium leading-relaxed">{consensus}</p>
         </div>
+      )}
+
+      {/* H2: Multi-player trade disclaimer */}
+      {isMultiPlayer && disclaimer && (
+        <p className="text-xs text-amber-500 italic mt-2">
+          ⚠️ {disclaimer}
+        </p>
       )}
 
       {/* Updated date */}

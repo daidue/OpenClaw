@@ -8,12 +8,17 @@
  * Scope: Top 100 players × top 100 players = 9,900 pairs
  * Est. Cost: ~$10/week using Batch API discount
  *
+ * Fixes applied:
+ *   H3: Cost estimator + budget check before batch generation
+ *   H4: PostgreSQL advisory lock prevents concurrent execution
+ *
  * @module narrativePreGeneration
  */
 
 const logger = require('../../utils/logger').child({ service: 'narrative-pregen' });
-const { generateTradeNarrative, CONFIG } = require('./narrativeGenerationService');
+const { generateTradeNarrative, calculateCost, CONFIG } = require('./narrativeGenerationService');
 const { validateNarrative } = require('./narrativeValidator');
+const costTracker = require('./costTracker');
 
 // ─── Configuration ─────────────────────────────────────────────
 
@@ -23,6 +28,8 @@ const PREGEN_CONFIG = {
   delayBetweenBatches: 1000, // 1 second between batches
   maxConcurrentPerBatch: 5,  // Max concurrent LLM calls per batch
   reportInterval: 100,       // Log progress every N pairs
+  estimatedTokensPerPair: 800, // Average tokens per generation
+  advisoryLockId: 123456789,   // H4: Unique lock ID for pre-gen
 };
 
 // ─── Top Player Selection ──────────────────────────────────────
@@ -71,8 +78,6 @@ function generatePairs(players) {
   for (let i = 0; i < players.length; i++) {
     for (let j = 0; j < players.length; j++) {
       if (i !== j) {
-        // Only generate pairs where positions differ (more useful trades)
-        // or where both are high-value (position-for-position trades happen too)
         pairs.push([players[i], players[j]]);
       }
     }
@@ -163,6 +168,11 @@ async function processBatch(batch, db, stats) {
           }
         } catch (err) {
           stats.errors++;
+          // Stop on cost cap errors
+          if (err.code === 'COST_CAP_EXCEEDED') {
+            logger.error('[PreGen] Cost cap hit - stopping batch generation');
+            throw err;
+          }
           logger.error(`[PreGen] Pair generation failed: ${err.message}`);
           return false;
         }
@@ -170,6 +180,14 @@ async function processBatch(batch, db, stats) {
     );
 
     successes += results.filter(r => r.status === 'fulfilled' && r.value).length;
+
+    // Check if any result was a cost cap error
+    const costCapError = results.find(r =>
+      r.status === 'rejected' && r.reason?.code === 'COST_CAP_EXCEEDED'
+    );
+    if (costCapError) {
+      throw costCapError.reason;
+    }
 
     // Small delay between concurrent chunks
     await new Promise(resolve => setTimeout(resolve, 100));
@@ -183,6 +201,9 @@ async function processBatch(batch, db, stats) {
 /**
  * Main weekly pre-generation job.
  * Runs Sunday 2AM ET via cron.
+ *
+ * H3: Estimates cost before starting and checks budget
+ * H4: Uses PostgreSQL advisory lock to prevent concurrent execution
  *
  * @param {object} db - Database connection
  * @returns {object} - Job results
@@ -199,6 +220,23 @@ async function preGenerateTopTrades(db) {
     errors: 0,
     skipped: 0,
   };
+
+  // H4: Acquire advisory lock to prevent concurrent execution
+  if (db) {
+    try {
+      const lockResult = await db.query(
+        'SELECT pg_try_advisory_lock($1) as acquired',
+        [PREGEN_CONFIG.advisoryLockId]
+      );
+
+      if (!lockResult.rows[0].acquired) {
+        logger.warn('[PreGen] Another instance is already running, skipping');
+        return { ...stats, skipped: true, reason: 'concurrent_execution', durationMs: Date.now() - startTime };
+      }
+    } catch (err) {
+      logger.warn(`[PreGen] Advisory lock check failed: ${err.message} - proceeding anyway`);
+    }
+  }
 
   try {
     // 1. Get top players by dynasty value
@@ -222,10 +260,37 @@ async function preGenerateTopTrades(db) {
       return { ...stats, durationMs: Date.now() - startTime };
     }
 
+    // H3: Estimate cost and check budget before proceeding
+    const estimatedCostPerPair = calculateCost(
+      CONFIG.primaryModel,
+      PREGEN_CONFIG.estimatedTokensPerPair
+    );
+    const totalEstimatedCost = uncachedPairs.length * estimatedCostPerPair;
+    const estimatedTimeMin = Math.ceil((uncachedPairs.length * 0.5) / 60);
+
+    logger.info('[PreGen] Batch cost estimate', {
+      pairs: uncachedPairs.length,
+      estimatedCostPerPair: `$${estimatedCostPerPair.toFixed(6)}`,
+      totalEstimatedCost: `$${totalEstimatedCost.toFixed(2)}`,
+      estimatedTimeMin: `${estimatedTimeMin} min`,
+    });
+
+    // H3: Check if we can afford this batch
+    await costTracker.checkBudget(totalEstimatedCost, db);
+
     // 4. Process in batches
     for (let i = 0; i < uncachedPairs.length; i += PREGEN_CONFIG.batchSize) {
       const batch = uncachedPairs.slice(i, i + PREGEN_CONFIG.batchSize);
-      await processBatch(batch, db, stats);
+
+      try {
+        await processBatch(batch, db, stats);
+      } catch (err) {
+        if (err.code === 'COST_CAP_EXCEEDED') {
+          logger.warn('[PreGen] Cost cap reached - stopping early', stats);
+          break;
+        }
+        throw err;
+      }
 
       // Progress logging
       const processed = Math.min(i + PREGEN_CONFIG.batchSize, uncachedPairs.length);
@@ -260,6 +325,15 @@ async function preGenerateTopTrades(db) {
     const durationMs = Date.now() - startTime;
     logger.error(`[PreGen] Pre-generation job failed: ${err.message}`, { durationMs });
     return { ...stats, error: err.message, durationMs };
+  } finally {
+    // H4: Always release advisory lock
+    if (db) {
+      try {
+        await db.query('SELECT pg_advisory_unlock($1)', [PREGEN_CONFIG.advisoryLockId]);
+      } catch (err) {
+        logger.warn(`[PreGen] Advisory lock release failed: ${err.message}`);
+      }
+    }
   }
 }
 

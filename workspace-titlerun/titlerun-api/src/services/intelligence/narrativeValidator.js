@@ -11,6 +11,11 @@
  *   60-79  = Multiple warnings (review recommended)
  *   <60    = Failed validation (regenerate)
  *
+ * Fixes applied:
+ *   M2: Tightened date stamp regex to validate actual dates
+ *   M3: Complete em dash/dash pattern (includes horizontal bar)
+ *   P2/P3: Expanded AI tell-tales, better passive voice detection, word count tolerance
+ *
  * @module narrativeValidator
  */
 
@@ -24,10 +29,10 @@ const WORD_COUNT_TARGET_MIN = 30;
 const WORD_COUNT_TARGET_MAX = 50;
 const WORD_COUNT_MAX = 60;
 
-// Em dash variants to detect
-const EM_DASH_PATTERN = /[\u2014\u2013\u2012]/g;  // —, –, ‒
+// M3 FIX: Complete em/en dash and related horizontal bar variants
+const EM_DASH_PATTERN = /[\u2012\u2013\u2014\u2015]/g;  // ‒ (figure), – (en), — (em), ― (horizontal bar)
 
-// AI tell-tale phrases (case-insensitive)
+// P3: Expanded AI tell-tale phrases (case-insensitive)
 const AI_TELLTALES = [
   'as an ai',
   'i think',
@@ -45,12 +50,30 @@ const AI_TELLTALES = [
   'needless to say',
   'it goes without saying',
   'at the end of the day',
+  // P3: Additional AI tell-tales
+  'it should be noted',
+  'it bears mentioning',
+  'without a doubt',
+  'rest assured',
+  'it cannot be overstated',
+  'with that being said',
+  'that being said',
+  'having said that',
+  'it\'s crucial to understand',
+  'delve into',
+  'navigate the',
+  'landscape of',
+  'in the realm of',
+  'at the forefront',
+  'game-changer',
+  'unlock the potential',
 ];
 
-// Date stamp pattern: (M/DD) or (MM/DD)
-const DATE_STAMP_PATTERN = /\(\d{1,2}\/\d{1,2}\)\s*$/;
+// M2 FIX: Tighter date stamp pattern that validates actual month/day ranges
+// Matches (1/1) through (12/31), rejects (13/32), (0/0), etc.
+const DATE_STAMP_PATTERN = /\((1[0-2]|[1-9])\/(3[01]|[12]\d|[1-9])\)\s*$/;
 
-// Passive voice indicators (simplified detection)
+// P3: Improved passive voice indicators
 const PASSIVE_INDICATORS = [
   /\bis\s+being\b/i,
   /\bwas\s+being\b/i,
@@ -60,6 +83,16 @@ const PASSIVE_INDICATORS = [
   /\bcan\s+be\s+\w+ed\b/i,
   /\bis\s+\w+ed\s+by\b/i,
   /\bwas\s+\w+ed\s+by\b/i,
+  /\bwere\s+\w+ed\s+by\b/i,
+  /\bbeing\s+\w+ed\b/i,
+  /\bget\s+\w+ed\b/i,
+  /\bgot\s+\w+ed\b/i,
+];
+
+// P3: Filler words that weaken writing
+const FILLER_WORDS = [
+  'very', 'really', 'quite', 'somewhat', 'rather', 'fairly',
+  'basically', 'essentially', 'actually', 'literally',
 ];
 
 // ─── Validation Functions ──────────────────────────────────────
@@ -97,6 +130,23 @@ function detectPassiveVoice(text) {
 }
 
 /**
+ * P3: Detect filler words that weaken writing.
+ */
+function detectFillerWords(text) {
+  if (!text) return [];
+  const textLower = text.toLowerCase();
+  const found = [];
+  for (const filler of FILLER_WORDS) {
+    const regex = new RegExp(`\\b${filler}\\b`, 'gi');
+    const matches = textLower.match(regex);
+    if (matches && matches.length > 0) {
+      found.push({ word: filler, count: matches.length });
+    }
+  }
+  return found;
+}
+
+/**
  * Validate a single narrative section.
  *
  * @param {string} text - The section text
@@ -114,7 +164,7 @@ function validateSection(text, sectionName) {
     return { score: 0, warnings, failures };
   }
 
-  // 2. Word count validation
+  // 2. Word count validation (P2: more nuanced scoring)
   const wordCount = countWords(text);
   if (wordCount < WORD_COUNT_MIN) {
     failures.push(`${sectionName}: Too short (${wordCount} words, min ${WORD_COUNT_MIN})`);
@@ -123,33 +173,47 @@ function validateSection(text, sectionName) {
     warnings.push(`${sectionName}: Slightly short (${wordCount} words, target ${WORD_COUNT_TARGET_MIN}-${WORD_COUNT_TARGET_MAX})`);
     score -= 10;
   } else if (wordCount > WORD_COUNT_MAX) {
-    warnings.push(`${sectionName}: Too long (${wordCount} words, max ${WORD_COUNT_MAX})`);
-    score -= 15;
+    // P2: Graduated penalty for over-length
+    const overBy = wordCount - WORD_COUNT_MAX;
+    if (overBy > 20) {
+      failures.push(`${sectionName}: Way too long (${wordCount} words, max ${WORD_COUNT_MAX})`);
+      score -= 25;
+    } else {
+      warnings.push(`${sectionName}: Too long (${wordCount} words, max ${WORD_COUNT_MAX})`);
+      score -= 15;
+    }
   } else if (wordCount > WORD_COUNT_TARGET_MAX) {
     warnings.push(`${sectionName}: Slightly long (${wordCount} words, target ${WORD_COUNT_TARGET_MIN}-${WORD_COUNT_TARGET_MAX})`);
     score -= 5;
   }
 
-  // 3. Em dash detection (FAIL)
+  // 3. M3: Em dash detection (FAIL) - includes all dash variants
   const emDashes = text.match(EM_DASH_PATTERN);
   if (emDashes) {
-    failures.push(`${sectionName}: Em dash detected (${emDashes.length} found) - use regular dashes (-) instead`);
+    failures.push(`${sectionName}: Em/en dash detected (${emDashes.length} found) - use regular dashes (-) instead`);
     score -= 20;
   }
 
-  // 4. Date stamp validation (FAIL if missing)
+  // 4. M2: Date stamp validation with tighter regex
   if (!DATE_STAMP_PATTERN.test(text.trim())) {
-    failures.push(`${sectionName}: Missing date stamp - must end with (M/DD) format`);
+    failures.push(`${sectionName}: Missing or invalid date stamp - must end with (M/DD) format`);
     score -= 15;
   }
 
   // 5. AI tell-tale detection (FAIL)
   const textLower = text.toLowerCase();
+  const detectedTelltales = [];
   for (const phrase of AI_TELLTALES) {
     if (textLower.includes(phrase)) {
-      failures.push(`${sectionName}: AI tell-tale detected: "${phrase}"`);
-      score -= 20;
-      break; // Only penalize once
+      detectedTelltales.push(phrase);
+    }
+  }
+  if (detectedTelltales.length > 0) {
+    failures.push(`${sectionName}: AI tell-tale detected: "${detectedTelltales[0]}"`);
+    score -= 20;
+    // P3: Additional penalty for multiple tell-tales
+    if (detectedTelltales.length > 1) {
+      score -= 5 * (detectedTelltales.length - 1);
     }
   }
 
@@ -164,6 +228,13 @@ function validateSection(text, sectionName) {
   if (passiveInstances.length > 1) {
     warnings.push(`${sectionName}: Multiple passive constructions detected: ${passiveInstances.join(', ')}`);
     score -= 5;
+  }
+
+  // 8. P3: Filler word detection (WARN)
+  const fillerWords = detectFillerWords(text);
+  if (fillerWords.length > 2) {
+    warnings.push(`${sectionName}: Excessive filler words: ${fillerWords.map(f => f.word).join(', ')}`);
+    score -= 3;
   }
 
   return { score: Math.max(0, score), warnings, failures };
@@ -258,6 +329,7 @@ module.exports = {
   countWords,
   containsNumbers,
   detectPassiveVoice,
+  detectFillerWords,
   // Constants (for testing)
   SECTIONS,
   WORD_COUNT_MIN,
@@ -265,4 +337,6 @@ module.exports = {
   WORD_COUNT_TARGET_MAX,
   WORD_COUNT_MAX,
   AI_TELLTALES,
+  DATE_STAMP_PATTERN,
+  EM_DASH_PATTERN,
 };

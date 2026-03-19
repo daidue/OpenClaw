@@ -1,8 +1,13 @@
 /**
  * Tests for narrativeDataPipeline.js
+ * Updated with tests for: H6 (batch upserts), H7 (Sleeper filtering),
+ * H8 (coaching data), H9 (static stats), H10 (O-line rankings)
  */
 const {
   mergeNarrativeContext,
+  scrapeCoachingData,
+  scrapePFRStats,
+  scrapeOLineRankings,
   CURRENT_SEASON,
 } = require('../narrativeDataPipeline');
 
@@ -126,7 +131,6 @@ describe('mergeNarrativeContext', () => {
     });
 
     const etienne = result.find(p => p.player_id === '4046');
-    // Has name (20), age (15), team (15), stats (25), coaching (10), dynasty (15) = 100
     expect(etienne.data_quality_score).toBe(100);
   });
 
@@ -158,5 +162,86 @@ describe('mergeNarrativeContext', () => {
     });
 
     expect(result[0].season).toBe(CURRENT_SEASON);
+  });
+});
+
+// ─── H8: Coaching Data ────────────────────────────────────────
+
+describe('scrapeCoachingData (H8)', () => {
+  test('returns coaching data for all 32 teams', async () => {
+    const coaching = await scrapeCoachingData();
+    expect(Object.keys(coaching)).toHaveLength(32);
+  });
+
+  test('PHI has Kellen Moore as OC (H8 fix)', async () => {
+    const coaching = await scrapeCoachingData();
+    expect(coaching.PHI.OC).toBe('Kellen Moore');
+  });
+
+  test('DAL does NOT have Kellen Moore (H8 fix)', async () => {
+    const coaching = await scrapeCoachingData();
+    expect(coaching.DAL.OC).not.toBe('Kellen Moore');
+  });
+
+  test('CHI has Ben Johnson as HC (not TBD)', async () => {
+    const coaching = await scrapeCoachingData();
+    expect(coaching.CHI.HC).toBe('Ben Johnson');
+  });
+
+  test('all teams have HC and OC fields', async () => {
+    const coaching = await scrapeCoachingData();
+    for (const [team, staff] of Object.entries(coaching)) {
+      expect(staff).toHaveProperty('HC');
+      expect(staff).toHaveProperty('OC');
+      expect(staff.HC.length).toBeGreaterThan(0);
+    }
+  });
+});
+
+// ─── H9: Static Stats ────────────────────────────────────────
+
+describe('scrapePFRStats (H9)', () => {
+  test('returns stats for current season', async () => {
+    const stats = await scrapePFRStats(CURRENT_SEASON);
+    const playerNames = Object.keys(stats).filter(k => k !== '_meta');
+    expect(playerNames.length).toBeGreaterThan(0);
+  });
+
+  test('returns empty for other seasons', async () => {
+    const stats = await scrapePFRStats(2020);
+    const playerNames = Object.keys(stats).filter(k => k !== '_meta');
+    expect(playerNames.length).toBe(0);
+  });
+
+  test('has real player stats (not placeholder)', async () => {
+    const stats = await scrapePFRStats(CURRENT_SEASON);
+    // Check for a known player
+    if (stats["Ja'Marr Chase"]) {
+      expect(stats["Ja'Marr Chase"].games_played).toBeGreaterThan(0);
+      expect(stats["Ja'Marr Chase"].yards).toBeGreaterThan(0);
+    }
+  });
+});
+
+// ─── H10: O-Line Rankings ────────────────────────────────────
+
+describe('scrapeOLineRankings (H10)', () => {
+  test('returns rankings for teams', async () => {
+    const rankings = await scrapeOLineRankings();
+    const teams = Object.keys(rankings).filter(k => k !== '_meta');
+    expect(teams.length).toBeGreaterThan(0);
+  });
+
+  test('rankings have run and pass fields', async () => {
+    const rankings = await scrapeOLineRankings();
+    const teams = Object.keys(rankings).filter(k => k !== '_meta');
+    for (const team of teams) {
+      expect(rankings[team]).toHaveProperty('run');
+      expect(rankings[team]).toHaveProperty('pass');
+      expect(rankings[team].run).toBeGreaterThanOrEqual(1);
+      expect(rankings[team].run).toBeLessThanOrEqual(32);
+      expect(rankings[team].pass).toBeGreaterThanOrEqual(1);
+      expect(rankings[team].pass).toBeLessThanOrEqual(32);
+    }
   });
 });

@@ -7,11 +7,14 @@
  * Voice: Data-driven analyst + film insights + warmth
  * Copy: 30-50 words per section, no em dashes, date stamps required
  *
+ * Security: Prompt injection sanitization (H1), LLM timeout (C2), cost caps (C3)
+ *
  * @module narrativeGenerationService
  */
 
 const logger = require('../../utils/logger').child({ service: 'narrative-gen' });
 const { validateNarrative, passesMinimumQuality } = require('./narrativeValidator');
+const costTracker = require('./costTracker');
 
 // ─── Configuration ─────────────────────────────────────────────
 
@@ -19,7 +22,7 @@ const CONFIG = {
   // Model settings
   primaryModel: 'gpt-5-mini',
   fallbackModel: 'deepseek-v3.2',
-  promptVersion: 'v2.0',
+  promptVersion: 'v2.1',
 
   // Cost tracking (per million tokens)
   modelCosts: {
@@ -36,17 +39,45 @@ const CONFIG = {
   // Rate limiting
   maxConcurrent: 3,        // Max concurrent LLM calls
   rateLimitMs: 200,        // Min delay between LLM calls
+
+  // C2: LLM request timeout
+  llmTimeoutMs: 30000,     // 30 seconds
 };
+
+// ─── Prompt Injection Sanitizer (H1) ──────────────────────────
+
+/**
+ * Sanitize a string for safe inclusion in LLM prompts.
+ * Removes special characters that could be used for prompt injection.
+ *
+ * @param {string} str - Input string
+ * @param {number} maxLen - Maximum length (default 500)
+ * @returns {string} Sanitized string
+ */
+function sanitizeForPrompt(str, maxLen = 500) {
+  if (!str) return '';
+  if (typeof str !== 'string') return String(str).substring(0, maxLen);
+  return str
+    .replace(/[<>{}[\]\\`]/g, '')        // Remove injection-prone chars
+    .replace(/\n{3,}/g, '\n\n')          // Collapse excessive newlines
+    .replace(/[^\x20-\x7E\n\r\t]/g, '') // Remove non-printable chars (keep basic ASCII + whitespace)
+    .substring(0, maxLen)
+    .trim();
+}
 
 // ─── Prompt Builder ────────────────────────────────────────────
 
 /**
  * Build the LLM prompt for trade narrative generation.
  * Injects real player context, team data, and voice guidelines.
+ * All player data is sanitized before prompt inclusion (H1).
  */
 function buildPrompt(givePlayer, getPlayer, userTeam, oppTeam, options = {}) {
   const today = new Date();
   const dateStamp = `${today.getMonth() + 1}/${today.getDate()}`;
+
+  // H1: Sanitize all player-provided data
+  const sanitize = sanitizeForPrompt;
 
   // Format stats string
   const formatStats = (player) => {
@@ -69,17 +100,28 @@ function buildPrompt(givePlayer, getPlayer, userTeam, oppTeam, options = {}) {
     return parts.length > 0 ? parts.join(', ') : 'Limited stats available';
   };
 
-  // Format transactions
+  // Format transactions (sanitized)
   const formatTransactions = (txns) => {
     if (!txns || txns.length === 0) return 'No recent transactions';
-    return txns.map(t => `${t.type} ${t.to ? 'to ' + t.to : ''} (${t.date})`).join('; ');
+    return txns
+      .slice(0, 10) // Limit to 10 most recent
+      .map(t => sanitize(`${t.type} ${t.to ? 'to ' + t.to : ''} (${t.date})`, 200))
+      .join('; ');
   };
 
-  // Format coaching
+  // Format coaching (sanitized)
   const formatCoaching = (staff) => {
     if (!staff || Object.keys(staff).length === 0) return 'Coaching data unavailable';
-    return Object.entries(staff).map(([role, name]) => `${role}: ${name}`).join(', ');
+    return Object.entries(staff)
+      .map(([role, name]) => `${sanitize(role, 20)}: ${sanitize(name, 50)}`)
+      .join(', ');
   };
+
+  // Sanitize player names and team data
+  const givePlayerName = sanitize(givePlayer.full_name || givePlayer.name, 100);
+  const getPlayerName = sanitize(getPlayer.full_name || getPlayer.name, 100);
+  const giveTeam = sanitize(givePlayer.nfl_team || givePlayer.team, 10);
+  const getTeam = sanitize(getPlayer.nfl_team || getPlayer.team, 10);
 
   const prompt = `You are a dynasty fantasy football expert writing trade analysis for TitleRun users.
 
@@ -100,30 +142,30 @@ WRITING RULES:
 - Be opinionated but fair
 
 TRADE CONTEXT:
-User trades away: ${givePlayer.full_name || givePlayer.name} (${givePlayer.position}, age ${givePlayer.age || 'unknown'})
-User receives: ${getPlayer.full_name || getPlayer.name} (${getPlayer.position}, age ${getPlayer.age || 'unknown'})
+User trades away: ${givePlayerName} (${sanitize(givePlayer.position, 5)}, age ${givePlayer.age || 'unknown'})
+User receives: ${getPlayerName} (${sanitize(getPlayer.position, 5)}, age ${getPlayer.age || 'unknown'})
 
 ${userTeam ? `USER'S TEAM:
-- Strategy: ${userTeam.strategy || 'balanced'}
-- Championship window: ${userTeam.championshipWindow || 'unknown'}
-- Depth at ${givePlayer.position}: ${userTeam.depthAtGivePosition || 'unknown'}
-- Depth at ${getPlayer.position}: ${userTeam.depthAtGetPosition || 'unknown'}
-- Draft picks: ${userTeam.draftPicks || 'unknown'}` : ''}
+- Strategy: ${sanitize(userTeam.strategy, 50) || 'balanced'}
+- Championship window: ${sanitize(userTeam.championshipWindow, 50) || 'unknown'}
+- Depth at ${sanitize(givePlayer.position, 5)}: ${sanitize(userTeam.depthAtGivePosition, 100) || 'unknown'}
+- Depth at ${sanitize(getPlayer.position, 5)}: ${sanitize(userTeam.depthAtGetPosition, 100) || 'unknown'}
+- Draft picks: ${sanitize(userTeam.draftPicks, 100) || 'unknown'}` : ''}
 
 PLAYER CONTEXT:
 
-${givePlayer.full_name || givePlayer.name}:
+${givePlayerName}:
 - Age: ${givePlayer.age || 'unknown'}
-- NFL Team: ${givePlayer.nfl_team || givePlayer.team || 'unknown'} (${givePlayer.team_record || 'record unknown'}, ${givePlayer.team_playoff_result || 'playoff result unknown'})
+- NFL Team: ${giveTeam || 'unknown'} (${sanitize(givePlayer.team_record, 20) || 'record unknown'}, ${sanitize(givePlayer.team_playoff_result, 50) || 'playoff result unknown'})
 - 2025 Stats: ${formatStats(givePlayer)}
 - O-line rank: ${givePlayer.oline_rank_run ? `#${givePlayer.oline_rank_run} run blocking` : 'unknown'}
-- Contract: ${givePlayer.recent_contract ? JSON.stringify(givePlayer.recent_contract) : 'unknown'}
+- Contract: ${givePlayer.recent_contract ? sanitize(JSON.stringify(givePlayer.recent_contract), 200) : 'unknown'}
 - Dynasty rank: ${givePlayer.dynasty_rank ? `#${givePlayer.dynasty_rank}` : 'unknown'}
 - Coaching: ${formatCoaching(givePlayer.coaching_staff)}
 
-${getPlayer.full_name || getPlayer.name}:
+${getPlayerName}:
 - Age: ${getPlayer.age || 'unknown'}
-- NFL Team: ${getPlayer.nfl_team || getPlayer.team || 'unknown'} (${getPlayer.team_record || 'record unknown'}, ${getPlayer.team_playoff_result || 'playoff result unknown'})
+- NFL Team: ${getTeam || 'unknown'} (${sanitize(getPlayer.team_record, 20) || 'record unknown'}, ${sanitize(getPlayer.team_playoff_result, 50) || 'playoff result unknown'})
 - 2025 Stats: ${formatStats(getPlayer)}
 - Recent transactions: ${formatTransactions(getPlayer.recent_transactions)}
 - Coaching: ${formatCoaching(getPlayer.coaching_staff)}
@@ -131,16 +173,16 @@ ${getPlayer.full_name || getPlayer.name}:
 
 WRITE 5 SECTIONS:
 
-1. FOR TRADING AWAY ${givePlayer.full_name || givePlayer.name}:
+1. FOR TRADING AWAY ${givePlayerName}:
 Why selling this player makes sense. Focus on age, longevity, team situation, opportunity concerns.
 
-2. FOR RECEIVING ${getPlayer.full_name || getPlayer.name}:
+2. FOR RECEIVING ${getPlayerName}:
 Why acquiring this player makes sense. Focus on upside, opportunity, breakout potential, team situation.
 
-3. AGAINST TRADING AWAY ${givePlayer.full_name || givePlayer.name}:
+3. AGAINST TRADING AWAY ${givePlayerName}:
 Risks of losing this player. Focus on user's depth concerns, championship window, positional scarcity.
 
-4. AGAINST RECEIVING ${getPlayer.full_name || getPlayer.name}:
+4. AGAINST RECEIVING ${getPlayerName}:
 Risks of acquiring this player. Focus on injury history, unproven potential, team uncertainty.
 
 5. CONSENSUS:
@@ -158,6 +200,7 @@ No markdown, no explanation, just the JSON object.`;
 /**
  * Call LLM to generate narrative.
  * Supports OpenAI-compatible API (GPT-5 mini, DeepSeek, etc.)
+ * Includes 30-second timeout (C2) and cost tracking (C3).
  *
  * @param {string} prompt - The full prompt
  * @param {string} model - Model to use
@@ -186,6 +229,10 @@ async function callLLM(prompt, model = CONFIG.primaryModel) {
     throw new Error(`No API key configured for model ${model}`);
   }
 
+  // C2: AbortController with 30s timeout
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), CONFIG.llmTimeoutMs);
+
   try {
     const response = await fetch(`${apiBase}/chat/completions`, {
       method: 'POST',
@@ -209,7 +256,10 @@ async function callLLM(prompt, model = CONFIG.primaryModel) {
         max_tokens: 500,
         response_format: { type: 'json_object' },
       }),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeout);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -245,7 +295,15 @@ async function callLLM(prompt, model = CONFIG.primaryModel) {
 
     return { narrative, tokensUsed, durationMs };
   } catch (err) {
+    clearTimeout(timeout);
     const durationMs = Date.now() - startTime;
+
+    // C2: Handle timeout specifically
+    if (err.name === 'AbortError') {
+      logger.error(`[NarrativeGen] LLM request timed out after ${CONFIG.llmTimeoutMs}ms`, { model });
+      throw new Error(`LLM request timeout after ${CONFIG.llmTimeoutMs / 1000} seconds`);
+    }
+
     logger.error(`[NarrativeGen] LLM call failed`, { model, error: err.message, durationMs });
     throw err;
   }
@@ -267,6 +325,7 @@ function calculateCost(model, tokensUsed) {
 /**
  * In-memory LRU cache for narratives.
  * Backed by database for persistence.
+ * M1: Cache key now includes season.
  */
 class NarrativeCache {
   constructor(maxSize = 1000) {
@@ -276,12 +335,13 @@ class NarrativeCache {
     this.misses = 0;
   }
 
-  _key(giveId, getId) {
-    return `${giveId}:${getId}`;
+  // M1: Include season in cache key
+  _key(giveId, getId, season) {
+    return `${giveId}:${getId}:${season || new Date().getFullYear()}`;
   }
 
-  get(giveId, getId) {
-    const key = this._key(giveId, getId);
+  get(giveId, getId, season) {
+    const key = this._key(giveId, getId, season);
     const entry = this.cache.get(key);
     if (!entry || Date.now() > entry.expiresAt) {
       if (entry) this.cache.delete(key);
@@ -295,8 +355,8 @@ class NarrativeCache {
     return entry.narrative;
   }
 
-  set(giveId, getId, narrative, ttlMs = CONFIG.cacheTTLDays * 24 * 60 * 60 * 1000) {
-    const key = this._key(giveId, getId);
+  set(giveId, getId, narrative, ttlMs = CONFIG.cacheTTLDays * 24 * 60 * 60 * 1000, season) {
+    const key = this._key(giveId, getId, season);
     // Evict oldest if at capacity
     if (this.cache.size >= this.maxSize) {
       const firstKey = this.cache.keys().next().value;
@@ -420,10 +480,11 @@ async function logGeneration(db, params) {
 /**
  * Get cached narrative or return null.
  * Checks in-memory cache first, then DB cache.
+ * M1: Uses season-aware cache keys.
  */
 async function getCachedNarrative(giveId, getId, db = null, season = 2025) {
-  // 1. Check in-memory cache
-  const memCached = narrativeCache.get(giveId, getId);
+  // 1. Check in-memory cache (M1: season-aware)
+  const memCached = narrativeCache.get(giveId, getId, season);
   if (memCached) {
     logger.debug(`[NarrativeGen] Memory cache hit: ${giveId} ↔ ${getId}`);
     return memCached;
@@ -432,8 +493,8 @@ async function getCachedNarrative(giveId, getId, db = null, season = 2025) {
   // 2. Check DB cache
   const dbCached = await getFromDBCache(db, giveId, getId, season);
   if (dbCached) {
-    // Populate memory cache for next request
-    narrativeCache.set(giveId, getId, dbCached);
+    // Populate memory cache for next request (M1: season-aware)
+    narrativeCache.set(giveId, getId, dbCached, undefined, season);
     logger.debug(`[NarrativeGen] DB cache hit: ${giveId} ↔ ${getId}`);
     return dbCached;
   }
@@ -444,6 +505,7 @@ async function getCachedNarrative(giveId, getId, db = null, season = 2025) {
 /**
  * Generate a fresh 5-part trade narrative using LLM.
  * Validates output and retries if quality is too low.
+ * C3: Checks cost budget before generating.
  *
  * @param {object} givePlayer - Player being traded away (with context)
  * @param {object} getPlayer - Player being received (with context)
@@ -469,7 +531,11 @@ async function generateTradeNarrative(givePlayer, getPlayer, userTeam, oppTeam, 
     }
   }
 
-  // Build prompt
+  // C3: Check daily cost budget before calling LLM
+  const estimatedCost = calculateCost(model, 800); // Estimate ~800 tokens per generation
+  await costTracker.checkBudget(estimatedCost, db);
+
+  // Build prompt (H1: sanitized)
   const prompt = buildPrompt(givePlayer, getPlayer, userTeam, oppTeam, options);
 
   // Generate with retry
@@ -499,8 +565,11 @@ async function generateTradeNarrative(givePlayer, getPlayer, userTeam, oppTeam, 
       // Calculate cost
       const costUsd = calculateCost(currentModel, tokensUsed);
 
-      // Cache the result
-      narrativeCache.set(giveId, getId, narrative);
+      // C3: Record cost in tracker
+      costTracker.recordMemoryCost(costUsd);
+
+      // Cache the result (M1: season-aware)
+      narrativeCache.set(giveId, getId, narrative, undefined, season);
       await saveToDBCache(db, giveId, getId, season, narrative, {
         model: currentModel,
         tokensUsed,
@@ -527,6 +596,9 @@ async function generateTradeNarrative(givePlayer, getPlayer, userTeam, oppTeam, 
     } catch (err) {
       lastError = err;
       logger.error(`[NarrativeGen] Generation attempt ${attempt + 1} failed: ${err.message}`);
+
+      // Don't retry on cost cap errors
+      if (err.code === 'COST_CAP_EXCEEDED') throw err;
 
       // Try fallback model
       if (currentModel !== CONFIG.fallbackModel) {
@@ -594,6 +666,7 @@ async function batchGenerateNarratives(trades, options = {}) {
  * Enrich trade candidate with AI narrative.
  * Used by Trade Finder's deep analysis pass.
  * Gracefully returns null on failure (non-blocking).
+ * H2: Handles multi-player trades with disclaimers.
  *
  * @param {object} candidate - Trade candidate from Trade Finder
  * @param {object} myTeam - User's team
@@ -607,6 +680,9 @@ async function enrichWithAINarrative(candidate, myTeam, oppTeam, options = {}) {
     const getPlayerId = candidate.get?.[0]?.id;
 
     if (!givePlayerId || !getPlayerId) return null;
+
+    // H2: Detect multi-player trades
+    const isMultiPlayer = (candidate.give?.length > 1) || (candidate.get?.length > 1);
 
     // Build player context from candidate assets
     const givePlayer = {
@@ -635,7 +711,17 @@ async function enrichWithAINarrative(candidate, myTeam, oppTeam, options = {}) {
       { db: options.db }
     );
 
-    return narrative;
+    if (!narrative) return null;
+
+    // H2: Add multi-player trade metadata
+    return {
+      ...narrative,
+      isMultiPlayer,
+      primaryAssetsOnly: isMultiPlayer,
+      disclaimer: isMultiPlayer
+        ? 'Analysis focuses on primary assets. Full trade includes additional players.'
+        : null,
+    };
   } catch (err) {
     logger.warn(`[NarrativeGen] AI enrichment failed: ${err.message}`);
     return null; // Graceful degradation
@@ -652,5 +738,6 @@ module.exports = {
   buildPrompt,
   callLLM,
   calculateCost,
+  sanitizeForPrompt,
   CONFIG,
 };

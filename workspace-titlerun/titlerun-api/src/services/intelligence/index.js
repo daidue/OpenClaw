@@ -11,6 +11,7 @@ const narrativeGenerationService = require('./narrativeGenerationService');
 const narrativeDataPipeline = require('./narrativeDataPipeline');
 const narrativeValidator = require('./narrativeValidator');
 const narrativePreGeneration = require('./narrativePreGeneration');
+const costTracker = require('./costTracker');
 
 module.exports = {
   // Generation
@@ -19,6 +20,7 @@ module.exports = {
   getCachedNarrative: narrativeGenerationService.getCachedNarrative,
   enrichWithAINarrative: narrativeGenerationService.enrichWithAINarrative,
   narrativeCache: narrativeGenerationService.narrativeCache,
+  sanitizeForPrompt: narrativeGenerationService.sanitizeForPrompt,
 
   // ETL Pipeline
   refreshNarrativeContext: narrativeDataPipeline.refreshNarrativeContext,
@@ -29,4 +31,7 @@ module.exports = {
 
   // Pre-generation
   preGenerateTopTrades: narrativePreGeneration.preGenerateTopTrades,
+
+  // Cost tracking
+  costTracker,
 };

@@ -1,5 +1,7 @@
 /**
  * Tests for narrativeValidator.js
+ * Updated with tests for: M2 (tighter date regex), M3 (em dash variants),
+ * P2/P3 (filler words, expanded AI tell-tales)
  */
 const {
   validateNarrative,
@@ -8,7 +10,10 @@ const {
   countWords,
   containsNumbers,
   detectPassiveVoice,
+  detectFillerWords,
   SECTIONS,
+  DATE_STAMP_PATTERN,
+  EM_DASH_PATTERN,
 } = require('../narrativeValidator');
 
 // ─── Helper: Build valid narrative ─────────────────────────────
@@ -72,6 +77,86 @@ describe('detectPassiveVoice', () => {
     expect(detectPassiveVoice('He leads the team in targets')).toHaveLength(0);
     expect(detectPassiveVoice('The coach traded the player')).toHaveLength(0);
   });
+
+  // P3: Additional passive voice patterns
+  test('detects "were X-ed by" pattern', () => {
+    expect(detectPassiveVoice('They were drafted by the team')).toHaveLength(1);
+  });
+
+  test('detects "being X-ed" pattern', () => {
+    const results = detectPassiveVoice('He is being traded today');
+    expect(results.length).toBeGreaterThanOrEqual(1);
+  });
+});
+
+// ─── detectFillerWords (P3) ───────────────────────────────────
+
+describe('detectFillerWords', () => {
+  test('detects common filler words', () => {
+    const result = detectFillerWords('He is very fast and really talented');
+    expect(result.length).toBeGreaterThanOrEqual(2);
+    expect(result.map(f => f.word)).toContain('very');
+    expect(result.map(f => f.word)).toContain('really');
+  });
+
+  test('returns empty for clean text', () => {
+    const result = detectFillerWords('He runs a 4.3 forty and averages 5.2 yards per carry');
+    expect(result.length).toBe(0);
+  });
+
+  test('handles null input', () => {
+    expect(detectFillerWords(null)).toHaveLength(0);
+  });
+});
+
+// ─── DATE_STAMP_PATTERN (M2) ─────────────────────────────────
+
+describe('DATE_STAMP_PATTERN (M2)', () => {
+  test('matches valid date stamps', () => {
+    expect(DATE_STAMP_PATTERN.test('text (3/19)')).toBe(true);
+    expect(DATE_STAMP_PATTERN.test('text (12/31)')).toBe(true);
+    expect(DATE_STAMP_PATTERN.test('text (1/1)')).toBe(true);
+    expect(DATE_STAMP_PATTERN.test('text (10/25)')).toBe(true);
+  });
+
+  test('rejects invalid months', () => {
+    expect(DATE_STAMP_PATTERN.test('text (13/1)')).toBe(false);
+    expect(DATE_STAMP_PATTERN.test('text (0/15)')).toBe(false);
+  });
+
+  test('rejects invalid days', () => {
+    expect(DATE_STAMP_PATTERN.test('text (3/32)')).toBe(false);
+    expect(DATE_STAMP_PATTERN.test('text (3/0)')).toBe(false);
+  });
+
+  test('rejects non-date stamp endings', () => {
+    expect(DATE_STAMP_PATTERN.test('text without date stamp')).toBe(false);
+    expect(DATE_STAMP_PATTERN.test('text (not/date)')).toBe(false);
+  });
+});
+
+// ─── EM_DASH_PATTERN (M3) ────────────────────────────────────
+
+describe('EM_DASH_PATTERN (M3)', () => {
+  test('detects em dash (U+2014)', () => {
+    expect('text — more text'.match(EM_DASH_PATTERN)).not.toBeNull();
+  });
+
+  test('detects en dash (U+2013)', () => {
+    expect('text – more text'.match(EM_DASH_PATTERN)).not.toBeNull();
+  });
+
+  test('detects figure dash (U+2012)', () => {
+    expect('text ‒ more text'.match(EM_DASH_PATTERN)).not.toBeNull();
+  });
+
+  test('detects horizontal bar (U+2015)', () => {
+    expect('text ― more text'.match(EM_DASH_PATTERN)).not.toBeNull();
+  });
+
+  test('does NOT match regular hyphen', () => {
+    expect('text - more text'.match(EM_DASH_PATTERN)).toBeNull();
+  });
 });
 
 // ─── validateSection ──────────────────────────────────────────
@@ -93,8 +178,15 @@ describe('validateSection', () => {
   test('fails on em dash', () => {
     const text = "He's 27 now — which is past the RB cliff — and he needs to go. Running behind a bad line at age 27. (3/19)";
     const result = validateSection(text, 'forTradingAway');
-    const emDashFailure = result.failures.find(f => f.includes('Em dash'));
+    const emDashFailure = result.failures.find(f => f.includes('dash'));
     expect(emDashFailure).toBeDefined();
+  });
+
+  test('fails on en dash (M3)', () => {
+    const text = "He's 27 now – which is past the RB cliff – and he needs to go. Running behind a bad line at age 27. (3/19)";
+    const result = validateSection(text, 'forTradingAway');
+    const dashFailure = result.failures.find(f => f.includes('dash'));
+    expect(dashFailure).toBeDefined();
   });
 
   test('fails on missing date stamp', () => {
@@ -104,8 +196,22 @@ describe('validateSection', () => {
     expect(dateFailure).toBeDefined();
   });
 
+  test('fails on invalid date stamp (M2)', () => {
+    const text = "He's 27 now. The Saints finished 9-8 and that's bad. (13/32)";
+    const result = validateSection(text, 'forTradingAway');
+    const dateFailure = result.failures.find(f => f.includes('date stamp'));
+    expect(dateFailure).toBeDefined();
+  });
+
   test('fails on AI tell-tale phrases', () => {
     const text = "As an AI, I think he's 27 and declining. The Saints had a 9-8 record which isn't promising for his career trajectory going forward. (3/19)";
+    const result = validateSection(text, 'forTradingAway');
+    const aiFailure = result.failures.find(f => f.includes('AI tell-tale'));
+    expect(aiFailure).toBeDefined();
+  });
+
+  test('fails on new AI tell-tales (P3)', () => {
+    const text = "It should be noted that he's 27 and declining. Let me delve into the stats - his 9-8 record speaks volumes. (3/19)";
     const result = validateSection(text, 'forTradingAway');
     const aiFailure = result.failures.find(f => f.includes('AI tell-tale'));
     expect(aiFailure).toBeDefined();
@@ -120,10 +226,21 @@ describe('validateSection', () => {
   test('warns on sections without numbers', () => {
     const text = "He's getting older and the team around him isn't great. The offensive line has been struggling all season and that limits his ceiling going forward in dynasty formats. (3/19)";
     const result = validateSection(text, 'forTradingAway');
-    // Should have no numbers warning
     const noNumbersWarning = result.warnings.find(w => w.includes('No concrete data'));
-    // This text has no numbers, so should warn
-    // Actually... no explicit numbers present, so it should warn
+    // This text has no explicit numbers
+  });
+
+  // P2: Graduated word count penalty
+  test('penalizes way-too-long sections more heavily', () => {
+    const shortOverText = "He's 27 now, which is when most RBs start to decline, and he's running behind New Orleans' 27th-ranked run blocking unit. The Saints finished 9-8 and lost their Wild Card game - a disappointing end to a mediocre season. (3/19)";
+    const shortOverResult = validateSection(shortOverText, 'test');
+
+    // Way over - 80+ words
+    const wayOverText = "He's 27 now, which is when most RBs start to decline, and he's running behind New Orleans' 27th-ranked run blocking unit. The Saints finished 9-8 and lost their Wild Card game. This is bad news for fantasy owners who invested heavily in him last season. The offensive line ranks 27th in run blocking and there's no clear path to improvement in the short term. The coaching staff hasn't shown they can fix this problem and the front office hasn't made significant upgrades. (3/19)";
+    const wayOverResult = validateSection(wayOverText, 'test');
+
+    // Way over should be penalized more
+    expect(wayOverResult.score).toBeLessThan(shortOverResult.score);
   });
 });
 

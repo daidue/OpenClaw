@@ -7,8 +7,15 @@
  * Data Sources:
  *   1. Sleeper API - Player bio (age, position, NFL team)
  *   2. ESPN API - Transactions, coaching changes
- *   3. Pro Football Reference - 2025 stats, O-line rankings
+ *   3. Pro Football Reference / Static JSON - 2025 stats, O-line rankings
  *   4. TitleRun DB - Dynasty values, team metrics
+ *
+ * Fixes applied:
+ *   H6: Batch upserts (eliminates N+1 query problem)
+ *   H7: Sleeper API response filtering (reduces memory)
+ *   H8: Corrected coaching data
+ *   H9: Real stats via static JSON import
+ *   H10: O-line rankings via static JSON import
  *
  * @module narrativeDataPipeline
  */
@@ -22,10 +29,39 @@ const ESPN_API_BASE = 'https://site.api.espn.com/apis/site/v2/sports/football/nf
 const CURRENT_SEASON = 2025;
 const TRANSACTION_LOOKBACK_DAYS = 90;
 
+// H9: Static player stats for MVP
+let playerStats2025 = null;
+function getPlayerStats2025() {
+  if (!playerStats2025) {
+    try {
+      playerStats2025 = require('../../data/player-stats-2025.json');
+    } catch {
+      logger.warn('[NarrativeETL] player-stats-2025.json not found, stats will be empty');
+      playerStats2025 = {};
+    }
+  }
+  return playerStats2025;
+}
+
+// H10: Static O-line rankings for MVP
+let olineData2025 = null;
+function getOLineRankings2025() {
+  if (!olineData2025) {
+    try {
+      olineData2025 = require('../../data/oline-rankings-2025.json');
+    } catch {
+      logger.warn('[NarrativeETL] oline-rankings-2025.json not found, rankings will be empty');
+      olineData2025 = {};
+    }
+  }
+  return olineData2025;
+}
+
 // ─── Data Source Fetchers ──────────────────────────────────────
 
 /**
  * Fetch all NFL players from Sleeper API.
+ * H7: Filters to only fantasy-relevant positions to reduce memory usage.
  * Returns player bio data: name, age, position, team, draft info.
  */
 async function fetchSleeperPlayers() {
@@ -36,8 +72,10 @@ async function fetchSleeperPlayers() {
     }
     const players = await response.json();
 
-    // Transform to our schema format
+    // H7: Filter to only fantasy-relevant active players
+    const totalCount = Object.keys(players).length;
     const transformed = {};
+
     for (const [playerId, player] of Object.entries(players)) {
       if (!player.active) continue;
       if (!['QB', 'RB', 'WR', 'TE'].includes(player.position)) continue;
@@ -56,7 +94,8 @@ async function fetchSleeperPlayers() {
       };
     }
 
-    logger.info(`[NarrativeETL] Fetched ${Object.keys(transformed).length} players from Sleeper`);
+    // H7: Log filtering stats
+    logger.info(`[NarrativeETL] Filtered Sleeper players: ${totalCount} total → ${Object.keys(transformed).length} fantasy-relevant`);
     return transformed;
   } catch (err) {
     logger.error(`[NarrativeETL] Sleeper fetch failed: ${err.message}`);
@@ -110,32 +149,36 @@ async function fetchESPNTransactions() {
 }
 
 /**
- * Scrape 2025 season stats from Pro Football Reference.
- * For MVP, we use a simplified approach - in production this would
- * use a proper scraper or paid stats API.
+ * Get 2025 season stats.
+ * H9: Uses static JSON import for MVP. In production, use paid stats API
+ * (e.g., SportsDataIO, ESPN Stats API).
  *
  * Returns: { playerName: { gamesPlayed, targets, receptions, yards, tds, ... } }
  */
 async function scrapePFRStats(season) {
   try {
-    // NOTE: In production, use a paid stats API (e.g., SportsDataIO, ESPN Stats API)
-    // PFR scraping requires careful rate limiting and HTML parsing.
-    // For now, return empty - will be populated by the stats API integration.
-    logger.info(`[NarrativeETL] PFR stats scraper placeholder for season ${season}`);
-    return {};
+    if (season !== CURRENT_SEASON) {
+      logger.warn(`[NarrativeETL] No stats data for season ${season}`);
+      return {};
+    }
+
+    const stats = getPlayerStats2025();
+    const playerCount = Object.keys(stats).filter(k => k !== '_meta').length;
+    logger.info(`[NarrativeETL] Loaded ${playerCount} player stats from static data (season ${season})`);
+    return stats;
   } catch (err) {
-    logger.error(`[NarrativeETL] PFR stats scrape failed: ${err.message}`);
+    logger.error(`[NarrativeETL] Stats loading failed: ${err.message}`);
     return {};
   }
 }
 
 /**
- * Scrape coaching staff data.
+ * Get coaching staff data.
+ * H8: Fixed incorrect coaching assignments (DAL, DET, TB, etc.)
  * Maps NFL teams to their HC/OC for context in narratives.
  */
 async function scrapeCoachingData() {
-  // Hardcoded for 2026 offseason - will be updated via ETL
-  // In production, scrape from ESPN or Ourlads
+  // H8: Corrected coaching data for 2025-2026 season
   const coachingStaffs = {
     ARI: { HC: 'Jonathan Gannon', OC: 'Drew Petzing' },
     ATL: { HC: 'Raheem Morris', OC: 'Zac Robinson' },
@@ -145,8 +188,10 @@ async function scrapeCoachingData() {
     CHI: { HC: 'Ben Johnson', OC: 'TBD' },
     CIN: { HC: 'Zac Taylor', OC: 'Dan Pitcher' },
     CLE: { HC: 'Kevin Stefanski', OC: 'Ken Dorsey' },
-    DAL: { HC: 'Brian Schottenheimer', OC: 'Kellen Moore' },
+    // H8 FIX: Schottenheimer is HC now, not OC. Kellen Moore left for PHI OC.
+    DAL: { HC: 'Brian Schottenheimer', OC: 'TBD' },
     DEN: { HC: 'Sean Payton', OC: 'Joe Lombardi' },
+    // H8 FIX: Ben Johnson left DET to become CHI HC
     DET: { HC: 'TBD', OC: 'TBD' },
     GB: { HC: 'Matt LaFleur', OC: 'Adam Stenavich' },
     HOU: { HC: 'DeMeco Ryans', OC: 'Bobby Slowik' },
@@ -162,11 +207,13 @@ async function scrapeCoachingData() {
     NO: { HC: 'Darren Rizzi', OC: 'Klint Kubiak' },
     NYG: { HC: 'Brian Daboll', OC: 'Mike Kafka' },
     NYJ: { HC: 'Aaron Glenn', OC: 'TBD' },
+    // H8 FIX: Kellen Moore is PHI OC (moved from DAL)
     PHI: { HC: 'Nick Sirianni', OC: 'Kellen Moore' },
     PIT: { HC: 'Mike Tomlin', OC: 'Arthur Smith' },
     SF: { HC: 'Kyle Shanahan', OC: 'TBD' },
     SEA: { HC: 'Mike Macdonald', OC: 'Ryan Grubb' },
-    TB: { HC: 'Todd Bowles', OC: 'Liam Coen' },
+    // H8 FIX: Liam Coen left TB to become JAX HC
+    TB: { HC: 'Todd Bowles', OC: 'TBD' },
     TEN: { HC: 'Brian Callahan', OC: 'Nick Holz' },
     WAS: { HC: 'Dan Quinn', OC: 'Kliff Kingsbury' },
   };
@@ -176,14 +223,19 @@ async function scrapeCoachingData() {
 }
 
 /**
- * Scrape offensive line rankings (run and pass blocking).
- * Uses PFF-style 1-32 rankings.
+ * Get offensive line rankings (run and pass blocking).
+ * H10: Uses static JSON for MVP. PFF-style 1-32 rankings.
  */
 async function scrapeOLineRankings() {
-  // Placeholder - in production, scrape from PFF or use paid API
-  // Returns: { TEAM: { run: rank, pass: rank } }
-  logger.info('[NarrativeETL] O-line rankings placeholder');
-  return {};
+  try {
+    const rankings = getOLineRankings2025();
+    const teamCount = Object.keys(rankings).filter(k => k !== '_meta').length;
+    logger.info(`[NarrativeETL] Loaded O-line rankings for ${teamCount} teams`);
+    return rankings;
+  } catch (err) {
+    logger.error(`[NarrativeETL] O-line rankings loading failed: ${err.message}`);
+    return {};
+  }
 }
 
 /**
@@ -288,7 +340,9 @@ function mergeNarrativeContext({ sleeperPlayers, stats2025, transactions, coachi
 // ─── Database Operations ───────────────────────────────────────
 
 /**
- * Upsert merged player context into player_narrative_context table.
+ * H6 FIX: Batch upsert merged player context into player_narrative_context table.
+ * Uses multi-value INSERT with ON CONFLICT to eliminate N+1 query problem.
+ * Processes in batches of 50 for memory efficiency.
  */
 async function upsertNarrativeContext(db, mergedPlayers) {
   if (!db) {
@@ -298,82 +352,183 @@ async function upsertNarrativeContext(db, mergedPlayers) {
 
   let upserted = 0;
   const batchSize = 50;
+  const COLS_PER_ROW = 31;
 
   for (let i = 0; i < mergedPlayers.length; i += batchSize) {
     const batch = mergedPlayers.slice(i, i + batchSize);
 
-    for (const player of batch) {
-      try {
-        await db.query(`
-          INSERT INTO player_narrative_context (
-            player_id, season, full_name, age, position, nfl_team,
-            years_in_league, draft_year, draft_round, draft_pick,
-            games_played, targets, receptions, yards, touchdowns,
-            rush_attempts, rush_yards, rush_tds,
-            team_record, team_playoff_result, oline_rank_run, oline_rank_pass,
-            coaching_staff, depth_chart_position, target_share_pct, snap_count_pct,
-            recent_transactions, recent_contract,
-            dynasty_rank, value_trend, data_quality_score, updated_at
-          ) VALUES (
-            $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
-            $11, $12, $13, $14, $15, $16, $17, $18,
-            $19, $20, $21, $22, $23, $24, $25, $26,
-            $27, $28, $29, $30, $31, NOW()
-          )
-          ON CONFLICT (player_id) DO UPDATE SET
-            season = EXCLUDED.season,
-            full_name = EXCLUDED.full_name,
-            age = EXCLUDED.age,
-            position = EXCLUDED.position,
-            nfl_team = EXCLUDED.nfl_team,
-            years_in_league = EXCLUDED.years_in_league,
-            games_played = EXCLUDED.games_played,
-            targets = EXCLUDED.targets,
-            receptions = EXCLUDED.receptions,
-            yards = EXCLUDED.yards,
-            touchdowns = EXCLUDED.touchdowns,
-            rush_attempts = EXCLUDED.rush_attempts,
-            rush_yards = EXCLUDED.rush_yards,
-            rush_tds = EXCLUDED.rush_tds,
-            team_record = EXCLUDED.team_record,
-            team_playoff_result = EXCLUDED.team_playoff_result,
-            oline_rank_run = EXCLUDED.oline_rank_run,
-            oline_rank_pass = EXCLUDED.oline_rank_pass,
-            coaching_staff = EXCLUDED.coaching_staff,
-            depth_chart_position = EXCLUDED.depth_chart_position,
-            target_share_pct = EXCLUDED.target_share_pct,
-            snap_count_pct = EXCLUDED.snap_count_pct,
-            recent_transactions = EXCLUDED.recent_transactions,
-            recent_contract = EXCLUDED.recent_contract,
-            dynasty_rank = EXCLUDED.dynasty_rank,
-            value_trend = EXCLUDED.value_trend,
-            data_quality_score = EXCLUDED.data_quality_score,
-            updated_at = NOW()
-        `, [
-          player.player_id, player.season, player.full_name, player.age,
-          player.position, player.nfl_team, player.years_in_league,
-          player.draft_year, player.draft_round, player.draft_pick,
-          player.games_played, player.targets, player.receptions,
-          player.yards, player.touchdowns, player.rush_attempts,
-          player.rush_yards, player.rush_tds,
-          player.team_record, player.team_playoff_result,
-          player.oline_rank_run, player.oline_rank_pass,
-          JSON.stringify(player.coaching_staff),
-          player.depth_chart_position, player.target_share_pct,
-          player.snap_count_pct,
-          JSON.stringify(player.recent_transactions),
-          player.recent_contract ? JSON.stringify(player.recent_contract) : null,
-          player.dynasty_rank, player.value_trend, player.data_quality_score,
-        ]);
-        upserted++;
-      } catch (err) {
-        logger.error(`[NarrativeETL] Upsert failed for ${player.player_id}: ${err.message}`);
+    try {
+      // H6: Build multi-value INSERT for the entire batch
+      const values = [];
+      const placeholders = [];
+
+      batch.forEach((player, idx) => {
+        const offset = idx * COLS_PER_ROW;
+        const params = Array.from({ length: COLS_PER_ROW }, (_, k) => `$${offset + k + 1}`);
+        placeholders.push(`(${params.join(', ')})`);
+
+        values.push(
+          player.player_id,              // 1
+          player.season,                 // 2
+          player.full_name,              // 3
+          player.age,                    // 4
+          player.position,               // 5
+          player.nfl_team,               // 6
+          player.years_in_league,        // 7
+          player.draft_year,             // 8
+          player.draft_round,            // 9
+          player.draft_pick,             // 10
+          player.games_played,           // 11
+          player.targets,                // 12
+          player.receptions,             // 13
+          player.yards,                  // 14
+          player.touchdowns,             // 15
+          player.rush_attempts,          // 16
+          player.rush_yards,             // 17
+          player.rush_tds,               // 18
+          player.team_record,            // 19
+          player.team_playoff_result,    // 20
+          player.oline_rank_run,         // 21
+          player.oline_rank_pass,        // 22
+          JSON.stringify(player.coaching_staff),  // 23
+          player.depth_chart_position,   // 24
+          player.target_share_pct,       // 25
+          player.snap_count_pct,         // 26
+          JSON.stringify(player.recent_transactions), // 27
+          player.recent_contract ? JSON.stringify(player.recent_contract) : null, // 28
+          player.dynasty_rank,           // 29
+          player.value_trend,            // 30
+          player.data_quality_score,     // 31
+        );
+      });
+
+      await db.query(`
+        INSERT INTO player_narrative_context (
+          player_id, season, full_name, age, position, nfl_team,
+          years_in_league, draft_year, draft_round, draft_pick,
+          games_played, targets, receptions, yards, touchdowns,
+          rush_attempts, rush_yards, rush_tds,
+          team_record, team_playoff_result, oline_rank_run, oline_rank_pass,
+          coaching_staff, depth_chart_position, target_share_pct, snap_count_pct,
+          recent_transactions, recent_contract,
+          dynasty_rank, value_trend, data_quality_score
+        ) VALUES ${placeholders.join(', ')}
+        ON CONFLICT (player_id) DO UPDATE SET
+          season = EXCLUDED.season,
+          full_name = EXCLUDED.full_name,
+          age = EXCLUDED.age,
+          position = EXCLUDED.position,
+          nfl_team = EXCLUDED.nfl_team,
+          years_in_league = EXCLUDED.years_in_league,
+          games_played = EXCLUDED.games_played,
+          targets = EXCLUDED.targets,
+          receptions = EXCLUDED.receptions,
+          yards = EXCLUDED.yards,
+          touchdowns = EXCLUDED.touchdowns,
+          rush_attempts = EXCLUDED.rush_attempts,
+          rush_yards = EXCLUDED.rush_yards,
+          rush_tds = EXCLUDED.rush_tds,
+          team_record = EXCLUDED.team_record,
+          team_playoff_result = EXCLUDED.team_playoff_result,
+          oline_rank_run = EXCLUDED.oline_rank_run,
+          oline_rank_pass = EXCLUDED.oline_rank_pass,
+          coaching_staff = EXCLUDED.coaching_staff,
+          depth_chart_position = EXCLUDED.depth_chart_position,
+          target_share_pct = EXCLUDED.target_share_pct,
+          snap_count_pct = EXCLUDED.snap_count_pct,
+          recent_transactions = EXCLUDED.recent_transactions,
+          recent_contract = EXCLUDED.recent_contract,
+          dynasty_rank = EXCLUDED.dynasty_rank,
+          value_trend = EXCLUDED.value_trend,
+          data_quality_score = EXCLUDED.data_quality_score,
+          updated_at = NOW()
+      `, values);
+
+      upserted += batch.length;
+      logger.info(`[NarrativeETL] Batch upserted ${batch.length} players (${upserted}/${mergedPlayers.length})`);
+    } catch (err) {
+      logger.error(`[NarrativeETL] Batch upsert failed for batch starting at index ${i}: ${err.message}`);
+      // Fallback: try individual upserts for this batch
+      for (const player of batch) {
+        try {
+          await upsertSinglePlayer(db, player);
+          upserted++;
+        } catch (innerErr) {
+          logger.error(`[NarrativeETL] Individual upsert failed for ${player.player_id}: ${innerErr.message}`);
+        }
       }
     }
   }
 
   logger.info(`[NarrativeETL] Upserted ${upserted} player contexts`);
   return { upserted };
+}
+
+/**
+ * Fallback: Upsert a single player (used when batch fails).
+ */
+async function upsertSinglePlayer(db, player) {
+  await db.query(`
+    INSERT INTO player_narrative_context (
+      player_id, season, full_name, age, position, nfl_team,
+      years_in_league, draft_year, draft_round, draft_pick,
+      games_played, targets, receptions, yards, touchdowns,
+      rush_attempts, rush_yards, rush_tds,
+      team_record, team_playoff_result, oline_rank_run, oline_rank_pass,
+      coaching_staff, depth_chart_position, target_share_pct, snap_count_pct,
+      recent_transactions, recent_contract,
+      dynasty_rank, value_trend, data_quality_score, updated_at
+    ) VALUES (
+      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
+      $11, $12, $13, $14, $15, $16, $17, $18,
+      $19, $20, $21, $22, $23, $24, $25, $26,
+      $27, $28, $29, $30, $31, NOW()
+    )
+    ON CONFLICT (player_id) DO UPDATE SET
+      season = EXCLUDED.season,
+      full_name = EXCLUDED.full_name,
+      age = EXCLUDED.age,
+      position = EXCLUDED.position,
+      nfl_team = EXCLUDED.nfl_team,
+      years_in_league = EXCLUDED.years_in_league,
+      games_played = EXCLUDED.games_played,
+      targets = EXCLUDED.targets,
+      receptions = EXCLUDED.receptions,
+      yards = EXCLUDED.yards,
+      touchdowns = EXCLUDED.touchdowns,
+      rush_attempts = EXCLUDED.rush_attempts,
+      rush_yards = EXCLUDED.rush_yards,
+      rush_tds = EXCLUDED.rush_tds,
+      team_record = EXCLUDED.team_record,
+      team_playoff_result = EXCLUDED.team_playoff_result,
+      oline_rank_run = EXCLUDED.oline_rank_run,
+      oline_rank_pass = EXCLUDED.oline_rank_pass,
+      coaching_staff = EXCLUDED.coaching_staff,
+      depth_chart_position = EXCLUDED.depth_chart_position,
+      target_share_pct = EXCLUDED.target_share_pct,
+      snap_count_pct = EXCLUDED.snap_count_pct,
+      recent_transactions = EXCLUDED.recent_transactions,
+      recent_contract = EXCLUDED.recent_contract,
+      dynasty_rank = EXCLUDED.dynasty_rank,
+      value_trend = EXCLUDED.value_trend,
+      data_quality_score = EXCLUDED.data_quality_score,
+      updated_at = NOW()
+  `, [
+    player.player_id, player.season, player.full_name, player.age,
+    player.position, player.nfl_team, player.years_in_league,
+    player.draft_year, player.draft_round, player.draft_pick,
+    player.games_played, player.targets, player.receptions,
+    player.yards, player.touchdowns, player.rush_attempts,
+    player.rush_yards, player.rush_tds,
+    player.team_record, player.team_playoff_result,
+    player.oline_rank_run, player.oline_rank_pass,
+    JSON.stringify(player.coaching_staff),
+    player.depth_chart_position, player.target_share_pct,
+    player.snap_count_pct,
+    JSON.stringify(player.recent_transactions),
+    player.recent_contract ? JSON.stringify(player.recent_contract) : null,
+    player.dynasty_rank, player.value_trend, player.data_quality_score,
+  ]);
 }
 
 /**
@@ -421,19 +576,19 @@ async function refreshNarrativeContext(db) {
   logger.info('[NarrativeETL] Starting daily context refresh...');
 
   try {
-    // 1. Fetch Sleeper player data
+    // 1. Fetch Sleeper player data (H7: filtered)
     const sleeperPlayers = await fetchSleeperPlayers();
 
-    // 2. Scrape 2025 stats from Pro Football Reference
+    // 2. Get 2025 stats (H9: from static JSON)
     const stats2025 = await scrapePFRStats(CURRENT_SEASON);
 
     // 3. Fetch ESPN transactions (last 90 days)
     const transactions = await fetchESPNTransactions();
 
-    // 4. Get coaching staffs
+    // 4. Get coaching staffs (H8: corrected)
     const coaching = await scrapeCoachingData();
 
-    // 5. Get O-line rankings
+    // 5. Get O-line rankings (H10: from static JSON)
     const olineRanks = await scrapeOLineRankings();
 
     // 6. Fetch TitleRun dynasty data
@@ -449,7 +604,7 @@ async function refreshNarrativeContext(db) {
       dynastyData,
     });
 
-    // 8. Upsert to player_narrative_context
+    // 8. Upsert to player_narrative_context (H6: batch upsert)
     const upsertResult = await upsertNarrativeContext(db, merged);
 
     // 9. Invalidate affected narrative caches
