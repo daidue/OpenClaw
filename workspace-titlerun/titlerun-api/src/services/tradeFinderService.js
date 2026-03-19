@@ -19,9 +19,6 @@ const pickValueEngineV2 = require('./pickValueEngineV2');
 const sleeperService = require('./sleeperService');
 const { predictAcceptance, generateReasoning, assessAvailability } = require('./acceptancePredictionService');
 const logger = require('../utils/logger').child({ service: 'trade-finder' });
-const {
-  _TRADE_FINDER_CONSTANTS
-} = require('../config/tradeEngineConstants');
 const hiddenGemDetector = require('./hiddenGemDetector');
 const championshipEquityCalculator = require('./championshipEquityCalculator');
 
@@ -36,15 +33,36 @@ class LRUCache {
 
   get(key) {
     const entry = this.cache.get(key);
-    if (!entry) {return null;}
+    if (!entry) {
+      this.misses = (this.misses || 0) + 1;
+      this._logSample();
+      return null;
+    }
     if (Date.now() > entry.expiresAt) {
       this.cache.delete(key);
+      this.misses = (this.misses || 0) + 1;
+      this._logSample();
       return null;
     }
     // Move to end (most recently used)
     this.cache.delete(key);
     this.cache.set(key, entry);
+    this.hits = (this.hits || 0) + 1;
+    this._logSample();
     return entry.data;
+  }
+
+  _logSample() {
+    const total = (this.hits || 0) + (this.misses || 0);
+    if (total > 0 && total % 100 === 0) {
+      logger.info('[TradeFinder] Cache stats', {
+        size: this.cache.size,
+        max: this.maxSize,
+        hits: this.hits || 0,
+        misses: this.misses || 0,
+        hitRate: total > 0 ? ((this.hits || 0) / total).toFixed(2) : '0',
+      });
+    }
   }
 
   set(key, data) {
@@ -65,6 +83,17 @@ const finderCache = new LRUCache(500, 15 * 60 * 1000);
 
 // NOTE: Cache is cleared in src/index.js after server startup
 // to ensure logs are captured by Railway
+
+// ─── Sanitization ──────────────────────────────────────────────
+
+/**
+ * M7: Sanitize player names to prevent XSS in narratives.
+ * Strips HTML tags and limits length.
+ */
+function sanitizeName(name) {
+  if (!name || typeof name !== 'string') return 'Unknown';
+  return name.replace(/<[^>]*>/g, '').replace(/[&<>"']/g, '').trim().slice(0, 100);
+}
 
 // ─── Strategy Detection ────────────────────────────────────────
 
@@ -837,7 +866,8 @@ function generateTradeNarrative(candidate, myTeam, oppTeam, preLineup, postLineu
 
       if (!isStarter) {
         const grade = positionGrades[asset.position];
-        if (grade && grade <= 'B') {
+        const goodGrades = ['A+', 'A', 'A-', 'B+', 'B'];
+        if (grade && goodGrades.includes(grade)) {
           whyGoodForYou.push(`Trading from ${asset.position} depth (grade: ${grade})`);
         } else {
           whyGoodForYou.push(`${asset.name} is on your bench — not a core piece`);
@@ -972,15 +1002,15 @@ function applyScoreFloors(overall, scores) {
   let belowFloorCount = 0;
 
   for (const [metric, floor] of Object.entries(floors)) {
-    if ((scores[metric] || 0) < floor) {
+    if (scores[metric] !== undefined && scores[metric] < floor) {
       belowFloorCount++;
       // Cap overall to max 50 if any factor is critically low
       capped = Math.min(capped, 50 - (belowFloorCount * 5));
     }
   }
 
-  // Bonus for "complete" trades (all factors > 60)
-  const allAbove60 = Object.keys(floors).every(m => (scores[m] || 0) > 60);
+  // Bonus for "complete" trades (all factors present and > 60)
+  const allAbove60 = Object.keys(floors).every(m => scores[m] !== undefined && scores[m] > 60);
   if (allAbove60 && belowFloorCount === 0) {
     capped = Math.min(100, capped + 5);
   }
@@ -1095,9 +1125,6 @@ async function deepAnalyze(candidates, enrichedTeams, myRosterId, leagueSettings
       });
 
       // ── NEW: Positional Upgrade Narrative ──
-      const preLineup = tradeAnalysisService.calculateLineupImpact
-        ? null : null; // We need pre/post lineups from rosterAnalysisService directly
-      
       // Calculate pre/post lineups for positional narrative
       const myPlayers = myTeam.players || [];
       const giveIds = new Set(candidate.give.filter(a => a.type === 'player').map(a => String(a.id)));
@@ -1201,11 +1228,13 @@ async function deepAnalyze(candidates, enrichedTeams, myRosterId, leagueSettings
   // Sort by overall score
   results.sort((a, b) => b.scores.overall - a.scores.overall);
 
-  // Championship equity calculation (top 5 trades only for performance)
+  // Championship equity calculation (top 5 trades scoring >= 60 only for performance)
   const myTeam = enrichedTeams.find(t => t.rosterId === myRosterId);
   for (let i = 0; i < Math.min(5, results.length); i++) {
     try {
       const trade = results[i];
+      // Skip equity calculation for low-scoring trades (P0: performance fix)
+      if (trade.scores.overall < 60) continue;
       const equity = championshipEquityCalculator.calculateEquityChange({
         myRoster: myTeam?.players || [],
         tradeGive: trade.give,
@@ -1243,7 +1272,7 @@ function toAsset(player) {
   return {
     type: 'player',
     id: String(player.playerId),
-    name: player.name,
+    name: sanitizeName(player.name),
     position: player.position,
     value: player.value,
     age: player.age,
@@ -1365,6 +1394,17 @@ function buildTradeTargets(trades) {
 
 async function findTrades({ userId, leagueId, myRosterId, untouchablePlayerIds = [], filters = {} }) {
   const startTime = Date.now();
+
+  // M8: Input validation
+  if (!leagueId) {
+    throw new Error('leagueId is required');
+  }
+  if (!myRosterId && myRosterId !== 0) {
+    throw new Error('myRosterId is required');
+  }
+  if (!Array.isArray(untouchablePlayerIds)) {
+    throw new Error('untouchablePlayerIds must be an array');
+  }
 
   // Cache check
   const cacheKey = generateCacheKey(userId, leagueId, myRosterId, { ...filters, untouchablePlayerIds });
@@ -1630,6 +1670,16 @@ async function findTrades({ userId, leagueId, myRosterId, untouchablePlayerIds =
   // Cache result
   finderCache.set(cacheKey, result);
 
+  // M6: Performance monitoring — warn on slow operations
+  if (executionMs > 5000) {
+    logger.warn('[TradeFinder] Slow execution detected', {
+      executionMs,
+      tradesFound: trades.length,
+      candidatesGenerated: allCandidates.length,
+      opponentsScanned: targetOpponents.length
+    });
+  }
+  
   logger.info('Trade finder complete', {
     executionMs,
     tradesFound: trades.length,

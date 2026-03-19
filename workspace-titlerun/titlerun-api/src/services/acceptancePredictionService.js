@@ -161,7 +161,7 @@ function predictAcceptance(candidate, analysis, opponentTeam, leagueSettings, op
 function isValueInTheirFavor(candidate) {
   const giveValue = candidate.give.reduce((sum, a) => sum + (a.value || 0), 0);
   const getValue = candidate.get.reduce((sum, a) => sum + (a.value || 0), 0);
-  return getValue > giveValue; // We give more than we get = value in their favor
+  return giveValue > getValue; // We give more than we get = value in their favor
 }
 
 // ─── Reasoning Generation ──────────────────────────────────────
