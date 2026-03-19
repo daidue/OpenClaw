@@ -10,14 +10,66 @@
  *   GET  /api/trade-narratives/status/:jobId    - Poll async job status
  *   GET  /api/trade-narratives/stats            - Cache/generation stats
  *
+ * Security: All routes require authentication + rate limiting (C1)
+ * Jobs: Persisted to DB for restart survival (H5)
+ *
  * @module routes/tradeNarratives
  */
 
 const express = require('express');
 const router = express.Router();
 const logger = require('../utils/logger').child({ service: 'narrative-routes' });
+const { requireAuth } = require('../middleware/auth');
 
-// Import services lazily to avoid circular deps
+// ─── Rate Limiting (C1) ───────────────────────────────────────
+
+/**
+ * Rate limiter factory. Uses express-rate-limit if available,
+ * falls back to simple in-memory counter.
+ */
+function createRateLimiter({ windowMs, max, message }) {
+  try {
+    const rateLimit = require('express-rate-limit');
+    return rateLimit({ windowMs, max, message, standardHeaders: true, legacyHeaders: false });
+  } catch {
+    // Fallback: simple in-memory rate limiter
+    const requests = new Map();
+    return (req, res, next) => {
+      const key = req.ip || 'unknown';
+      const now = Date.now();
+      const windowStart = now - windowMs;
+
+      if (!requests.has(key)) requests.set(key, []);
+      const timestamps = requests.get(key).filter(t => t > windowStart);
+      requests.set(key, timestamps);
+
+      if (timestamps.length >= max) {
+        return res.status(429).json({
+          success: false,
+          error: message || 'Too many requests',
+        });
+      }
+
+      timestamps.push(now);
+      next();
+    };
+  }
+}
+
+const generateLimiter = createRateLimiter({
+  windowMs: 60 * 1000,   // 1 minute
+  max: 10,                // 10 generate requests per minute
+  message: 'Too many generation requests, please try again later',
+});
+
+const readLimiter = createRateLimiter({
+  windowMs: 60 * 1000,   // 1 minute
+  max: 60,                // 60 read requests per minute
+  message: 'Too many requests, please try again later',
+});
+
+// ─── Lazy Service Loading ─────────────────────────────────────
+
 let narrativeService = null;
 function getNarrativeService() {
   if (!narrativeService) {
@@ -26,14 +78,32 @@ function getNarrativeService() {
   return narrativeService;
 }
 
-// ─── In-flight job tracking ────────────────────────────────────
+// ─── Job Persistence (H5) ─────────────────────────────────────
 
-const activeJobs = new Map();
-const JOB_TTL_MS = 5 * 60 * 1000; // 5 minutes
+/**
+ * In-memory fallback for job tracking when DB is unavailable.
+ * DB-backed jobs survive restarts; memory jobs have 5-min TTL.
+ */
+const memoryJobs = new Map();
+const JOB_TTL_MS = 5 * 60 * 1000;
 
-function createJob(giveId, getId) {
-  const jobId = `${giveId}:${getId}:${Date.now()}`;
-  activeJobs.set(jobId, {
+async function createJob(db, giveId, getId, userId) {
+  const jobId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+  if (db) {
+    try {
+      await db.query(`
+        INSERT INTO narrative_generation_jobs (job_id, give_player_id, get_player_id, status, user_id)
+        VALUES ($1, $2, $3, 'pending', $4)
+      `, [jobId, giveId, getId, userId || null]);
+      return jobId;
+    } catch (err) {
+      logger.warn(`[NarrativeRoute] DB job creation failed, using memory: ${err.message}`);
+    }
+  }
+
+  // Memory fallback
+  memoryJobs.set(jobId, {
     status: 'pending',
     giveId,
     getId,
@@ -41,21 +111,123 @@ function createJob(giveId, getId) {
     result: null,
     error: null,
   });
-
-  // Auto-cleanup after TTL
-  setTimeout(() => activeJobs.delete(jobId), JOB_TTL_MS);
-
+  setTimeout(() => memoryJobs.delete(jobId), JOB_TTL_MS);
   return jobId;
 }
 
-// ─── Routes ────────────────────────────────────────────────────
+async function updateJobStatus(db, jobId, status, result, error) {
+  if (db) {
+    try {
+      await db.query(`
+        UPDATE narrative_generation_jobs
+        SET status = $2, result = $3, error = $4, completed_at = NOW()
+        WHERE job_id = $1
+      `, [jobId, status, result ? JSON.stringify(result) : null, error || null]);
+      return;
+    } catch (err) {
+      logger.warn(`[NarrativeRoute] DB job update failed: ${err.message}`);
+    }
+  }
+
+  // Memory fallback
+  const job = memoryJobs.get(jobId);
+  if (job) {
+    job.status = status;
+    job.result = result;
+    job.error = error;
+  }
+}
+
+async function getJob(db, jobId) {
+  if (db) {
+    try {
+      const result = await db.query(`
+        SELECT job_id, give_player_id, get_player_id, status,
+               result, error, created_at, completed_at
+        FROM narrative_generation_jobs WHERE job_id = $1
+      `, [jobId]);
+      if (result.rows.length > 0) {
+        const row = result.rows[0];
+        return {
+          jobId: row.job_id,
+          status: row.status,
+          result: row.result,
+          error: row.error,
+          createdAt: new Date(row.created_at).getTime(),
+        };
+      }
+    } catch (err) {
+      logger.warn(`[NarrativeRoute] DB job lookup failed: ${err.message}`);
+    }
+  }
+
+  // Memory fallback
+  const job = memoryJobs.get(jobId);
+  if (!job) return null;
+  return {
+    jobId,
+    status: job.status,
+    result: job.result,
+    error: job.error,
+    createdAt: job.createdAt,
+  };
+}
+
+// ─── Routes (C1: auth + rate limiting applied) ────────────────
+
+/**
+ * GET /api/trade-narratives/stats
+ * Cache and generation statistics.
+ */
+router.get('/stats', requireAuth, readLimiter, (req, res) => {
+  const service = getNarrativeService();
+  const cacheStats = service.narrativeCache.stats();
+
+  return res.json({
+    success: true,
+    cache: cacheStats,
+    activeJobs: memoryJobs.size,
+    config: {
+      primaryModel: service.CONFIG.primaryModel,
+      fallbackModel: service.CONFIG.fallbackModel,
+      cacheTTLDays: service.CONFIG.cacheTTLDays,
+      promptVersion: service.CONFIG.promptVersion,
+    },
+  });
+});
+
+/**
+ * GET /api/trade-narratives/status/:jobId
+ * Poll async job status.
+ * Returns: pending, processing, completed, or failed.
+ */
+router.get('/status/:jobId', requireAuth, readLimiter, async (req, res) => {
+  const { jobId } = req.params;
+  const job = await getJob(req.db, jobId);
+
+  if (!job) {
+    return res.status(404).json({
+      success: false,
+      error: 'Job not found or expired',
+    });
+  }
+
+  return res.json({
+    success: true,
+    jobId: job.jobId || jobId,
+    status: job.status,
+    narrative: job.result,
+    error: job.error,
+    elapsedMs: Date.now() - job.createdAt,
+  });
+});
 
 /**
  * GET /api/trade-narratives/:giveId/:getId
  * Retrieve a cached narrative for a trade pair.
  * Returns 404 if no cached narrative exists.
  */
-router.get('/:giveId/:getId', async (req, res) => {
+router.get('/:giveId/:getId', requireAuth, readLimiter, async (req, res) => {
   try {
     const { giveId, getId } = req.params;
     const service = getNarrativeService();
@@ -88,7 +260,7 @@ router.get('/:giveId/:getId', async (req, res) => {
  *
  * Body: { givePlayer, getPlayer, userTeam, oppTeam, sync: boolean }
  */
-router.post('/generate', async (req, res) => {
+router.post('/generate', requireAuth, generateLimiter, async (req, res) => {
   try {
     const { givePlayer, getPlayer, userTeam, oppTeam, sync = false } = req.body;
 
@@ -118,24 +290,17 @@ router.post('/generate', async (req, res) => {
     // Async mode - return job ID for polling
     const giveId = givePlayer.player_id || givePlayer.id;
     const getId = getPlayer.player_id || getPlayer.id;
-    const jobId = createJob(giveId, getId);
+    const jobId = await createJob(req.db, giveId, getId, req.userId);
 
     // Start generation in background
     service.generateTradeNarrative(
       givePlayer, getPlayer, userTeam, oppTeam,
       { db: req.db }
-    ).then(narrative => {
-      const job = activeJobs.get(jobId);
-      if (job) {
-        job.status = narrative ? 'complete' : 'failed';
-        job.result = narrative;
-      }
-    }).catch(err => {
-      const job = activeJobs.get(jobId);
-      if (job) {
-        job.status = 'failed';
-        job.error = err.message;
-      }
+    ).then(async (narrative) => {
+      const status = narrative ? 'completed' : 'failed';
+      await updateJobStatus(req.db, jobId, status, narrative, null);
+    }).catch(async (err) => {
+      await updateJobStatus(req.db, jobId, 'failed', null, err.message);
     });
 
     return res.status(202).json({
@@ -146,55 +311,18 @@ router.post('/generate', async (req, res) => {
     });
   } catch (err) {
     logger.error(`[NarrativeRoute] POST generate failed: ${err.message}`);
+
+    // C3: Handle cost cap errors with specific status code
+    if (err.code === 'COST_CAP_EXCEEDED') {
+      return res.status(429).json({
+        success: false,
+        error: 'Daily generation limit reached. Try again tomorrow.',
+        code: 'COST_CAP_EXCEEDED',
+      });
+    }
+
     return res.status(500).json({ success: false, error: 'Internal server error' });
   }
-});
-
-/**
- * GET /api/trade-narratives/status/:jobId
- * Poll async job status.
- * Returns: pending, complete (with narrative), or failed.
- */
-router.get('/status/:jobId', (req, res) => {
-  const { jobId } = req.params;
-  const job = activeJobs.get(jobId);
-
-  if (!job) {
-    return res.status(404).json({
-      success: false,
-      error: 'Job not found or expired',
-    });
-  }
-
-  return res.json({
-    success: true,
-    jobId,
-    status: job.status,
-    narrative: job.result,
-    error: job.error,
-    elapsedMs: Date.now() - job.createdAt,
-  });
-});
-
-/**
- * GET /api/trade-narratives/stats
- * Cache and generation statistics.
- */
-router.get('/stats', (req, res) => {
-  const service = getNarrativeService();
-  const cacheStats = service.narrativeCache.stats();
-
-  return res.json({
-    success: true,
-    cache: cacheStats,
-    activeJobs: activeJobs.size,
-    config: {
-      primaryModel: service.CONFIG.primaryModel,
-      fallbackModel: service.CONFIG.fallbackModel,
-      cacheTTLDays: service.CONFIG.cacheTTLDays,
-      promptVersion: service.CONFIG.promptVersion,
-    },
-  });
 });
 
 module.exports = router;

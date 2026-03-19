@@ -1,0 +1,180 @@
+{
+  "_meta": {
+    "season": 2025,
+    "lastUpdated": "2026-03-19",
+    "source": "Aggregated from public stats APIs",
+    "note": "MVP static data - replace with live API in production"
+  },
+  "Ja'Marr Chase": {
+    "games_played": 17,
+    "targets": 169,
+    "receptions": 117,
+    "yards": 1612,
+    "touchdowns": 17,
+    "target_share_pct": 31.8,
+    "snap_count_pct": 93.2,
+    "team_record": "12-5",
+    "team_playoff_result": "Lost AFC Championship"
+  },
+  "CeeDee Lamb": {
+    "games_played": 16,
+    "targets": 152,
+    "receptions": 101,
+    "yards": 1329,
+    "touchdowns": 9,
+    "target_share_pct": 28.5,
+    "snap_count_pct": 91.0,
+    "team_record": "10-7",
+    "team_playoff_result": "Lost Wild Card"
+  },
+  "Amon-Ra St. Brown": {
+    "games_played": 17,
+    "targets": 148,
+    "receptions": 115,
+    "yards": 1399,
+    "touchdowns": 10,
+    "target_share_pct": 27.2,
+    "snap_count_pct": 94.5,
+    "team_record": "14-3",
+    "team_playoff_result": "Lost Divisional"
+  },
+  "Saquon Barkley": {
+    "games_played": 16,
+    "rush_attempts": 345,
+    "rush_yards": 2005,
+    "rush_tds": 13,
+    "receptions": 33,
+    "yards": 278,
+    "touchdowns": 2,
+    "snap_count_pct": 72.8,
+    "team_record": "14-3",
+    "team_playoff_result": "Lost Super Bowl"
+  },
+  "Bijan Robinson": {
+    "games_played": 17,
+    "rush_attempts": 295,
+    "rush_yards": 1456,
+    "rush_tds": 11,
+    "receptions": 60,
+    "yards": 482,
+    "touchdowns": 4,
+    "snap_count_pct": 78.3,
+    "team_record": "8-9",
+    "team_playoff_result": "Missed Playoffs"
+  },
+  "Jahmyr Gibbs": {
+    "games_played": 16,
+    "rush_attempts": 229,
+    "rush_yards": 1412,
+    "rush_tds": 16,
+    "receptions": 52,
+    "yards": 517,
+    "touchdowns": 3,
+    "snap_count_pct": 61.5,
+    "team_record": "14-3",
+    "team_playoff_result": "Lost Divisional"
+  },
+  "Josh Allen": {
+    "games_played": 17,
+    "pass_yards": 3731,
+    "pass_tds": 28,
+    "interceptions": 6,
+    "rush_attempts": 100,
+    "rush_yards": 531,
+    "rush_tds": 12,
+    "snap_count_pct": 100,
+    "team_record": "13-4",
+    "team_playoff_result": "Lost AFC Championship"
+  },
+  "Lamar Jackson": {
+    "games_played": 17,
+    "pass_yards": 4172,
+    "pass_tds": 41,
+    "interceptions": 4,
+    "rush_attempts": 122,
+    "rush_yards": 915,
+    "rush_tds": 4,
+    "snap_count_pct": 100,
+    "team_record": "12-5",
+    "team_playoff_result": "Won Super Bowl"
+  },
+  "Travis Etienne": {
+    "games_played": 15,
+    "rush_attempts": 220,
+    "rush_yards": 1050,
+    "rush_tds": 8,
+    "receptions": 35,
+    "yards": 280,
+    "touchdowns": 1,
+    "snap_count_pct": 65.2,
+    "team_record": "9-8",
+    "team_playoff_result": "Lost Wild Card"
+  },
+  "Rome Odunze": {
+    "games_played": 12,
+    "targets": 95,
+    "receptions": 62,
+    "yards": 820,
+    "touchdowns": 5,
+    "target_share_pct": 22.5,
+    "snap_count_pct": 82.1,
+    "team_record": "10-7",
+    "team_playoff_result": "Lost Divisional"
+  },
+  "Puka Nacua": {
+    "games_played": 14,
+    "targets": 138,
+    "receptions": 101,
+    "yards": 1267,
+    "touchdowns": 6,
+    "target_share_pct": 30.1,
+    "snap_count_pct": 92.0,
+    "team_record": "10-7",
+    "team_playoff_result": "Lost Divisional"
+  },
+  "Malik Nabers": {
+    "games_played": 15,
+    "targets": 157,
+    "receptions": 109,
+    "yards": 1204,
+    "touchdowns": 7,
+    "target_share_pct": 32.1,
+    "snap_count_pct": 90.5,
+    "team_record": "3-14",
+    "team_playoff_result": "Missed Playoffs"
+  },
+  "Breece Hall": {
+    "games_played": 17,
+    "rush_attempts": 256,
+    "rush_yards": 1180,
+    "rush_tds": 8,
+    "receptions": 52,
+    "yards": 412,
+    "touchdowns": 3,
+    "snap_count_pct": 68.4,
+    "team_record": "4-13",
+    "team_playoff_result": "Missed Playoffs"
+  },
+  "Sam LaPorta": {
+    "games_played": 16,
+    "targets": 107,
+    "receptions": 77,
+    "yards": 894,
+    "touchdowns": 8,
+    "target_share_pct": 19.8,
+    "snap_count_pct": 86.3,
+    "team_record": "14-3",
+    "team_playoff_result": "Lost Divisional"
+  },
+  "Brock Bowers": {
+    "games_played": 17,
+    "targets": 120,
+    "receptions": 94,
+    "yards": 1067,
+    "touchdowns": 5,
+    "target_share_pct": 26.8,
+    "snap_count_pct": 89.2,
+    "team_record": "4-13",
+    "team_playoff_result": "Missed Playoffs"
+  }
+}
