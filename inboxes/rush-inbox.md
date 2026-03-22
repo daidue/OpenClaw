@@ -108,13 +108,14 @@ All findings include exact file paths, line numbers, code snippets, quantified i
 
 ---
 
-## 🟡 [HIGH] — Performance Issues (10 Critical Findings)
+## 🟡 [HIGH] — Performance Issues (10 Critical Findings + Latest)
 **From:** Jeff (Performance audit completion)
 **Priority:** HIGH — Pre-Scale Remediation
 **Date:** 2026-03-19
 **Status:** PENDING
+**UPDATED:** 2026-03-22 (New SRE review findings added)
 
-### Description
+### Description (March 19 Review)
 
 Performance review of TitleRun Intelligence System (Google SRE lens) identified **10 critical performance issues** that will degrade at scale.
 
@@ -136,33 +137,83 @@ Performance review of TitleRun Intelligence System (Google SRE lens) identified 
 5. **Redundant JSON serialization**
    - **Impact:** Breaks JSONB queries, adds 2-5s overhead per 1K players
 
+---
+
+### NEW FINDINGS (March 22 SRE Review)
+
+**Score:** 70/100 (PASSING but needs optimization)
+
+Performance review of post-March 12 changes identified **4 CRITICAL bottlenecks** causing 2-5s delays at 10K user scale.
+
+**Impact at Scale:**
+| User Load | Current Performance | After Fixes |
+|-----------|-------------------|-------------|
+| 1,000 users | 800ms-1.2s delays | <200ms |
+| 10,000 users | 3-5s delays | <500ms |
+
+**4 CRITICAL Issues:**
+
+1. **Quadratic String Concatenation** (insightEngineService.ts)
+   - **Impact:** 2-5s delays at scale (1,000+ operations)
+   - **Fix:** Use array.join() instead of += (8.3x faster)
+
+2. **Parallel Fetch Without Deduplication** (playerInsightService.ts)
+   - **Impact:** 10x unnecessary network requests
+   - **Fix:** Add request deduplication layer (5.5x fewer calls)
+
+3. **Broken LRU Cache** (projectionService.ts)
+   - **Impact:** 400ms stutters on cache operations
+   - **Fix:** Repair LRU implementation (5.3x faster)
+
+4. **Nested Array Operations Break Memoization** (AdvancedAnalytics.tsx)
+   - **Impact:** 300ms mobile lag on re-renders
+   - **Fix:** Flatten operations, repair memoization (7.1x fewer re-renders)
+
+**Additional Issues:** 4 HIGH, 7 MEDIUM, 5 LOW (all documented with fixes)
+
+**Estimated Improvement:** 10x faster at 10K users (3-5s → <500ms)
+
+---
+
 ### Success Criteria
+**March 19 Issues:**
 - Add composite index: `(player_id, generated_at DESC)`
 - Refactor to single bulk query with IN clause
 - Replace fetch() with connection pooling
 - Replace FIFO cache with LRU implementation
 - Remove double JSON.stringify calls
-- Re-review score ≥ 95/100
+
+**March 22 Issues:**
+- Implement array.join() for string building
+- Add request deduplication
+- Fix LRU cache implementation
+- Repair memoization dependencies in AdvancedAnalytics
+
+**Combined target:** Re-review score ≥ 95/100
 
 ### Context
-**Full review:** `workspace-titlerun/reviews/2026-03-19-midday-performance.md`  
+**Full reviews:**
+- `workspace-titlerun/reviews/2026-03-19-midday-performance.md` (March 19)
+- `workspace-titlerun/reviews/2026-03-22-070146-performance.md` (March 22 SRE)
+
 All findings include exact file paths, line numbers, code snippets, quantified impact at scale, and concrete fixes.
 
-**Good practices observed:** Batch upserts, advisory locks, LLM timeout protection, cost caps, two-tier caching strategy.
+**Good practices observed:** React.memo() usage, strong TypeScript safety, effective useMemo(), clean architecture, batch upserts, advisory locks, LLM timeout protection.
 
 ---
 
-## 🔴 [CRITICAL] — Security Vulnerabilities (3 Critical + 5 High)
+## 🔴 [CRITICAL] — Security Vulnerabilities (3 Critical + 5 High + Latest)
 **From:** Jeff (Security audit completion)
 **Priority:** URGENT — DEPLOYMENT BLOCKER
 **Date:** 2026-03-19
 **Status:** PENDING
+**UPDATED:** 2026-03-22 (New OWASP review findings added)
 
 ### Description
 
 Security review of TitleRun Intelligence System identified **14 findings** — **3 CRITICAL vulnerabilities** that block production deployment.
 
-**Score:** 72/100 (Target: 95+)
+**Score (March 19):** 72/100 (Target: 95+)
 
 **Top 3 Critical Vulnerabilities:**
 1. **C1: Auth Bypass in Development Mode** (OWASP A01)
@@ -184,18 +235,49 @@ Security review of TitleRun Intelligence System identified **14 findings** — *
 - Unprotected cost tracker manipulation
 - No CSRF protection
 
+---
+
+### NEW FINDINGS (March 22 OWASP Review)
+
+**Score:** 80/100 — GOOD posture, but 4 HIGH issues need fixing
+
+**4 HIGH Severity Issues:**
+1. **Missing HTTPS Enforcement** (playerInsightService.ts)
+   - 4MB proprietary ML data vulnerable to MitM on HTTP
+   - Impact: Credential interception on public WiFi
+   
+2. **No Content-Type Validation** (playerInsightService.ts)
+   - CDN compromise could serve HTML/XML instead of JSON
+   - Impact: Prototype pollution, code injection
+   
+3. **Search DoS Vector** (playerInsightService.ts)
+   - Single-char queries cause 273× cache iterations
+   - Impact: 16,380 lookups/min on rapid typing
+   
+4. **Player Name XSS Risk** (PlayerInsightBottomSheet.tsx)
+   - Unvalidated names in error messages
+   - Impact: XSS in error tracking dashboards
+
+**Fix time:** 4-8 hours, no architectural changes needed
+
+---
+
 ### Success Criteria
 - Remove development auth bypass, use dedicated test tokens
 - Add automated SQL injection detection to CI/CD
 - Add logger sanitization, validate keys at startup, implement rotation
-- Resolve all 5 High-priority issues
+- Resolve all 5 High-priority issues (March 19 review)
+- **NEW:** Add HTTPS enforcement, Content-Type validation, search debouncing, name sanitization
 - Re-review score ≥ 95/100
 
 ### Recommendation
 **DO NOT DEPLOY to production until Critical and High issues are resolved.**
 
 ### Context
-**Full review:** `workspace-titlerun/reviews/2026-03-19-midday-security.md`  
+**Full reviews:**
+- `workspace-titlerun/reviews/2026-03-19-midday-security.md` (March 19)
+- `workspace-titlerun/reviews/2026-03-22-070146-security.md` (March 22 OWASP)
+
 All findings include exact file paths, line numbers, code snippets, quantified impact, and concrete fixes.
 
 ---
@@ -238,6 +320,61 @@ Data integrity review of TitleRun Intelligence System (commits 9f46e6fc..c5e299b
 ### Context
 **Full review:** `workspace-titlerun/reviews/2026-03-19-midday-data-integrity.md`  
 All findings include exact file paths, line numbers, code snippets, quantified impact, and concrete fixes.
+
+---
+
+## 🔴 [CRITICAL] — UX Issues (1 Critical, 1 High)
+**From:** Jeff (UX review completion)
+**Priority:** HIGH — Launch UX Blocker
+**Date:** 2026-03-22
+**Status:** PENDING
+
+### Description
+
+UX review of TitleRun (post-March 12 changes) scored **73/100 (Grade: C)** — solid accessibility fundamentals but **2 critical user experience gaps** that will drive support tickets at scale.
+
+**Nielsen's 10 Heuristics Analysis:** 50 files reviewed across trade, ML, player components, services, types.
+
+### Critical Findings
+
+**1. CRITICAL: Bottom Sheet Loading Gap (-15 pts)**
+- **Issue:** Bottom sheet opens with no loading indicator during 500ms data fetch
+- **User impact:** "Dead time" makes users think app froze
+- **Scale impact:** At 3,000 opens/day → **150-300 support tickets/month**
+- **File:** PlayerInsightBottomSheet.tsx (loading state missing)
+
+**2. HIGH: Risk Badge Affordance Gap (-10 pts)**
+- **Issue:** Interactive risk badges lack hover/focus visual feedback
+- **Discovery rate:** Only 70% of users find clickable bottom sheet (should be 95%+)
+- **Scale impact:** **40-60 support tickets/month** asking "how do I see player details?"
+- **File:** PlayerRiskBadge.tsx (missing hover/focus styles)
+
+**3. LOW: Accessibility Gap (-2 pts)**
+- **Issue:** Count-up animation sets `aria-live="off"` — screen reader users get no feedback
+- **Impact:** Affects 5% of users, minor friction
+- **File:** ImpactScore.tsx
+
+### Strengths Observed
+
+✅ Excellent WCAG 2.1 AA compliance  
+✅ Color-blind safe palette  
+✅ Complete keyboard navigation  
+✅ Strong error recovery (ErrorBoundary + retry buttons)  
+✅ Mobile-optimized touch interactions  
+✅ Progressive disclosure reduces cognitive load  
+
+### Success Criteria
+
+- Add loading skeleton/spinner to bottom sheet during data fetch
+- Add hover/focus styles to risk badges (scale transform + border highlight)
+- Change aria-live to 'polite' during animation
+- User test with 10 users → ≥95% discovery rate for bottom sheet
+- Re-review score ≥ 90/100
+
+### Context
+
+**Full review:** `workspace-titlerun/reviews/2026-03-22-070146-ux.md`  
+All findings include exact file paths, line numbers, code snippets (before/after), quantified user impact, and Nielsen heuristic mapping.
 
 ---
 
