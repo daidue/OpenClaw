@@ -80,3 +80,17 @@
 [2026-03-22 10:30:01]   Task fix-dogfood-week4: age 29569830m (timeout 120m)
 [2026-03-22 10:30:01]     ⚠️  STALE (exceeded timeout)
 [2026-03-22 10:30:01] Archiving 3 stale + 0 completed tasks...
+[2026-03-22 10:40:00] Checking 6 active tasks...
+[2026-03-22 10:40:00]   Task test-opt-run2: age 29569840m (timeout 120m)
+[2026-03-22 10:40:00]     ⚠️  STALE (exceeded timeout)
+[2026-03-22 10:40:00]   Task dogfood-qa-week4: age 29569840m (timeout 120m)
+[2026-03-22 10:40:00]     ⚠️  STALE (exceeded timeout)
+[2026-03-22 10:40:00]   Task fix-dogfood-week4: age 29569840m (timeout 120m)
+[2026-03-22 10:40:00]     ⚠️  STALE (exceeded timeout)
+[2026-03-22 10:40:00]   Task test-opt-parallel-logger: age 29569840m (timeout 120m)
+[2026-03-22 10:40:00]     ⚠️  STALE (exceeded timeout)
+[2026-03-22 10:40:00]   Task test-opt-parallel-error: age 29569840m (timeout 120m)
+[2026-03-22 10:40:00]     ⚠️  STALE (exceeded timeout)
+[2026-03-22 10:40:00]   Task integrate-trade-frontend: age 29569840m (timeout 120m)
+[2026-03-22 10:40:00]     ⚠️  STALE (exceeded timeout)
+[2026-03-22 10:40:00] Archiving 6 stale + 0 completed tasks...

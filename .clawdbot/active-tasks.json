@@ -38,9 +38,51 @@
         "HIGH-003",
         "HIGH-004"
       ]
+    },
+    {
+      "id": "test-opt-parallel-logger",
+      "type": "test-coverage",
+      "agent": "titlerun",
+      "model": "opus",
+      "started": "2026-03-22T14:31:48.583Z",
+      "sessionKey": "agent:titlerun:subagent:ee3aa492-c36b-4fd5-a4c9-2d1849d5dd6b",
+      "description": "Parallel test writing for logger.js (~2% coverage)",
+      "repo": "titlerun-app",
+      "target": "src/utils/logger.js"
+    },
+    {
+      "id": "test-opt-parallel-error",
+      "type": "test-coverage",
+      "agent": "titlerun",
+      "model": "opus",
+      "started": "2026-03-22T14:32:03.592Z",
+      "sessionKey": "agent:titlerun:subagent:e39935bf-07c4-4d76-af68-84873ececd2f",
+      "description": "Parallel test writing for errorTracking.js (~1% coverage)",
+      "repo": "titlerun-app",
+      "target": "src/utils/errorTracking.js"
+    },
+    {
+      "id": "integrate-trade-frontend",
+      "type": "integration",
+      "agent": "titlerun",
+      "model": "opus",
+      "started": "2026-03-22T14:36:02.504Z",
+      "sessionKey": "agent:titlerun:subagent:84ec20ef-97ac-483e-9c70-adbb25e471e6",
+      "description": "Integrate 5 trade engine frontend components (March 31 deadline)",
+      "repos": [
+        "titlerun-app"
+      ],
+      "components": [
+        "TradeBuilder",
+        "PlayerSelector",
+        "TradeAnalysisResults",
+        "TradeCard",
+        "ShareModal"
+      ],
+      "deadline": "2026-03-31"
     }
   ],
-  "lastUpdated": "2026-03-22T14:25:19.202Z",
+  "lastUpdated": "2026-03-22T14:36:02.505Z",
   "recentCompletions": [
     {
       "id": "test-final",
