@@ -62,27 +62,21 @@
       "target": "src/utils/errorTracking.js"
     },
     {
-      "id": "integrate-trade-frontend",
-      "type": "integration",
+      "id": "audit-all-work",
+      "type": "audit",
       "agent": "titlerun",
       "model": "opus",
-      "started": "2026-03-22T14:36:02.504Z",
-      "sessionKey": "agent:titlerun:subagent:84ec20ef-97ac-483e-9c70-adbb25e471e6",
-      "description": "Integrate 5 trade engine frontend components (March 31 deadline)",
+      "started": "2026-03-22T14:53:55.678Z",
+      "sessionKey": "agent:titlerun:subagent:ca17155a-3538-49e7-8ee6-ad594718dbfb",
+      "description": "End-to-end audit of all TitleRun work (Feb 1 - Mar 22)",
       "repos": [
-        "titlerun-app"
+        "titlerun-app",
+        "titlerun-api"
       ],
-      "components": [
-        "TradeBuilder",
-        "PlayerSelector",
-        "TradeAnalysisResults",
-        "TradeCard",
-        "ShareModal"
-      ],
-      "deadline": "2026-03-31"
+      "scope": "All commits, features, migrations, tests since Feb 1 2026"
     }
   ],
-  "lastUpdated": "2026-03-22T14:36:02.505Z",
+  "lastUpdated": "2026-03-22T14:53:55.679Z",
   "recentCompletions": [
     {
       "id": "test-final",
