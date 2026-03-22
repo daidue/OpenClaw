@@ -66,3 +66,9 @@
 [2026-03-22 10:10:01]   Task test-opt-run2: age 29569810m (timeout 120m)
 [2026-03-22 10:10:01]     ⚠️  STALE (exceeded timeout)
 [2026-03-22 10:10:01] Archiving 1 stale + 0 completed tasks...
+[2026-03-22 10:20:00] Checking 2 active tasks...
+[2026-03-22 10:20:00]   Task test-opt-run2: age 29569820m (timeout 120m)
+[2026-03-22 10:20:00]     ⚠️  STALE (exceeded timeout)
+[2026-03-22 10:20:00]   Task dogfood-qa-week4: age 29569820m (timeout 120m)
+[2026-03-22 10:20:00]     ⚠️  STALE (exceeded timeout)
+[2026-03-22 10:20:00] Archiving 2 stale + 0 completed tasks...

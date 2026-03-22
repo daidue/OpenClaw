@@ -8,9 +8,20 @@
       "sessionKey": "agent:titlerun:subagent:63fe940e-984a-46c8-bd03-3583f42aec28",
       "description": "Test Optimization Run #2: Target large files for 5-8% coverage",
       "repo": "titlerun-app"
+    },
+    {
+      "id": "dogfood-qa-week4",
+      "type": "qa-testing",
+      "agent": "titlerun",
+      "model": "opus",
+      "started": "2026-03-22T14:12:01.608Z",
+      "sessionKey": "agent:titlerun:subagent:07edf1d8-1b6c-4ed4-9b9a-1d914538787a",
+      "description": "Week 4 dogfood QA session - systematic testing of 6 core workflows",
+      "repo": "titlerun-app",
+      "url": "https://app.titlerun.co"
     }
   ],
-  "lastUpdated": "2026-03-22T13:58:54.560Z",
+  "lastUpdated": "2026-03-22T14:12:01.609Z",
   "recentCompletions": [
     {
       "id": "test-final",
