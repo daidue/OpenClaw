@@ -81,9 +81,21 @@
         "GitHub Action",
         "test suite"
       ]
+    },
+    {
+      "id": "test-opt-analytics-opus",
+      "type": "test-coverage",
+      "agent": "titlerun",
+      "model": "opus",
+      "started": "2026-03-22T15:10:52.954Z",
+      "sessionKey": "agent:titlerun:subagent:53706f33-5f1c-4a7b-a523-46a6b8050dc7",
+      "description": "Opus retry for analytics.js tests (~1.5-2% coverage)",
+      "repo": "titlerun-app",
+      "target": "src/utils/analytics.js",
+      "previousAttempt": "test-opt-run2 (Sonnet, 71min timeout)"
     }
   ],
-  "lastUpdated": "2026-03-22T15:09:32.020Z",
+  "lastUpdated": "2026-03-22T15:10:52.955Z",
   "recentCompletions": [
     {
       "id": "test-opt-run2",

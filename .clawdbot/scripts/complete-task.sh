@@ -113,6 +113,26 @@ echo "   Status: $STATUS"
 echo "   Runtime: ${RUNTIME_MINUTES}m"
 echo "   Result: $RESULT"
 echo ""
+
+# ============================================================================
+# WORKQUEUE.MD AUTO-UPDATE
+# ============================================================================
+WORKQUEUE_UPDATER="$WORKSPACE/.clawdbot/lib/workqueue-updater.js"
+if [ -f "$WORKQUEUE_UPDATER" ] && [ "$STATUS" = "completed" ]; then
+  echo "📝 Auto-updating WORKQUEUE.md..."
+  COMMIT_SHA_ARG=""
+  # Try to get latest commit SHA from titlerun-app
+  TITLERUN_APP="$HOME/Documents/Claude Cowork Business/titlerun-app"
+  if [ -d "$TITLERUN_APP/.git" ]; then
+    COMMIT_SHA_ARG="--commit $(cd "$TITLERUN_APP" && git rev-parse --short HEAD 2>/dev/null || echo 'unknown')"
+  fi
+  node "$WORKQUEUE_UPDATER" \
+    --id "$TASK_ID" \
+    --description "$RESULT" \
+    --date "$(date -I)" \
+    $COMMIT_SHA_ARG 2>/dev/null || echo "⚠️  WORKQUEUE update failed (non-fatal)"
+fi
+
 echo "📋 Remaining active tasks:"
 REMAINING=$(cat "$TASK_REGISTRY" | jq -r '.tasks | length')
 if [ "$REMAINING" -eq 0 ]; then
