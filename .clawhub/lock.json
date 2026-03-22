@@ -4,6 +4,10 @@
     "bird": {
       "version": "1.0.0",
       "installedAt": 1770567455315
+    },
+    "bird-twitter": {
+      "version": "1.0.0",
+      "installedAt": 1774138267235
     }
   }
 }
