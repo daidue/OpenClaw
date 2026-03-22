@@ -93,9 +93,33 @@
       "repo": "titlerun-app",
       "target": "src/utils/analytics.js",
       "previousAttempt": "test-opt-run2 (Sonnet, 71min timeout)"
+    },
+    {
+      "id": "fix-trade-builder-403",
+      "type": "bug-fix",
+      "agent": "titlerun",
+      "model": "opus",
+      "priority": "P0-CRITICAL",
+      "started": "2026-03-22T15:25:16.086Z",
+      "sessionKey": "agent:titlerun:subagent:1ea655d7-1111-493f-a8f3-6bdb05a4014a",
+      "description": "Fix Trade Builder 403 Forbidden in production (CRITICAL-001 still broken)",
+      "repo": "titlerun-api",
+      "blocker": "April 15 launch"
+    },
+    {
+      "id": "fix-all-trade-issues",
+      "type": "comprehensive-audit",
+      "agent": "titlerun",
+      "model": "opus",
+      "priority": "P0-CRITICAL",
+      "started": "2026-03-22T15:28:43.672Z",
+      "sessionKey": "agent:titlerun:subagent:5f91b980-cedd-4c70-8f08-443f95eb8423",
+      "description": "Audit and fix ALL trade features: Trade Builder, Trade Finder, Trade History (frontend + backend)",
+      "scope": "Complete E2E testing, bug fixes, mobile responsive, API endpoints, code quality",
+      "blocker": "April 15 launch"
     }
   ],
-  "lastUpdated": "2026-03-22T15:10:52.955Z",
+  "lastUpdated": "2026-03-22T15:28:43.673Z",
   "recentCompletions": [
     {
       "id": "test-opt-run2",
