@@ -1,15 +1,6 @@
 {
   "tasks": [
     {
-      "id": "test-opt-run2",
-      "type": "test-coverage",
-      "agent": "titlerun",
-      "started": "2026-03-22T13:58:54.559Z",
-      "sessionKey": "agent:titlerun:subagent:63fe940e-984a-46c8-bd03-3583f42aec28",
-      "description": "Test Optimization Run #2: Target large files for 5-8% coverage",
-      "repo": "titlerun-app"
-    },
-    {
       "id": "dogfood-qa-week4",
       "type": "qa-testing",
       "agent": "titlerun",
@@ -74,10 +65,35 @@
         "titlerun-api"
       ],
       "scope": "All commits, features, migrations, tests since Feb 1 2026"
+    },
+    {
+      "id": "workqueue-automation",
+      "type": "infrastructure",
+      "agent": "titlerun",
+      "model": "opus",
+      "started": "2026-03-22T15:07:47.890Z",
+      "sessionKey": "agent:titlerun:subagent:fcc71c8f-596e-4c0d-8bbc-3a6856fa6e66",
+      "description": "Build automated WORKQUEUE.md sync system (4 mechanisms)",
+      "deliverables": [
+        "workqueue-updater.js",
+        "task-creator.js",
+        "git hooks",
+        "GitHub Action",
+        "test suite"
+      ]
     }
   ],
-  "lastUpdated": "2026-03-22T14:53:55.679Z",
+  "lastUpdated": "2026-03-22T15:09:32.020Z",
   "recentCompletions": [
+    {
+      "id": "test-opt-run2",
+      "type": "test-coverage",
+      "agent": "titlerun",
+      "status": "timeout-silent",
+      "completed": "2026-03-22T15:09:32.020Z",
+      "runtime": "70m",
+      "result": "Agent timed out silently after 71 minutes (no completion event received)"
+    },
     {
       "id": "test-final",
       "type": "worktree",
