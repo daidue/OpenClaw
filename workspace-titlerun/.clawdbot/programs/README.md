@@ -13,10 +13,11 @@ This directory contains `improvement-program.md` files that guide autonomous ove
 
 | Program | Target | Metric | Status |
 |---------|--------|--------|--------|
-| `test-optimization.md` | Playwright tests | Test duration <10s | PILOT |
-| `performance-api.md` | API response time | <200ms p95 | PLANNED |
-| `performance-frontend.md` | Bundle size | <500KB gzipped | PLANNED |
-| `accessibility.md` | Lighthouse score | >95 | PLANNED |
+| `test-optimization.md` | Playwright tests | Test duration <10s | RUNNING |
+| `performance-frontend.md` | Bundle size | <500KB gzipped | READY |
+| `accessibility.md` | Lighthouse score | >95 | READY |
+| `error-handling.md` | Error coverage | 100% boundaries | READY |
+| `code-quality.md` | TypeScript strict | 0 errors | READY |
 
 ## Program Structure
 
