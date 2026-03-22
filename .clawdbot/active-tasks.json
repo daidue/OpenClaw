@@ -19,9 +19,28 @@
       "description": "Week 4 dogfood QA session - systematic testing of 6 core workflows",
       "repo": "titlerun-app",
       "url": "https://app.titlerun.co"
+    },
+    {
+      "id": "fix-dogfood-week4",
+      "type": "bug-fix",
+      "agent": "titlerun",
+      "model": "opus",
+      "started": "2026-03-22T14:25:19.201Z",
+      "sessionKey": "agent:titlerun:subagent:0118ed37-10a4-41ee-9456-19b8e6c29830",
+      "description": "Fix 2 critical + 2 high bugs from dogfood QA (trade engine 403, retry loop, duplicates)",
+      "repos": [
+        "titlerun-api",
+        "titlerun-app"
+      ],
+      "issues": [
+        "CRITICAL-001",
+        "CRITICAL-002",
+        "HIGH-003",
+        "HIGH-004"
+      ]
     }
   ],
-  "lastUpdated": "2026-03-22T14:12:01.609Z",
+  "lastUpdated": "2026-03-22T14:25:19.202Z",
   "recentCompletions": [
     {
       "id": "test-final",
