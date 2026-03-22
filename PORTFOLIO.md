@@ -10,10 +10,10 @@
 | Business | Owner/Operator | Agent ID | Phase | Revenue | Health |
 |----------|---------------|----------|-------|---------|--------|
 | **Notion Templates** | Grind | `commerce` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ DORMANT |
-| **TitleRun** | Rush | `titlerun` | ACTIVE — Week 3 Product Polish | $0/mo | 🟢 BUILDING |
+| **TitleRun** | Rush | `titlerun` | ACTIVE — Week 4 Product Polish | $0/mo | 🟡 QUALITY REGRESSION (68/100) |
 | **Polymarket Trading** | Edge | `polymarket` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ DORMANT |
 
-**Last weekly review:** 2026-03-15
+**Last weekly review:** 2026-03-22
 
 ## TitleRun Milestones (Week of Feb 15)
 - ✅ DB migration deployed (44 tables, 96.7/100 expert panel, RLS, FK constraints)
@@ -76,6 +76,14 @@
 
 **W2 Estimate: 9,689 messages (per intelligence weekly report), 100% TitleRun focus, mobile UX overhaul, Smart Trade Finder, Live Draft Companion, redraft wiring. Lower than W1 due to more Sonnet usage, fewer marathon Opus sessions. Taylor approved.
 
+***W9 Estimate: 1,716 messages, portfolio manager focus violation (568 messages on commerce despite Feb 14 pause directive).
+
+****W10 Estimate: 9,304 messages, 402 sub-agents spawned, strategic pivot executed (Systems → Product → Distribution roadmap).
+
+*****W11 Estimate: 5,200 messages, 252 sub-agents spawned, Advanced Stats shipped, Season Outlook quality system.
+
+******W12 Estimate: 3,389 messages, 149 sub-agents spawned. Lower burn than W11 but TEP Service critical quality regression discovered (64.9/100).
+
 _Source: `bash scripts/cost-tracker.sh daily` (run by Jeff each morning heartbeat)_
 _Daily cost reports: `memory/daily/YYYY-MM-DD-costs.md`_
 _Target: Token cost per revenue dollar < $5 by month 3_
@@ -136,6 +144,11 @@ If budget must be cut 50%+:
 ## Cross-Business Synergies
 - Templates ↔ TitleRun: Both digital products. Shared GTM playbooks. Dynasty FF players may need Notion templates.
 - TitleRun ↔ Polymarket: Both data-driven. Shared analytical frameworks.
+- All three: Shared sub-agents (researcher, dev). Shared skills library.
+
+---
+_Last updated: 2026-02-22 (weekly review)_
+Polymarket: Both data-driven. Shared analytical frameworks.
 - All three: Shared sub-agents (researcher, dev). Shared skills library.
 
 ---
