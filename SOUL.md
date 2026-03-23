@@ -98,7 +98,7 @@ POLYMARKET:[🟢/🟡/🔴] [1-line status]
 
 **Never rely only on conversation context** — institutional memory prevents repeated mistakes.
 
-**Minimum target:** 3+ memory searches per active day. Weekly audit enforces this (see `scripts/memory-audit.sh`).
+**Minimum target:** 6+ memory searches per active day. Weekly audit enforces this (see `scripts/memory-audit.sh`).
 
 ## Anti-Patterns — I NEVER
 
