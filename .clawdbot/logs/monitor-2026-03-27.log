@@ -1,0 +1,13 @@
+[2026-03-27 00:00:01] Checking 9 active tasks...
+[2026-03-27 00:00:01]   Task dogfood-qa-week4: age 29576400m (timeout 120m)
+[2026-03-27 00:00:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-27 00:00:01]   Task fix-dogfood-week4: age 29576400m (timeout 120m)
+[2026-03-27 00:00:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-27 00:00:01]   Task test-opt-parallel-logger: age 29576400m (timeout 120m)
+[2026-03-27 00:00:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-27 00:00:01]   Task test-opt-parallel-error: age 29576400m (timeout 120m)
+[2026-03-27 00:00:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-27 00:00:01]   Task audit-all-work: age 29576400m (timeout 120m)
+[2026-03-27 00:00:01]     ⚠️  STALE (exceeded timeout)
+[2026-03-27 00:00:01]   Task workqueue-automation: age 29576400m (timeout 120m)
+[2026-03-27 00:00:01]     ⚠️  STALE (exceeded timeout)
