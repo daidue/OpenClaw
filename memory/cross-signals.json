@@ -1,10 +1,28 @@
 {
-  "timestamp": "2026-03-28T10:02:28.481040+00:00",
+  "timestamp": "2026-03-28T16:07:25.639361+00:00",
   "period_hours": 24,
   "shared_topics": [],
-  "shared_tools": [],
-  "agent_error_counts": {},
+  "shared_tools": [
+    {
+      "tool": "exec",
+      "agents": [
+        "main",
+        "researcher"
+      ]
+    },
+    {
+      "tool": "read",
+      "agents": [
+        "main",
+        "researcher"
+      ]
+    }
+  ],
+  "agent_error_counts": {
+    "researcher": 3
+  },
   "active_agents": [
-    "main"
+    "main",
+    "researcher"
   ]
 }
