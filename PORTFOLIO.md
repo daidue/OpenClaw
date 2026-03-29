@@ -10,10 +10,10 @@
 | Business | Owner/Operator | Agent ID | Phase | Revenue | Health |
 |----------|---------------|----------|-------|---------|--------|
 | **Notion Templates** | Grind | `commerce` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ DORMANT |
-| **TitleRun** | Rush | `titlerun` | ACTIVE — Week 4 Product Polish | $0/mo | 🟡 QUALITY REGRESSION (68/100) |
+| **TitleRun** | Rush | `titlerun` | ACTIVE — Week 5 Distribution | $0/mo | 🔴 BLOCKED (40/100) |
 | **Polymarket Trading** | Edge | `polymarket` | ⏸️ PAUSED (Taylor 2026-02-14) | $0/mo | ⚪ DORMANT |
 
-**Last weekly review:** 2026-03-22
+**Last weekly review:** 2026-03-29
 
 ## TitleRun Milestones (Week of Feb 15)
 - ✅ DB migration deployed (44 tables, 96.7/100 expert panel, RLS, FK constraints)
@@ -71,6 +71,9 @@
 | W2 (Feb 16-22) | ~$500-800** | $0 (paused) | ~$450-700 | $0 (paused) | ~$50-100 | $0 | — |
 | W9 (Feb 22-Mar 1) | ~$400-600*** | $0 (paused) | ~$350-500 | $0 (paused) | ~$50-100 | $0 | — |
 | W10 (Mar 1-8) | ~$500-800**** | $0 (paused) | ~$450-700 | $0 (paused) | ~$50-100 | $0 | — |
+| W11 (Mar 8-15) | ~$500-800***** | $0 (paused) | ~$450-700 | $0 (paused) | ~$50-100 | $0 | — |
+| W12 (Mar 15-22) | ~$400-650****** | $0 (paused) | ~$350-600 | $0 (paused) | ~$50-100 | $0 | — |
+| W13 (Mar 22-29) | ~$150-250******* | $0 (paused) | ~$100-200 | $0 (paused) | ~$50 | $0 | — |
 
 *W1 Estimate: 9,615 messages, 60+ sub-agents on Feb 14 alone, marathon Opus build session, frontend test fixes overnight, Cloudflare migration, landing page iterations, DB migration expert panel. Taylor approved high burn through March.
 
@@ -79,6 +82,12 @@
 ***W9 Estimate: 1,716 messages, portfolio manager focus violation (568 messages on commerce despite Feb 14 pause directive).
 
 ****W10 Estimate: 9,304 messages, 402 sub-agents spawned, strategic pivot executed (Systems → Product → Distribution roadmap).
+
+*****W11 Estimate: 5,200 messages, 252 sub-agents spawned. Advanced Stats shipped, Season Outlook quality system.
+
+******W12 Estimate: 3,389 messages, 149 sub-agents spawned. Lower burn than W11 but TEP Service critical quality regression discovered (64.9/100).
+
+*******W13 Estimate: 2,893 messages, 58 sub-agents spawned. Lowest burn since W8, but ZERO feature work. Rush offline 14+ days. TEP blocker unresolved 12 days. Portfolio stalled.
 
 *****W11 Estimate: 5,200 messages, 252 sub-agents spawned, Advanced Stats shipped, Season Outlook quality system.
 
