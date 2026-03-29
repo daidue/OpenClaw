@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-29T04:02:28.438912+00:00",
+  "timestamp": "2026-03-29T10:02:29.131075+00:00",
   "period_hours": 24,
   "shared_topics": [],
   "shared_tools": [
@@ -7,11 +7,19 @@
       "tool": "exec",
       "agents": [
         "main",
-        "researcher"
+        "researcher",
+        "dev"
       ]
     },
     {
       "tool": "read",
+      "agents": [
+        "main",
+        "researcher"
+      ]
+    },
+    {
+      "tool": "write",
       "agents": [
         "main",
         "researcher"
@@ -24,6 +32,7 @@
   },
   "active_agents": [
     "main",
-    "researcher"
+    "researcher",
+    "dev"
   ]
 }
