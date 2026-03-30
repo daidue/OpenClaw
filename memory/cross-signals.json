@@ -1,15 +1,7 @@
 {
-  "timestamp": "2026-03-29T22:02:29.175280+00:00",
+  "timestamp": "2026-03-30T04:02:29.478577+00:00",
   "period_hours": 24,
   "shared_topics": [
-    {
-      "topic": "twitter",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
     {
       "topic": "reddit",
       "agents": [
@@ -19,7 +11,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "stripe",
+      "topic": "template",
       "agents": [
         "main",
         "researcher"
@@ -27,7 +19,15 @@
       "signal": "collaboration"
     },
     {
-      "topic": "template",
+      "topic": "twitter",
+      "agents": [
+        "main",
+        "researcher"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "stripe",
       "agents": [
         "main",
         "researcher"
@@ -74,7 +74,7 @@
     }
   ],
   "agent_error_counts": {
-    "main": 3,
+    "main": 4,
     "researcher": 12
   },
   "active_agents": [
