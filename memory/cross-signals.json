@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-03-30T16:06:48.046377+00:00",
+  "timestamp": "2026-03-30T22:02:28.097620+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
-      "topic": "reddit",
+      "topic": "newsletter",
       "agents": [
         "main",
         "researcher"
@@ -19,7 +19,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "stripe",
+      "topic": "reddit",
       "agents": [
         "main",
         "researcher"
@@ -27,7 +27,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "twitter",
+      "topic": "stripe",
       "agents": [
         "main",
         "researcher"
@@ -43,7 +43,15 @@
       "signal": "collaboration"
     },
     {
-      "topic": "newsletter",
+      "topic": "twitter",
+      "agents": [
+        "main",
+        "researcher"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "instagram",
       "agents": [
         "main",
         "researcher"
@@ -53,27 +61,6 @@
   ],
   "shared_tools": [
     {
-      "tool": "web_search",
-      "agents": [
-        "main",
-        "researcher"
-      ]
-    },
-    {
-      "tool": "web_fetch",
-      "agents": [
-        "main",
-        "researcher"
-      ]
-    },
-    {
-      "tool": "write",
-      "agents": [
-        "main",
-        "researcher"
-      ]
-    },
-    {
       "tool": "exec",
       "agents": [
         "main",
@@ -81,14 +68,7 @@
       ]
     },
     {
-      "tool": "process",
-      "agents": [
-        "main",
-        "researcher"
-      ]
-    },
-    {
-      "tool": "browser",
+      "tool": "web_search",
       "agents": [
         "main",
         "researcher"
@@ -107,11 +87,25 @@
         "main",
         "researcher"
       ]
+    },
+    {
+      "tool": "write",
+      "agents": [
+        "main",
+        "researcher"
+      ]
+    },
+    {
+      "tool": "process",
+      "agents": [
+        "main",
+        "researcher"
+      ]
     }
   ],
   "agent_error_counts": {
-    "main": 5,
-    "researcher": 31
+    "main": 8,
+    "researcher": 26
   },
   "active_agents": [
     "main",
