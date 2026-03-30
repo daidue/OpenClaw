@@ -1,7 +1,15 @@
 {
-  "timestamp": "2026-03-30T04:02:29.478577+00:00",
+  "timestamp": "2026-03-30T10:02:28.746556+00:00",
   "period_hours": 24,
   "shared_topics": [
+    {
+      "topic": "stripe",
+      "agents": [
+        "main",
+        "researcher"
+      ],
+      "signal": "collaboration"
+    },
     {
       "topic": "reddit",
       "agents": [
@@ -25,14 +33,6 @@
         "researcher"
       ],
       "signal": "collaboration"
-    },
-    {
-      "topic": "stripe",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
     }
   ],
   "shared_tools": [
@@ -40,8 +40,7 @@
       "tool": "exec",
       "agents": [
         "main",
-        "researcher",
-        "dev"
+        "researcher"
       ]
     },
     {
@@ -74,12 +73,11 @@
     }
   ],
   "agent_error_counts": {
-    "main": 4,
-    "researcher": 12
+    "main": 5,
+    "researcher": 17
   },
   "active_agents": [
     "main",
-    "researcher",
-    "dev"
+    "researcher"
   ]
 }
