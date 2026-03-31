@@ -1,17 +1,9 @@
 {
-  "timestamp": "2026-03-30T22:02:28.097620+00:00",
+  "timestamp": "2026-03-31T04:02:29.311286+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
-      "topic": "newsletter",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "youtube",
+      "topic": "instagram",
       "agents": [
         "main",
         "researcher"
@@ -27,14 +19,6 @@
       "signal": "collaboration"
     },
     {
-      "topic": "stripe",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
-    {
       "topic": "template",
       "agents": [
         "main",
@@ -43,7 +27,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "twitter",
+      "topic": "youtube",
       "agents": [
         "main",
         "researcher"
@@ -51,7 +35,31 @@
       "signal": "collaboration"
     },
     {
-      "topic": "instagram",
+      "topic": "netlify",
+      "agents": [
+        "main",
+        "researcher"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "newsletter",
+      "agents": [
+        "main",
+        "researcher"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "stripe",
+      "agents": [
+        "main",
+        "researcher"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "twitter",
       "agents": [
         "main",
         "researcher"
@@ -82,14 +90,14 @@
       ]
     },
     {
-      "tool": "edit",
+      "tool": "write",
       "agents": [
         "main",
         "researcher"
       ]
     },
     {
-      "tool": "write",
+      "tool": "edit",
       "agents": [
         "main",
         "researcher"
@@ -101,10 +109,17 @@
         "main",
         "researcher"
       ]
+    },
+    {
+      "tool": "browser",
+      "agents": [
+        "main",
+        "researcher"
+      ]
     }
   ],
   "agent_error_counts": {
-    "main": 8,
+    "main": 9,
     "researcher": 26
   },
   "active_agents": [
