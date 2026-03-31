@@ -1,85 +1,12 @@
 {
-  "timestamp": "2026-03-31T16:03:15.474723+00:00",
+  "timestamp": "2026-03-31T22:02:30.048359+00:00",
   "period_hours": 24,
-  "shared_topics": [
-    {
-      "topic": "twitter",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "reddit",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "youtube",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "template",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "instagram",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "netlify",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    }
-  ],
-  "shared_tools": [
-    {
-      "tool": "exec",
-      "agents": [
-        "main",
-        "researcher"
-      ]
-    },
-    {
-      "tool": "read",
-      "agents": [
-        "main",
-        "researcher"
-      ]
-    },
-    {
-      "tool": "write",
-      "agents": [
-        "main",
-        "researcher"
-      ]
-    }
-  ],
+  "shared_topics": [],
+  "shared_tools": [],
   "agent_error_counts": {
-    "main": 60,
-    "researcher": 7
+    "main": 68
   },
   "active_agents": [
-    "main",
-    "researcher"
+    "main"
   ]
 }
