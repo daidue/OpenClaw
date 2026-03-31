@@ -1,15 +1,7 @@
 {
-  "timestamp": "2026-03-31T10:02:29.351514+00:00",
+  "timestamp": "2026-03-31T16:03:15.474723+00:00",
   "period_hours": 24,
   "shared_topics": [
-    {
-      "topic": "youtube",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
     {
       "topic": "twitter",
       "agents": [
@@ -27,23 +19,15 @@
       "signal": "collaboration"
     },
     {
+      "topic": "youtube",
+      "agents": [
+        "main",
+        "researcher"
+      ],
+      "signal": "collaboration"
+    },
+    {
       "topic": "template",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "newsletter",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "netlify",
       "agents": [
         "main",
         "researcher"
@@ -57,18 +41,19 @@
         "researcher"
       ],
       "signal": "collaboration"
+    },
+    {
+      "topic": "netlify",
+      "agents": [
+        "main",
+        "researcher"
+      ],
+      "signal": "collaboration"
     }
   ],
   "shared_tools": [
     {
       "tool": "exec",
-      "agents": [
-        "main",
-        "researcher"
-      ]
-    },
-    {
-      "tool": "web_search",
       "agents": [
         "main",
         "researcher"
@@ -87,25 +72,11 @@
         "main",
         "researcher"
       ]
-    },
-    {
-      "tool": "process",
-      "agents": [
-        "main",
-        "researcher"
-      ]
-    },
-    {
-      "tool": "browser",
-      "agents": [
-        "main",
-        "researcher"
-      ]
     }
   ],
   "agent_error_counts": {
-    "main": 8,
-    "researcher": 21
+    "main": 60,
+    "researcher": 7
   },
   "active_agents": [
     "main",
