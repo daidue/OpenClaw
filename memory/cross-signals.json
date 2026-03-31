@@ -1,9 +1,17 @@
 {
-  "timestamp": "2026-03-31T04:02:29.311286+00:00",
+  "timestamp": "2026-03-31T10:02:29.351514+00:00",
   "period_hours": 24,
   "shared_topics": [
     {
-      "topic": "instagram",
+      "topic": "youtube",
+      "agents": [
+        "main",
+        "researcher"
+      ],
+      "signal": "collaboration"
+    },
+    {
+      "topic": "twitter",
       "agents": [
         "main",
         "researcher"
@@ -27,7 +35,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "youtube",
+      "topic": "newsletter",
       "agents": [
         "main",
         "researcher"
@@ -43,23 +51,7 @@
       "signal": "collaboration"
     },
     {
-      "topic": "newsletter",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "stripe",
-      "agents": [
-        "main",
-        "researcher"
-      ],
-      "signal": "collaboration"
-    },
-    {
-      "topic": "twitter",
+      "topic": "instagram",
       "agents": [
         "main",
         "researcher"
@@ -97,13 +89,6 @@
       ]
     },
     {
-      "tool": "edit",
-      "agents": [
-        "main",
-        "researcher"
-      ]
-    },
-    {
       "tool": "process",
       "agents": [
         "main",
@@ -119,8 +104,8 @@
     }
   ],
   "agent_error_counts": {
-    "main": 9,
-    "researcher": 26
+    "main": 8,
+    "researcher": 21
   },
   "active_agents": [
     "main",
