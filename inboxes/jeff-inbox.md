@@ -1,5 +1,52 @@
 # Jeff's Inbox
 
+## [CODE REVIEW] TitleRun Similar Trades — Score: 88/100 ⚠️ BELOW TARGET
+**From:** System (cron:titlerun-review-morning)
+**Priority:** URGENT
+**Date:** 2026-04-03
+
+### Description
+Comprehensive 10-expert panel review of commit 207e7e5 (`feat: add similar trades query engine (backend)`).
+
+**Status:** ⚠️ **FIX BEFORE CONTINUING**
+
+**Overall Score:** 88/100 (Target: 95+)
+
+### Critical Issues (2) — BLOCK MERGE
+1. **SQL Injection Risk** — Missing input sanitization for player IDs
+2. **Missing Input Validation** — User inputs not sanitized before processing
+
+### High Issues (4) — FIX BEFORE DEPLOY
+3. **N+1 Query Pattern** — Player names fetched after scoring (should batch upfront)
+4. **Missing Database Index** — No composite index on `(created_at, league_id)`
+5. **Unbounded Memory Growth** — No pagination (fetches up to 250 trades)
+6. **No Request Timeout** — Long queries can hang connections
+
+### Positive Highlights
+✅ Excellent test coverage (9 unit tests with edge cases)  
+✅ Clean code structure (well-separated concerns)  
+✅ Thoughtful similarity algorithm (weighted scoring + recency decay)  
+✅ No TitleRun anti-patterns detected  
+✅ Proper auth protection  
+
+### Success Criteria
+- Add input sanitization for all user inputs
+- Create database indexes (Prisma migration)
+- Batch player name resolution before scoring
+- Implement pagination with cursor offset
+- Add 30s request timeout middleware
+
+### Action Required
+**Rush:** Fix all CRITICAL and HIGH issues (estimated 2-4 hours). Re-run review after fixes.
+
+**If score <95 after fixes:** Additional hardening required.  
+**If score <80 after fixes:** 🔴 CRITICAL — Halt feature work, investigate code quality process.
+
+### Full Report
+`workspace-titlerun/reviews/2026-04-03-similar-trades-10-expert-review.md`
+
+---
+
 ## FYI — nflverse 2025 Data Still Unavailable
 **From:** System (cron:nflverse-2025-check)
 **Priority:** NORMAL
