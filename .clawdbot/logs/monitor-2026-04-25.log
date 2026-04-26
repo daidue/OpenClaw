@@ -2478,3 +2478,16 @@
 [2026-04-25 20:30:01]   Task fix-all-trade-issues: age 29619390m (timeout 120m)
 [2026-04-25 20:30:01]     ⚠️  STALE (exceeded timeout)
 [2026-04-25 20:30:01] Archiving 9 stale + 0 completed tasks...
+[2026-04-25 20:40:01] Checking 9 active tasks...
+[2026-04-25 20:40:01]   Task dogfood-qa-week4: age 29619400m (timeout 120m)
+[2026-04-25 20:40:01]     ⚠️  STALE (exceeded timeout)
+[2026-04-25 20:40:01]   Task fix-dogfood-week4: age 29619400m (timeout 120m)
+[2026-04-25 20:40:01]     ⚠️  STALE (exceeded timeout)
+[2026-04-25 20:40:01]   Task test-opt-parallel-logger: age 29619400m (timeout 120m)
+[2026-04-25 20:40:01]     ⚠️  STALE (exceeded timeout)
+[2026-04-25 20:40:01]   Task test-opt-parallel-error: age 29619400m (timeout 120m)
+[2026-04-25 20:40:01]     ⚠️  STALE (exceeded timeout)
+[2026-04-25 20:40:01]   Task audit-all-work: age 29619400m (timeout 120m)
+[2026-04-25 20:40:01]     ⚠️  STALE (exceeded timeout)
+[2026-04-25 20:40:01]   Task workqueue-automation: age 29619400m (timeout 120m)
+[2026-04-25 20:40:01]     ⚠️  STALE (exceeded timeout)
