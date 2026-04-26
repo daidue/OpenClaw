@@ -2871,3 +2871,10 @@
 [2026-04-25 23:50:00]     ⚠️  STALE (exceeded timeout)
 [2026-04-25 23:50:00]   Task workqueue-automation: age 29619590m (timeout 120m)
 [2026-04-25 23:50:00]     ⚠️  STALE (exceeded timeout)
+[2026-04-25 23:50:00]   Task test-opt-analytics-opus: age 29619590m (timeout 120m)
+[2026-04-25 23:50:00]     ⚠️  STALE (exceeded timeout)
+[2026-04-25 23:50:00]   Task fix-trade-builder-403: age 29619590m (timeout 120m)
+[2026-04-25 23:50:00]     ⚠️  STALE (exceeded timeout)
+[2026-04-25 23:50:00]   Task fix-all-trade-issues: age 29619590m (timeout 120m)
+[2026-04-25 23:50:00]     ⚠️  STALE (exceeded timeout)
+[2026-04-25 23:50:00] Archiving 9 stale + 0 completed tasks...
